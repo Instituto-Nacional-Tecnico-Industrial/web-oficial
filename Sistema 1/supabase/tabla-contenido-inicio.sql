@@ -1,0 +1,1 @@
+-- INTIWO SQL | archivo: tabla-contenido-inicio.sql | para: una fila JSON bloques CMS | VACIO | BACKLOG DB-02d | copiar tambien a Sistema 2/supabase/

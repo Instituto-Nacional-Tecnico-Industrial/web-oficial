@@ -1,0 +1,1 @@
+-- INTIWO SQL | archivo: tabla-footer-cms.sql | para: textos footer editables | VACIO | BACKLOG DB-02e | copiar tambien a Sistema 2/supabase/

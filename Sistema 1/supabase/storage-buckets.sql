@@ -1,0 +1,1 @@
+-- INTIWO SQL | archivo: storage-buckets.sql | para: bucket inicio (personal solo si 0-05) | VACIO | BACKLOG DB-04 | copiar tambien a Sistema 2/supabase/
