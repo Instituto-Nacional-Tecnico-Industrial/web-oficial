@@ -1,1 +1,221 @@
-/* INTIWO S2 | archivo: hub-y-pildoras-proyectos.css | para: 2 cards, pildoras, 2 cols desktop | VACIO | BACKLOG S2-01 */
+/* INTIWO S2 | hub 2 cards, pildoras, 2 cols | BACKLOG S2-01 */
+.intiwo-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+}
+
+.intiwo-hub {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+}
+
+.intiwo-card {
+  background: var(--superficie);
+  border-radius: 18px;
+  padding: 22px 22px 28px;
+  text-align: center;
+}
+
+.intiwo-card-titulo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--superficie-2);
+  color: var(--texto);
+  border-radius: 999px;
+  padding: 10px 18px;
+  margin: 0 0 20px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.intiwo-card-icono {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--verde);
+  color: var(--negro);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.intiwo-card p {
+  text-align: left;
+  line-height: 1.45;
+  margin: 0 12px 22px;
+  font-size: 15px;
+}
+
+.intiwo-card .intiwo-pildora {
+  margin: 0 auto;
+  font-size: 15px;
+}
+
+.intiwo-especialidades {
+  display: none;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  width: 100%;
+  margin: 18px 0 0;
+}
+
+.intiwo-especialidades.es-abierto {
+  display: flex;
+}
+
+.intiwo-especialidades-etiqueta {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.intiwo-especialidades-caja {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  padding: 40px 0 0;
+}
+
+.intiwo-especialidades-lista {
+  display: flex;
+  flex-direction: column;
+}
+
+.intiwo-especialidades-lista.es-colapsada {
+  display: none;
+}
+
+.intiwo-especialidades-chevron {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--verde);
+  color: var(--negro);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.intiwo-especialidades-chevron svg {
+  transition: transform 0.2s ease;
+}
+
+.intiwo-especialidades-chevron[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.intiwo-pildora-esp {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  margin: 6px 0;
+  padding: 6px 14px 6px 6px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--verde);
+  color: var(--negro);
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.intiwo-pildora-esp .intiwo-pildora-icono {
+  background: var(--negro);
+  color: var(--verde);
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.intiwo-pildora-esp:hover:not(.es-activa),
+.intiwo-pildora-esp:focus-visible:not(.es-activa) {
+  background: #7c7c7c;
+  color: var(--negro);
+  filter: none;
+}
+
+.intiwo-pildora-esp:hover:not(.es-activa) .intiwo-pildora-icono,
+.intiwo-pildora-esp:focus-visible:not(.es-activa) .intiwo-pildora-icono {
+  color: #7c7c7c;
+}
+
+.intiwo-pildora-esp[data-esp="automotriz"].es-activa {
+  background: var(--esp-automotriz);
+  color: #fff;
+  filter: none;
+}
+
+.intiwo-pildora-esp[data-esp="mecanica"].es-activa {
+  background: var(--esp-mecanica);
+  color: var(--negro);
+  filter: none;
+}
+
+.intiwo-pildora-esp[data-esp="electricos"].es-activa {
+  background: var(--esp-electricos);
+  color: #fff;
+  filter: none;
+}
+
+.intiwo-pildora-esp[data-esp="electronica"].es-activa {
+  background: var(--esp-electronica);
+  color: #fff;
+  filter: none;
+}
+
+.intiwo-pildora-esp[data-esp="software"].es-activa {
+  background: var(--esp-software);
+  color: var(--negro);
+  filter: none;
+}
+
+.intiwo-pildora-esp[data-esp="itsi"].es-activa {
+  background: var(--esp-itsi);
+  color: #fff;
+  filter: none;
+}
+
+.intiwo-pildora-esp[data-esp="automotriz"].es-activa .intiwo-pildora-icono {
+  color: var(--esp-automotriz);
+}
+
+.intiwo-pildora-esp[data-esp="mecanica"].es-activa .intiwo-pildora-icono {
+  color: var(--esp-mecanica);
+}
+
+.intiwo-pildora-esp[data-esp="electricos"].es-activa .intiwo-pildora-icono {
+  color: var(--esp-electricos);
+}
+
+.intiwo-pildora-esp[data-esp="electronica"].es-activa .intiwo-pildora-icono {
+  color: var(--esp-electronica);
+}
+
+.intiwo-pildora-esp[data-esp="software"].es-activa .intiwo-pildora-icono {
+  color: var(--esp-software);
+}
+
+.intiwo-pildora-esp[data-esp="itsi"].es-activa .intiwo-pildora-icono {
+  color: var(--esp-itsi);
+}
+
+@media (max-width: 768px) {
+  .intiwo-hub {
+    grid-template-columns: 1fr;
+  }
+
+  .intiwo-especialidades.es-abierto {
+    align-items: stretch;
+  }
+}

@@ -1,7 +1,7 @@
 # Matricula (Nuevo ingreso + EDUCAME)
 
 Fuente: IAs/RESOLUCIONES.md y sitio https://sites.google.com/inti.edu.sv/nuevoingreso/nuevo-ingreso/proceso_de_matricula
-Sin videos. WhatsApp del formulario del Site (74411075) no sustituye +503 7754 5899 hasta unificar.
+Sin videos. WhatsApp principal del sitio: +503 7441-1075. El número +503 7754 5899 queda descartado como contacto válido para la web del Instituto.
 
 ## Proceso 2027
 1. 10 ago - 30 nov 2026: formulario en linea.

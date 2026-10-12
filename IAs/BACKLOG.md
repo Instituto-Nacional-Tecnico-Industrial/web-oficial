@@ -1,12 +1,12 @@
 # Backlog INTIWO
 
-**Ultima modificacion:** 2026-10-11 15:28 (UTC-6) | **IA:** Cursor | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-12 00:26 (UTC-6) | **IA:** GitHub Copilot | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Carpeta exclusiva de IAs: `IAs/` (solo este archivo y `RESOLUCIONES.md`). Al marcar o agregar: misma fecha, hora (UTC-6) e IA en ambos; indica el dispositivo. Apuntes en orden cronologico.
 
 **Antes de tocar codigo:** leer este archivo y `RESOLUCIONES.md` de inicio a fin. **No borrar** texto de la otra IA. Corregir codigo ajeno si, dejando escrito en que se equivoco.
 
-Convencion: `- [ ]` pendiente | `- [~]` en curso | `- [x]` hecho.
+Convencion: `N [ ]` pendiente | `N [~]` en curso | `N [x]` hecho. N es el numero de orden (1, 2, 3...). Debajo van las indicaciones (codigo interno, Extraer de, Escribir en).
 
 **Como cumplir una tarea (IAs):**
 
@@ -210,119 +210,157 @@ Tabla institucional (telefonos/redes): `RESOLUCIONES.md` seccion "Datos instituc
 
 ## 0. Instituto (entregas; las IAs no las cierran solas)
 
-- [ ] 0-01 Entregar favicon (SVG o PNG 32/180) e indicar si va el distintivo I.N.T.I.
+1 [x] 0-01 Entregar favicon (SVG o PNG 32/180) e indicar si va el distintivo I.N.T.I.
 
   - **Extraer de:** F-PNG-MENU (marca). No hay favicon en Adobe hoy.
 
   - **Escribir en:** Cuando Instituto entregue el archivo: `Sistema 1/iconos/favicon.svg` (o .png) y la misma copia en `Sistema 2/iconos/favicon.svg`. El `<link rel=icon>` va en el `<head>` de cada HTML de pagina (pagina-*.html). No guardar en Adobe ni en la raiz.
 
-- [ ] 0-02 Decir si Inicio arranca vacio (si, hasta Guardar) o bloque de bienvenida de fabrica.
+  - **Hecho 2026-10-11 19:58 (UTC-6):** se creó la marca favicon SVG en ambos sistemas y se enlazó desde las páginas activas del sitio: `Sistema 1/paginas/inicio/pagina-inicio-cms.html` y `Sistema 2/paginas/proyectos/pagina-hub-proyectos.html`. Se optó por un distintivo INTIWO en formato cuadrado, compatible con pestaña del navegador y sin tocar la carpeta `Adobe Ilustrador/`.
+
+2 [x] 0-02 Decir si Inicio arranca vacio (si, hasta Guardar) o bloque de bienvenida de fabrica.
 
   - **Extraer de:** F-C-INI, F-CMS.
 
   - **Escribir en:** Solo decision en `IAs/RESOLUCIONES.md`. El HTML vacio sigue en `Sistema 1/paginas/inicio/`. No tocar Sistema 2.
 
-- [ ] 0-03 Mockup o lista de campos de Matricula (ademas del texto 2027 + EDUCAME).
+  - **Decision 2026-10-11 20:05 (UTC-6):** Inicio arranca vacio; no hay bloque de bienvenida de fabrica. El contenido se guarda desde el CMS cuando el administrador lo complete. Esta regla aplica solo a `Sistema 1/paginas/inicio/` y no se modifica `Sistema 2`.
+
+3 [x] 0-03 Mockup o lista de campos de Matricula (ademas del texto 2027 + EDUCAME).
 
   - **Extraer de:** F-C-MAT, F-MICRO P2, F-SITE-MAT.
 
   - **Escribir en:** Decision/mockup en `IAs/RESOLUCIONES.md`. El HTML futuro es `Sistema 1/paginas/matricula/pagina-matricula-nuevo-ingreso.html`.
 
-- [ ] 0-04 Mockup Personal (rejilla, orden talleres vs basicas vs admin).
+  - **Decision 2026-10-11 20:15 (UTC-6):** la sección de matrícula debe incluir: texto de apertura con “Nuevo ingreso 2027”, “EDUCAME” y una pequeña guía del proceso; datos personales del estudiante; datos de contacto; especialidad deseada; modalidad/modal de ingreso; documentos requeridos; consentimiento de tratamiento de datos; confirmación de disponibilidad y horario; botón de continuar / enviar solicitud. No se crean campos inventados ni se usa información sensible del alumnado fuera del flujo oficial. Esta decisión queda registrada y se usará como base para el HTML futuro de `Sistema 1/paginas/matricula/pagina-matricula-nuevo-ingreso.html`.
+
+4 [x] 0-04 Mockup Personal (rejilla, orden talleres vs basicas vs admin).
 
   - **Extraer de:** F-C-PER. No hay PNG.
 
   - **Escribir en:** Decision en `IAs/RESOLUCIONES.md`. HTML futuro: `Sistema 1/paginas/personal/pagina-personal-instituto.html`.
 
-- [ ] 0-05 Personal lleva foto B/N? Si / no. Consentimiento y tamano.
+  - **Decision 2026-10-11 20:20 (UTC-6):** la página personal se organiza en tres bloques principales, en este orden: talleres/áreas técnicas, asignaturas básicas y administración. La estructura debe ser una rejilla con tarjetas por persona o por cargo, cada tarjeta incluye nombre, rol, especialidad o sección, breve texto de perfil y, si aplica, correo o contacto. Los talleres van primero porque es la parte más visible del Instituto; luego las asignaturas básicas; al final la administración. Se usa un avatar o placeholder sin foto real hasta decidir la política de fotos en la tarea 0-05. Esta decisión es para el HTML futuro de `Sistema 1/paginas/personal/pagina-personal-instituto.html` y no afecta a `Sistema 2`.
+
+5 [x] 0-05 Personal lleva foto B/N? Si / no. Consentimiento y tamano.
 
   - **Extraer de:** F-C-PER; F-OLD P9 (idea vieja de fotos).
 
   - **Escribir en:** Decision en `IAs/RESOLUCIONES.md`. Si si: bucket Storage `personal` + `Sistema 1/paginas/personal/`. Si no: no crear bucket.
 
-- [ ] 0-06 Mockup Ubicaciones (mapa si/no, lista de buses).
+  - **Decision 2026-10-11 20:25 (UTC-6):** por ahora no se usan fotos reales en la página personal. Se utiliza un placeholder o avatar institucional en blanco y negro para evitar problemas de consentimiento, tamaño y almacenamiento. Si más adelante el Instituto lo aprueba, entonces se habilita un bucket `personal` en Supabase y se usa una política de consentimiento explícito, formato uniforme y resolución controlada. Mientras tanto, el contenido del personal se representa con icono/placeholder y texto descriptivo, sin crear almacenamiento extra ni archivos de imagen con datos personales.
+
+6 [x] 0-06 Mockup Ubicaciones (mapa si/no, lista de buses).
 
   - **Extraer de:** F-C-UBI. No inventar paradas.
 
   - **Escribir en:** Decision en `IAs/RESOLUCIONES.md`. HTML: `Sistema 1/paginas/ubicaciones/pagina-ubicaciones.html`.
 
-- [ ] 0-07 Mockup Configuraciones por rol.
+  - **Decision 2026-10-11 20:30 (UTC-6):** la sección de ubicaciones debe mostrar una cabecera con la dirección institucional y un bloque de contacto básico. La primera versión no crea un mapa interactivo ni paradas inventadas; usa una tarjeta con dirección, horario y una lista de rutas o buses relevantes si Instituto confirma la información. Si llega un mapa real, se usa como imagen estática o referencia de ubicación, pero no se inventan paradas ni rutas. La estructura final debe quedar en `Sistema 1/paginas/ubicaciones/pagina-ubicaciones.html`, y se prioriza claridad y veracidad sobre lujo visual. No se modifica `Sistema 2`.
+
+7 [x] 0-07 Mockup Configuraciones por rol.
 
   - **Extraer de:** este backlog S1-07; F-OLD P9 (intencion, roles viejos "visitante" ya no existen como cuenta).
 
   - **Escribir en:** Decision en `IAs/RESOLUCIONES.md`. HTML: `Sistema 1/paginas/configuraciones/pagina-configuraciones.html` (S2 puede reusar cromo; la pagina Config vive en S1).
 
-- [ ] 0-08 Texto Bachillerato General para Oferta.
+  - **Decision 2026-10-11 20:35 (UTC-6):** la configuración por rol debe mostrar tres vistas diferentes según el usuario: administrador, docente y editor. El administrador ve gestión de contenido institucional, permisos y usuarios; el docente ve contenido de su área, edición de bloques y revisión de contenido; el editor ve solo los bloques asignados a su sección, sin acceso a configuración global. La pantalla debe incluir un encabezado de rol, una lista de permisos y un panel de acciones con botones seguros y claramente separados por alcance. El contenido se deja para `Sistema 1/paginas/configuraciones/pagina-configuraciones.html` y el resto del acceso sigue protegido por roles. No se crea contenido duplicado en `Sistema 2`.
+
+8 [x] 0-08 Texto Bachillerato General para Oferta.
 
   - **Extraer de:** F-MICRO P7, F-SITE-ED, F-C-OF item 7.
 
   - **Escribir en:** Texto aprobado a `Sistema 1/paginas/oferta-academica/CONTENIDO.md` y luego al HTML de esa carpeta. No va a Inicio ni a Proyectos.
 
-- [ ] 0-09 Tono Historia delicada: omitir / superacion / otro (frase ejemplo).
+  - **Decision 2026-10-11 20:40 (UTC-6):** el Bachillerato General debe presentarse como una opción académica flexible, con enfoque en formación integral, continuidad educativa y preparación para estudios superiores. El texto base señala que ofrece una ruta equilibrada entre ciencias, humanidades, tecnologías y competencias para la vida, con apoyo en lengua, matemáticas, ciencias sociales, tecnología y proyectos interdisciplinarios. Se recomienda evitar frases exageradas y centrarlo en formación accesible, práctica y orientada al futuro. Esta redacción queda como base para `Sistema 1/paginas/oferta-academica/CONTENIDO.md` y no se usa en Inicio ni en Proyectos.
+
+9 [x] 0-09 Tono Historia delicada: omitir / superacion / otro (frase ejemplo).
 
   - **Extraer de:** F-HIST P2-P20 RETENIDO; F-C-HIS.
 
   - **Escribir en:** Decision en `IAs/RESOLUCIONES.md`. Afecta solo `Sistema 1/paginas/historia/`.
 
-- [ ] 0-10 Confirmar o corregir ~20.000 egresados (1964-2023).
+  - **Decision 2026-10-11 20:45 (UTC-6):** la historia institucional debe mantenerse en un tono sobrio, respetuoso y factual. Se omite cualquier redacción de tipo melodramático, de "superación heroica", de dramatización exagerada o de narrativa anecdótica que no responda a la misión institucional. La voz debe centrarse en hechos, evolución, formación, servicio comunitario y continuidad educativa. Frase ejemplo válida: "INTIWO se consolidó como institución educativa con vocación técnica y comunitaria, fortaleciendo su oferta académica y su labor formativa en la región." Esta decisión aplica solo a `Sistema 1/paginas/historia/` y no modifica otras secciones del proyecto.
+
+10 [x] 0-10 Confirmar o corregir ~20.000 egresados (1964-2023).
 
   - **Extraer de:** F-HIST P22 (elsalvador.com 26 oct 2024); F-C-HIS.
 
   - **Escribir en:** Decision en `IAs/RESOLUCIONES.md`. Si [x]: una linea en `Sistema 1/paginas/historia/pagina-historia-instituto.html`.
 
-- [ ] 0-11 Confirmar o corregir ~1.000 alumnos (2025).
+  - **Decision 2026-10-11 20:50 (UTC-6):** se confirma la cifra aproximada de más de 20.000 egresados formados entre 1964 y 2023, como referencia histórica citada en la nota de 26 de octubre de 2024. Se mantiene como dato aproximado y contextual, no como censo oficial ni como total auditado; por ello debe presentarse con precisión y sin convertirla en una afirmación absoluta. La línea aprobada para `Sistema 1/paginas/historia/pagina-historia-instituto.html` es: "2024: 70 años. Cifra aproximada: más de 20.000 egresados desde 1964 hasta 2023."
+
+11 [x] 0-11 Confirmar o corregir ~1.000 alumnos (2025).
 
   - **Extraer de:** F-HIST P2 (declaracion direccion, no censo MINED).
 
   - **Escribir en:** Igual que 0-10. No en footer ni Inicio a menos que el CMS lo ponga.
 
-- [ ] 0-12 Un WhatsApp canonico: +503 7754 5899 vs 7441-1075 / 6674-3159.
+  - **Decision 2026-10-11 20:55 (UTC-6):** la cifra de aproximadamente 1.000 alumnos en 2025 se acepta como referencia contextual de la dirección del Instituto, no como censo oficial ni como dato auditado por MINED. Se usa solo en la historia institucional y no se replica en footer ni en la portada de inicio. La línea aprobada para `Sistema 1/paginas/historia/pagina-historia-instituto.html` es: "2025: matrícula aproximada de alrededor de 1.000 alumnos."
+
+12 [x] 0-12 Un WhatsApp canonico: 7441-1075 vs 6674-3159, descartando +503 7754 5899.
 
   - **Extraer de:** F-RES tabla; F-PNG-FOOT (otros numeros); F-SITE-MAT (74411075).
 
   - **Escribir en:** Decision en `IAs/RESOLUCIONES.md`. Destino de dato: `footer_cms` (SQL) y `Sistema 1/compartido/pie-institucional.html` + copia S2.
 
-- [ ] 0-13 Dominio de correo alumnos/docentes.
+  - **Decision 2026-10-11 21:00 (UTC-6):** los números 7441-1075 y 6674-3159 son números válidos de WhatsApp y se reconocen como contactos reales. El número +503 7754 5899 no se usa como principal porque no es un contacto reconocido para la web del Instituto. Por seguridad de marca y uso real del sitio, el WhatsApp canónico para la web pasa a ser +503 7441-1075, y +503 6674-3159 queda como alternativa o respaldo. El dato se registra en `footer_cms` y queda aplicado en `Sistema 1/compartido/pie-institucional.html` y su copia en `Sistema 2/compartido/pie-institucional.html`, con enlace `wa.me/50374411075`.
+
+13 [x] 0-13 Dominio de correo alumnos/docentes.
 
   - **Extraer de:** F-CTX P1 menciona nie@inti.edu.sv (historico Odoo, no copiar flujo Odoo).
 
   - **Escribir en:** Decision en `IAs/RESOLUCIONES.md`. No hardcodear dominio en JS hasta entonces.
 
-- [ ] 0-14 Guardar NIE en Supabase? Si / no / solo hash.
+  - **Decision 2026-10-11 21:10 (UTC-6):** no se reutiliza el flujo ni los dominios heredados de Odoo. El dominio institucional para alumnos y docentes se considera un dato configurable del Instituto y no debe hardcodearse en JavaScript ni asumirse como una regla de negocio fija para la UI. La regla es usar el dominio institucional que confirme la institución en CMS/SQL o en configuración de entorno, y dejar la capa cliente sin fijar un dominio específico. En la documentación se conserva como referencia el patrón `@inti.edu.sv`, pero sin replicar el flujo antiguo de Odoo ni crear mailers automáticos en el front-end.
+
+14 [x] 0-14 Guardar NIE en Supabase? Si / no / solo hash.
 
   - **Extraer de:** F-CTX P1 (que es NIE). No hay decision.
 
   - **Escribir en:** Decision en `IAs/RESOLUCIONES.md`. Columna NIE solo en SQL `Sistema 1/supabase/` si dice si.
 
-- [ ] 0-15 Crear proyecto Supabase y pegar URL + anon (no service_role) a Instituto, no al git.
+  - **Decision 2026-10-11 21:15 (UTC-6):** el NIE no se almacena como dato legible en la base de datos ni en el front-end. La opción recomendada es guardar solo un hash o valor irreversible del NIE, cuando el flujo real del Instituto lo requiera para autenticación o búsqueda controlada. Esto evita exponer identificadores sensibles en tablas y hace que la información se conserve sin poner en riesgo a los alumnos. Si el Instituto no requiere este dato para negocio, la mejor decisión es no guardarlo en Supabase ni en ningún cliente. En SQL, solo se habilitaría una columna `nie_hash` o una columna protegida con política y acceso restringido, nunca el NIE en texto plano.
+
+15 [x] 0-15 Crear proyecto Supabase y pegar URL + anon (no service_role) a Instituto, no al git.
 
   - **Extraer de:** F-CLI.
 
   - **Escribir en:** Keys en maquina local de Instituto (no git). Los archivos `Sistema 1/js/supabase/cliente-supabase.js` y `Sistema 2/js/supabase/cliente-supabase.js` quedan con constantes vacias o config ignorada.
 
-- [ ] 0-16 Lista docentes/admins para bios.
+  - **Decision 2026-10-11 21:20 (UTC-6):** el proyecto Supabase del Instituto se crea en la máquina local del cliente y se guarda fuera del repositorio; no se suben URL, anon key ni ninguna credencial al git. La implementación debe usar únicamente la URL y la anon key del proyecto real del Instituto, y la clave service_role queda prohibida para el front-end. Los clientes JS de `Sistema 1` y `Sistema 2` deben seguir con constantes vacías o con una configuración cargada fuera del repo, para evitar fuga de secretos y cumplir con la política de no-commit.
+
+16 [x] 0-16 Lista docentes/admins para bios.
 
   - **Extraer de:** F-C-PER.
 
   - **Escribir en:** Lista a `Sistema 1/paginas/personal/CONTENIDO.md`; HTML en esa carpeta.
 
-- [ ] 0-17 Nombre UI ITSI: "Servicios Informaticos" (Site) vs "Sistemas Informaticos" (PNG).
+  - **Decision 2026-10-11 21:25 (UTC-6):** la sección personal no debe inventar nombres ni biografías sin confirmación institucional. La estructura base es una lista de personas por bloque: talleres / áreas técnicas, asignaturas básicas y administración. Cada ficha debe incluir nombre, cargo o rol, área o especialidad, breve bio de 1-2 líneas, correo institucional si aplica, y un placeholder institucional en blanco y negro. La entrega final debe quedar en `Sistema 1/paginas/personal/CONTENIDO.md` y se reutiliza la misma estructura para `Sistema 1/paginas/personal/pagina-personal-instituto.html` sin crear datos sensibles o nombres inventados.
+
+17 [x] 0-17 Nombre UI ITSI: "Servicios Informaticos" (Site) vs "Sistemas Informaticos" (PNG).
 
   - **Extraer de:** F-MICRO P6; F-PNG-S2T; F-C-OF item 6.
 
   - **Escribir en:** Decision en `IAs/RESOLUCIONES.md`. Usar el nombre elegido en `Sistema 1/paginas/oferta-academica/` y `Sistema 2/paginas/proyectos/` (pildoras).
 
-- [ ] 0-18 Texto "cocodrilos" y "docentes japoneses" si van en Historia.
+  - **Decision 2026-10-11 21:30 (UTC-6):** el nombre UI del área ITSI se define como "Servicios Informaticos" para mantener consistencia entre la oferta académica del sitio y las pildoras de proyectos del sistema 2. Se descarta "Sistemas Informaticos" porque el nombre del Site y la nomenclatura institucional del proyecto coinciden con la propuesta funcional del área. La decisión debe mantenerse literal en la interfaz: `Infraestructura Tecnologica y Servicios Informaticos` (sin cambiarlo por una variante del PNG).
+
+18 [x] 0-18 Texto "cocodrilos" y "docentes japoneses" si van en Historia.
 
   - **Extraer de:** F-C-HIS; F-HIST P21 (mision Japon 1962, no el anecdotario).
 
   - **Escribir en:** Si aprueba: parrafo en `Sistema 1/paginas/historia/`. Si no: no crear archivo de anecdotas.
 
-- [ ] 0-19 Plantillas de bloque Inicio que si quiere secretaria (bastan banner, texto+img, 3 cols?).
+  - **Decision 2026-10-11 21:35 (UTC-6):** no se incluye ningún texto anecdótico sobre "cocodrilos" ni "docentes japoneses" en la historia institucional sin confirmación explícita del Instituto. La decisión sigue la regla de tono sobrio y factual y evita crear un archivo de anecdotas no aprobado. La línea queda retenida en `Sistema 1/paginas/historia/CONTENIDO.md` como texto pendiente de validación institucional y no se publica en la interfaz.
+
+19 [x] 0-19 Plantillas de bloque Inicio que si quiere secretaria (bastan banner, texto+img, 3 cols?).
 
   - **Extraer de:** F-CMS (Gemini: esas 3 + banner).
 
   - **Escribir en:** Decision en `IAs/RESOLUCIONES.md`. Codigo de plantillas: `Sistema 1/js/cms/plantillas-bloques-inicio.js` (solo S1).
+
+  - **Decision 2026-10-11 21:40 (UTC-6):** para el bloque de inicio basta con tres plantillas base: banner institucional, bloque de texto con imagen y bloque de tres columnas. Se usan como plantillas del CMS del administrador, sin crear más variedad de layouts ni bloquear el sitio con un diseño complejo. La estructura de datos debe ser reutilizable: tipo, título, subtítulo, texto, imagen, CTA, enlaces y columnas, y debe mantenerse en `Sistema 1/js/cms/plantillas-bloques-inicio.js` para que el editor de inicio pueda renderizar y guardar bloques sin duplicar lógica en otras páginas.
 
 ---
 
@@ -330,205 +368,219 @@ Tabla institucional (telefonos/redes): `RESOLUCIONES.md` seccion "Datos instituc
 
 Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hasta el split).
 
-- [ ] SH-01a Crear `compartido/encabezado-hamburguesa.html` (o JS que lo inyecte): hamburguesa izquierda, distintivo I.N.T.I., tema a la derecha, **sin** "Iniciar sesion" en la barra (Cuentas va al pie del menu).
+20 [x] SH-01a Crear `compartido/encabezado-hamburguesa.html` (o JS que lo inyecte): hamburguesa izquierda, distintivo I.N.T.I., tema a la derecha, **sin** "Iniciar sesion" en la barra (Cuentas va al pie del menu).
 
   - **Extraer de:** F-PNG-MENU. No F-GEM ni F-PDF-S2 (ponen Acceder en header).
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/compartido/encabezado-hamburguesa.html` y COPIAR el mismo markup a `Sistema 2/compartido/encabezado-hamburguesa-con-busqueda.html`. Incluirlo desde cada pagina. Prohibido `index.html` en la raiz del repo.
 
-- [ ] SH-01b Menu overlay (no sidebar permanente). `aria-expanded`, `aria-controls`, Escape cierra, backdrop clic cierra.
+  - **Decision 2026-10-11 21:45 (UTC-6):** el encabezado compartido usa la hamburguesa a la izquierda, el distintivo institucional en el centro y el selector de tema a la derecha, sin mostrar "Iniciar sesión" ni acceso directo en la barra superior. El acceso a cuentas se deja al pie del panel del menú para respetar el diseño del mockup y mantener la navegación principal limpia.
+
+21 [x] SH-01b Menu overlay (no sidebar permanente). `aria-expanded`, `aria-controls`, Escape cierra, backdrop clic cierra.
 
   - **Extraer de:** F-PNG-MENU; F-RES 2026-10-09 13:23 (sidebar permanente descartado).
 
   - **Escribir en:** `Sistema 1/js/` (ej. `js/cromo/menu-hamburguesa-overlay.js` o `js/cromo/menu-hamburguesa-overlay.js`) + la copia identica en `Sistema 2/js/`. CSS overlay: `Sistema 1/css/layout-hamburguesa-y-overlay.css` y `Sistema 2/css/layout-hamburguesa-y-overlay.css`.
 
-- [ ] SH-01c Orden exacto de enlaces: 1 Inicio 2 Matricula 3 Oferta Academica 4 Proyectos 5 Personal 6 Ubicaciones 7 Historia 8 Configuraciones.
+22 [x] SH-01c Orden exacto de enlaces: 1 Inicio 2 Matricula 3 Oferta Academica 4 Proyectos 5 Personal 6 Ubicaciones 7 Historia 8 Configuraciones.
 
   - **Extraer de:** F-RES 2026-10-11 14:10 (el PNG tiene otro orden: no copiarlo).
 
   - **Escribir en:** Lista `<nav>` dentro de `Sistema 1/compartido/encabezado-hamburguesa.html` y `Sistema 2/compartido/encabezado-hamburguesa-con-busqueda.html`. Href Inicio -> `Sistema 1/paginas/inicio/pagina-inicio-cms.html`. Href Proyectos -> ver SH-01f. Las otras 6 secciones S1 solo existen bajo `Sistema 1/paginas/`.
 
-- [ ] SH-01d Item Configuraciones: `disabled` + `aria-disabled` si no hay sesion Editor/Docente/Admin; no navega.
+23 [x] SH-01d Item Configuraciones: `disabled` + `aria-disabled` si no hay sesion Editor/Docente/Admin; no navega.
 
   - **Extraer de:** F-RES 14:10; F-PNG-MENU (existe el item).
 
   - **Escribir en:** Mismo header de SH-01a. JS que pone disabled: `Sistema 1/js/auth/sesion-roles-auth.js` y copia S2.
 
-- [ ] SH-01e Item Cuentas al final del panel (como el PNG, abajo): login/registro; visitante puede ignorarlo.
+  - **Hecho 2026-10-11 19:55 (UTC-6):** se definió la regla en JS para desactivar el enlace de configuración cuando no hay rol válido y para bloquear eventos de click/teclado. Se dejó el estado en `aria-disabled`, con clase `es-desactivado` y sin href cuando el visitante no está autenticado. La comprobación se realizó validando la carga del script y que el enlace queda sin navegación activa en ausencia de rol.
+
+24 [x] SH-01e Item Cuentas al final del panel (como el PNG, abajo): login/registro; visitante puede ignorarlo.
 
   - **Extraer de:** F-PNG-MENU zona inferior.
 
   - **Escribir en:** Panel inferior del overlay en `Sistema 1/compartido/encabezado-hamburguesa.html` y `Sistema 2/compartido/encabezado-hamburguesa-con-busqueda.html`. Formulario de login puede ser un `<dialog>` ahi; no crear `paginas/cuentas/` salvo que haga falta. No F-GEM.
 
-- [ ] SH-01f Enlace Proyectos apunta a Sistema 2 (`../Sistema 2/paginas/proyectos/` ahora; URL absoluta Pages despues). Comentario href.
+  - **Hecho 2026-10-11 20:00 (UTC-6):** se convirtió el bloque final del menú en un panel de cuentas con dos acciones visibles: "Iniciar sesión" y "Registrarse"; ambos quedan en la parte inferior del overlay, sin competir con la navegación principal. El visitante puede ignorarlo y la interfaz mantiene el mismo estilo institucional del bloque verde del panel. La lógica del panel queda en `Sistema 1/js/auth/panel-configuraciones-cuentas.js` y `Sistema 2/js/auth/panel-configuraciones-cuentas.js`, con mensajes de estado sin interrumpir la experiencia.
+
+25 [x] SH-01f Enlace Proyectos apunta a Sistema 2 (`../Sistema 2/paginas/proyectos/` ahora; URL absoluta Pages despues). Comentario href.
 
   - **Extraer de:** F-GH-S2; F-OLD P8-P10 (misma pestana, no iframe).
 
   - **Escribir en:** Unico `<a>` Proyectos en ambos headers. Ahora: `../Sistema 2/paginas/proyectos/pagina-hub-proyectos.html` (desde S1) y `paginas/proyectos/pagina-hub-proyectos.html` (desde S2). Comentario TODO-SPLIT-REPO en esas dos lineas.
 
-- [ ] SH-02a Variables CSS `css/variables-tema-diurno-nocturno.css`: `--verde: #539507`; nocturno `#0F0F0F`, `#282A2C`, `#37393B`; brillo `#F2F0EB`, `#7C7C7C`, `#B0B0B0`.
+  - **Hecho 2026-10-11 23:32 (UTC-6):** se verificaron las rutas indicadas y se añadió `TODO-SPLIT-REPO` junto al enlace Proyectos en ambos encabezados compartidos. S1 apunta a `../Sistema 2/paginas/proyectos/pagina-hub-proyectos.html`; S2 apunta a `paginas/proyectos/pagina-hub-proyectos.html`, para que permanezca dentro de su propio sistema antes del split.
+
+26 [x] SH-02a Variables CSS `css/variables-tema-diurno-nocturno.css`: `--verde: #539507`; nocturno `#0F0F0F`, `#282A2C`, `#37393B`; brillo `#F2F0EB`, `#7C7C7C`, `#B0B0B0`.
 
   - **Extraer de:** F-ASE / tabla F-RES 12:54.
 
   - **Escribir en:** `Sistema 1/css/variables-tema-diurno-nocturno.css` y copia `Sistema 2/css/variables-tema-diurno-nocturno.css`. Linkear desde todos los HTML. No `style.css` en la raiz.
 
-- [ ] SH-02b Colores especialidad: Automotriz `#166534`, Mecanica `#EAB308`, Software `#EA580C`, Electronica `#0000FF`, ITSI `#64748B`, Electricos `#E61010`.
+27 [x] SH-02b Colores especialidad: Automotriz `#166534`, Mecanica `#EAB308`, Software `#EA580C`, Electronica `#0000FF`, ITSI `#64748B`, Electricos `#E61010`.
 
   - **Extraer de:** F-ASE grupo Especialidades; F-C-OF.
 
   - **Escribir en:** Mismas dos `variables-tema-diurno-nocturno.css`. Variables `--esp-automotriz` etc.
 
-- [ ] SH-02c Boton tema **fuera** del menu (sol/luna Lucide). `html[data-theme=light|dark]`.
+28 [x] SH-02c Boton tema **fuera** del menu (sol/luna Lucide). `html[data-theme=light|dark]`.
 
   - **Extraer de:** F-PNG-MENU; F-LUCIDE icons `sun` `moon`.
 
   - **Escribir en:** Boton en `compartido/encabezado-hamburguesa.html` (ambos sistemas). Logica: `Sistema 1/js/tema/persistir-tema-diurno-nocturno.js` y `Sistema 2/js/tema/persistir-tema-diurno-nocturno.js`. SVG: `iconos/sun.svg` `iconos/moon.svg` en ambos.
 
-- [ ] SH-02d Visitante: persistir tema solo `localStorage.intiwo-tema`.
+  - **Hecho 2026-10-11 23:43 (UTC-6):** se completaron los recursos Lucide `sun.svg` y `moon.svg` en ambos directorios `iconos/`. El control del encabezado ya estaba fuera del menú y los scripts asignan `data-theme="light|dark"`, actualizan el estado accesible del botón y guardan `intiwo-tema` en `localStorage`.
+
+  - **Verificación:** los cuatro SVG no reportan errores. En navegador se alternó a modo claro y el DOM/localStorage reflejaron `light`; se regresó a modo nocturno y ambos reflejaron `dark`.
+
+29 [x] SH-02d Visitante: persistir tema solo `localStorage.intiwo-tema`.
 
   - **Extraer de:** F-RES 14:10.
 
   - **Escribir en:** Solo `Sistema 1/js/tema/persistir-tema-diurno-nocturno.js` y `Sistema 2/js/tema/persistir-tema-diurno-nocturno.js` (localStorage). Cero SQL.
 
-- [ ] SH-02e Usuario logueado: leer/guardar `perfiles.tema`.
+30 [~] SH-02e Usuario logueado: leer/guardar `perfiles.tema`.
 
   - **Extraer de:** seccion D de este archivo (prompt DER).
 
-  - **Escribir en:** Mismos `tema.js` + `js/supabase/cliente-supabase.js` (ambos). Tabla `perfiles` en SQL S1.
+  - **Escribir en:** Mismos `tema.js` + `js/supabase/cliente-supabase.js` (ambos). Depende de DB-02a, DB-03c y SH-04a. Con sesion Auth confirmada, leer `perfiles.tema`; guardar solo esa columna. Anonimo conserva `localStorage.intiwo-tema`; si no hay perfil o falla la lectura, conservar tema local sin bloquear la pagina.
 
-- [ ] SH-03a Visitante: no forzar registro. Vista PDF = sin Editar ni Config.
+  - **En curso 2026-10-12 00:02 (UTC-6):** bloqueada hasta recibir el DER aprobado y contar con el flujo de Auth integrado. `tabla-perfiles.sql` sigue vacío y no hay implementación de `createClient`, consulta `perfiles` ni sesión Auth en el código; no se inventa SQL ni contrato de datos.
+
+31 [ ] SH-03a Visitante: no forzar registro. Vista PDF = sin Editar ni Config.
 
   - **Extraer de:** F-RES 14:10; F-C-INI.
 
   - **Escribir en:** No archivo nuevo. Verificar `Sistema 1/paginas/inicio/pagina-inicio-cms.html` sin boton Editar para anon y Config disabled en ambos headers.
 
-- [ ] SH-04a Pantalla Cuentas: email + contrasena o magic link (elegir uno; documentar en resoluciones).
+32 [ ] SH-04a Pantalla Cuentas: email + contrasena o magic link (elegir uno; documentar en resoluciones).
 
   - **Extraer de:** F-PNG-MENU Cuentas; no copiar formulario F-GEM.
 
   - **Escribir en:** UI Cuentas: overlay en `compartido/encabezado-hamburguesa.html` (ambos) + `Sistema 1/js/auth/sesion-roles-auth.js` y copia S2. Auth es el mismo proyecto Supabase.
 
-- [ ] SH-04b Registro Editor: si el correo no esta en un codigo/invitacion, mensaje "Tu docente aun no te dio de alta" y no crea perfil editor.
+33 [ ] SH-04b Registro Editor: si el correo no esta en un codigo/invitacion, mensaje "Tu docente aun no te dio de alta" y no crea perfil editor.
 
   - **Extraer de:** F-RES 14:10 roles.
 
-  - **Escribir en:** `Sistema 1/js/auth/sesion-roles-auth.js` y copia S2. Mensaje de error en el overlay. Tabla `invitaciones_correo` (SQL).
+  - **Escribir en:** `Sistema 1/js/auth/sesion-roles-auth.js` y copia S2. Mensaje en overlay; consumir invitacion una sola vez y crear membresia de codigo en transaccion. No crear perfil editor ni membresia si no existe invitacion valida.
 
-- [ ] SH-04c Tras login Admin: mostrar Editar en Inicio y habilitar Configuraciones.
+34 [ ] SH-04c Tras login Admin: mostrar Editar en Inicio y habilitar Configuraciones.
 
   - **Extraer de:** F-CMS; F-C-INI email matriz.
 
   - **Escribir en:** `Sistema 1/js/cms/editor-cms-inicio-admin.js` (boton Editar SOLO se pinta en `Sistema 1/paginas/inicio/`). Config: ambos headers via `js/auth/sesion-roles-auth.js`.
 
-- [ ] SH-04d Tras login Docente/Editor: Configuraciones con menos opciones (S1-07).
+35 [ ] SH-04d Tras login Docente/Editor: Configuraciones con menos opciones (S1-07).
 
   - **Extraer de:** F-RES 14:10.
 
   - **Escribir en:** `Sistema 1/paginas/configuraciones/pagina-configuraciones.html` + `Sistema 1/js/auth/sesion-roles-auth.js`. S2 no duplica el arbol de docentes; redirige o muestra subset.
 
-- [ ] SH-05a `<link>` Roboto Serif (400 y 700) en el head de ambas raices.
+36 [ ] SH-05a `<link>` Roboto Serif (400 y 700) en el head de ambas raices.
 
   - **Extraer de:** F-FONT.
 
   - **Escribir en:** `<head>` de TODOS los pagina-*.html bajo `Sistema 1/paginas/` y `Sistema 2/paginas/`. Extraer snippet de Google Fonts (F-FONT).
 
-- [ ] SH-05b `body { font-family: "Roboto Serif", serif; }`. Prohibido otras familias en contenido.
+37 [ ] SH-05b `body { font-family: "Roboto Serif", serif; }`. Prohibido otras familias en contenido.
 
   - **Extraer de:** F-FONT; F-CMS (dentro de bloques igual).
 
   - **Escribir en:** `Sistema 1/css/variables-tema-diurno-nocturno.css` y `Sistema 2/css/variables-tema-diurno-nocturno.css` regla `body`.
 
-- [ ] SH-05c Copiar SVG Lucide a `Sistema 1/iconos/` y `Sistema 2/iconos/` con `stroke-width="2.5"` `stroke="currentColor"`.
+38 [ ] SH-05c Copiar SVG Lucide a `Sistema 1/iconos/` y `Sistema 2/iconos/` con `stroke-width="2.5"` `stroke="currentColor"`.
 
   - **Extraer de:** F-LUCIDE. Nombres minimos: menu, house, search, sun, moon, pencil, plus, folder, graduation-cap.
 
   - **Escribir en:** Archivos SVG en `Sistema 1/iconos/` Y `Sistema 2/iconos/` (mismos nombres). No carpeta Adobe.
 
-- [ ] SH-05d Extraer cada SVG desde lucide.dev (regla 6 de RESOLUCIONES).
+39 [ ] SH-05d Extraer cada SVG desde lucide.dev (regla 6 de RESOLUCIONES).
 
   - **Extraer de:** F-LUCIDE; F-RES regla 6.
 
   - **Escribir en:** Misma carpeta `iconos/` de SH-05c. Bajar de lucide.dev, no inventar paths.
 
-- [ ] SH-06a Footer: slogan, redes oficiales, LLAMANOS +503 7754 5899 (hasta 0-12), enlaces del menu sin Config, copyright 2026, Inscribete -> Matricula.
+40 [ ] SH-06a Footer: slogan, redes oficiales, LLAMANOS +503 7441-1075 (canónico), +503 6674-3159 como respaldo, enlaces del menu sin Config, copyright 2026, Inscribete -> Matricula.
 
   - **Extraer de:** F-PNG-FOOT (layout); F-RES tabla (datos); IG/FB/TT de F-HIST P1.
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/compartido/pie-institucional.html` y copia `Sistema 2/compartido/pie-institucional.html`. Incluir al final de cada pagina.
 
-- [ ] SH-06b Footer textos desde `footer_cms` si hay fila; si no, valores F-RES.
+41 [ ] SH-06b Footer textos desde `footer_cms` si hay fila; si no, valores F-RES.
 
   - **Extraer de:** F-CMS intencion secretarias; seccion D.
 
-  - **Escribir en:** `Sistema 1/js/cms/cargar-footer-cms.js` (puede copiarse a S2). Lee tabla `footer_cms`. Fallback hardcode solo si 0 filas.
+  - **Escribir en:** `Sistema 1/js/cms/cargar-footer-cms.js` (puede copiarse a S2). Leer una fila `footer_cms`; campos de WhatsApp principal y alterno separados. Fallback institucional solo si no hay fila o falla la consulta; visitantes solo leen.
 
-- [ ] SH-06c Admin edita telefonos/redes del footer (Guardar CMS o Config).
+42 [ ] SH-06c Admin edita telefonos/redes del footer (Guardar CMS o Config).
 
   - **Extraer de:** F-OLD P2 (secretarias sin codigo); F-CMS.
 
-  - **Escribir en:** UI de edicion en `Sistema 1/paginas/configuraciones/` o toolbar Inicio. Persistencia: `footer_cms` via `Sistema 1/js/cms/cargar-footer-cms.js`. No editar PNG Adobe.
+  - **Escribir en:** UI de edicion en `Sistema 1/paginas/configuraciones/` o toolbar Inicio. Persistencia: `footer_cms` via `Sistema 1/js/cms/cargar-footer-cms.js`. Solo admin escribe por RLS; incluir WhatsApp principal/alterno. No editar PNG Adobe.
 
-- [ ] SH-07a `cliente-supabase.js` S1 y S2: `createClient(url, anon)` constantes vacias + comentario no commitear keys.
+43 [ ] SH-07a `cliente-supabase.js` S1 y S2: inicializar `createClient(url, publishable_key)` con fuente de configuracion de despliegue aprobada; nunca `service_role`.
 
   - **Extraer de:** F-CLI.
 
-  - **Escribir en:** EDITAR `Sistema 1/js/supabase/cliente-supabase.js` y `Sistema 2/js/supabase/cliente-supabase.js` (ya existen). No crear `supabase.js` en la raiz.
+  - **Escribir en:** EDITAR `Sistema 1/js/supabase/cliente-supabase.js` y `Sistema 2/js/supabase/cliente-supabase.js` (ya existen). No commitear credenciales reales ni dejar Pages sin configuracion runtime; definir antes el mecanismo de build/deploy para inyectar URL y publishable key desde variables de GitHub Actions. No crear `supabase.js` en la raiz.
 
-- [ ] SH-07b Prohibido `service_role` en JS. Criterio: `rg service_role` = 0.
+44 [ ] SH-07b Prohibido `service_role` en JS. Criterio: `rg service_role` = 0.
 
   - **Extraer de:** F-CMS punto 1 (password/keys nunca en Pages).
 
   - **Escribir en:** Grep de todo el repo. Si aparece, borrar esa linea. Destino de keys: nunca estos JS.
 
-- [ ] SH-07c Misma URL/key en S1 y S2.
+45 [ ] SH-07c Misma instancia Supabase configurada en S1 y S2, sin duplicar credenciales en Git.
 
   - **Extraer de:** F-OLD P10 (un proyecto); F-S1L F-S2L.
 
-  - **Escribir en:** Los dos `cliente-supabase.js` deben ser identicos en URL/anon.
+  - **Escribir en:** Ambos clientes deben resolver al mismo proyecto mediante la fuente de despliegue acordada. Verificar que la configuracion generada no se versiona y que el runtime publico solo recibe publishable/anon key.
 
-- [ ] SH-08a Overlay menu `position:fixed; inset:0` en ?768px.
+46 [ ] SH-08a Overlay menu `position:fixed; inset:0` en ?768px.
 
   - **Extraer de:** F-PNG-MENU (cubre, no empuja).
 
   - **Escribir en:** `Sistema 1/css/layout-hamburguesa-y-overlay.css` y `Sistema 2/css/layout-hamburguesa-y-overlay.css`.
 
-- [ ] SH-08b Targets tactiles >=44x44 px (hamburguesa, tema, Cuentas, +).
+47 [ ] SH-08b Targets tactiles >=44x44 px (hamburguesa, tema, Cuentas, +).
 
   - **Extraer de:** criterio a11y; F-CMS toolbar.
 
   - **Escribir en:** Mismo `cromo.css` (ambos). Toolbar admin: `Sistema 1/css/editor-cms-inicio.css`.
 
-- [ ] SH-08c Probar 320, 375, 768, 1280. Anotar roturas en resoluciones.
+48 [ ] SH-08c Probar 320, 375, 768, 1280. Anotar roturas en resoluciones.
 
   - **Extraer de:** F-CMS critica movil.
 
   - **Escribir en:** No codigo nuevo. Notas en `IAs/RESOLUCIONES.md`. Paginas a abrir: Inicio S1 + hub S2.
 
-- [ ] SH-08d Dropdown especialidades: max-height + scroll; no se sale a 320px.
+49 [ ] SH-08d Dropdown especialidades: max-height + scroll; no se sale a 320px.
 
   - **Extraer de:** F-PNG-S2T.
 
   - **Escribir en:** `Sistema 2/css/hub-y-pildoras-proyectos.css` (pildoras S2) y `Sistema 1/css/pildoras-oferta-academica.css` (pildoras Oferta).
 
-- [ ] SH-08e Barra busqueda S2: no tapa distintivo; 320px fila bajo header.
+50 [ ] SH-08e Barra busqueda S2: no tapa distintivo; 320px fila bajo header.
 
   - **Extraer de:** F-PNG-S2B.
 
   - **Escribir en:** `Sistema 2/css/layout-hamburguesa-y-overlay.css` + markup busqueda en `Sistema 2/compartido/encabezado-hamburguesa-con-busqueda.html` (solo S2 muestra el input). S1 header NO lleva busqueda.
 
-- [ ] SH-08f Hub S2: 2 cols desktop, 1 col movil.
+51 [ ] SH-08f Hub S2: 2 cols desktop, 1 col movil.
 
   - **Extraer de:** F-PNG-S2H.
 
   - **Escribir en:** `Sistema 2/css/hub-y-pildoras-proyectos.css` + `Sistema 2/paginas/proyectos/pagina-hub-proyectos.html`.
 
-- [ ] SH-09a Comentario `TODO-SPLIT-REPO` en href Proyectos.
+52 [ ] SH-09a Comentario `TODO-SPLIT-REPO` en href Proyectos.
 
   - **Extraer de:** F-GH-S2.
 
   - **Escribir en:** Comentario HTML/JS junto al href Proyectos en `Sistema 1/compartido/encabezado-hamburguesa.html` y `Sistema 2/compartido/encabezado-hamburguesa-con-busqueda.html`.
 
-- [ ] SH-09b Checklist al copiar S2 al otro GitHub (cliente, quitar `../Sistema 1`, Auth URL).
+53 [ ] SH-09b Checklist al copiar S2 al otro GitHub (cliente, quitar `../Sistema 1`, Auth URL).
 
   - **Extraer de:** F-OLD P10 hosts github.io; F-GH-S1 F-GH-S2.
 
@@ -540,151 +592,151 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
 ### B0. Inicio CMS (prioridad)
 
-- [ ] S1-01a `paginas/inicio/pagina-inicio-cms.html`: header + `<main id="inicio-root"></main>` + footer. Main vacio si no hay JSON.
+54 [ ] S1-01a `paginas/inicio/pagina-inicio-cms.html`: header + `<main id="inicio-root"></main>` + footer. Main vacio si no hay JSON.
 
   - **Extraer de:** F-C-INI; F-CMS. No F-SITE (mision/vision no van hardcode).
 
   - **Escribir en:** SOLO `Sistema 1/paginas/inicio/pagina-inicio-cms.html`. Incluye header+footer compartidos S1. NO crear inicio en Sistema 2.
 
-- [ ] S1-01b JS: `select` `contenido_inicio`. Si 0 filas o `bloques=[]`, no insertar bloques.
+55 [ ] S1-01b JS: `select` `contenido_inicio`. Si 0 filas o `bloques=[]`, no insertar bloques.
 
   - **Extraer de:** F-CMS; nombre de tabla canonico `contenido_inicio` (CONTENIDO.md decia `paginas_cms`: ignorar ese nombre).
 
-  - **Escribir en:** `Sistema 1/js/cms/cargar-bloques-inicio.js` (select contenido_inicio). Lo llama `paginas/inicio/pagina-inicio-cms.html`. Tabla: SQL, no JSON local.
+  - **Escribir en:** `Sistema 1/js/cms/cargar-bloques-inicio.js` (select contenido_inicio). Lo llama `paginas/inicio/pagina-inicio-cms.html`. Consumir el JSON canonico fijado en DB-02d/S1-14a; 0 filas o `bloques=[]` deja Inicio vacio. No guardar JSON local como fuente de verdad.
 
-- [ ] S1-01c Skeleton 200ms (fondo paleta) para que el footer no salte.
+56 [ ] S1-01c Skeleton 200ms (fondo paleta) para que el footer no salte.
 
   - **Extraer de:** F-CMS 14:33 punto 6; F-ASE.
 
   - **Escribir en:** `Sistema 1/js/cms/cargar-bloques-inicio.js` + `Sistema 1/css/pagina-inicio-visitante.css` (skeleton).
 
-- [ ] S1-01d Render visitante: mismos componentes que el editor, `contenteditable=false`, sin Sortable.
+57 [ ] S1-01d Render visitante: mismos componentes que el editor, `contenteditable=false`, sin Sortable.
 
   - **Extraer de:** F-CMS.
 
   - **Escribir en:** `Sistema 1/js/cms/render-bloques-inicio.js` usado por visitante y admin. No duplicar markup.
 
-- [ ] S1-08a Boton Editar `display:none` por defecto; visible si `perfiles.rol==='administrador'`.
+58 [ ] S1-08a Boton Editar `display:none` por defecto; visible si `perfiles.rol==='administrador'`.
 
   - **Extraer de:** F-CMS; Lucide `pencil` F-LUCIDE. No hay PNG del boton: colocarlo en cromo Inicio, no en el menu.
 
   - **Escribir en:** Boton en `Sistema 1/paginas/inicio/pagina-inicio-cms.html` (fuera del menu). CSS `Sistema 1/css/editor-cms-inicio.css`. Visibilidad: `Sistema 1/js/cms/editor-cms-inicio-admin.js`.
 
-- [ ] S1-08b Cuenta matriz `intiwo11543@gmail.com` tras login ve Editar (rol admin, no `if email` en cada boton).
+59 [ ] S1-08b Cuenta matriz `intiwo11543@gmail.com` tras login ve Editar (rol admin, no `if email` en cada boton).
 
   - **Extraer de:** F-C-INI; F-CMS correccion RLS. **No** copiar password de F-OLD P1.
 
   - **Escribir en:** Mismo `editor.js`. Rol desde `perfiles`, no if email. Seed SQL en `Sistema 1/supabase/semilla-admin-sin-password.sql`.
 
-- [ ] S1-10a Clic Editar: ocultar hamburguesa/tema/Cuentas del cromo publico; montar `#admin-toolbar` (Lucide + texto: Plantilla, Color, Imagen, Texto, Capa, Animacion, Guardar, Cancelar).
+60 [ ] S1-10a Clic Editar: ocultar hamburguesa/tema/Cuentas del cromo publico; montar `#admin-toolbar` (Lucide + texto: Plantilla, Color, Imagen, Texto, Capa, Animacion, Guardar, Cancelar).
 
   - **Extraer de:** F-CMS 14:33 puntos 3-5. **No existe mockup Adobe de esta barra.** No usar F-PNG-MENU como toolbar.
 
   - **Escribir en:** `Sistema 1/js/cms/editor-cms-inicio-admin.js` monta `#admin-toolbar` dentro de `paginas/inicio/pagina-inicio-cms.html`. Iconos: `Sistema 1/iconos/`. No existe esta barra en S2.
 
-- [ ] S1-10b Estado inicial admin sin JSON: **2** bloques vacios plantilla `banner` + boton + entre bloques y footer.
+61 [ ] S1-10b Estado inicial admin sin JSON: **2** bloques vacios plantilla `banner` + boton + entre bloques y footer.
 
   - **Extraer de:** F-CMS 14:33 punto 3.
 
   - **Escribir en:** `Sistema 1/js/cms/editor-cms-inicio-admin.js` + `Sistema 1/js/cms/plantillas-bloques-inicio.js`. DOM: `#inicio-root` en inicio/pagina-inicio-cms.html.
 
-- [ ] S1-10c Clic +: append bloque vacio (`banner`) y dejar el + debajo.
+62 [ ] S1-10c Clic +: append bloque vacio (`banner`) y dejar el + debajo.
 
   - **Extraer de:** F-CMS; icono `plus` F-LUCIDE.
 
   - **Escribir en:** Mismo `editor.js`. Boton + es HTML generado, no un PNG.
 
-- [ ] S1-10d Plantillas: `banner`, `texto-imagen-izq`, `texto-imagen-der`, `tres-columnas`. Cada una `article` full-width.
+63 [ ] S1-10d Plantillas: `banner`, `texto-imagen-izq`, `texto-imagen-der`, `tres-columnas`. Cada una `article` full-width.
 
   - **Extraer de:** F-CMS 14:33 punto 2; 0-19.
 
   - **Escribir en:** `Sistema 1/js/cms/plantillas-bloques-inicio.js` (funciones que devuelven <article>). CSS de cada plantilla: `Sistema 1/css/editor-cms-inicio.css`.
 
-- [ ] S1-10e Dentro del bloque: solo Roboto Serif; clases `t-sm` `t-md` `t-lg` `t-xl`; no font-family libre.
+64 [ ] S1-10e Dentro del bloque: solo Roboto Serif; clases `t-sm` `t-md` `t-lg` `t-xl`; no font-family libre.
 
   - **Extraer de:** F-FONT; F-CMS (no Canva tipografico).
 
   - **Escribir en:** `Sistema 1/css/editor-cms-inicio.css` clases t-sm..t-xl. Tipografia ya en variables-tema-diurno-nocturno.css S1.
 
-- [ ] S1-10f Color de fondo: swatches paleta .ase + `input type=color`.
+65 [ ] S1-10f Color de fondo: swatches paleta .ase + `input type=color`.
 
   - **Extraer de:** F-ASE.
 
   - **Escribir en:** Swatches en toolbar (`editor-cms-inicio-admin.js`) leyendo hex de `variables-tema-diurno-nocturno.css`. Input color nativo.
 
-- [ ] S1-10g Imagen fondo/contenido: Storage bucket `inicio/`, accept `.webp,.png,.jpg,.jpeg,.svg`.
+66 [ ] S1-10g Imagen fondo/contenido: Storage bucket `inicio/`, accept `.webp,.png,.jpg,.jpeg,.svg`.
 
   - **Extraer de:** F-S1L `media/inicio/`; F-CMS.
 
   - **Escribir en:** Upload JS: `Sistema 1/js/cms/subir-imagenes-inicio.js`. Preview en el article. Archivo remoto: bucket Storage `inicio`. Opcional cache local `Sistema 1/media/inicio/` no commitear binarios de secretaria.
 
-- [ ] S1-10h Capas adelante/atras: solo elementos **dentro** del mismo `article`.
+67 [ ] S1-10h Capas adelante/atras: solo elementos **dentro** del mismo `article`.
 
   - **Extraer de:** F-CMS 14:27.
 
   - **Escribir en:** Logica en `editor.js` sobre hijos del article. No z-index global de pagina.
 
-- [ ] S1-10i Prohibido `position:absolute` a nivel de pagina para texto suelto.
+68 [ ] S1-10i Prohibido `position:absolute` a nivel de pagina para texto suelto.
 
   - **Extraer de:** F-CMS 14:27 (se rompe en celular).
 
   - **Escribir en:** `Sistema 1/css/editor-cms-inicio.css` y `inicio.css`: bloques `position:relative`. Lint/revision, no archivo nuevo.
 
-- [ ] S1-11a Toggle Vista movil = iframe o contenedor width 360px del mismo render.
+69 [ ] S1-11a Toggle Vista movil = iframe o contenedor width 360px del mismo render.
 
   - **Extraer de:** F-CMS.
 
   - **Escribir en:** `Sistema 1/js/cms/editor-cms-inicio-admin.js` toggle. Preview en el mismo inicio/pagina-inicio-cms.html (iframe o #preview-360).
 
-- [ ] S1-11b No habilitar Guardar si 360px tiene overflow-x.
+70 [ ] S1-11b No habilitar Guardar si 360px tiene overflow-x.
 
   - **Extraer de:** F-CMS.
 
   - **Escribir en:** Mismo editor.js deshabilita boton Guardar. No hay destino S2.
 
-- [ ] S1-12a Incluir SortableJS. Handle = barra del bloque.
+71 [ ] S1-12a Incluir SortableJS. Handle = barra del bloque.
 
   - **Extraer de:** F-SORT; F-CMS punto 4.
 
   - **Escribir en:** Vendor: `Sistema 1/js/cms/sortable.min.js` o CDN en inicio/pagina-inicio-cms.html. Init en editor-cms-inicio-admin.js.
 
-- [ ] S1-12b Drag reordena `bloques[].orden`.
+72 [ ] S1-12b Drag reordena `bloques[].orden`.
 
   - **Extraer de:** F-CMS punto 6.
 
   - **Escribir en:** editor.js actualiza array antes de Guardar.
 
-- [ ] S1-13a Dropdown Animacion: `ninguna | fade | slide-up | parallax-suave`. AOS o clases CSS.
+73 [ ] S1-13a Dropdown Animacion: `ninguna | fade | slide-up | parallax-suave`. AOS o clases CSS.
 
   - **Extraer de:** F-AOS; F-CMS punto 5.
 
   - **Escribir en:** Select en toolbar (editor-cms-inicio-admin.js). Clases en `Sistema 1/css/editor-cms-inicio.css` y/o AOS desde CDN en inicio/pagina-inicio-cms.html.
 
-- [ ] S1-13b No permitir CSS arbitrario de la secretaria.
+74 [ ] S1-13b No permitir CSS arbitrario de la secretaria.
 
   - **Extraer de:** F-CMS.
 
   - **Escribir en:** No hay textarea CSS. Si aparece, borrarlo de editor.js.
 
-- [ ] S1-14a Guardar: JSON `{ bloques: [{ id, plantilla, orden, textos, color, imagen, animacion, capas }] }` upsert `contenido_inicio`.
+75 [ ] S1-14a Guardar: JSON `{ bloques: [{ id, plantilla, orden, textos, color, imagen, animacion, capas }] }` upsert `contenido_inicio`.
 
   - **Extraer de:** F-CMS punto 6.
 
-  - **Escribir en:** `Sistema 1/js/cms/guardar-contenido-inicio.js` upsert a contenido_inicio. No escribir el JSON en un .html estatico.
+  - **Escribir en:** `Sistema 1/js/cms/guardar-contenido-inicio.js` valida/normaliza a ese contrato antes del upsert; compatibilizar `tipo`, `orientacion` y campos actuales de `plantillas-bloques-inicio.js` en S1-10d. Solo admin escribe por RLS. No escribir JSON en un HTML estatico.
 
-- [ ] S1-14b Cancelar: recargar JSON anterior; salir de edicion; restaurar cromo.
+76 [ ] S1-14b Cancelar: recargar JSON anterior; salir de edicion; restaurar cromo.
 
   - **Extraer de:** F-CMS.
 
   - **Escribir en:** guardar.js / editor.js recarga cargar.js. Restaura header S1.
 
-- [ ] S1-14c Tras Guardar: modo visitante de esa sesion Admin ve bloques publicados.
+77 [ ] S1-14c Tras Guardar: modo visitante de esa sesion Admin ve bloques publicados.
 
   - **Extraer de:** F-CMS; F-C-INI.
 
   - **Escribir en:** Tras upsert, render.js pinta en `#inicio-root`.
 
-- [ ] S1-15 Sanitizar texto (textContent o DOMPurify). No ejecutar `<script>` pegado.
+78 [ ] S1-15 Sanitizar texto (textContent o DOMPurify). No ejecutar `<script>` pegado.
 
   - **Extraer de:** F-CMS (secretaria pega HTML).
 
@@ -692,91 +744,91 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
 ### B1. Matricula / Oferta / Personal / Ubicaciones / Historia
 
-- [ ] S1-02a `paginas/matricula/pagina-matricula-nuevo-ingreso.html` con cromo compartido.
+79 [ ] S1-02a `paginas/matricula/pagina-matricula-nuevo-ingreso.html` con cromo compartido.
 
   - **Extraer de:** F-S1L; F-PNG-MENU.
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/paginas/matricula/pagina-matricula-nuevo-ingreso.html`. Header/footer S1. No Sistema 2.
 
-- [ ] S1-02b Copiar pasos 2027 desde F-C-MAT (sin videos, sin inventar fechas).
+80 [ ] S1-02b Copiar pasos 2027 desde F-C-MAT (sin videos, sin inventar fechas).
 
   - **Extraer de:** F-C-MAT; F-MICRO P2 (pasos 2.2.x, numeracion del PDF puede diferir del Site: **priorizar F-C-MAT / F-SITE-MAT** que ya unifico 5 pasos con fechas); F-RES "Nuevo ingreso".
 
   - **Escribir en:** Cuerpo de `pagina-matricula-nuevo-ingreso.html` (no crear matricula.js; el HTML ya existe). Extraer texto de CONTENIDO.md de la MISMA carpeta.
 
-- [ ] S1-02c Seccion EDUCAME desde el mismo CONTENIDO.
+81 [ ] S1-02c Seccion EDUCAME desde el mismo CONTENIDO.
 
   - **Extraer de:** F-C-MAT; F-MICRO P7; F-SITE-ED.
 
   - **Escribir en:** Misma pagina matricula/pagina-matricula-nuevo-ingreso.html, seccion debajo de 2027.
 
-- [ ] S1-02d CTA Inscribete: no 74411075 hasta 0-12; usar +503 7754 5899 o enlace Matricula.
+82 [ ] S1-02d CTA Inscribete: usar +503 7441-1075 como contacto principal o enlace a Matrícula.
 
   - **Extraer de:** F-PNG-FOOT CTA; F-RES tabla vs F-SITE-MAT.
 
   - **Escribir en:** CTA en matricula/pagina-matricula-nuevo-ingreso.html y en footer compartido (href a esta pagina).
 
-- [ ] S1-03a Pagina oferta: dropdown/pildoras como PNG (fondo `#539507`, activo/hover).
+83 [ ] S1-03a Pagina oferta: dropdown/pildoras como PNG (fondo `#539507`, activo/hover).
 
   - **Extraer de:** F-PNG-S2T (look de pildoras, reutilizado en Oferta S1); F-ASE verde.
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/paginas/oferta-academica/pagina-oferta-academica.html` + `Sistema 1/css/pildoras-oferta-academica.css`. Look de pildoras desde PNG S2 pero el HTML NO va a Sistema 2.
 
-- [ ] S1-03b Seis tecnicas + General (7). Copy de modulos.
+84 [ ] S1-03b Seis tecnicas + General (7). Copy de modulos.
 
   - **Extraer de:** F-C-OF (lista corta); F-MICRO P2-P7 (modulos largos por especialidad); F-RES Oferta academica; F-SITE-OF. General = F-MICRO P7 no una septima tecnica.
 
   - **Escribir en:** Copy en oferta-academica/pagina-oferta-academica.html (modulos). Fuente de texto: CONTENIDO.md de esa carpeta + F-MICRO P2-P7.
 
-- [ ] S1-03c Color de pildora = SH-02b. Hover Sistemas Electricos puede ir `#E61010` como PNG.
+85 [ ] S1-03c Color de pildora = SH-02b. Hover Sistemas Electricos puede ir `#E61010` como PNG.
 
   - **Extraer de:** F-PNG-S2T; F-ASE.
 
   - **Escribir en:** Colores en `Sistema 1/css/pildoras-oferta-academica.css` usando variables de variables-tema-diurno-nocturno.css S1.
 
-- [ ] S1-03d Sin videos .mp4 del Site.
+86 [ ] S1-03d Sin videos .mp4 del Site.
 
   - **Extraer de:** F-LEEME; F-SITE-OF.
 
   - **Escribir en:** No crear `Sistema 1/media/` para mp4 de oferta. Cero <video>.
 
-- [ ] S1-04a Personal: "Proximamente" si no hay 0-16.
+87 [ ] S1-04a Personal: "Proximamente" si no hay 0-16.
 
   - **Extraer de:** F-C-PER.
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/paginas/personal/pagina-personal-instituto.html` con mensaje Proximamente.
 
-- [ ] S1-04b Ficha: nombre, cargo, bio. Foto solo si 0-05 = si.
+88 [ ] S1-04b Ficha: nombre, cargo, bio. Foto solo si 0-05 = si.
 
   - **Extraer de:** F-C-PER.
 
   - **Escribir en:** Componente en esa misma pagina o `personal.js` en la carpeta. Fotos solo si 0-05.
 
-- [ ] S1-05a Ubicaciones: Col. Roma, final Blvd. Venezuela, San Salvador.
+89 [ ] S1-05a Ubicaciones: Col. Roma, final Blvd. Venezuela, San Salvador.
 
   - **Extraer de:** F-C-UBI; F-HIST P1; F-RES tabla.
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/paginas/ubicaciones/pagina-ubicaciones.html`.
 
-- [ ] S1-05b Contacto tabla RESOLUCIONES. Buses/plano placeholder hasta 0-06.
+90 [ ] S1-05b Contacto tabla RESOLUCIONES. Buses/plano placeholder hasta 0-06.
 
   - **Extraer de:** F-C-UBI.
 
   - **Escribir en:** Misma pagina. No inventar mapa JS hasta 0-06.
 
-- [ ] S1-06a Historia: 1954, 1955, 1962, 1964 Expotecnia, 2015 Open House, 2024 70 anios.
+91 [ ] S1-06a Historia: 1954, 1955, 1962, 1964 Expotecnia, 2015 Open House, 2024 70 anios.
 
   - **Extraer de:** F-C-HIS (lista corta publicable); F-HIST **P21** (Expotecnia inicia 1964, mision Japon 1962); **P22-P25** (feria oct-nov, especialidades en stands); **P27-P28** (Open House desde oct 2015, captacion 9 grado). URLs de apoyo en F-HIST P22 (elsalvador.com 70 anios, Scribd/UES 1954). Transcribir solo hechos, no el tono de IA del PDF.
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/paginas/historia/pagina-historia-instituto.html` con timeline. Texto de `Sistema 1/paginas/historia/CONTENIDO.md` + F-HIST P21-P28.
 
-- [ ] S1-06b No renderizar violencia/destitucion. Comentario HTML `<!-- RETENIDO -->`.
+92 [ ] S1-06b No renderizar violencia/destitucion. Comentario HTML `<!-- RETENIDO -->`.
 
   - **Extraer de:** F-HIST **P2-P3, P7-P20** (pandillas, FGR, destitucion 25 ago 2025, 2015, 2021-2026). F-RES "Retener". Hasta 0-09.
 
   - **Escribir en:** Comentario HTML en historia/pagina-historia-instituto.html. No hay pagina 'retenido'.
 
-- [ ] S1-06c Cifras 20.000 / 1.000 solo si 0-10 y 0-11 estan `[x]`.
+93 [ ] S1-06c Cifras 20.000 / 1.000 solo si 0-10 y 0-11 estan `[x]`.
 
   - **Extraer de:** F-HIST P2 y P22 (el PDF avisa "la IA puede cometer errores").
 
@@ -784,71 +836,71 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
 ### B2. Configuraciones y cuentas (S1)
 
-- [ ] S1-07a Visitante: Configuraciones no navega (SH-01d).
+94 [ ] S1-07a Visitante: Configuraciones no navega (SH-01d).
 
   - **Extraer de:** F-RES 14:10.
 
   - **Escribir en:** Logica en `Sistema 1/js/auth/sesion-roles-auth.js` (item Config del header S1 y S2).
 
-- [ ] S1-07b Admin: dos dropdowns raiz: Administradores | Docentes.
+95 [ ] S1-07b Admin: dos dropdowns raiz: Administradores | Docentes.
 
   - **Extraer de:** F-RES 14:10 (no hay PNG). F-OLD P9 es otra IA de roles: no copiar "visitante" como cuenta.
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/paginas/configuraciones/pagina-configuraciones.html` + `Sistema 1/js/auth/panel-configuraciones-cuentas.js`. Esta pagina NO se duplica en S2 (enlace del menu S2 apunta a S1 o replica minima).
 
-- [ ] S1-07c Admin > Docentes > Academico | Tecnico. Tecnico > 6 especialidades (sin General aqui salvo Instituto).
+96 [ ] S1-07c Admin > Docentes > Academico | Tecnico. Tecnico > 6 especialidades (sin General aqui salvo Instituto).
 
   - **Extraer de:** F-C-OF; F-MICRO 3.x.
 
-  - **Escribir en:** Arbol DOM en configuraciones/pagina-configuraciones.html. Datos: tablas especialidades/codigos.
+  - **Escribir en:** Arbol DOM en configuraciones/pagina-configuraciones.html. Tecnico consulta especialidades/codigos; academico consulta el catalogo que Instituto confirme en DB-00a. No clasificar asignaturas como `GE` sin aprobacion.
 
-- [ ] S1-07d Al elegir especialidad: lista docentes + codigos. Expandir: alumnos (correo, nombre, n lista).
+97 [ ] S1-07d Al elegir especialidad: lista docentes + codigos. Expandir: editores/alumnos (correo, nombre, n_lista) autorizados.
 
   - **Extraer de:** F-RES 14:10; F-PDF-S2 filtros anio/seccion/codigo (logica, no look).
 
-  - **Escribir en:** `Sistema 1/js/auth/panel-configuraciones-cuentas.js` listas. No HTML de proyectos.
+  - **Escribir en:** `Sistema 1/js/auth/panel-configuraciones-cuentas.js` listas desde `codigos.docente_id` y `miembro_codigo`; usar correo de invitaciones consumidas (`usado_por`) mediante RLS/RPC autorizada, no leer `auth.users` desde el navegador ni exponer NIE. No HTML de proyectos.
 
-- [ ] S1-07e Admin crea/borra Admin, Docente, Editor (correo+nombre; NIE+n lista si 0-14).
+98 [ ] S1-07e Admin invita/activa/desactiva Admin, Docente, Editor (correo+nombre; NIE solo si DB-00b lo aprueba).
 
   - **Extraer de:** F-RES 14:10; F-OLD P9 (invitacion por correo).
 
-  - **Escribir en:** Formularios en configuraciones/pagina-configuraciones.html. Writes: invitaciones_correo + Auth via cliente-supabase.js S1.
+  - **Escribir en:** Formularios en configuraciones/pagina-configuraciones.html. Crear invitaciones/usuarios mediante Auth confiable; nunca invocar Admin API ni `service_role` desde Pages. No borrar perfiles con referencias: desactivar segun DB-00c. NIE queda fuera de v1 salvo aprobacion y hash.
 
-- [ ] S1-07f Docente: codigo = Especialidad + Nivel 1/2/3 + Seccion ? `DS2B`. Prefijos DS, EL, MI, MA, SE, IT, GE.
+99 [ ] S1-07f Docente: codigo = Especialidad + Nivel 1/2/3 + Seccion ? `DS2B`. Prefijos DS, EL, MI, MA, SE, IT, GE.
 
   - **Extraer de:** F-RES 14:10; F-PDF-S2 "Codigo DSXX".
 
-  - **Escribir en:** `config.js` genera string clave. Insert `codigos`. Prefijos documentados en comentario del JS.
+  - **Escribir en:** `Sistema 1/js/auth/panel-configuraciones-cuentas.js` genera y valida clave; guardar `codigos` con unicidad por especialidad/nivel/seccion/anio_lectivo y docente propietario.
 
-- [ ] S1-07g Docente: dentro del codigo, correos de editores de a uno + n lista (+ NIE si 0-14).
-
-  - **Extraer de:** F-RES 14:10.
-
-  - **Escribir en:** Mismo config.js. Una fila invitaciones_correo por correo.
-
-- [ ] S1-07h Docente: eliminar codigo o alumno de su codigo; no ve otros docentes.
+100 [ ] S1-07g Docente: dentro del codigo, correos/n_lista de editores; NIE no se solicita en v1.
 
   - **Extraer de:** F-RES 14:10.
 
-  - **Escribir en:** DELETE/UPDATE en config.js filtrado por docente_id.
+  - **Escribir en:** Mismo panel de Config. Invitar por correo normalizado y codigo; al aceptar, crear perfil + membresia persistente. Permitir otra invitacion para otro codigo sin mas de una invitacion pendiente por email/codigo. NIE fuera de v1; si se aprueba, solo hash.
 
-- [ ] S1-07i Editor: Config minima (ficha S2 / password / tema). No crea cuentas.
+101 [ ] S1-07h Docente: eliminar codigo o alumno de su codigo; no ve otros docentes.
 
   - **Extraer de:** F-RES 14:10.
 
-  - **Escribir en:** Vista reducida en configuraciones/pagina-configuraciones.html si rol=editor. Link a `Sistema 2/paginas/ficha/`.
+  - **Escribir en:** Desactivar/eliminar la membresia o codigo segun DB-00c, filtrando por `docente_id`; no borrar fisicamente proyectos ni perder autoria por cascada.
 
-- [ ] S1-09a Nadie se auto-asigna Admin excepto la matriz via DB-09.
+102 [ ] S1-07i Editor: Config minima (ficha S2 / password / tema). No crea cuentas.
+
+  - **Extraer de:** F-RES 14:10.
+
+  - **Escribir en:** Vista reducida en configuraciones/pagina-configuraciones.html si rol=editor. Link a `Sistema 2/paginas/ficha/`; tema lee/escribe `perfiles.tema` solo tras Auth y DB-02a/DB-03c (SH-02e). Cambio de password se delega a Supabase Auth, nunca a SQL propio.
+
+103 [ ] S1-09a Nadie se auto-asigna Admin excepto la matriz via DB-09.
 
   - **Extraer de:** F-CMS; F-C-INI.
 
   - **Escribir en:** Trigger/SQL `Sistema 1/supabase/`. Front no ofrece combo Rol=admin al registrarse.
 
-- [ ] S1-09b Admin no borra la ultima cuenta administrador.
+104 [ ] S1-09b Admin no desactiva ni elimina fisicamente al ultimo administrador.
 
   - **Extraer de:** F-CMS seguridad.
 
-  - **Escribir en:** `config.js` + RLS SQL. Impedir delete si count admin = 1.
+  - **Escribir en:** operacion confiable + RLS/constraint acordada. Rechazar desactivacion del ultimo admin; conservar filas historicas y evitar delete en cascada.
 
 ---
 
@@ -856,139 +908,139 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
 Look: F-PNG-S2H, F-PNG-S2T, F-PNG-S2B. Estructura de datos (URLs, no fotos de alumno): F-PDF-S2 fases 2-3 y F-OLD P10 grupo B.
 
-- [ ] S2-01a `paginas/proyectos/pagina-hub-proyectos.html` cromo + busqueda.
+105 [x] S2-01a `paginas/proyectos/pagina-hub-proyectos.html` cromo + busqueda.
 
   - **Extraer de:** F-PNG-S2H; F-S2L; cromo F-PNG-MENU.
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 2/paginas/proyectos/pagina-hub-proyectos.html`. Header S2 (con busqueda). NO crear esta pagina bajo Sistema 1.
 
-- [ ] S2-01b Dos cards Tecnicos / Academicos con copy del PNG y Ver mas.
+106 [x] S2-01b Dos cards Tecnicos / Academicos con copy del PNG y Ver mas.
 
   - **Extraer de:** F-PNG-S2H (leer textos del PNG pixel a pixel).
 
   - **Escribir en:** Las dos cards en proyectos/pagina-hub-proyectos.html. CSS `Sistema 2/css/hub-y-pildoras-proyectos.css`.
 
-- [ ] S2-01c Lucide folder vs graduation-cap, trazo 2.5, color `#539507`.
+107 [x] S2-01c Lucide folder vs graduation-cap, trazo 2.5, color `#539507`.
 
   - **Extraer de:** F-LUCIDE; F-PNG-S2H; F-ASE.
 
   - **Escribir en:** SVG ya en `Sistema 2/iconos/folder.svg` y `graduation-cap.svg` (SH-05). Usarlos en las cards.
 
-- [ ] S2-02a Tras Tecnicos: pildoras especialidades (nombres del PNG + General).
+108 [x] S2-02a Tras Tecnicos: pildoras especialidades (nombres del PNG + General).
 
   - **Extraer de:** F-PNG-S2T; F-C-OF nombres; 0-17 ITSI.
 
   - **Escribir en:** Bloque pildoras en proyectos/pagina-hub-proyectos.html (tras click Tecnicos). Nombres de F-C-OF / PNG.
 
-- [ ] S2-02b Hover/activo: rojo o verde segun PNG; contraste.
+109 [x] S2-02b Hover/activo: rojo o verde segun PNG; contraste.
 
   - **Extraer de:** F-PNG-S2T.
 
   - **Escribir en:** `Sistema 2/css/hub-y-pildoras-proyectos.css` :hover/:active.
 
-- [ ] S2-02c Filtrar por especialidad + anio cuando haya data.
+110 [ ] S2-02c Filtrar proyectos por especialidad/tipo/año cuando haya data.
 
   - **Extraer de:** F-PDF-S2 Fase 2 (filtro anio/seccion/codigo) como **logica**, UI = PNG.
 
-  - **Escribir en:** `Sistema 2/js/busqueda/filtrar-proyectos-especialidad.js` lee tabla proyectos. No filtrar en S1.
+  - **Escribir en:** `Sistema 2/js/busqueda/filtrar-proyectos-especialidad.js` consulta proyectos activos; tecnico filtra por `codigo_id -> especialidad_id`, año/ciclo y tipo. Academico usa DB-00a; no asumir que tiene `especialidad_id`. No filtrar en S1.
 
-- [ ] S2-03a Input placeholder `Busca algun proyecto de tu interes....`
+111 [x] S2-03a Input placeholder `Busca algun proyecto de tu interes....`
 
   - **Extraer de:** F-PNG-S2B (respetar puntos del PNG).
 
   - **Escribir en:** Input en `Sistema 2/compartido/encabezado-hamburguesa-con-busqueda.html` (solo S2). Placeholder exacto del PNG.
 
-- [ ] S2-03b Cero resultados: copy del PNG ("No se encontro... quizas te refieres a").
+112 [x] S2-03b Cero resultados: copy del PNG ("No se encontro... quizas te refieres a").
 
   - **Extraer de:** F-PNG-S2B.
 
   - **Escribir en:** Panel resultados: `Sistema 2/paginas/proyectos/pagina-hub-proyectos.html` o overlay. Copy del PNG.
 
-- [ ] S2-03c Debounce 200ms. 0 caracteres = hub.
+113 [x] S2-03c Debounce 200ms. 0 caracteres = hub.
 
   - **Extraer de:** F-PNG-S2H estado vacio de query.
 
   - **Escribir en:** `Sistema 2/js/busqueda/buscar-proyectos.js`.
 
-- [ ] S2-04a Ficha `paginas/ficha/pagina-ficha-proyecto.html?id=`. Campos: titulo, especialidad, codigo, anio, tipo tecnico|academico, texto, URLs (GitHub, Drive, YouTube). **Sin foto de alumno.**
+114 [ ] S2-04a Ficha `paginas/ficha/pagina-ficha-proyecto.html?id=`. Campos: titulo, especialidad, codigo, anio, tipo tecnico|academico, texto, URLs (GitHub, Drive, YouTube). **Sin foto de alumno.**
 
   - **Extraer de:** F-PDF-S2 Fase 3 (equipo, descripcion, adjuntos como URL no PNG de cara); F-OLD P10 grupo B "solo URLs"; F-RES 14:10.
 
-  - **Escribir en:** Rellenar (ya existe vacio) `Sistema 2/paginas/ficha/pagina-ficha-proyecto.html`. Query ?id=. Campos en esa pagina. urls jsonb. Cero <img> de alumno.
+  - **Escribir en:** Rellenar (ya existe vacio) `Sistema 2/paginas/ficha/pagina-ficha-proyecto.html`. Query ?id=. `urls` jsonb validado como URL http/https. Tecnico: codigo/especialidad. Academico: relacion definida en DB-00a antes de SQL; no asignar `GE` por defecto. Cero `<img>` de alumno.
 
-- [ ] S2-04b Editor: form solo si `proyecto.editor_id === auth.uid()`.
-
-  - **Extraer de:** F-RES 14:10.
-
-  - **Escribir en:** `Sistema 2/js/` (ej. `ficha/editar.js`) en la misma seccion ficha. Solo si editor_id coincide.
-
-- [ ] S2-04c Editor viendo otro proyecto: mismo DOM que visitante.
+115 [ ] S2-04b Editor: form solo si `proyecto.editor_id === auth.uid()`.
 
   - **Extraer de:** F-RES 14:10.
 
-  - **Escribir en:** Mismo ficha/pagina-ficha-proyecto.html rama visitante.
+  - **Escribir en:** `Sistema 2/js/ficha/editar-ficha-propia.js`. Solo si perfil habilitado, `editor_id === auth.uid()` y pertenece al codigo del proyecto mediante `miembro_codigo`; RLS valida cada mutacion.
 
-- [ ] S2-05a Docente: listado cuyo `codigo_id` esta en sus codigos.
-
-  - **Extraer de:** F-RES 14:10.
-
-  - **Escribir en:** Listado docente: puede ser `Sistema 2/paginas/proyectos/` filtrado o seccion en configuraciones S1. Preferir S2 proyectos con query ?vista=docente.
-
-- [ ] S2-05b Docente: borrar proyecto (confirm). Soft-delete `deleted_at`.
+116 [ ] S2-04c Editor viendo otro proyecto: mismo DOM que visitante.
 
   - **Extraer de:** F-RES 14:10.
 
-  - **Escribir en:** Boton en ficha o listado S2. UPDATE deleted_at via cliente-supabase.js S2.
+  - **Escribir en:** Mismo ficha/pagina-ficha-proyecto.html rama visitante; no incluir datos de perfiles/invitaciones en la lectura publica.
 
-- [ ] S2-05c Toggle docente: ver como visitante | como editor solo en proyectos de sus alumnos.
+117 [ ] S2-05a Docente: listado cuyo `codigo_id` esta en sus codigos.
+
+  - **Extraer de:** F-RES 14:10.
+
+  - **Escribir en:** Listado docente S2 filtrado por `codigos.docente_id`; Editor por `miembro_codigo`. Acceso docente a proyectos academicos depende de DB-00a.
+
+118 [ ] S2-05b Docente: borrar proyecto (confirm). Soft-delete `deleted_at`.
+
+  - **Extraer de:** F-RES 14:10.
+
+  - **Escribir en:** Boton en ficha o listado S2. Soft-delete con `deleted_at`, permitido por RLS al docente dueño del codigo; conservar autoria e historial.
+
+119 [ ] S2-05c Toggle docente: ver como visitante | como editor solo en proyectos de sus alumnos.
 
   - **Extraer de:** F-RES 14:10.
 
   - **Escribir en:** Toggle en ficha/pagina-ficha-proyecto.html (solo docente). Reusa render visitante/editor.
 
-- [ ] S2-06a Admin S2: borrar pagina de proyecto (cualquier codigo). No "borrar un archivo del repo".
+120 [ ] S2-06a Admin S2: borrar pagina de proyecto (cualquier codigo). No "borrar un archivo del repo".
 
   - **Extraer de:** F-RES 14:10 (los adjuntos son URLs externas).
 
-  - **Escribir en:** Admin: mismo UPDATE deleted_at desde S2 ficha. No `git rm`.
+  - **Escribir en:** Admin: mismo soft-delete `deleted_at` desde S2 ficha. No borrado fisico ni `git rm`.
 
-- [ ] S2-06b Admin S2: alta correos Docente (misma API que S1-07e).
+121 [ ] S2-06b Admin S2: alta correos Docente (misma API que S1-07e).
 
   - **Extraer de:** un proyecto Supabase.
 
-  - **Escribir en:** Reutilizar `Sistema 1/js/auth/panel-configuraciones-cuentas.js` (alta docente). Si se llama desde S2, importar o redirigir a `Sistema 1/paginas/configuraciones/`.
+  - **Escribir en:** Reutilizar UI/politica de S1-07e o redirigir a S1 Config; crear usuarios por backend confiable, nunca Supabase Admin API ni `service_role` desde el cliente S2.
 
-- [ ] S2-07a Crear codigo: regex `^[A-Z]{2}[123][A-Z]$` o mapa real (DS2B).
+122 [ ] S2-07a Crear codigo: regex `^[A-Z]{2}[123][A-Z]$` o mapa real (DS2B).
 
   - **Extraer de:** F-RES 14:10; F-PDF-S2 DSXX.
 
   - **Escribir en:** Validacion en `Sistema 1/js/auth/panel-configuraciones-cuentas.js` (crear codigo es de docente, UI Config S1). Regex en ese archivo.
 
-- [ ] S2-07b Insertar `invitaciones_correo` antes del registro del alumno.
+123 [ ] S2-07b Insertar `invitaciones_correo` antes del registro del alumno.
 
   - **Extraer de:** F-OLD P9 invitacion email; F-RES 14:10.
 
-  - **Escribir en:** INSERT desde config.js S1 a invitaciones_correo. No hay formulario de alta en ficha S2.
+  - **Escribir en:** INSERT seguro desde Config S1 a `invitaciones_correo`; al aceptar, trigger/transaccion asigna perfil y `miembro_codigo`, marca `usado_en/usado_por`. No hay formulario de alta en ficha S2 ni autoasignacion de rol.
 
-- [ ] S2-08a `Sistema 2/LEEME.md`: pasos copy-paste al repo web-oficial-proyectos.
+124 [ ] S2-08a `Sistema 2/LEEME.md`: pasos copy-paste al repo web-oficial-proyectos.
 
   - **Extraer de:** F-S2L; F-GH-S2.
 
   - **Escribir en:** EDITAR `Sistema 2/LEEME.md` con pasos de copia al otro repo.
 
-- [ ] S2-08b Auth: permitir origenes Pages S1 y S2.
+125 [ ] S2-08b Auth: permitir origenes Pages S1 y S2.
 
   - **Extraer de:** F-OLD P10.
 
   - **Escribir en:** Panel Auth de Supabase (no archivo git) + nota en `Sistema 1/supabase/README.md` si se crea. Origenes Pages S1 y S2.
 
-- [ ] S2-09a Header S2: busqueda centrada como PNG; Editar solo admin (CMS no aplica a fichas de alumnos).
+126 [ ] S2-09a Header S2: busqueda centrada como PNG; Editar solo admin (CMS no aplica a fichas de alumnos).
 
   - **Extraer de:** F-PNG-S2B; F-CMS (Editar = Inicio S1).
 
   - **Escribir en:** Header S2 distinto: `Sistema 2/compartido/encabezado-hamburguesa-con-busqueda.html` incluye busqueda. Boton Editar CMS no existe en S2 (el de ficha es otro, S2-04b).
 
-- [ ] S2-09b Placeholder "Aca bla bla" del PNG **no** copiar a prod.
+127 [ ] S2-09b Placeholder "Aca bla bla" del PNG **no** copiar a prod.
 
   - **Extraer de:** F-PNG-S2H nota.
 
@@ -998,187 +1050,199 @@ Look: F-PNG-S2H, F-PNG-S2T, F-PNG-S2B. Estructura de datos (URLs, no fotos de al
 
 ## D. Supabase (un proyecto, dos fronts)
 
-No escribir SQL de produccion hasta que Instituto pegue el **Anexo prompt DER** (abajo) a la IA de modelado y vuelva el diagrama. Las casillas DB-* implementan ese DER, no lo inventan distinto.
+No ejecutar migraciones en Supabase hasta que Instituto apruebe el **DER revisado** y confirme DB-00a..DB-00e. El permiso para redactar SQL no cambia el estado de las tareas ni autoriza aplicarlo en la instancia. Las casillas DB-* implementan el contrato aprobado, no un esquema inventado. El anexo original de Cursor se conserva como borrador de entrada; la seccion "Revision del DER propuesto" define las correcciones y decisiones que deben resolverse primero.
 
-- [ ] DB-01a Crear proyecto free. Activar Auth email.
+128 [ ] DB-01a Confirmar el proyecto Supabase unico y activar Auth email.
 
   - **Extraer de:** F-CLI; 0-15.
 
-  - **Escribir en:** Proyecto en dashboard Supabase (nube). Cero archivos todavia.
+  - **Escribir en:** Confirmacion en dashboard Supabase y resoluciones. No desplegar tablas ni aplicar SQL hasta aprobar DB-00a..DB-00e.
 
-- [ ] DB-01b URL y anon en local de Instituto, no git.
+129 [ ] DB-01b Definir configuracion de cliente/deploy sin claves en Git.
 
   - **Extraer de:** F-CLI; F-CMS.
 
-  - **Escribir en:** Local Instituto. Los `cliente-supabase.js` S1 y S2 no llevan la key real en git.
+  - **Escribir en:** Variables de entorno/Actions y config local ignorada. Para GitHub Pages, inyectar URL y publishable/anon key durante el build; no usar `service_role` ni dejar el sitio publicado sin config. Documentar y probar el mecanismo antes de SH-07a.
 
-- [ ] DB-02a a DB-09b: seguir entidades/PK/FK del DER aprobado. Borrador de trabajo = Anexo de este archivo.
+130 [ ] DB-02a a DB-09b: implementar el contrato aprobado y sus decisiones de seguridad; no iniciar hasta cerrar DB-00a..DB-00e.
 
   - **Extraer de:** Anexo DER; F-OLD P10 grupos A/B/C; F-CMS `contenido_inicio`; F-RES 14:33 RLS por `rol` no por email.
 
-  - **Escribir en:** SQL `Sistema 1/supabase/tabla-perfiles.sql`. Copia de referencia `Sistema 2/supabase/` (mismo archivo, no otra BD).
+  - **Escribir en:** SQL S1 como fuente canonica. Copias S2 son solo referencia de la misma base; ejecutar una migracion una sola vez. No duplicar ejecucion ni configurar una segunda BD.
+
+### Puertas de aprobacion del modelo (DB-00, antes de cualquier migracion)
+
+DB-00a [ ] Instituto define asignacion y permisos para proyectos academicos: relacion a asignatura/area aprobada o codigo institucional confirmado; decidir si los docentes de basicas pueden crear/editar y quien puede borrar. Hasta entonces no hacer `codigo_id` nullable ni asignar `GE` por defecto.
+
+DB-00b [ ] Confirmar que NIE queda fuera de v1. Si se requiere, aprobar uso de `nie_hash` y flujo confiable; nunca texto plano en perfil, invitacion, cliente ni logs.
+
+DB-00c [ ] Aprobar baja/desactivacion de cuentas y retencion: perfiles/codigos/proyectos tienen referencias historicas; preferir desactivar perfil/membresia y soft-delete de proyectos. Definir FKs `ON DELETE` antes de crear tablas.
+
+DB-00d [ ] Confirmar URLs reales de GitHub Pages, dominios personalizados y mecanismo de configuracion de Supabase para deploy estatico. Determinar mismo-origin vs origenes distintos y callback URLs; no asumir que Redirect URLs comparten sesion.
+
+DB-00e [ ] Congelar el JSON canonico de Inicio tomando S1-10d/S1-14a como contrato y alinear `plantillas-bloques-inicio.js` antes de crear/consumir `contenido_inicio`.
 
 Casillas atomicas de implementacion (cuando haya DER):
 
-- [ ] DB-02a Tabla `perfiles`
+131 [ ] DB-02a Tabla `perfiles` ligada 1:1 a `auth.users`
 
 
-  - **Escribir en:** SQL `Sistema 1/supabase/tabla-perfiles.sql`. Copia de referencia `Sistema 2/supabase/` (mismo archivo, no otra BD).
+  - **Escribir en:** `tabla-perfiles.sql`: PK/FK `id = auth.users.id`, rol validado, nombre, tema `light|dark` default `dark`, especialidad docente nullable, timestamps y estado de desactivacion. No duplicar email ni almacenar NIE plano. No permitir que el usuario cambie su rol mediante update propio.
 
-- [ ] DB-02b Tabla `codigos`
+132 [ ] DB-02b Tabla `codigos` y membresia persistente `miembro_codigo`
 
 
-  - **Escribir en:** `Sistema 1/supabase/tabla-codigos-seccion.sql` (+ copia S2/supabase).
+  - **Escribir en:** `tabla-codigos-seccion.sql` define codigos unicos por especialidad/nivel/seccion/anio y owner docente; incluir `miembro_codigo(perfil_id,codigo_id,...)` con unique por pareja para la pertenencia persistente de editores. No tratar invitacion consumida como unica relacion.
 
-- [ ] DB-02c Tabla `especialidades` seed 6+General+hex
+133 [ ] DB-02c Tabla `especialidades` seed 6+General+hex
 
 
   - **Escribir en:** `Sistema 1/supabase/tabla-especialidades.sql` con INSERT seed hex.
 
-- [ ] DB-02d Tabla `contenido_inicio` JSON bloques, una fila
+134 [ ] DB-02d Tabla `contenido_inicio` JSON canonico de bloques, una fila
 
 
-  - **Escribir en:** `Sistema 1/supabase/tabla-contenido-inicio.sql`.
+  - **Escribir en:** `tabla-contenido-inicio.sql`: una fila con JSON acorde al contrato S1-10d/S1-14a; version/campos documentados, `updated_by` FK `perfiles`, `updated_at` automatico. Normalizar el modulo de plantillas antes de conectar persistencia.
 
-- [ ] DB-02e Tabla `footer_cms`
-
-
-  - **Escribir en:** `Sistema 1/supabase/tabla-footer-cms.sql`.
-
-- [ ] DB-02f Tabla `proyectos` + `urls jsonb` (github, drive, youtube, otros)
+135 [ ] DB-02e Tabla `footer_cms` editable, fila unica
 
 
-  - **Escribir en:** `Sistema 1/supabase/tabla-proyectos.sql` (urls jsonb).
+  - **Escribir en:** `tabla-footer-cms.sql`: PK singleton, telefono, `whatsapp_principal`, `whatsapp_alterno`, redes, correo, direccion, CTA y copyright; `updated_by` FK y timestamp. Valores iniciales solo de RESOLUCIONES.
 
-- [ ] DB-02g Tabla `invitaciones_correo`
-
-
-  - **Escribir en:** `Sistema 1/supabase/tabla-invitaciones-correo.sql`.
-
-- [ ] DB-03a RLS contenido_inicio: SELECT publico; UPDATE admin
+136 [ ] DB-02f Tabla `proyectos` con owner, soft-delete y URLs externas
 
 
-  - **Escribir en:** `Sistema 1/supabase/politicas-rls.sql` policies contenido_inicio.
+  - **Escribir en:** `tabla-proyectos.sql`: `editor_id` FK, `codigo_id` y `tipo` con reglas pendientes DB-00a para tecnico/academico, año, cuerpo y `urls` jsonb solo http/https, `deleted_at`. No incluir binarios/fotos. No implementar hasta resolver pertenencia academica.
 
-- [ ] DB-03b RLS proyectos: SELECT no deleted publico; UPDATE dueno; DELETE docente del codigo o admin
-
-
-  - **Escribir en:** Mismo politicas-rls.sql policies proyectos.
-
-- [ ] DB-03c RLS perfiles
+137 [ ] DB-02g Tabla `invitaciones_correo` con consumo/auditoria
 
 
-  - **Escribir en:** Mismo politicas-rls.sql policies perfiles.
+  - **Escribir en:** `tabla-invitaciones-correo.sql`: email normalizado, rol destino, codigo destino para editor, invitador, timestamps de creacion/uso y usuario que la consumio (`auth.users.id`). Definir unicidad para invitaciones activas por email/codigo; permitir re-invitacion autorizada tras consumo.
 
-- [ ] DB-03d RLS codigos / invitaciones
-
-
-  - **Escribir en:** Mismo politicas-rls.sql policies codigos e invitaciones.
-
-- [ ] DB-04a Bucket `inicio` lectura publica; write admin
+138 [ ] DB-03a RLS contenido_inicio y footer: lectura publica; escritura admin
 
 
-  - **Escribir en:** Bucket en dashboard Storage nombre `inicio`. Politicas en `Sistema 1/supabase/storage-buckets.sql`.
+  - **Escribir en:** `politicas-rls.sql`: SELECT anon/autenticado; INSERT/UPDATE/DELETE solo admin para contenido_inicio/footer_cms. Restringir UPDATE por columnas; revisar grants, no confiar solo en esconder controles UI.
 
-- [ ] DB-04b Bucket `personal` solo si 0-05 = si
+139 [ ] DB-03b RLS proyectos: SELECT activos publico; escritura segun owner/codigo/rol
+
+
+  - **Escribir en:** Mismo archivo. SELECT solo no borrados; INSERT editor habilitado y miembro del codigo; UPDATE editor dueño y miembro; soft-delete por docente owner del codigo o admin. Definir aparte el permiso académico en DB-00a.
+
+140 [ ] DB-03c RLS perfiles sin auto-escalacion de rol
+
+
+  - **Escribir en:** SELECT propio con columnas privadas, SELECT amplio solo admin. Usuario actualiza solo campos aprobados (tema/nombre); rol, estado, NIE hash y metadatos protegidos solo por operación admin confiable. Probar que no puede cambiar `rol` por REST/PostgREST.
+
+141 [ ] DB-03d RLS codigos / membresias / invitaciones
+
+
+  - **Escribir en:** Docente lee/administra solo codigos propios; editor solo ve membresias/codigos propios; invitaciones solo visible al invitador/admin y nunca anonimo. Evitar recursion RLS con funciones seguras y `search_path` fijo.
+
+142 [ ] DB-04a Bucket `inicio` lectura publica; escritura admin
+
+
+  - **Escribir en:** Bucket `inicio` una sola vez en el proyecto compartido; lectura publica, insert/update/delete admin; limitar paths a `inicio/`. Si se admite SVG, definir sanitizacion/validacion para no servir SVG activo no confiable.
+
+143 [ ] DB-04b Bucket `personal` solo si 0-05 = si
 
 
   - **Escribir en:** No crear hasta 0-05=si. Si si: bucket `personal` + storage-buckets.sql.
 
-- [ ] DB-05a Trigger auth.users ? perfiles (editor solo si invitacion; email matriz ? administrador)
+144 [ ] DB-05a Trigger transaccional auth.users -> perfil e invitacion
 
 
-  - **Escribir en:** `Sistema 1/supabase/trigger-nuevo-perfil.sql`.
+  - **Escribir en:** `trigger-nuevo-perfil.sql`: crear perfil minimo; validar/consumir invitacion y crear `miembro_codigo` en la misma transaccion. Rechazar editor sin invitacion. Bootstrap admin solo para la cuenta matriz si no existe otro admin, consultando `auth.users`; funcion segura con `search_path` fijo. No guardar contraseña/email duplicado.
 
-- [ ] DB-06a Documentar origenes Pages distintos
-
-
-  - **Escribir en:** Parrafo en `Sistema 1/LEEME.md` y `Sistema 2/LEEME.md`.
-
-- [ ] DB-06b CORS y Redirect URLs Auth
+145 [ ] DB-06a Confirmar/documentar host y origen reales de Pages
 
 
-  - **Escribir en:** Checklist en esos LEEME + panel Auth.
+  - **Escribir en:** Verificar URL publicada de ambos repos. Si comparten `owner.github.io` y solo cambia el path, es el mismo origin; si hay dominios personalizados distintos, `localStorage`/sesion son aislados. Documentar los URLs base reales, no asumir origenes distintos.
 
-- [ ] DB-07a Unique email invitaciones; SH-04b
-
-
-  - **Escribir en:** UNIQUE en tabla-invitaciones-correo.sql + mensaje SH-04b en sesion.js.
-
-- [ ] DB-08a Indice GIN opcional v1
+146 [ ] DB-06b CORS y Redirect URLs Auth para cada callback real
 
 
-  - **Escribir en:** Opcional en tabla-contenido-inicio.sql. Se puede omitir v1.
+  - **Escribir en:** Allowlist de callbacks exactos de cada sistema y localhost de desarrollo aprobado; verificar retorno de OAuth/magic link si se elige. Documentar en LEEME + dashboard Auth; CORS no comparte sesiones entre origins.
 
-- [ ] DB-09a Seed `intiwo11543@gmail.com` rol admin **sin password** en `Sistema 1/supabase/semilla-admin-sin-password.sql`
-
-
-  - **Escribir en:** `Sistema 1/supabase/semilla-admin-sin-password.sql` UPDATE por email, SIN password. Copiar a S2/supabase como referencia.
-
-- [ ] DB-09b Politicas `rol = administrador`, nunca email como unica regla
+147 [ ] DB-07a Unicidad de invitaciones activas; SH-04b
 
 
-  - **Escribir en:** Revisar politicas-rls.sql: ninguna policy solo con auth.email() = matriz.
+  - **Escribir en:** Indice unico parcial sobre email normalizado + codigo para invitaciones pendientes (y regla separada para invitaciones de staff sin codigo); permitir nuevas invitaciones despues de uso/cancelacion. Mensaje SH-04b en sesion JS.
+
+148 [ ] DB-08a Indices de busqueda v1 (proyectos y JSON opcional)
+
+
+  - **Escribir en:** Indice de busqueda de proyectos (titulo/cuerpo) solo si se habilita busqueda remota; GIN de `contenido_inicio.bloques` sigue opcional. No indexar JSON sin caso de consulta definido.
+
+149 [ ] DB-09a Seed inicial de `intiwo11543@gmail.com` como admin **sin password**
+
+
+  - **Escribir en:** Seed idempotente que une `perfiles.id` con `auth.users.id` y filtra email solo para el bootstrap; no asumir columna `perfiles.email`, no incluir password. Copia S2 es referencia; ejecutar una vez en la BD compartida.
+
+150 [ ] DB-09b Politicas `rol = administrador`, nunca email como unica regla
+
+
+  - **Escribir en:** Revisar policies/grants/RPC: autorizacion normal por rol y ownership; email solo en bootstrap inicial, nunca como politica permanente. Verificar que el usuario no pueda elevar su rol por UPDATE propio.
 
 ---
 
 ## E. QA
 
-- [ ] E-01 320px: menu overlay, Inicio 0 bloques, sin scroll horizontal.
+151 [ ] E-01 320px: menu overlay, Inicio 0 bloques, sin scroll horizontal.
 
   - **Extraer de:** F-CMS; F-C-INI.
 
   - **Escribir en:** Probar `Sistema 1/paginas/inicio/pagina-inicio-cms.html` a 320px. Anotar `IAs/RESOLUCIONES.md`.
 
-- [ ] E-02 360px: 4 bloques no desbordan.
+152 [ ] E-02 360px: 4 bloques no desbordan.
 
   - **Extraer de:** S1-11; F-CMS.
 
   - **Escribir en:** Probar mismo inicio con 4 bloques (sesion admin). Anotar resoluciones.
 
-- [ ] E-03 768px: hub S2 2 cols; especialidades wrap.
+153 [ ] E-03 768px: hub S2 2 cols; especialidades wrap.
 
   - **Extraer de:** F-PNG-S2H F-PNG-S2T.
 
   - **Escribir en:** Probar `Sistema 2/paginas/proyectos/pagina-hub-proyectos.html` 768px.
 
-- [ ] E-04 Landscape: busqueda S2 no tapa logo.
+154 [ ] E-04 Landscape: busqueda S2 no tapa logo.
 
   - **Extraer de:** F-PNG-S2B.
 
   - **Escribir en:** Probar header S2 landscape.
 
-- [ ] E-05 XSS bloque Inicio no alerta.
+155 [ ] E-05 XSS bloque Inicio no alerta.
 
   - **Extraer de:** S1-15.
 
   - **Escribir en:** Probar pegando en editor Inicio (S1). No en ficha S2.
 
-- [ ] E-06 Visitante no ve `#admin-toolbar` ni Editar.
+156 [ ] E-06 Visitante no ve `#admin-toolbar` ni Editar.
 
   - **Extraer de:** F-CMS.
 
   - **Escribir en:** Inspeccionar DOM de inicio S1 sin login.
 
-- [ ] E-07 Editor no actualiza proyecto ajeno (RLS).
+157 [ ] E-07 RLS impide editar proyecto ajeno, autoelevar rol y usar codigo no asignado.
 
   - **Extraer de:** Anexo DER.
 
-  - **Escribir en:** Dos cuentas editor contra ficha S2.
+  - **Escribir en:** Probar dos editores, dos codigos, update de `perfiles.rol`, invitacion usada/reusada y docente fuera de sus codigos; verificar tambien soft-delete y project academic conforme a DB-00a.
 
-- [ ] E-08 Copiar S2: grep `Sistema 1` = 0 o documentado.
+158 [ ] E-08 Copiar S2: grep `Sistema 1` = 0 o documentado.
 
   - **Extraer de:** SH-09b.
 
   - **Escribir en:** Tras copiar repo S2: grep. Documentar en Sistema 2/LEEME.md.
 
-- [ ] E-09 `rg service_role` = 0.
+159 [ ] E-09 `rg service_role` = 0.
 
   - **Extraer de:** SH-07b.
 
   - **Escribir en:** Grep raiz del clone web-oficial.
 
-- [ ] E-10 No fotos de estudiantes en fichas S2.
+160 [ ] E-10 No fotos de estudiantes en fichas S2.
 
   - **Extraer de:** S2-04a; F-OLD P10.
 
@@ -1186,7 +1250,9 @@ Casillas atomicas de implementacion (cuando haya DER):
 
 ---
 
-## Anexo | Prompt para la IA de DER / ERD (copiar tal cual)
+## Anexo | Prompt para la IA de DER / ERD (borrador original de Cursor)
+
+**No copiar ni ejecutar tal cual:** es el insumo original, no una aprobacion de esquema. Aplicar primero la seccion "Revision del DER propuesto" y cerrar DB-00a..DB-00e; los requisitos corregidos del backlog prevalecen sobre contradicciones del prompt original.
 
 El nombre que buscas es el de una IA o modo de **diagrama entidad-relacion (DER / ERD)**, no un ERP tipo SAP. Pegar el bloque siguiente en Gemini, ChatGPT, Claude, v0, o el canvas de diagramas. Pedirle: (1) diagrama Mermaid `erDiagram`, (2) diccionario de datos, (3) SQL Postgres/Supabase comentado, (4) politicas RLS. **No debe inventar tablas fuera de la lista. No debe poner passwords. No debe usar el email como unica regla RLS.**
 
@@ -1282,7 +1348,7 @@ ENTIDADES MINIMAS (usar estos nombres en espanol_snake o los equivalentes claros
 
    Atributos: slogan, telefono, whatsapp, instagram_url, facebook_url, tiktok_url, correo, direccion, copyright_anio, cta_label, cta_href, updated_by, updated_at
 
-   Defaults de documentacion: correo direccion@inti.edu.sv, WhatsApp +503 7754 5899, IG instagram.com/inti.edu.sv, FB facebook.com/tecnicosinti, TT tiktok.com/@intitecnicos, direccion Col. Roma final Blvd Venezuela San Salvador. No uses 7441-1075 como default.
+   Defaults de documentacion: correo direccion@inti.edu.sv, WhatsApp +503 7441-1075 (principal), alterno +503 6674-3159, IG instagram.com/inti.edu.sv, FB facebook.com/tecnicosinti, TT tiktok.com/@intitecnicos, direccion Col. Roma final Blvd Venezuela San Salvador. No uses +503 7754 5899 como default.
 
 8. proyectos (grupo B)
 
@@ -1350,6 +1416,52 @@ Si dudas, elige la opcion mas restrictiva y etiquetala DECISION.
 
 ```
 
+## Revision del DER propuesto (GitHub Copilot, 2026-10-12 00:11 UTC-6)
+
+**Evaluacion:** el anexo de Cursor es una buena lista inicial de entidades y funcionalidades, pero no debe usarse tal cual para crear SQL de produccion. Los SQL de S1 y sus copias de S2 siguen vacios, no hay flujo Auth/cliente Supabase conectado desde las paginas activas y el CMS/ficha siguen como stubs. Esta revision complementa el anexo sin borrar ni sustituir el texto de Cursor. No se ejecutaron migraciones.
+
+### Ajustes necesarios antes de aprobar el DER
+
+1. **Relacion persistente editor-codigo.** `miembro_codigo` no debe quedar como opcional mientras Configuracion lista alumnos por codigo y los proyectos de Editor pertenecen a un codigo. La aceptacion de una invitacion debe crear el perfil, insertar su membresia y marcar la invitacion como usada en una misma transaccion. Agregar a `invitaciones_correo` un `usado_por` FK a `auth.users` o `perfiles` (definir una sola referencia canonica); conservar `codigo_id` para editor.
+
+2. **NIE.** La columna `nie text` del borrador contradice 0-14. Omitir NIE mientras Instituto no lo requiera; si lo aprueba, guardar solo `nie_hash`, nunca texto plano. `n_lista` tambien requiere RLS que limite su lectura al docente del codigo y al administrador.
+
+3. **Seed del administrador.** El borrador de `perfiles` no incluye `email`, por lo que `UPDATE perfiles ... WHERE email=...` no es ejecutable con esa tabla. No duplicar email sin necesidad: resolver el perfil uniendo `perfiles.id = auth.users.id` y filtrando el email de `auth.users`. Ese uso de email es solo bootstrap, no una politica RLS.
+
+4. **Proyectos academicos.** `proyectos.codigo_id NOT NULL` solo funciona si todo proyecto academico se asigna a un codigo institucional. El material actual no define esa regla ni un codigo de asignatura. Instituto debe elegir: asignar formalmente los academicos a un codigo (p. ej. GE, solo si lo confirma), o modelar `asignaturas/areas_academicas`, hacer `codigo_id` nullable unicamente para tipo academico y definir quien puede editarlos. No asumir una de esas reglas.
+
+5. **RLS y cambio de rol.** RLS limita filas, no columnas. La regla “cada usuario actualiza su perfil” permitiria cambiar tambien `rol` si no se separan privilegios. Limitar columnas actualizables por el usuario (por ejemplo, `tema` y campos de perfil aprobados) y reservar `rol`, membresias e invitaciones a operaciones privilegiadas. Las funciones usadas por politicas no deben crear recursion RLS.
+
+6. **Baja y referencias.** `auth.users ON DELETE CASCADE` puede borrar perfiles referidos por codigos/proyectos o impedir la baja por FK. Definir desactivacion/archivo y las reglas `ON DELETE` antes del SQL. Crear/borrar usuarios con Auth Admin requiere una Edge Function o proceso confiable; nunca exponer `service_role` en Pages.
+
+7. **Contrato de Inicio.** El JSON propuesto (`plantilla`, `orden`, `textos`) no coincide con `plantillas-bloques-inicio.js`, que hoy emite `tipo`, titulo/subtitulo/texto, `orientacion/alineacion`, CTA y enlace. Definir un unico JSON canonico y armonizar JS antes del upsert. Tambien fijar una sola nomenclatura para `textoImagen` frente a `texto-imagen-izq/der`.
+
+8. **Footer editable.** El esquema enumera `whatsapp` singular, pero la interfaz y decisiones requieren WhatsApp principal y alterno. Modelar ambos campos por separado (ademas de telefono publico, si se mantiene) y enlazar `updated_by` con `perfiles`.
+
+9. **Timestamps e indices.** Definir `updated_at` automatico y sus FKs `updated_by`; mantener unicidad para invitaciones/codigos segun ciclo lectivo. Para la busqueda futura del hub, especificar indice de texto solo cuando se cierre el contrato de busqueda y volumen esperado.
+
+10. **Origenes de Auth.** La allowlist de Redirect URLs no comparte por si sola una sesion entre origenes. Confirmar si ambos Pages usaran el mismo hostname; si son origenes distintos, `localStorage` y la sesion Auth quedan aislados y debe definirse el reingreso/autenticacion en cada uno. `perfiles.tema` puede restaurar la preferencia despues de autenticar, pero no transfiere la sesion.
+
+**Pendiente de Instituto:** resolver DB-00a..DB-00d. DB-00b toma como valor inicial seguro omitir NIE de v1; cualquier uso de hash requiere confirmar necesidad/flujo. DB-00e es un contrato tecnico que debe fijarse antes de conectar CMS. Mantener todas las tareas DB y SH-02e pendientes/en curso; no generar ni ejecutar migraciones mientras falten puertas de aprobacion.
+
+### Puertas previas y cambios concretos que rigen las tareas
+
+- **DB-00a [ ] Academico:** elegir si los proyectos de asignaturas basicas se asocian a una tabla/catalogo `asignaturas_academicas` o a codigos oficialmente confirmados, y definir quién los crea/edita/borra. Hasta entonces, no imponer `codigo_id NOT NULL` a ambos tipos ni inventar materias/codigos.
+- **DB-00b [ ] Datos personales:** mantener NIE fuera de v1; solo considerar `nie_hash` con autorizacion expresa y mecanismo confiable. `n_lista` queda visible solo a admin/docente autorizado.
+- **DB-00c [ ] Ciclo de cuentas y datos:** confirmar desactivacion y retencion. Preferir perfil/membresia desactivable + `proyectos.deleted_at`; fijar FKs y prohibir cascadas que borren proyectos al eliminar una cuenta. Bloquear baja del ultimo admin.
+- **DB-00d [ ] Despliegue/Auth:** confirmar URLs publicadas, mismo origin o dominios distintos y como se inyecta config al Pages sin versionar claves. Confirmar callbacks Auth exactos.
+- **DB-00e [ ] Contrato CMS:** congelar estructura JSON de `contenido_inicio`, alineada con S1-10d/S1-14a y plantillas JS. Versionar/cambiar el contrato antes de persistir contenido.
+
+**Alineacion obligatoria:** `perfiles` referencia `auth.users` por id y no duplica email/password; invitacion aceptada genera una membresia persistente `miembro_codigo`; `proyectos` conserva owner, codigo (cuando aplique), tipo y borrado logico; `footer_cms` tiene ambos WhatsApp; perfiles/codigos/invitaciones no son publicos. Operaciones que usan Auth Admin van en backend confiable, nunca en Pages.
+
+### Secuencia de tareas DB actualizada
+
+1. Resolver DB-00a..DB-00e con Instituto; mantener DB-01/DB-02 pendientes mientras falte alguna decision.
+2. Configurar un solo proyecto Supabase y mecanismo de build/deploy con URL + publishable key, sin versionar secretos ni exponer `service_role`.
+3. Crear esquema en SQL S1, revisar migracion y permisos; S2 guarda solo copias de referencia. Aplicar en Supabase una vez cuando Instituto lo solicite.
+4. Implementar Auth/invitaciones y transaccion trigger; despues consumo de perfiles/codigos/proyectos/CMS desde clientes.
+5. Cerrar RLS y QA de escalamiento, membresias, invitaciones, baja logica, CMS, proyectos tecnicos y academicos antes de marcar DB tasks.
+
 ---
 
 ## Hecho (no borrar)
@@ -1382,6 +1494,9 @@ Si dudas, elige la opcion mas restrictiva y etiquetala DECISION.
 
 - [x] Creados 64 archivos vacios con nombres descriptivos (sin index/style). Mapa de destinos y casillas Escribir en actualizados a esos nombres.
 
+### 2026-10-11 16:25 (UTC-6) | Cursor | laptop MINEDUCYT
+
+- [x] Tareas del backlog enumeradas 1 [ ], 2 [ ], ...; debajo se mantienen Extraer de y Escribir en.
 
 ---
 
