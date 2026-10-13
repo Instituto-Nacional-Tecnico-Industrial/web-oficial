@@ -1,6 +1,6 @@
 # Resoluciones (c�mo lo hizo cada IA)
 
-**Ultima modificacion:** 2026-10-13 16:14 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-13 16:29 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Solo existen estos dos archivos de IAs, en `IAs/`: este y `BACKLOG.md`. Al cambiar uno: **�ltima modificaci�n** con fecha, hora **UTC-6**, nombre de la IA y dispositivo. Si cambia una tarea, la misma marca en ambos.
 
@@ -1001,4 +1001,14 @@ Bachillerato General a distancia, 1� y 2�, s�bados y domingo. Requisito: m
 **Causa probable:** la funcion se creo en el editor nuevo (claves publishable/secret) pero el codigo usaba `Deno.serve` + `SUPABASE_ANON_KEY` / `SERVICE_ROLE_KEY`, que en proyectos con claves nuevas pueden ir vacias. El gateway "Verify JWT with legacy secret" tambien rechaza el JWT actual.
 
 **Como:** `invitar-cuenta` ahora usa `withSupabase({ auth: "user" })` y `ctx.supabaseAdmin`. El mensaje de Configuraciones lee el JSON de error. Instituto debe pegar de nuevo el `index.ts` en Edge Functions → Code → Deploy, dejar JWT legacy apagado, y reintentar Dar de alta.
+
+---
+
+### 2026-10-13 16:29 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tras redesplegar, Dar de alta dice "Solo el administrador puede invitar" aunque la UI de Configuraciones es la de admin.
+
+**Causa:** el chequeo leía `perfiles` con `supabaseAdmin` (claves nuevas); esa consulta salía vacía y se confundía con "no es admin". En el navegador el mismo usuario sí pasa RLS.
+
+**Como:** la funcion usa `rpc('intiwo_es_admin')` con el cliente del usuario (igual que Pages) y acepta el Gmail matriz. Insert de invitacion también por ese cliente. `inviteUserByEmail` sigue con `supabaseAdmin`. Instituto debe pegar otra vez `index.ts` y Deploy.
 

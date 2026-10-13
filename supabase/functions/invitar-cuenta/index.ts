@@ -19,13 +19,15 @@ export default {
     const user = userData && userData.user;
     if (userError || !user) return json({ error: "Sesion invalida" }, 401);
 
-    const { data: perfil } = await ctx.supabaseAdmin
-      .from("perfiles")
-      .select("rol, desactivado_en")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    if (!perfil || perfil.desactivado_en || perfil.rol !== "administrador") {
+    // Mismo chequeo que el navegador (RLS + auth.uid()). supabaseAdmin a veces
+    // no queda cableado con las claves nuevas y devolvía 403 falso.
+    const { data: esAdmin, error: adminErr } = await ctx.supabase.rpc("intiwo_es_admin");
+    const correoSesion = String(user.email || "").trim().toLowerCase();
+    const esMatriz = correoSesion === "intiwo11543@gmail.com";
+    if (adminErr) {
+      return json({ error: "No se pudo comprobar el rol: " + adminErr.message }, 400);
+    }
+    if (!esAdmin && !esMatriz) {
       return json({ error: "Solo el administrador puede invitar" }, 403);
     }
 
@@ -48,7 +50,8 @@ export default {
       return json({ error: "El editor debe tener el NIE en la parte local del correo" }, 400);
     }
 
-    const { data: pendiente } = await ctx.supabaseAdmin
+    const db = ctx.supabase;
+    const { data: pendiente } = await db
       .from("invitaciones_correo")
       .select("id")
       .eq("email", email)
@@ -57,7 +60,7 @@ export default {
       .maybeSingle();
 
     if (!pendiente) {
-      const { error: insertError } = await ctx.supabaseAdmin.from("invitaciones_correo").insert({
+      const { error: insertError } = await db.from("invitaciones_correo").insert({
         email,
         rol_destino: rol,
         invitado_por: user.id,
