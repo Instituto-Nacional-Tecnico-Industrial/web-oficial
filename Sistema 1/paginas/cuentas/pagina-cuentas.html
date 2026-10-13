@@ -34,12 +34,24 @@
         <button class="intiwo-cuentas-opcion" type="button" data-cuentas-accion="login">Iniciar sesión</button>
         <button class="intiwo-cuentas-opcion intiwo-cuentas-opcion--secundaria" type="button" data-cuentas-accion="registro">Registrarse</button>
       </div>
+      <form id="intiwo-form-login" class="intiwo-cuentas-form" hidden>
+        <label>Correo <input type="email" name="email" autocomplete="username" required></label>
+        <label>Contraseña <input type="password" name="password" autocomplete="current-password" required></label>
+        <button class="intiwo-cuentas-opcion" type="submit">Entrar</button>
+      </form>
+      <form id="intiwo-form-registro" class="intiwo-cuentas-form" hidden>
+        <label>Correo institucional <input type="email" name="email" autocomplete="username" required></label>
+        <label>Contraseña <input type="password" name="password" autocomplete="new-password" minlength="8" required></label>
+        <label>Repetir contraseña <input type="password" name="password2" autocomplete="new-password" minlength="8" required></label>
+        <button class="intiwo-cuentas-opcion" type="submit">Crear cuenta</button>
+      </form>
       <p class="intiwo-cuentas-mensaje" data-cuentas-mensaje aria-live="polite">Elige una opción para continuar.</p>
+      <button class="intiwo-cuentas-opcion intiwo-cuentas-opcion--secundaria" type="button" id="intiwo-cuentas-salir" hidden>Cerrar sesión</button>
       <a class="intiwo-cuentas-volver" href="../inicio/pagina-inicio-cms.html">Volver al inicio</a>
     </section>
   </main>
   <script src="../../js/tema/persistir-tema-diurno-nocturno.js"></script>
-  <script src="../../js/auth/panel-configuraciones-cuentas.js"></script>
-  <script type="module" src="../../js/supabase/cliente-supabase.js"></script>
+  <script type="module" src="../../js/auth/sesion-supabase.js"></script>
+  <script type="module" src="../../js/auth/panel-configuraciones-cuentas.js"></script>
 </body>
 </html>

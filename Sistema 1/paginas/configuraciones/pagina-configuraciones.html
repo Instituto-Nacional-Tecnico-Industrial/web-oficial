@@ -85,8 +85,19 @@
         </article>
         <article class="intiwo-config-tarjeta">
           <h3>Permisos y cuentas</h3>
-          <p>Administración de las cuentas institucionales y sus permisos.</p>
-          <span class="intiwo-config-estado">Herramientas pendientes de conexión</span>
+          <p>Da de alta un correo institucional. Esa persona se registra en Cuentas con su propia contraseña. No se crean administradores desde aquí.</p>
+          <form id="intiwo-form-alta" class="intiwo-cuentas-form">
+            <label>Correo <input type="email" name="email" required placeholder="19795194@inti.edu.sv"></label>
+            <label>Rol
+              <select name="rol" required>
+                <option value="docente">Docente</option>
+                <option value="editor">Editor</option>
+              </select>
+            </label>
+            <button class="intiwo-pildora" type="submit">Dar de alta</button>
+          </form>
+          <p data-alta-mensaje class="intiwo-config-estado" aria-live="polite"></p>
+          <div id="intiwo-altas-lista" class="intiwo-config-estado"></div>
         </article>
         <article class="intiwo-config-tarjeta">
           <h3>Docentes y grupos</h3>
@@ -179,6 +190,7 @@
   <script src="../../js/cromo/menu-hamburguesa-overlay.js"></script>
   <script src="../../js/auth/sesion-roles-auth.js"></script>
   <script src="../../js/auth/pagina-configuraciones-roles.js"></script>
-  <script type="module" src="../../js/supabase/cliente-supabase.js"></script>
+  <script type="module" src="../../js/auth/sesion-supabase.js"></script>
+  <script type="module" src="../../js/auth/alta-cuentas-admin.js"></script>
 </body>
 </html>

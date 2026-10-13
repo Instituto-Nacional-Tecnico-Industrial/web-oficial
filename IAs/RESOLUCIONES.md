@@ -1,6 +1,6 @@
 # Resoluciones (c�mo lo hizo cada IA)
 
-**Ultima modificacion:** 2026-10-13 12:20 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-13 14:10 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Solo existen estos dos archivos de IAs, en `IAs/`: este y `BACKLOG.md`. Al cambiar uno: **�ltima modificaci�n** con fecha, hora **UTC-6**, nombre de la IA y dispositivo. Si cambia una tarea, la misma marca en ambos.
 
@@ -963,3 +963,14 @@ Bachillerato General a distancia, 1� y 2�, s�bados y domingo. Requisito: m
 **Diurno:** filtro/listado/catalogo usan `var(--superficie)` y `var(--texto)` en lugar de hex de nocturno.
 
 **Limites:** no se migro Supabase. Incorporar anio en produccion exigira Auth real de administrador.
+
+---
+
+### 2026-10-13 14:10 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Login real; el admin matriz crea docente y editor desde el sitio (19795194@inti docente, 19795194@clases editor), no desde el dashboard de Users.
+
+**Como:** SQL minimo `Sistema 1/supabase/login-invitaciones-minimo.sql` (NIE en perfiles, invitaciones, trigger, RLS de perfiles/invitaciones). Cuentas con formularios de entrar/registrarse. Configuraciones admin: formulario Dar de alta. El rol lo pone la invitacion, no el dominio. El NIE se extrae solo si el rol es editor. No se ejecuto el SQL remoto desde esta IA.
+
+**Uso:** el Instituto debe correr ese SQL una vez, publicar Pages, iniciar sesion con el Gmail admin, dar de alta los dos correos, y esas personas se registran en Cuentas con su contrasena. Confirmacion de correo de Auth conviene apagarla mientras se prueba. No correr `politicas-rls.sql` completo todavia (exige tablas que no existen).
+

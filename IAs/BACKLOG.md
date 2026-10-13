@@ -1,6 +1,6 @@
 # Backlog INTIWO
 
-**Ultima modificacion:** 2026-10-13 12:20 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-13 14:10 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Carpeta exclusiva de IAs: `IAs/` (solo este archivo y `RESOLUCIONES.md`). Al marcar o agregar: misma fecha, hora (UTC-6) e IA en ambos; indica el dispositivo. Apuntes en orden cronologico.
 
@@ -1790,6 +1790,10 @@ Si dudas, elige la opcion mas restrictiva y etiquetala DECISION.
 ### 2026-10-13 12:20 (UTC-6) | Cursor Grok 4.6 | laptop MINEDUCYT
 
 - [x] Ciclos desde 2026 (dropdown; solo admin incorpora); academicos distintos a tecnicos; diurno de catalogo/filtro; BACKLOG S2N-08..10
+
+### 2026-10-13 14:10 (UTC-6) | Cursor Grok 4.6 | laptop MINEDUCYT
+
+- [x] Login Auth + altas docente/editor desde Configuraciones; SQL minimo `login-invitaciones-minimo.sql`
 
 
 ### 2026-10-11 14:10 (UTC-6) | Cursor | laptop MINEDUCYT

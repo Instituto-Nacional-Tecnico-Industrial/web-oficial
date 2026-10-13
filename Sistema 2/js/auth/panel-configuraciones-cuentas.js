@@ -1,29 +1,106 @@
-/* INTIWO S2 | archivo: panel-configuraciones-cuentas.js | para: acciones de acceso y registro de cuentas | BACKLOG SH-01e */
+/* INTIWO S2 | mismo flujo de Cuentas que S1 */
+import { supabase } from "../supabase/cliente-supabase.js";
 
-(function () {
-  function actualizarEstado(status) {
-    const nodo = document.querySelector('[data-cuentas-mensaje]');
-    if (!nodo) return;
+const DOMINIOS = /@(inti|clases)\.edu\.sv$/i;
+const ADMIN_MATRIZ = "intiwo11543@gmail.com";
 
-    const mensajes = {
-      login: 'El inicio de sesión con correo y contraseña todavía no está conectado.',
-      registro: 'El registro requiere una invitación vigente. Si no tienes una, tu docente aún no te ha dado de alta.',
-    };
+function mensaje(nodo, texto) {
+  if (nodo) nodo.textContent = texto;
+}
 
-    if (mensajes[status]) nodo.textContent = mensajes[status];
+function mostrar(formulario, si) {
+  if (formulario) formulario.hidden = !si;
+}
+
+function correoValidoLogin(email) {
+  const valor = String(email || "").trim().toLowerCase();
+  return valor === ADMIN_MATRIZ || DOMINIOS.test(valor);
+}
+
+function iniciar() {
+  const nodo = document.querySelector("[data-cuentas-mensaje]");
+  const formLogin = document.getElementById("intiwo-form-login");
+  const formRegistro = document.getElementById("intiwo-form-registro");
+  const btnSalir = document.getElementById("intiwo-cuentas-salir");
+
+  if (!supabase) {
+    mensaje(nodo, "Esta copia local no tiene la clave de Pages. Entra por el sitio publicado en GitHub para iniciar sesion.");
+    return;
   }
 
-  function inicializar() {
-    document.querySelectorAll('[data-cuentas-accion]').forEach((boton) => {
-      boton.addEventListener('click', () => {
-        actualizarEstado(boton.dataset.cuentasAccion);
-      });
+  document.querySelectorAll("[data-cuentas-accion]").forEach((boton) => {
+    boton.addEventListener("click", () => {
+      const accion = boton.dataset.cuentasAccion;
+      mostrar(formLogin, accion === "login");
+      mostrar(formRegistro, accion === "registro");
+      mensaje(nodo, accion === "login"
+        ? "Usa el correo con el que te dieron de alta y tu contrasena."
+        : "Solo si un administrador o docente ya te dio de alta. Tu eliges la contrasena.");
+    });
+  });
+
+  if (formLogin) {
+    formLogin.addEventListener("submit", async (evento) => {
+      evento.preventDefault();
+      const email = String(formLogin.email.value || "").trim().toLowerCase();
+      const password = formLogin.password.value;
+      if (!correoValidoLogin(email)) {
+        mensaje(nodo, "Solo se admite el administrador matriz o correos @inti.edu.sv / @clases.edu.sv.");
+        return;
+      }
+      mensaje(nodo, "Entrando…");
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        mensaje(nodo, error.message === "Invalid login credentials"
+          ? "Correo o contrasena incorrectos."
+          : error.message);
+        return;
+      }
+      window.location.href = new URL("../proyectos/pagina-hub-proyectos.html", window.location.href).href;
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', inicializar, { once: true });
-  } else {
-    inicializar();
+  if (formRegistro) {
+    formRegistro.addEventListener("submit", async (evento) => {
+      evento.preventDefault();
+      const email = String(formRegistro.email.value || "").trim().toLowerCase();
+      const password = formRegistro.password.value;
+      const repetir = formRegistro.password2.value;
+      if (!DOMINIOS.test(email)) {
+        mensaje(nodo, "El registro es solo para @inti.edu.sv o @clases.edu.sv.");
+        return;
+      }
+      if (password.length < 8 || password !== repetir) {
+        mensaje(nodo, password.length < 8 ? "La contrasena debe tener al menos 8 caracteres." : "Las contrasenas no coinciden.");
+        return;
+      }
+      mensaje(nodo, "Creando cuenta…");
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { emailRedirectTo: window.location.href }
+      });
+      if (error) {
+        mensaje(nodo, error.message || "No se pudo registrar.");
+        return;
+      }
+      mensaje(nodo, "Si el alta existia, la cuenta quedo creada. Luego inicia sesion.");
+    });
   }
-})();
+
+  if (btnSalir) {
+    btnSalir.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      mensaje(nodo, "Sesion cerrada.");
+    });
+    window.addEventListener("intiwo:auth-state-changed", (evento) => {
+      btnSalir.hidden = !(evento.detail && evento.detail.rol);
+    });
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", iniciar, { once: true });
+} else {
+  iniciar();
+}

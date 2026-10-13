@@ -27,6 +27,9 @@ async function cargarBloquesInicio() {
 
   let contenidoPublicado = null;
   try {
+    if (!supabase) {
+      throw new Error("[INTIWO Inicio] Cliente Supabase no configurado en este entorno.");
+    }
     const { data, error } = await supabase
       .from("contenido_inicio")
       .select("contenido")
