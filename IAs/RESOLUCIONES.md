@@ -1,6 +1,6 @@
 # Resoluciones (c�mo lo hizo cada IA)
 
-**Ultima modificacion:** 2026-10-13 14:10 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-13 14:49 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Solo existen estos dos archivos de IAs, en `IAs/`: este y `BACKLOG.md`. Al cambiar uno: **�ltima modificaci�n** con fecha, hora **UTC-6**, nombre de la IA y dispositivo. Si cambia una tarea, la misma marca en ambos.
 
@@ -973,4 +973,22 @@ Bachillerato General a distancia, 1� y 2�, s�bados y domingo. Requisito: m
 **Como:** SQL minimo `Sistema 1/supabase/login-invitaciones-minimo.sql` (NIE en perfiles, invitaciones, trigger, RLS de perfiles/invitaciones). Cuentas con formularios de entrar/registrarse. Configuraciones admin: formulario Dar de alta. El rol lo pone la invitacion, no el dominio. El NIE se extrae solo si el rol es editor. No se ejecuto el SQL remoto desde esta IA.
 
 **Uso:** el Instituto debe correr ese SQL una vez, publicar Pages, iniciar sesion con el Gmail admin, dar de alta los dos correos, y esas personas se registran en Cuentas con su contrasena. Confirmacion de correo de Auth conviene apagarla mientras se prueba. No correr `politicas-rls.sql` completo todavia (exige tablas que no existen).
+
+---
+
+### 2026-10-13 14:49 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** El alta de `19795194@inti.edu.sv` como docente no envio Gmail. Quiere que Supabase mande un correo con clic hacia Registrarse / Cuentas.
+
+**Causa:** `Dar de alta` solo insertaba `invitaciones_correo`. Eso no llama a Auth y no dispara correo. El dashboard de Users tampoco se usa para esto.
+
+**Como:** Edge Function `supabase/functions/invitar-cuenta` con `inviteUserByEmail` y `redirectTo` a Cuentas de Pages. El formulario de Configuraciones ahora invoca esa funcion. Cuentas (S1 y S2) muestra el formulario de contrasena si la URL trae `type=invite`.
+
+**Que debe hacer Instituto (no se puede desde el repo):**
+1. Desplegar la funcion (`npx supabase functions deploy invitar-cuenta --project-ref akvprrwjfstncadkybeh` o pegar el TS en Edge Functions).
+2. Authentication → Emails → plantilla Invite: el enlace debe ser `{{ .ConfirmationURL }}`.
+3. Authentication → URL Configuration: Site URL del sitio Pages y Redirect URLs con `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/**`.
+4. Publicar Pages con estos JS.
+5. Volver a Dar de alta el mismo correo (la fila pendiente ya existe; la funcion reenvia el correo).
+6. Si @inti.edu.sv no llega: SMTP institucional (Google Workspace) en Project Settings → Authentication → SMTP. Revisar spam.
 

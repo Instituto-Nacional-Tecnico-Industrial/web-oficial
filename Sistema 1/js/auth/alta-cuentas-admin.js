@@ -1,4 +1,4 @@
-/* INTIWO | admin da de alta docente/editor desde Configuraciones */
+/* INTIWO | admin da de alta y envia correo de invitacion */
 import { supabase } from "../supabase/cliente-supabase.js";
 
 const DOMINIOS = /@(inti|clases)\.edu\.sv$/i;
@@ -27,7 +27,7 @@ async function listarPendientes() {
   lista.replaceChildren();
   data.forEach((fila) => {
     const p = document.createElement("p");
-    p.textContent = fila.email + " ? " + fila.rol_destino + (fila.usado_en ? " (ya se registro)" : " (pendiente de Registrarse)");
+    p.textContent = fila.email + " ? " + fila.rol_destino + (fila.usado_en ? " (ya activo)" : " (correo pendiente o sin confirmar)");
     lista.appendChild(p);
   });
 }
@@ -61,18 +61,20 @@ function iniciar() {
         return;
       }
     }
-    aviso("Guardando alta…");
-    const { error } = await supabase.from("invitaciones_correo").insert({
-      email,
-      rol_destino: rol,
-      invitado_por: user.id
+    aviso("Enviando invitacion por correo…");
+    const { data, error } = await supabase.functions.invoke("invitar-cuenta", {
+      body: { email, rol }
     });
     if (error) {
-      aviso(error.message);
+      aviso("No se pudo enviar el correo. Hay que desplegar la funcion invitar-cuenta en Supabase. " + (error.message || ""));
+      return;
+    }
+    if (data && data.error) {
+      aviso(data.error);
       return;
     }
     form.reset();
-    aviso("Alta registrada. Esa persona entra a Cuentas ? Registrarse con ese correo y su propia contrasena.");
+    aviso("Invitacion enviada. Esa persona debe abrir el correo de INTIWO/Supabase y pulsar el enlace para elegir su contrasena en Cuentas.");
     listarPendientes();
   });
 

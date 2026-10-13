@@ -626,6 +626,10 @@ html[data-theme="dark"] .intiwo-sello-hero {
   text-align: left;
 }
 
+.intiwo-cuentas-form[hidden] {
+  display: none !important;
+}
+
 .intiwo-cuentas-form label {
   display: grid;
   gap: 6px;

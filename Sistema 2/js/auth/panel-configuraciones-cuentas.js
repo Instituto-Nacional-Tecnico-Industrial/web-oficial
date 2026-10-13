@@ -21,6 +21,7 @@ function iniciar() {
   const nodo = document.querySelector("[data-cuentas-mensaje]");
   const formLogin = document.getElementById("intiwo-form-login");
   const formRegistro = document.getElementById("intiwo-form-registro");
+  const formInvitacion = document.getElementById("intiwo-form-clave-invitacion");
   const btnSalir = document.getElementById("intiwo-cuentas-salir");
 
   if (!supabase) {
@@ -33,6 +34,7 @@ function iniciar() {
       const accion = boton.dataset.cuentasAccion;
       mostrar(formLogin, accion === "login");
       mostrar(formRegistro, accion === "registro");
+      mostrar(formInvitacion, false);
       mensaje(nodo, accion === "login"
         ? "Usa el correo con el que te dieron de alta y tu contrasena."
         : "Solo si un administrador o docente ya te dio de alta. Tu eliges la contrasena.");
@@ -85,6 +87,40 @@ function iniciar() {
         return;
       }
       mensaje(nodo, "Si el alta existia, la cuenta quedo creada. Luego inicia sesion.");
+    });
+  }
+
+  function esInvitacionEnUrl() {
+    const hash = window.location.hash || "";
+    const busca = window.location.search || "";
+    return hash.indexOf("type=invite") !== -1
+      || hash.indexOf("type=recovery") !== -1
+      || busca.indexOf("type=invite") !== -1;
+  }
+
+  if (esInvitacionEnUrl() && formInvitacion) {
+    mostrar(formLogin, false);
+    mostrar(formRegistro, false);
+    mostrar(formInvitacion, true);
+    mensaje(nodo, "Invitacion recibida. Elige tu contrasena para activar la cuenta.");
+  }
+
+  if (formInvitacion) {
+    formInvitacion.addEventListener("submit", async (evento) => {
+      evento.preventDefault();
+      const password = formInvitacion.password.value;
+      const repetir = formInvitacion.password2.value;
+      if (password.length < 8 || password !== repetir) {
+        mensaje(nodo, password.length < 8 ? "La contrasena debe tener al menos 8 caracteres." : "Las contrasenas no coinciden.");
+        return;
+      }
+      const { error } = await supabase.auth.updateUser({ password });
+      if (error) {
+        mensaje(nodo, error.message);
+        return;
+      }
+      mensaje(nodo, "Cuenta activada.");
+      window.location.href = new URL("../proyectos/pagina-hub-proyectos.html", window.location.href).href;
     });
   }
 

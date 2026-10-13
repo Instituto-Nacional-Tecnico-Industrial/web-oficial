@@ -34,7 +34,7 @@
         <button class="intiwo-cuentas-opcion" type="button" data-cuentas-accion="login">Iniciar sesión</button>
         <button class="intiwo-cuentas-opcion intiwo-cuentas-opcion--secundaria" type="button" data-cuentas-accion="registro">Registrarse</button>
       </div>
-      <form id="intiwo-form-login" class="intiwo-cuentas-form" hidden>
+      <form id="intiwo-form-login" class="intiwo-cuentas-form">
         <label>Correo <input type="email" name="email" autocomplete="username" required></label>
         <label>Contraseña <input type="password" name="password" autocomplete="current-password" required></label>
         <button class="intiwo-cuentas-opcion" type="submit">Entrar</button>
@@ -44,6 +44,12 @@
         <label>Contraseña <input type="password" name="password" autocomplete="new-password" minlength="8" required></label>
         <label>Repetir contraseña <input type="password" name="password2" autocomplete="new-password" minlength="8" required></label>
         <button class="intiwo-cuentas-opcion" type="submit">Crear cuenta</button>
+      </form>
+      <form id="intiwo-form-clave-invitacion" class="intiwo-cuentas-form" hidden>
+        <p>Elige tu contraseña para activar la cuenta institucional.</p>
+        <label>Contraseña <input type="password" name="password" autocomplete="new-password" minlength="8" required></label>
+        <label>Repetir contraseña <input type="password" name="password2" autocomplete="new-password" minlength="8" required></label>
+        <button class="intiwo-cuentas-opcion" type="submit">Activar cuenta</button>
       </form>
       <p class="intiwo-cuentas-mensaje" data-cuentas-mensaje aria-live="polite">Elige una opción para continuar.</p>
       <button class="intiwo-cuentas-opcion intiwo-cuentas-opcion--secundaria" type="button" id="intiwo-cuentas-salir" hidden>Cerrar sesión</button>

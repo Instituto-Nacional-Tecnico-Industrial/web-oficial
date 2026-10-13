@@ -1,0 +1,4 @@
+project_id = "akvprrwjfstncadkybeh"
+
+[functions.invitar-cuenta]
+verify_jwt = true
