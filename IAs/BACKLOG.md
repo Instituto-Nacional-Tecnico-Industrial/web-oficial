@@ -1,6 +1,6 @@
 # Backlog INTIWO
 
-**Ultima modificacion:** 2026-10-13 14:49 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-13 16:14 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Carpeta exclusiva de IAs: `IAs/` (solo este archivo y `RESOLUCIONES.md`). Al marcar o agregar: misma fecha, hora (UTC-6) e IA en ambos; indica el dispositivo. Apuntes en orden cronologico.
 
@@ -1798,6 +1798,10 @@ Si dudas, elige la opcion mas restrictiva y etiquetala DECISION.
 ### 2026-10-13 14:49 (UTC-6) | Cursor Grok 4.6 | laptop MINEDUCYT
 
 - [~] Correo de invitacion Auth: Edge Function `invitar-cuenta` + Dar de alta llama `functions.invoke`; Cuentas activa contrasena con `type=invite`. Pendiente: Instituto despliega la funcion, plantilla Invite con `{{ .ConfirmationURL }}`, SMTP si @inti no llega, publicar Pages y volver a dar de alta `19795194@inti.edu.sv`
+
+### 2026-10-13 16:14 (UTC-6) | Cursor Grok 4.6 | laptop MINEDUCYT
+
+- [~] `invitar-cuenta` reescrita con `withSupabase({ auth: "user" })` (claves nuevas). Dar de alta devolvia non-2xx. Instituto debe volver a pegar `index.ts` en el editor de Functions y Deploy. JWT legacy OFF.
 
 
 ### 2026-10-11 14:10 (UTC-6) | Cursor | laptop MINEDUCYT

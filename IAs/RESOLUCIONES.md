@@ -1,6 +1,6 @@
 # Resoluciones (c�mo lo hizo cada IA)
 
-**Ultima modificacion:** 2026-10-13 14:49 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-13 16:14 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Solo existen estos dos archivos de IAs, en `IAs/`: este y `BACKLOG.md`. Al cambiar uno: **�ltima modificaci�n** con fecha, hora **UTC-6**, nombre de la IA y dispositivo. Si cambia una tarea, la misma marca en ambos.
 
@@ -991,4 +991,14 @@ Bachillerato General a distancia, 1� y 2�, s�bados y domingo. Requisito: m
 4. Publicar Pages con estos JS.
 5. Volver a Dar de alta el mismo correo (la fila pendiente ya existe; la funcion reenvia el correo).
 6. Si @inti.edu.sv no llega: SMTP institucional (Google Workspace) en Project Settings → Authentication → SMTP. Revisar spam.
+
+---
+
+### 2026-10-13 16:14 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Dar de alta docente y editor en Pages muestra "Edge Function returned a non-2xx status code".
+
+**Causa probable:** la funcion se creo en el editor nuevo (claves publishable/secret) pero el codigo usaba `Deno.serve` + `SUPABASE_ANON_KEY` / `SERVICE_ROLE_KEY`, que en proyectos con claves nuevas pueden ir vacias. El gateway "Verify JWT with legacy secret" tambien rechaza el JWT actual.
+
+**Como:** `invitar-cuenta` ahora usa `withSupabase({ auth: "user" })` y `ctx.supabaseAdmin`. El mensaje de Configuraciones lee el JSON de error. Instituto debe pegar de nuevo el `index.ts` en Edge Functions → Code → Deploy, dejar JWT legacy apagado, y reintentar Dar de alta.
 

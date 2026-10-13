@@ -11,7 +11,7 @@ npx supabase login
 npx supabase functions deploy invitar-cuenta --project-ref akvprrwjfstncadkybeh
 ```
 
-O en el dashboard: **Edge Functions ? Deploy a new function**, nombre `invitar-cuenta`, pegar `index.ts`.
+O en el dashboard: **Edge Functions ? invitar-cuenta ? Code**, pegar `index.ts` y Deploy. JWT legacy OFF. `withSupabase({ auth: "user" })`.
 
 ## Plantilla del correo
 

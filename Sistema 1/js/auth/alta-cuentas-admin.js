@@ -65,8 +65,18 @@ function iniciar() {
     const { data, error } = await supabase.functions.invoke("invitar-cuenta", {
       body: { email, rol }
     });
+    let detalle = "";
     if (error) {
-      aviso("No se pudo enviar el correo. Hay que desplegar la funcion invitar-cuenta en Supabase. " + (error.message || ""));
+      detalle = error.message || "";
+      try {
+        const cuerpoError = error.context && typeof error.context.json === "function"
+          ? await error.context.json()
+          : data;
+        if (cuerpoError && cuerpoError.error) detalle = cuerpoError.error;
+      } catch (_e) {
+        /* se deja el mensaje de invoke */
+      }
+      aviso("No se pudo enviar el correo: " + (detalle || "error desconocido"));
       return;
     }
     if (data && data.error) {
