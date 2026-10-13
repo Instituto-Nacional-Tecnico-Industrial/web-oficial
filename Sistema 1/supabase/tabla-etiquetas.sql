@@ -1,0 +1,5 @@
+-- INTIWO SQL | etiquetas + proyecto_etiqueta N:M | BACKLOG S2N-04a | fuente canonica S1
+-- NO APLICAR hasta cerrar el DER revisado y autorizacion expresa.
+-- etiquetas: id uuid PK, slug UK, nombre, familia (especialidad|asignatura|oficio|tematica|salud|...)
+-- proyecto_etiqueta: (proyecto_id, etiqueta_id) PK compuesta, FKs.
+-- Semilla amplia en semilla-etiquetas.sql (horror, halloween, salud, etc.).

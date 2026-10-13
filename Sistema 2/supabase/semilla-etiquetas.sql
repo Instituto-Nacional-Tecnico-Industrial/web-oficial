@@ -1,0 +1,1 @@
+-- Copia de referencia. Fuente canonica: Sistema 1/supabase/semilla-etiquetas.sql. Misma base.

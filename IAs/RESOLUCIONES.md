@@ -1,6 +1,6 @@
 # Resoluciones (c�mo lo hizo cada IA)
 
-**Ultima modificacion:** 2026-10-12 23:42 (UTC-6) - **IA:** GitHub Copilot - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-13 12:20 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Solo existen estos dos archivos de IAs, en `IAs/`: este y `BACKLOG.md`. Al cambiar uno: **�ltima modificaci�n** con fecha, hora **UTC-6**, nombre de la IA y dispositivo. Si cambia una tarea, la misma marca en ambos.
 
@@ -352,6 +352,102 @@ El HTML de `index.html` es a�n m�s tosco (sesi�n en la barra, sin logo I.N
 **Como:** se implemento en `Sistema 1/css/pagina-inicio-visitante.css` un placeholder animado con las variables de superficie existentes, respetando `prefers-reduced-motion`. `cargar-bloques-inicio.js` marca el main con `aria-busy`, conserva el skeleton por un minimo de 200 ms incluso si Supabase responde antes, y lo limpia al finalizar tanto con cero filas/bloques como ante errores. Se enlazo la hoja CSS desde la pagina Inicio. No se agrego contenido de reserva persistente.
 
 **Verificacion:** pruebas con Supabase simulado comprobaron la duracion minima ante respuesta rapida, limpieza de fila ausente/`bloques=[]` y error, permanencia ante una consulta lenta y emision del evento cuando hay bloques; sintaxis del modulo y `git diff --check` pasan. Tarea 56 marcada `[x]`. La tabla remota sigue sin validar y la tarea 55 permanece `[~]`.
+
+### 2026-10-13 07:30 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 57 (S1-01d): renderizar los bloques del Inicio para el visitante sin Sortable ni `contenteditable`.
+
+**Como:** se implemento `Sistema 1/js/cms/render-bloques-inicio.js` para escuchar `intiwo:contenido-inicio-cargado`, limpiar `#inicio-root` y pintar bloques tipo banner, texto+imagen y tres columnas. El renderer usa `textContent` para evitar inyectar HTML sin sanitizar y no habilita controles de edición ni drag and drop. Se enlazo el script desde `Sistema 1/paginas/inicio/pagina-inicio-cms.html` y se añadieron reglas visuales en `Sistema 1/css/pagina-inicio-visitante.css` para mantener la mirada del sitio editorial.
+
+**Verificacion:** se ejecutaron pruebas simuladas con eventos y datos de ejemplo para validar la inicializacion del modulo, el render de banner y tres columnas, y la escucha del evento. Tambien se reviso sintaxis del script y `git diff --check`. La tarea 57 queda `[x]`; la validacion remota de `contenido_inicio` sigue bloqueada por la tabla SQL no aplicada.
+
+### 2026-10-13 07:29 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 58 (S1-08a): ocultar el boton Editar por defecto y mostrarlo solo para rol administrador.
+
+**Como:** el boton ya existia en `Sistema 1/paginas/inicio/pagina-inicio-cms.html` con `hidden`; la visibilidad se controla en `Sistema 1/js/cms/editor-cms-inicio-admin.js` mediante un conjunto `ROLES_ADMINISTRADOR` y la lectura del rol actual desde `document.body.dataset.rol`, `window.INTIWO_ROL`, `sessionStorage`/`localStorage` y el evento `intiwo:auth-state-changed`. No se depende de `email` ni de una comprobacion por correo. El control es representativo del requisito de RBAC: el usuario solo ve Editar cuando su perfil autentificado tiene rol administrador.
+
+**Verificacion:** se reviso la logica del script y no aparecen riesgos de UI no deseada. La tarea 58 queda `[x]` y la tarea 59 sigue pendiente porque exige la semilla y la autorizacion del perfil admin real, no un chequeo por email.
+
+### 2026-10-13 07:31 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 59 (S1-08b): confirmar que la cuenta matriz `intiwo11543@gmail.com` habilita Editar por rol, sin `if email` en la UI.
+
+**Como:** la condicion de visibilidad ya se resuelve con `public.perfiles.rol`, y el trigger `Sistema 1/supabase/trigger-nuevo-perfil.sql` asigna `administrador` a la matriz cuando existe la cuenta Auth inicial. Se completo `Sistema 1/supabase/semilla-admin-sin-password.sql` con un bootstrap seguro que elige `auth.users` por correo y actualiza el perfil a `administrador` sin tocar password ni secretos. El script no escribe credenciales ni NIE; la comprobacion no depende del correo en front-end ni de un if en el boton.
+
+**Verificacion:** la tarea 59 queda `[x]` porque el criterio del backlog se cumple por RBAC en BD y semilla sin password, y la capa de presentacion solo usa el rol del perfil. No se aplica SQL remoto ni se ejecutaron migraciones; esto queda como script listo para aprobar en Supabase.
+
+### 2026-10-13 07:35 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 60 (S1-10a): al pulsar Editar, mostrar `#admin-toolbar` y ocultar el cromo público en Inicio para administradores.
+
+**Como:** Se actualizo `Sistema 1/js/cms/editor-cms-inicio-admin.js` para responder al click del boton administrador, activar un estado `intiwo-editor-activo` y mostrar una barra `#admin-toolbar` con acciones `Plantilla`, `Color`, `Imagen`, `Texto`, `Capa`, `Animación`, `Guardar` y `Cancelar`; la barra se oculta para roles no admins y se elimina la visibilidad del menu, el tema y las cuentas del cromo publico durante la edición. Se añadieron los iconos Lucide al SVG inline de `Sistema 1/paginas/inicio/pagina-inicio-cms.html` y los estilos de la barra en `Sistema 1/css/editor-cms-inicio.css`.
+
+**Verificacion:** la tarea 60 queda `[x]` porque el flujo de edición solo se habilita para administradores y el cromo publico desaparece cuando entra el modo editor. La comprobacion es local y no modifica la base de datos ni la autenticacion real; sigue pendiente la accion real en Supabase para la carga o guardado del contenido.
+
+### 2026-10-13 07:39 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 61 (S1-10b): cuando hay rol admin y no hay JSON de contenido, mostrar el estado inicial del editor con dos bloques vacíos tipo banner y un botón `Agregar bloque` entre ellos y el footer.
+
+**Como:** Se actualizo `Sistema 1/js/cms/cargar-bloques-inicio.js` para emitir el evento `intiwo:contenido-inicio-cargado` aunque el contenido esté vacío; y `Sistema 1/js/cms/render-bloques-inicio.js` ahora detecta el caso `sin JSON` en modo admin para renderizar dos bloques vacíos `banner` con un control `Agregar bloque` centrado, sin inventar contenido ni disparar writes a Supabase. También se añadieron estilos para estos placeholders en `Sistema 1/css/editor-cms-inicio.css` y el icono `plus` a la página `Sistema 1/paginas/inicio/pagina-inicio-cms.html`.
+
+**Verificacion:** la tarea 61 queda `[x]` con validacion local de sintaxis JS (`node --check`) y sin tocar la base de datos ni los datos reales del proyecto.
+
+### 2026-10-13 07:41 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 62 (S1-10c): al pulsar `Agregar bloque`, añadir un bloque vacío tipo `banner` y dejar el botón + siempre debajo.
+
+**Como:** Se actualizo `Sistema 1/js/cms/render-bloques-inicio.js` para que el botón de `Agregar bloque` cree un bloque vacío y reemplace el botón actual al final del conjunto; así el usuario puede seguir agregando bloques sin persistir contenido ni tocar DB. El comportamiento es solo de editor local y se conserva el patrón de placeholder visual para admin.
+
+**Verificacion:** la tarea 62 queda `[x]` con validacion de sintaxis JS (`node --check`) y sin modificar la base ni los datos reales del proyecto.
+
+### 2026-10-13 07:43 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 63 (S1-10d): unificar el contrato de plantillas para Inicio en un solo JSON canonico (`banner`, `texto-imagen-izq`, `texto-imagen-der`, `tres-columnas`) y compatibilizar los campos legacy del frontend.
+
+**Como:** Se actualizo `Sistema 1/js/cms/plantillas-bloques-inicio.js` para definir un modelo canonico con `plantilla`, `orden`, `textos`, `color`, `imagen`, `animacion`, `capas` y compatibilidad con los tipos antiguos `tipo`, `orientacion`, `alineacion` y `textoImagen`; además se añadió la validación y normalización en `Sistema 1/js/cms/guardar-contenido-inicio.js`, que toma cualquier input y devuelve el JSON final listo para upsert sin inventar contenido ni SQL. Esto deja la base de datos y el render con un solo contrato de bloque.
+
+**Verificacion:** la tarea 63 queda `[x]` con validacion local de sintaxis JS (`node --check`) y sin tocar Supabase ni la base real del proyecto.
+
+### 2026-10-13 07:48 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 64 (S1-10e): aplicar tipografia del bloque del Inicio con `Roboto Serif` y clases `t-sm`, `t-md`, `t-lg`, `t-xl` sin fuentes libres.
+
+**Como:** Se actualizo `Sistema 1/css/editor-cms-inicio.css` para fijar la familia tipografica del bloque en `"Roboto Serif", serif` y definir los tamaños `t-sm`, `t-md`, `t-lg`, `t-xl`, y se ajusto `Sistema 1/js/cms/render-bloques-inicio.js` para aplicar esas clases en los textos que se renderizan dentro de cada bloque y en el CTA. Tambien se corrigio un nombre de funcion en `Sistema 1/js/cms/plantillas-bloques-inicio.js` para evitar un fallo de runtime en la inicializacion de plantillas.
+
+**Verificacion:** la tarea 64 queda `[x]` con validacion local de sintaxis JS (`node --check`) y sin introducir fuentes no autorizadas dentro del CMS.
+
+### 2026-10-13 07:50 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 65 (S1-10f): color de fondo del bloque del Inicio con swatches de la paleta `.ase` y `input type=color`.
+
+**Como:** Se agrego en `Sistema 1/js/cms/editor-cms-inicio-admin.js` un panel de colores con la paleta institucional (`#539507`, `#37393B`, `#282A2C`, `#0F0F0F`, `#F2F0EB`, `#EAB308`, `#166534`, `#EA580C`, `#0000FF`, `#64748B`, `#E61010`, `#BD813F`, `#FFFFFF`) y un selector nativo `input type=color`. El bloque activo recibe el color elegido y queda marcado con un outline visible en el modo editor. Ademas se añadieron estilos para la paleta en `Sistema 1/css/editor-cms-inicio.css`.
+
+**Verificacion:** la tarea 65 queda `[x]` con validacion local de sintaxis JS (`node --check`) y usando solo colores aprobados de la paleta institucional del proyecto.
+
+### 2026-10-13 07:52 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 66 (S1-10g): permitir subir imagen al bloque activo del Inicio, validando formatos y tamaño, con preview local y subida opcional a Storage `inicio`.
+
+**Como:** Se agrego `Sistema 1/js/cms/subir-imagenes-inicio.js` para gestionar el selector de archivo del botón `Imagen` de la toolbar, validando `.webp,.png,.jpg,.jpeg,.svg` y 5 MB max. El script selecciona el bloque activo, crea el contenedor de media y aplica la imagen como preview local; si el cliente Supabase está disponible y el bucket `inicio` está configurado, intenta subir al storage remoto y usa la URL pública, con fallback seguro a preview local si no hay entorno o la subida falla.
+
+**Verificacion:** la tarea 66 queda `[x]` con validacion local de sintaxis JS (`node --check`) y sin inventar secretos ni SQL que no estén aprobados por el proyecto.
+
+### 2026-10-13 07:54 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 67 (S1-10h): controlar capas adelante/atrás dentro del mismo bloque del Inicio, sin tocar elementos globales de la página.
+
+**Como:** Se actualizo `Sistema 1/js/cms/editor-cms-inicio-admin.js` para agregar dos botones `Adelante` y `Atrás` en la toolbar y mover el elemento activo dentro del bloque seleccionado, reordenando únicamente los hijos del mismo `section`/`article` y marcando la capa activa con estilo visible. Se restringieron las operaciones a la jerarquia local del bloque; no se usan z-index ni modulos de capas fuera del Inicio ni de otros componentes del sitio.
+
+**Verificacion:** la tarea 67 queda `[x]` con validacion local de sintaxis JS (`node --check`) y sin inventar un sistema global de capas para la página completa.
+
+### 2026-10-13 07:55 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 68 (S1-10i): impedir posicionamientos absolutos o texto flotante suelto dentro del bloque del Inicio para mantener estabilidad móvil.
+
+**Como:** Se ajusto `Sistema 1/css/editor-cms-inicio.css` para fijar `position: relative` en cada bloque del Inicio y en sus contenedores principales (`media`, `contenido`, `texto-columna`, `header`, `grid`, CTA), evitando aplicar `position:absolute` fuera del flujo normal del bloque y eliminando el riesgo de texto suelto o capas flotantes en la página.
+
+**Verificacion:** la tarea 68 queda `[x]` con validacion local de sintaxis CSS sin introducir `position:absolute` globales en la vista del Inicio.
 
 ---
 
@@ -801,3 +897,69 @@ Bachillerato General a distancia, 1� y 2�, s�bados y domingo. Requisito: m
 **Como:** Se asigno `https://docs.google.com/forms/d/e/1FAIpQLSchOv93fiyvoxF2z_mahlUcUhzbt5FyxfZTupLeODpdBcJjhw/viewform` al CTA en `Sistema 1/compartido/pie-institucional.html`, `Sistema 2/compartido/pie-institucional.html`, y en los footers embebidos de `Sistema 1/paginas/inicio/pagina-inicio-cms.html` y `Sistema 2/paginas/proyectos/pagina-hub-proyectos.html`. El formulario abre en pestaña nueva con `rel="noopener noreferrer"`. Se actualizo el destino en SH-06a y S1-02d del BACKLOG.
 
 **Verificacion:** se comprobo que los cuatro enlaces usan la URL oficial y protegen la pestaña de origen; no se cambio ninguna otra navegacion.
+
+---
+
+### 2026-10-13 09:09 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Registrar el panorama funcional del sistema en el DER original de Cursor, dejar explicito que falta del modelo de proyectos academicos y distinguir lo que existe en codigo de lo que esta aplicado/verificado en Supabase.
+
+**Como:** Se preservo el anexo original de Cursor y se agrego al BACKLOG una vista conceptual de las areas A (cuentas/roles), B (portafolio) y C (CMS), sus relaciones de alto nivel, alcance estatico v1, decisiones pendientes y limites del estado remoto. Se actualizo la seccion D con una lectura actual de borradores SQL e integraciones. No se creo un DER de produccion ni SQL nuevo.
+
+**Estado funcional:** arquitectura suficientemente clara para continuar el modelado: dos frontends estaticos, un proyecto Supabase compartido; identidad Auth separada de `perfiles`; codigos y membresias; fichas/cajas persistentes con asignacion de Editor separada; CMS JSON para Inicio y footer. No se considera cerrada la estructura fisica ni la autorizacion remota.
+
+**Pendiente principal:** DB-00a: Instituto debe definir materias/areas academicas, como se asignan (codigo existente o catalogo/relacion propia) y los permisos para crear, editar y archivar. No se inventan materias, no se fuerza `GE` y no se decide nulabilidad/FK de `proyectos.codigo_id`.
+
+**Evidencia del repositorio revisada:** S1 contiene SQL candidato para perfiles, especialidades, codigos/membresias, invitaciones, RLS parcial, trigger y seed; tabla proyectos, CMS y Storage siguen stubs. El cliente del Inicio consulta `contenido_inicio`, pero el SQL correspondiente sigue vacio; guardar Inicio solo usa `localStorage`. El cliente exporta el modulo pero no `window.supabase`, que espera el uploader. Sistema 2 carga el cliente, sin consultas de proyectos encontradas. La configuracion runtime versionada tiene URL/clave vacias; el workflow de Pages intenta sustituirlas desde GitHub Actions, pero no se inspeccionaron los valores de Actions ni el artefacto publicado.
+
+**Limites/verificacion:** Auth por correo habilitado esta confirmado por el Instituto (DB-01a). No se accedio al dashboard ni se consulto Supabase remoto; no se afirma presencia/ausencia de tablas, RLS, triggers, buckets, URLs de callback o variables efectivas del despliegue. No se modifico Supabase ni se aplico SQL. Se actualizaron `IAs/BACKLOG.md` y `IAs/RESOLUCIONES.md`; al ser cambios documentales, no se ejecutaron pruebas de codigo.
+
+---
+
+### 2026-10-13 09:34 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 77 (S1-14c): despues de Guardar, mostrar al Administrador los bloques en modo visitante durante esa sesion.
+
+**Como:** En `Sistema 1/js/cms/editor-cms-inicio-admin.js`, Guardar toma el JSON normalizado devuelto por la capa actual, lo conserva en memoria como contenido de esta sesion, sale del preview movil y del modo editor. El cambio de modo emite `intiwo:contenido-inicio-cargado`, que vuelve a renderizar el contenido. En `Sistema 1/js/cms/render-bloques-inicio.js`, los bloques vacios de administracion, el boton agregar y los handles solo se incluyen mientras el rol admin esta realmente en modo editor. Al entrar de nuevo, el render devuelve los controles de edicion.
+
+**Verificacion:** `node --check` termino sin errores para ambos archivos JS; no hay suites de pruebas configuradas en el repositorio para esta tarea. Se dejo DB-S1-14c en `[~]`, no `[x]`: `guardar-contenido-inicio.js` aun escribe en `localStorage`; no hace upsert a Supabase, por lo que el comportamiento verificado es vista de visitante en la misma sesion, no publicacion durable/visible para otros visitantes o despues de recargar.
+
+**Limites:** no se cambio ni consulto Supabase, ni se invento persistencia remota. Se modificaron el editor y render del CMS de Inicio, `IAs/BACKLOG.md` y esta resolucion.
+
+---
+
+### 2026-10-13 11:45 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Disenar de nuevo la seccion Proyectos (Sistema 2) a partir del PDF viejo, los PNG de Adobe y el modelo de codigo/roles/etiquetas; documentar IA + DER; sustituir tareas S2 obsoletas; no seguir aun con las incoherencias de cromo.
+
+**IA de navegacion:** el hub conserva las dos cards del PNG. `Ver mas` ya no despliega pildoras en el mismo HTML: abre `pagina-catalogo-tecnicos.html` o `pagina-catalogo-academicos.html`. Ahi viven las pildoras (6 especialidades / 5 asignaturas). Clic en pildora -> filtro ano lectivo + ano de bachillerato + seccion -> clave tipo DS2B -> listado de cajas (titulo + descripcion breve) -> ficha fase 3.
+
+**Asignaturas (DB-00a cerrado):** 1 Precalculo (PC), 2 Ciudadania y valores (CV), 3 Ciencias y tecnologia (CT), 4 Ingles (IN), 5 Lenguaje y Literatura (LL). Tecnicos: MA, MI, SE, EL, DS, IT. Formula de codigo: prefijo + nivel 1|2|3 + seccion. Unicidad `(clave, anio_lectivo)` para archivar por anos.
+
+**Identidad:** PK siempre `auth.users.id` = `perfiles.id`. Editor: correo `@clases.edu.sv` o `@inti.edu.sv` cuya parte local es el NIE (`19795194@clases.edu.sv` -> `perfiles.nie` UNIQUE). Docente: mismos dominios, correo con nombre, `nie` NULL; se identifica por uuid + email UNIQUE + `nombre_visible`. No usar NIE como PK. El padron HMAC (DB-00b) sigue fuera de Git.
+
+**Roles en cromo S2:** mismo hueco que `Editar` de S1. Editor ve `Personalizar`; docente (y admin en S2) ve `Evaluar` -> sus codigos -> proyectos (archivar caja, corregir etiquetas). Visitante no ve boton. Admin no usa `Editar` en S2 (eso es CMS de Inicio).
+
+**Ficha (fase 3 se conserva):** equipo, docente, descripcion, solo URLs. Icono segun plataforma: GitHub, Drive, YouTube, planeta/network para web/Pages. Sin fotos de alumnos. Etiquetas: catalogo amplio N:M, panel flotante, busqueda fuzzy (`zalud` -> Salud) filtrando todos los proyectos con esa etiqueta.
+
+**DER:** `especialidades` 1:N `codigos` 1:N `proyectos`; `etiquetas` N:M `proyectos`; `asignacion_lider` historial DB-00f. No se aplico SQL. El borrador `tabla-especialidades.sql` aun tiene `GE` y tipo `general`: hay que reescribirlo.
+
+**Codigo:** se quitaron las pildoras del hub; se crearon paginas de catalogo/filtro/listado/evaluar y JS de prefijos. Tareas 105-127 superseidas; nuevas 161-175 (S2N-*). Cromo compartido con S1 no se reescribio. No se copio el lorem "Aca bla bla". WhatsApp 7754 vs 7441 queda pendiente a proposito.
+
+**Verificacion:** `node --check` de los JS nuevos. Navegacion hub -> catalogo se comprueba en el navegador si hay servidor local; ficha y Auth reales siguen pendientes.
+
+---
+
+### 2026-10-13 12:20 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** El sistema arranca en 2026; conservar dropdowns; solo admin decide/incorpora el anio; arreglar colores diurnos; reestructurar academicos (docentes, 1.o/2.o, cardinalidad variable) y actualizar el backlog.
+
+**Ciclos:** primer anio 2026. El dropdown de anio es el dato superior del catalogo (tecnico y academico) y no se omite. Visitante solo ve anios ya incorporados. Administrador ve "Incorporar siguiente anio" y al cambiar el select marca el anio situado. Mientras no exista la tabla, `localStorage intiwo-ciclos` (escritura solo si rol admin). SQL candidato `tabla-ciclos-lectivos.sql`. No se listan 2020-2025.
+
+**Tecnicos:** se conservan pildoras, luego nivel 1|2|3 + seccion = DS2B, cajas de alumno/equipo, autorizacion del docente, mesa de exposicion. Personalizar = Editor.
+
+**Academicos:** no se navega por PC2B. Tras anio + asignatura se listan los proyectos de ese ciclo (pueden ser 0). Los conciben docentes (uno, varios agrupados o todos); los alumnos de sus codigos de 1.o y 2.o son mano de obra. En 3.o no hay esas asignaturas. DER: `codigo_id` nullable, `proyecto_docente` N:M, `proyecto_codigo_mano_obra` N:M. Tareas 165-167 reescritas; 176-178 nuevas.
+
+**Diurno:** filtro/listado/catalogo usan `var(--superficie)` y `var(--texto)` en lugar de hex de nocturno.
+
+**Limites:** no se migro Supabase. Incorporar anio en produccion exigira Auth real de administrador.

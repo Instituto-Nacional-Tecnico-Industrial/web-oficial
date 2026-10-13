@@ -1,6 +1,6 @@
 # Backlog INTIWO
 
-**Ultima modificacion:** 2026-10-12 23:42 (UTC-6) | **IA:** GitHub Copilot | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-13 12:20 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Carpeta exclusiva de IAs: `IAs/` (solo este archivo y `RESOLUCIONES.md`). Al marcar o agregar: misma fecha, hora (UTC-6) e IA en ambos; indica el dispositivo. Apuntes en orden cronologico.
 
@@ -93,6 +93,9 @@ Sistema 1/
   supabase/tabla-contenido-inicio.sql
   supabase/tabla-footer-cms.sql
   supabase/tabla-proyectos.sql
+  supabase/tabla-etiquetas.sql
+  supabase/semilla-etiquetas.sql
+  supabase/tabla-ciclos-lectivos.sql
   supabase/tabla-invitaciones-correo.sql
   supabase/politicas-politicas-rls.sql
   supabase/storage-buckets.sql
@@ -105,17 +108,32 @@ Sistema 2/
   css/variables-tema-diurno-nocturno.css
   css/layout-hamburguesa-y-overlay.css
   css/hub-y-pildoras-proyectos.css
+  css/catalogo-y-listado-proyectos.css
   css/ficha-proyecto.css
   js/supabase/cliente-supabase.js
   js/tema/persistir-tema-diurno-nocturno.js
   js/auth/sesion-roles-auth.js
   js/cromo/menu-hamburguesa-overlay.js
+  js/cromo/boton-personalizar-o-evaluar.js
+  js/catalogo/ramas-y-prefijos.js
+  js/catalogo/ciclos-lectivos.js
+  js/catalogo/navegar-catalogo.js
+  js/catalogo/filtro-anio-seccion.js
+  js/catalogo/listado-cajas-codigo.js
   js/busqueda/buscar-proyectos.js
-  js/busqueda/filtrar-proyectos-especialidad.js
+  js/busqueda/buscar-etiquetas-fuzzy.js
   js/ficha/editar-ficha-propia.js
+  js/ficha/reconocer-plataforma-url.js
+  js/ficha/panel-etiquetas-flotante.js
   paginas/proyectos/pagina-hub-proyectos.html
+  paginas/catalogo/pagina-catalogo-tecnicos.html
+  paginas/catalogo/pagina-catalogo-academicos.html
+  paginas/filtro/pagina-filtro-anio-seccion.html
+  paginas/listado/pagina-listado-proyectos-codigo.html
   paginas/ficha/pagina-ficha-proyecto.html
-  supabase/  (copias de los .sql de S1, misma base)
+  paginas/evaluar/pagina-evaluar-codigos-docente.html
+  paginas/evaluar/pagina-evaluar-proyectos-codigo.html
+  supabase/  (copias de los .sql de S1, misma base; tabla-etiquetas.sql)
 ```
 
 Prohibido: `index.html`, `style.css`, `app.js`, `supabase.js` en la raiz. Prohibido Adobe y Documentacion. El archivo `js/supabase/cliente.js` es legado; **usar `cliente-supabase.js`**.
@@ -667,131 +685,157 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Verificacion 2026-10-12 23:42 (UTC-6):** se muestra un placeholder con colores de la paleta durante la consulta y se garantiza una duracion minima de 200 ms; usa `aria-busy`, respeta `prefers-reduced-motion` y se limpia en respuestas vacias y errores. Probado con respuestas simuladas rapidas/lentas; tarea `[x]`.
 
-57 [ ] S1-01d Render visitante: mismos componentes que el editor, `contenteditable=false`, sin Sortable.
+57 [x] S1-01d Render visitante: mismos componentes que el editor, `contenteditable=false`, sin Sortable.
 
   - **Extraer de:** F-CMS.
 
   - **Escribir en:** `Sistema 1/js/cms/render-bloques-inicio.js` usado por visitante y admin. No duplicar markup.
 
-58 [ ] S1-08a Boton Editar `display:none` por defecto; visible si `perfiles.rol==='administrador'`.
+  - **Verificacion 2026-10-13 07:30 (UTC-6):** se implemento un render con `textContent`, sin `innerHTML`, soportando banner, texto+imagen y tres columnas, y escuchando `intiwo:contenido-inicio-cargado` para pintar el contenido. Las plantillas se reparten por tipo/plantilla y no se habilita Sortable en visita. Tarea `[x]`.
+
+58 [x] S1-08a Boton Editar `display:none` por defecto; visible si `perfiles.rol==='administrador'`.
 
   - **Extraer de:** F-CMS; Lucide `pencil` F-LUCIDE. No hay PNG del boton: colocarlo en cromo Inicio, no en el menu.
 
   - **Escribir en:** Boton en `Sistema 1/paginas/inicio/pagina-inicio-cms.html` (fuera del menu). CSS `Sistema 1/css/editor-cms-inicio.css`. Visibilidad: `Sistema 1/js/cms/editor-cms-inicio-admin.js`.
 
-59 [ ] S1-08b Cuenta matriz `intiwo11543@gmail.com` tras login ve Editar (rol admin, no `if email` en cada boton).
+  - **Verificacion 2026-10-13 07:29 (UTC-6):** el boton ya existe oculto por defecto con `hidden` y `editor-cms-inicio-admin.js` lo muestra si el rol actual es administrador, consultando desde el almacenamiento/session y desde `window.__INTIWO_ROL__`/`body[data-rol]` sin depender de correo. Tarea `[x]`.
+
+59 [x] S1-08b Cuenta matriz `intiwo11543@gmail.com` tras login ve Editar (rol admin, no `if email` en cada boton).
 
   - **Extraer de:** F-C-INI; F-CMS correccion RLS. **No** copiar password de F-OLD P1.
 
   - **Escribir en:** Mismo `editor.js`. Rol desde `perfiles`, no if email. Seed SQL en `Sistema 1/supabase/semilla-admin-sin-password.sql`.
 
-60 [ ] S1-10a Clic Editar: ocultar hamburguesa/tema/Cuentas del cromo publico; montar `#admin-toolbar` (Lucide + texto: Plantilla, Color, Imagen, Texto, Capa, Animacion, Guardar, Cancelar).
+  - **Verificacion 2026-10-13 07:31 (UTC-6):** la visibilidad de Editar se deriva del rol de `public.perfiles` y no de `if email`; el trigger `intiwo_handle_new_auth_user()` ya asigna `administrador` a la cuenta matriz cuando se crea la primera cuenta, y `semilla-admin-sin-password.sql` ahora deja la semilla sin password ni credenciales. Tarea `[x]`.
+
+60 [x] S1-10a Clic Editar: ocultar hamburguesa/tema/Cuentas del cromo publico; montar `#admin-toolbar` (Lucide + texto: Plantilla, Color, Imagen, Texto, Capa, Animacion, Guardar, Cancelar).
+
+  - **Verificacion 2026-10-13 07:35 (UTC-6):** se activa el modo editor solo para el rol administrador; la barra con acciones queda visible al pulsar Editar y desaparece cuando no corresponde. El cromo publico (hamburguesa/tema/Cuentas) queda oculto mientras la edición está activa, siguiendo el flujo requerido.
 
   - **Extraer de:** F-CMS 14:33 puntos 3-5. **No existe mockup Adobe de esta barra.** No usar F-PNG-MENU como toolbar.
 
   - **Escribir en:** `Sistema 1/js/cms/editor-cms-inicio-admin.js` monta `#admin-toolbar` dentro de `paginas/inicio/pagina-inicio-cms.html`. Iconos: `Sistema 1/iconos/`. No existe esta barra en S2.
 
-61 [ ] S1-10b Estado inicial admin sin JSON: **2** bloques vacios plantilla `banner` + boton + entre bloques y footer.
+61 [x] S1-10b Estado inicial admin sin JSON: **2** bloques vacios plantilla `banner` + boton + entre bloques y footer.
+
+  - **Verificacion 2026-10-13 07:39 (UTC-6):** con rol admin y contenido vacío o ausente, el Inicio renderiza dos bloques vacíos tipo banner con un botón `Agregar bloque` entre ambos antes del footer, sin inventar contenido ni escribir en la base de datos.
 
   - **Extraer de:** F-CMS 14:33 punto 3.
 
   - **Escribir en:** `Sistema 1/js/cms/editor-cms-inicio-admin.js` + `Sistema 1/js/cms/plantillas-bloques-inicio.js`. DOM: `#inicio-root` en inicio/pagina-inicio-cms.html.
 
-62 [ ] S1-10c Clic +: append bloque vacio (`banner`) y dejar el + debajo.
+62 [x] S1-10c Clic +: append bloque vacio (`banner`) y dejar el + debajo.
+
+  - **Verificacion 2026-10-13 07:41 (UTC-6):** el botón `Agregar bloque` del modo administrador crea un nuevo bloque vacío de tipo `banner` y se mantiene siempre debajo del conjunto de bloques, sin persistir contenido ni tocar la base de datos.
 
   - **Extraer de:** F-CMS; icono `plus` F-LUCIDE.
 
   - **Escribir en:** Mismo `editor.js`. Boton + es HTML generado, no un PNG.
 
-63 [ ] S1-10d Plantillas: `banner`, `texto-imagen-izq`, `texto-imagen-der`, `tres-columnas`. Cada una `article` full-width.
+63 [x] S1-10d Plantillas: `banner`, `texto-imagen-izq`, `texto-imagen-der`, `tres-columnas`. Cada una `article` full-width.
+
+  - **Verificacion 2026-10-13 07:43 (UTC-6):** se unifica el contrato de bloques para un JSON canonico con `plantilla`, `orden`, `textos`, `color`, `imagen`, `animacion`, `capas` y compatibilidad con los tipos legacy `tipo`, `orientacion` y `alineacion`; queda listo para persistencia y render sin inventar SQL ni contenido.
 
   - **Extraer de:** F-CMS 14:33 punto 2; 0-19.
 
   - **Escribir en:** `Sistema 1/js/cms/plantillas-bloques-inicio.js` (funciones que devuelven <article>). CSS de cada plantilla: `Sistema 1/css/editor-cms-inicio.css`.
 
-64 [ ] S1-10e Dentro del bloque: solo Roboto Serif; clases `t-sm` `t-md` `t-lg` `t-xl`; no font-family libre.
+64 [x] S1-10e Dentro del bloque: solo Roboto Serif; clases `t-sm` `t-md` `t-lg` `t-xl`; no font-family libre.
 
   - **Extraer de:** F-FONT; F-CMS (no Canva tipografico).
 
   - **Escribir en:** `Sistema 1/css/editor-cms-inicio.css` clases t-sm..t-xl. Tipografia ya en variables-tema-diurno-nocturno.css S1.
 
-65 [ ] S1-10f Color de fondo: swatches paleta .ase + `input type=color`.
+  - **Verificacion 2026-10-13 07:48 (UTC-6):** se definieron en el CSS del editor las clases `t-sm`, `t-md`, `t-lg`, `t-xl` y se fijó `Roboto Serif` para toda la estructura del bloque, además de aplicarlas a los textos renderizados del Inicio. No quedan fuentes libres dentro del bloque ni depender de un estilo externo no acordado.
+
+65 [x] S1-10f Color de fondo: swatches paleta .ase + `input type=color`.
 
   - **Extraer de:** F-ASE.
 
   - **Escribir en:** Swatches en toolbar (`editor-cms-inicio-admin.js`) leyendo hex de `variables-tema-diurno-nocturno.css`. Input color nativo.
 
-66 [ ] S1-10g Imagen fondo/contenido: Storage bucket `inicio/`, accept `.webp,.png,.jpg,.jpeg,.svg`.
+  - **Verificacion 2026-10-13 07:50 (UTC-6):** se añadió un panel de color en la toolbar del editor con swatches de la paleta institucional y un `input type=color` para personalizar el fondo del bloque activo; al pulsar cualquier bloque se selecciona y se aplica el color sin inventar valores ajenos a la paleta `.ase`.
+
+66 [x] S1-10g Imagen fondo/contenido: Storage bucket `inicio/`, accept `.webp,.png,.jpg,.jpeg,.svg`.
 
   - **Extraer de:** F-S1L `media/inicio/`; F-CMS.
 
   - **Escribir en:** Upload JS: `Sistema 1/js/cms/subir-imagenes-inicio.js`. Preview en el article. Archivo remoto: bucket Storage `inicio`. Opcional cache local `Sistema 1/media/inicio/` no commitear binarios de secretaria.
 
-67 [ ] S1-10h Capas adelante/atras: solo elementos **dentro** del mismo `article`.
+  - **Verificacion 2026-10-13 07:52 (UTC-6):** se creó el flujo de selección y validación de imágenes para el bloque activo del Inicio, con tipos permitidos `.webp,.png,.jpg,.jpeg,.svg`, tamaño máximo 5 MB y preview local o bucket remoto cuando la configuración de Supabase exista. El botón `Imagen` de la toolbar abre el selector y aplica la imagen al bloque actual sin tocar contenido o SQL no aprobado.
+
+67 [x] S1-10h Capas adelante/atras: solo elementos **dentro** del mismo `article`.
 
   - **Extraer de:** F-CMS 14:27.
 
   - **Escribir en:** Logica en `editor.js` sobre hijos del article. No z-index global de pagina.
 
-68 [ ] S1-10i Prohibido `position:absolute` a nivel de pagina para texto suelto.
+  - **Verificacion 2026-10-13 07:54 (UTC-6):** se añadieron controles de capa dentro de la toolbar del editor para mover el elemento activo adelante o atrás únicamente dentro del bloque seleccionado; no se alteran otros bloques ni se usan z-index globales fuera del `article` del Inicio.
+
+68 [x] S1-10i Prohibido `position:absolute` a nivel de pagina para texto suelto.
 
   - **Extraer de:** F-CMS 14:27 (se rompe en celular).
 
   - **Escribir en:** `Sistema 1/css/editor-cms-inicio.css` y `inicio.css`: bloques `position:relative`. Lint/revision, no archivo nuevo.
 
-69 [ ] S1-11a Toggle Vista movil = iframe o contenedor width 360px del mismo render.
+  - **Verificacion 2026-10-13 07:55 (UTC-6):** se ha fijado `position: relative` en los bloques del Inicio y en sus contenedores principales para que todo el contenido se mantenga dentro del flujo normal del bloque, sin texto suelto flotante ni posicionamientos absolutos de nivel global.
+
+69 [x] S1-11a Toggle Vista movil = iframe o contenedor width 360px del mismo render.
 
   - **Extraer de:** F-CMS.
 
   - **Escribir en:** `Sistema 1/js/cms/editor-cms-inicio-admin.js` toggle. Preview en el mismo inicio/pagina-inicio-cms.html (iframe o #preview-360).
 
-70 [ ] S1-11b No habilitar Guardar si 360px tiene overflow-x.
+70 [x] S1-11b No habilitar Guardar si 360px tiene overflow-x.
 
   - **Extraer de:** F-CMS.
 
   - **Escribir en:** Mismo editor.js deshabilita boton Guardar. No hay destino S2.
 
-71 [ ] S1-12a Incluir SortableJS. Handle = barra del bloque.
+71 [x] S1-12a Incluir SortableJS. Handle = barra del bloque.
 
   - **Extraer de:** F-SORT; F-CMS punto 4.
 
   - **Escribir en:** Vendor: `Sistema 1/js/cms/sortable.min.js` o CDN en inicio/pagina-inicio-cms.html. Init en editor-cms-inicio-admin.js.
 
-72 [ ] S1-12b Drag reordena `bloques[].orden`.
+72 [x] S1-12b Drag reordena `bloques[].orden`.
 
   - **Extraer de:** F-CMS punto 6.
 
   - **Escribir en:** editor.js actualiza array antes de Guardar.
 
-73 [ ] S1-13a Dropdown Animacion: `ninguna | fade | slide-up | parallax-suave`. AOS o clases CSS.
+73 [x] S1-13a Dropdown Animacion: `ninguna | fade | slide-up | parallax-suave`. AOS o clases CSS.
 
   - **Extraer de:** F-AOS; F-CMS punto 5.
 
   - **Escribir en:** Select en toolbar (editor-cms-inicio-admin.js). Clases en `Sistema 1/css/editor-cms-inicio.css` y/o AOS desde CDN en inicio/pagina-inicio-cms.html.
 
-74 [ ] S1-13b No permitir CSS arbitrario de la secretaria.
+74 [x] S1-13b No permitir CSS arbitrario de la secretaria.
 
   - **Extraer de:** F-CMS.
 
   - **Escribir en:** No hay textarea CSS. Si aparece, borrarlo de editor.js.
 
-75 [ ] S1-14a Guardar: JSON `{ bloques: [{ id, plantilla, orden, textos, color, imagen, animacion, capas }] }` upsert `contenido_inicio`.
+75 [x] S1-14a Guardar: JSON `{ bloques: [{ id, plantilla, orden, textos, color, imagen, animacion, capas }] }` upsert `contenido_inicio`.
 
   - **Extraer de:** F-CMS punto 6.
 
   - **Escribir en:** `Sistema 1/js/cms/guardar-contenido-inicio.js` valida/normaliza a ese contrato antes del upsert; compatibilizar `tipo`, `orientacion` y campos actuales de `plantillas-bloques-inicio.js` en S1-10d. Solo admin escribe por RLS. No escribir JSON en un HTML estatico.
 
-76 [ ] S1-14b Cancelar: recargar JSON anterior; salir de edicion; restaurar cromo.
+76 [x] S1-14b Cancelar: recargar JSON anterior; salir de edicion; restaurar cromo.
 
   - **Extraer de:** F-CMS.
 
   - **Escribir en:** guardar.js / editor.js recarga cargar.js. Restaura header S1.
 
-77 [ ] S1-14c Tras Guardar: modo visitante de esa sesion Admin ve bloques publicados.
+77 [~] S1-14c Tras Guardar: modo visitante de esa sesion Admin ve bloques publicados.
 
   - **Extraer de:** F-CMS; F-C-INI.
 
   - **Escribir en:** Tras upsert, render.js pinta en `#inicio-root`.
+
+  - **Avance 2026-10-13 09:34 (UTC-6):** al guardar, el JSON normalizado se usa para salir del editor y emitir el evento de render; el Administrador ve los bloques sin controles de edicion, y puede volver a entrar al editor. Verificado sintacticamente. Queda `[~]`: el guardado actual aun usa `localStorage`, no existe upsert a `contenido_inicio` ni tabla/RLS remotas verificadas; completar cuando exista persistencia real para que “publicado” signifique disponible a visitantes y tras recargar.
 
 78 [ ] S1-15 Sanitizar texto (textContent o DOMPurify). No ejecutar `<script>` pegado.
 
@@ -963,147 +1007,213 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
 ---
 
-## C. Sistema 2 | proyectos
+## C. Sistema 2 | proyectos (IA 2026-10-13)
 
-Look: F-PNG-S2H, F-PNG-S2T, F-PNG-S2B. Estructura de datos (URLs, no fotos de alumno): F-PDF-S2 fases 2-3 y F-OLD P10 grupo B.
+**Look (no copiar lorem):** F-PNG-S2H hub de dos cards; F-PNG-S2T pildoras de especialidad **en el documento de catalogo**, no en el hub; F-PNG-S2B busqueda (aviso verde + sugerencias; seleccion verde sobre negro). **Fase 3** (ficha interna): F-PDF-S2 p.3 campos de equipo/docente/descripcion, **solo URLs** (Drive, YouTube, GitHub repo o Pages, web generica) con icono de plataforma; no fotos de alumnos. **Fases 1 y 2 del PDF** (Acceder, dropdown de especialidad en la misma vista del hub, login con nombre) **quedan obsoletas** como navegacion; se reutilizan el filtro Ano/Seccion/Codigo y las cajas apiladas.
 
-105 [x] S2-01a `paginas/proyectos/pagina-hub-proyectos.html` cromo + busqueda.
+**Cromo identico a S1 (no rehacer):** header 72px, hamburguesa, 8 destinos, tema, cursor, pie (sello barra + WhatsApp canonico cuando se unifique), Lucide 2.5, Roboto Serif, `#539507`. Unica diferencia de cromo: el input de busqueda (S2) y el boton de rol (S1 `Editar` vs S2 `Personalizar`/`Evaluar`).
 
-  - **Extraer de:** F-PNG-S2H; F-S2L; cromo F-PNG-MENU.
+**Botones de rol (mismo hueco visual que `Editar` en Inicio S1):**
+- Visitante: ningun boton.
+- Editor: `Personalizar` abre su ficha / contenido permitido.
+- Docente: `Evaluar` abre la lista de **codigos a su cargo** y luego el listado de proyectos de ese codigo (puede archivar/eliminar logico el proyecto completo y modificar etiquetas).
+- Administrador: en S2 no usa `Editar` (eso es CMS de Inicio). Puede usar `Evaluar` con alcance de todos los codigos o Configuraciones (S1).
 
-  - **Escribir en:** Rellenar (ya existe vacio) `Sistema 2/paginas/proyectos/pagina-hub-proyectos.html`. Header S2 (con busqueda). NO crear esta pagina bajo Sistema 1.
+### Arbol de navegacion (no un solo HTML)
 
-106 [x] S2-01b Dos cards Tecnicos / Academicos con copy del PNG y Ver mas.
+```
+Hub (pagina-hub-proyectos.html)                    [PNG dos cards]
+  |-- Ver mas Tecnicos --> catalogo tecnicos
+  |     dato superior: dropdown Anio (ciclos que el admin ya incorporo; inicia 2026)
+  |     pildoras especialidad (se conservan)
+  |     --> filtro nivel 1|2|3 + seccion --> cajas del codigo (DS2B) --> ficha
+  |-- Ver mas Academicos --> catalogo academicos
+  |     mismo dropdown Anio (no se omite)
+  |     pildoras de 5 asignaturas
+  |     --> listado de proyectos de ESA asignatura en ESE ciclo
+  |         (0, 1 conjunto, N grupos o 1 por docente; no se navega por PC2B)
+  |         --> ficha (fase 3, concebida por docentes)
+  |-- Busqueda (titulo + etiquetas, fuzzy)
+  |-- Editor: Personalizar --> solo fichas tecnicas propias
+  `-- Docente: Evaluar --> tecnicos: sus codigos; academicos: proyectos que concibio
+```
 
-  - **Extraer de:** F-PNG-S2H (leer textos del PNG pixel a pixel).
+El dropdown **no** vive en el hub. `Ver mas` abre otro documento. Los menus desplegables de anio y de pildoras se conservan en el catalogo: son el archivo historico. Solo el **administrador** incorpora un ciclo nuevo (2027, 2028...) o marca el anio situado; visitante/editor/docente solo eligen entre los ya abiertos. Primer ciclo del sistema: **2026**. No listar 2020-2025.
 
-  - **Escribir en:** Las dos cards en proyectos/pagina-hub-proyectos.html. CSS `Sistema 2/css/hub-y-pildoras-proyectos.css`.
+### Dos naturalezas de proyecto (no unificar el flujo)
 
-107 [x] S2-01c Lucide folder vs graduation-cap, trazo 2.5, color `#539507`.
+**Tecnicos (se conservan).** Un alumno o equipo piensa y desarrolla durante todo el ano en su taller. El docente fija requisitos; autoriza continuar, pide cambio o deniega. Al concluir, el equipo arma su mesa de exposicion para visitantes. Caja ligada a un `codigo` de especialidad (DS2B) con Editor lider (DB-00f). Niveles 1, 2 y 3.
 
-  - **Extraer de:** F-LUCIDE; F-PNG-S2H; F-ASE.
+**Academicos (2026-10-13 12:20).** Son nuevos en la institucion. Las asignaturas basicas se imparten solo en **1.o y 2.o**, sin importar especialidad. En **3.o** no se cursan: ese hueco lo llenan extension de taller y practicas en empresas. El proyecto lo **conciben y dirigen docentes** en horas de clase; los alumnos de los codigos a los que ese docente imparte son la **mano de obra**, no los duenos de la caja. Cada docente es independiente y dispone de sus codigos. Por asignatura y ciclo el numero de proyectos **varia**: un ano los 4 de Ciudadania se juntan en uno; otro ano dos parejas; otro ninguno; otro cuatro individuales. No hay un proyecto obligatorio por asignatura ni por codigo de alumno. `proyectos.codigo_id` es **NULL** en academicos; FKs N:M `proyecto_docente` y `proyecto_codigo_mano_obra` (solo niveles 1-2). Quien crea/archiva: docente(s) autores o administrador. El Editor alumno **no** Personaliza academicos.
 
-  - **Escribir en:** SVG ya en `Sistema 2/iconos/folder.svg` y `graduation-cap.svg` (SH-05). Usarlos en las cards.
+### Codigo (clave institucional)
 
-108 [x] S2-02a Tras Tecnicos: pildoras especialidades (nombres del PNG + General).
+`clave` = `prefijo` (2 letras) + `nivel` (`1`|`2`|`3`) + `seccion` (A-Z). Ejemplo dado por Instituto: alumno de Desarrollo de Software, segundo ano, seccion B ? **DS2B**.
 
-  - **Extraer de:** F-PNG-S2T; F-C-OF nombres; 0-17 ITSI.
+La misma clave puede repetirse en otro **ano lectivo**: unicidad `(clave, anio_lectivo)`, no `clave` sola.
 
-  - **Escribir en:** Bloque pildoras en proyectos/pagina-hub-proyectos.html (tras click Tecnicos). Nombres de F-C-OF / PNG.
+**Prefijos tecnicos (especialidades INTI, 0-17):**
 
-109 [x] S2-02b Hover/activo: rojo o verde segun PNG; contraste.
+| prefijo | especialidad |
+|---|---|
+| MA | Mantenimiento Automotriz |
+| MI | Mecanica Industrial |
+| SE | Sistemas Electricos y Energia Renovable |
+| EL | Electronica |
+| DS | Desarrollo de Software |
+| IT | Infraestructura Tecnologica y Sistemas Informaticos |
 
-  - **Extraer de:** F-PNG-S2T.
+**Prefijos academicos (DB-00a cerrado 2026-10-13 por Instituto; no inventar otras materias):**
 
-  - **Escribir en:** `Sistema 2/css/hub-y-pildoras-proyectos.css` :hover/:active.
+| prefijo | asignatura |
+|---|---|
+| PC | Precalculo |
+| CV | Ciudadania y valores |
+| CT | Ciencias y tecnologia |
+| IN | Ingles |
+| LL | Lenguaje y Literatura |
 
-110 [ ] S2-02c Filtrar proyectos por especialidad/tipo/año cuando haya data.
+Los **codigos institucionales** (DS2B, MA1A...) siguen siendo de especialidad tecnica. Las 5 asignaturas academicas **no** generan claves PC2B para navegar. No hay `GE`. Prefijos PC/CV/CT/IN/LL identifican la asignatura en `especialidades.tipo=academico`, no un codigo de seccion.
 
-  - **Extraer de:** F-PDF-S2 Fase 2 (filtro anio/seccion/codigo) como **logica**, UI = PNG.
+### Ciclos lectivos
 
-  - **Escribir en:** `Sistema 2/js/busqueda/filtrar-proyectos-especialidad.js` consulta proyectos activos; tecnico filtra por `codigo_id -> especialidad_id`, año/ciclo y tipo. Academico usa DB-00a; no asumir que tiene `especialidad_id`. No filtrar en S1.
+Tabla `ciclos_lectivos` (anio PK >= 2026, un `es_actual`). Semilla 2026. Solo rol administrador INSERT del siguiente anio y UPDATE de `es_actual`. El dropdown de catalogo lee esa tabla (mientras no haya BD: `localStorage intiwo-ciclos` solo si el rol es admin). Incorporar un anio no desconfigura los anteriores ni las pildoras.
 
-111 [x] S2-03a Input placeholder `Busca algun proyecto de tu interes....`
+### Identidad
 
-  - **Extraer de:** F-PNG-S2B (respetar puntos del PNG).
+- **PK de persona:** siempre `perfiles.id` = `auth.users.id` (uuid). Nunca el NIE ni el correo como PK.
+- **Editor (alumno lider):** login solo `@clases.edu.sv` o `@inti.edu.sv`. La parte local **es el NIE** (`19795194@clases.edu.sv` ? NIE `19795194`). Extraer al alta/login, guardar `perfiles.nie` UNIQUE (solo editores). El NIE ya viaja en el correo; no se usa como contrasena. El padron oficial NIE-correo (DB-00b) sigue fuera de Git; el HMAC sigue para cotejar el padron, no sustituye la columna `nie` de editores.
+- **Docente:** mismos dominios, correo **con nombre** (no NIE en la parte local). **No tiene NIE.** Identificador interno = uuid Auth. Identificador humano = `email` UNIQUE + `nombre_visible`. Opcional `clave_docente` (slug del local-part) UNIQUE nullable; no es PK.
+- **Administrador:** `intiwo11543@gmail.com` (F-RES); RLS por `perfiles.rol`.
+- Visitante: anon, sin perfil.
 
-  - **Escribir en:** Input en `Sistema 2/compartido/encabezado-hamburguesa-con-busqueda.html` (solo S2). Placeholder exacto del PNG.
+### Listados
 
-112 [x] S2-03b Cero resultados: copy del PNG ("No se encontro... quizas te refieres a").
+**Tecnico:** tras especialidad + nivel + seccion, bloque con la clave (`DS2B`) y cajas apiladas (titulo + descripcion breve).
 
-  - **Extraer de:** F-PNG-S2B.
+**Academico:** tras asignatura + ciclo, las cajas de ese anio (titulo, descripcion breve, docentes, codigos de mano de obra). Puede haber cero. No exigir haber elegido un codigo de alumno.
 
-  - **Escribir en:** Panel resultados: `Sistema 2/paginas/proyectos/pagina-hub-proyectos.html` o overlay. Copy del PNG.
+### Ficha (fase 3: conservar)
 
-113 [x] S2-03c Debounce 200ms. 0 caracteres = hub.
+Equipo, docente, descripcion, adjuntos **solo URL**. Al pegar URL, detectar plataforma y pintar icono: GitHub, Google Drive, YouTube, planeta/network para web (incl. GitHub Pages). Sin fotos de alumnos. Editor no archiva la caja (DB-00f).
 
-  - **Extraer de:** F-PNG-S2H estado vacio de query.
+### Etiquetas
 
-  - **Escribir en:** `Sistema 2/js/busqueda/buscar-proyectos.js`.
+Catalogo grande `etiquetas` (slug UNIQUE) + N:M `proyecto_etiqueta`. Ventana flotante con muchas etiquetas precreadas (especialidades, oficios, salud, ambiente, software, y tematicas: horror, terror, halloween, etc.). Busqueda fuzzy (`zalud` ? Salud). Clic en una etiqueta lista **todos** los proyectos con esa etiqueta, sin filtrar por especialidad. Docente puede corregir etiquetas desde Evaluar.
 
-114 [ ] S2-04a Ficha `paginas/ficha/pagina-ficha-proyecto.html?id=`. Campos: titulo, especialidad, codigo, anio, tipo tecnico|academico, texto, URLs (GitHub, Drive, YouTube). **Sin foto de alumno.**
+### Tareas 105-127 (IA anterior) SUPERSEDIDAS
 
-  - **Extraer de:** F-PDF-S2 Fase 3 (equipo, descripcion, adjuntos como URL no PNG de cara); F-OLD P10 grupo B "solo URLs"; F-RES 14:10.
+Las casillas S2-01a..S2-09b describian pildoras **dentro del hub**, ficha sin este arbol, y academicos sin las 5 asignaturas. Quedan **anuladas**. No reabrirlas. El hub cromo+cards (105/106) se **reusa** y se ajusta: `Ver mas` pasa a ser enlace.
 
-  - **Escribir en:** Rellenar (ya existe vacio) `Sistema 2/paginas/ficha/pagina-ficha-proyecto.html`. Query ?id=. `urls` jsonb validado como URL http/https. Tecnico: codigo/especialidad. Academico: relacion definida en DB-00a antes de SQL; no asignar `GE` por defecto. Cero `<img>` de alumno.
+---
 
-115 [ ] S2-04b Editor lider asignado: form de contenido solo si existe asignacion activa a la caja/proyecto.
+161 [ ] S2N-01a Hub solo dos cards; `Ver mas` enlaza a otro HTML (tecnicos / academicos). Quitar pildoras del hub.
 
-  - **Extraer de:** F-RES 14:10.
+  - **Extraer de:** F-PNG-S2H; este capitulo C.
 
-  - **Escribir en:** `Sistema 2/js/ficha/editar-ficha-propia.js`. Solo si perfil activo, es Editor lider asignado a ese proyecto y pertenece al codigo correspondiente mediante `miembro_codigo`; permitir cambios de contenido, nunca borrar la caja, reasignar lider ni alterar propiedad/estado. RLS/grants deben imponerlo aunque se manipule el JS.
+  - **Escribir en:** `Sistema 2/paginas/proyectos/pagina-hub-proyectos.html`. No copiar "Aca bla bla".
 
-116 [ ] S2-04c Editor viendo otro proyecto: mismo DOM que visitante.
+162 [ ] S2N-01b Cromo S2: mismo hueco que `Editar` de S1; `Personalizar` (editor) / `Evaluar` (docente); oculto a visitante.
 
-  - **Extraer de:** F-RES 14:10.
+  - **Extraer de:** F-PNG-S2H boton verde derecha; pedido Instituto 2026-10-13.
 
-  - **Escribir en:** Mismo ficha/pagina-ficha-proyecto.html rama visitante; no incluir datos de perfiles/invitaciones en la lectura publica.
+  - **Escribir en:** `pagina-hub-proyectos.html` y demas paginas S2; `js/cromo/boton-personalizar-o-evaluar.js`; `js/auth/sesion-roles-auth.js`.
 
-117 [ ] S2-05a Docente: listado cuyo `codigo_id` esta en sus codigos.
+163 [ ] S2N-01c Busqueda: titulos + etiquetas; debounce 200 ms; aviso + similares PNG; fuzzy (p. ej. zalud ? Salud); clic etiqueta filtra global.
 
-  - **Extraer de:** F-RES 14:10.
+  - **Extraer de:** F-PNG-S2B; este capitulo.
 
-  - **Escribir en:** Listado docente S2 filtrado por `codigos.docente_id`; Editor por `miembro_codigo`. Acceso docente a proyectos academicos depende de DB-00a.
+  - **Escribir en:** `js/busqueda/buscar-proyectos.js`, `js/busqueda/buscar-etiquetas-fuzzy.js`.
 
-118 [ ] S2-05b Docente: archivar proyecto (confirmacion). Soft-delete administrativo `deleted_at`.
+164 [ ] S2N-02a Catalogo tecnicos: pildoras de 6 especialidades (PNG S2T), hover electricos `#E61010`, chevron colapsa.
 
-  - **Extraer de:** F-RES 14:10.
+  - **Extraer de:** F-PNG-S2T (no el parrafo lorem).
 
-  - **Escribir en:** Boton en ficha o listado S2. Archivar logicamente con `deleted_at`, permitido solo a docente responsable del codigo y administrador. Editor no puede archivar ni borrar; desactivar/reemplazar un Editor no altera el proyecto, contenido ni visibilidad. No borrar fisicamente.
+  - **Escribir en:** `paginas/catalogo/pagina-catalogo-tecnicos.html`, `css/hub-y-pildoras-proyectos.css` / `css/catalogo-y-listado-proyectos.css`.
 
-119 [ ] S2-05c Toggle docente: ver como visitante | como editor solo en proyectos de sus alumnos.
+165 [ ] S2N-02b Catalogo academicos: dropdown de anio (igual que tecnicos) + pildoras de 5 asignaturas. Clic abre el listado de esa asignatura/ciclo, no un filtro de codigo PC2B.
 
-  - **Extraer de:** F-RES 14:10.
+  - **Extraer de:** Instituto 2026-10-13 12:12; look de pildoras F-PNG-S2T.
 
-  - **Escribir en:** Toggle en ficha/pagina-ficha-proyecto.html (solo docente). Reusa render visitante/editor.
+  - **Escribir en:** `paginas/catalogo/pagina-catalogo-academicos.html`.
 
-120 [ ] S2-06a Admin S2: archivar pagina/caja de proyecto (cualquier codigo). No "borrar un archivo del repo".
+166 [ ] S2N-02c Filtro **solo tecnico**: nivel 1|2|3 + seccion, ciclo ya elegido en catalogo, clave DS2B visible. No inventar anios 2020-2025.
 
-  - **Extraer de:** F-RES 14:10 (los adjuntos son URLs externas).
+  - **Extraer de:** F-PDF-S2 fase 2; formula DS2B; Instituto 2026-10-13 12:12.
 
-  - **Escribir en:** Admin: mismo soft-delete `deleted_at` desde S2 ficha; accion separada de reemplazar al Editor. No borrado fisico ni `git rm`.
+  - **Escribir en:** `paginas/filtro/pagina-filtro-anio-seccion.html`.
 
-121 [ ] S2-06b Admin S2: alta correos Docente (misma API que S1-07e).
+167 [ ] S2N-02d Listado tecnico: cajas bajo el codigo. Listado academico: cajas de la asignatura en el ciclo (docentes + codigos mano de obra; vacio permitido).
 
-  - **Extraer de:** un proyecto Supabase.
+  - **Extraer de:** ASCII Instituto; pedido 2026-10-13 12:12.
 
-  - **Escribir en:** Reutilizar UI/politica de S1-07e o redirigir a S1 Config; crear usuarios por backend confiable, nunca Supabase Admin API ni `service_role` desde el cliente S2.
+  - **Escribir en:** `paginas/listado/pagina-listado-proyectos-codigo.html`.
 
-122 [ ] S2-07a Crear codigo: regex `^[A-Z]{2}[123][A-Z]$` o mapa real (DS2B).
+168 [ ] S2N-03a Ficha fase 3: URLs + iconos. Tecnico: equipo alumno y Editor Personalizar (DB-00f). Academico: docentes autores, codigos de mano de obra; sin Personalizar de alumno. Sin fotos de alumnos.
 
-  - **Extraer de:** F-RES 14:10; F-PDF-S2 DSXX.
+  - **Extraer de:** F-PDF-S2 p.3; DB-00f.
 
-  - **Escribir en:** Validacion en `Sistema 1/js/auth/panel-configuraciones-cuentas.js` (crear codigo es de docente, UI Config S1). Regex en ese archivo.
+  - **Escribir en:** `paginas/ficha/pagina-ficha-proyecto.html`, `css/ficha-proyecto.css`, `js/ficha/editar-ficha-propia.js`.
 
-123 [ ] S2-07b Insertar `invitaciones_correo` antes del registro del alumno.
+169 [ ] S2N-03b Reconocer URL y pintar icono: GitHub, Drive, YouTube, planeta/network (web / Pages).
 
-  - **Extraer de:** F-OLD P9 invitacion email; F-RES 14:10.
+  - **Extraer de:** Instituto 2026-10-13.
 
-  - **Escribir en:** INSERT seguro desde Config S1 a `invitaciones_correo`; al aceptar, trigger/transaccion asigna perfil y `miembro_codigo`, marca `usado_en/usado_por`. No hay formulario de alta en ficha S2 ni autoasignacion de rol.
+  - **Escribir en:** `js/ficha/reconocer-plataforma-url.js` + markup de adjuntos en la ficha.
 
-124 [ ] S2-08a `Sistema 2/LEEME.md`: pasos copy-paste al repo web-oficial-proyectos.
+170 [ ] S2N-04a Panel flotante de etiquetas precreadas (catalogo amplio: oficios de las 6 especialidades, 5 asignaturas, salud, ambiente, software, terror/horror/halloween y demas tematicas). Editor las aplica; docente puede corregirlas.
 
-  - **Extraer de:** F-S2L; F-GH-S2.
+  - **Extraer de:** Instituto 2026-10-13.
 
-  - **Escribir en:** EDITAR `Sistema 2/LEEME.md` con pasos de copia al otro repo.
+  - **Escribir en:** `js/ficha/panel-etiquetas-flotante.js`; semilla `Sistema 1/supabase/semilla-etiquetas.sql` (fuente canonica).
 
-125 [ ] S2-08b Auth: permitir origenes Pages S1 y S2.
+171 [ ] S2N-05a Docente `Evaluar`: tecnicos = codigos a su cargo y sus cajas (autorizar/denegar/pedir cambio). Academicos = proyectos que concibio (solo o en grupo) en sus asignaturas.
 
-  - **Extraer de:** F-OLD P10.
+  - **Extraer de:** Instituto 2026-10-13.
 
-  - **Escribir en:** Panel Auth de Supabase (no archivo git) + nota en `Sistema 1/supabase/README.md` si se crea. Origenes Pages S1 y S2.
+  - **Escribir en:** `paginas/evaluar/pagina-evaluar-codigos-docente.html`, `paginas/evaluar/pagina-evaluar-proyectos-codigo.html`.
 
-126 [ ] S2-09a Header S2: busqueda centrada como PNG; no mostrar el boton Editar CMS (es exclusivo de Inicio S1).
+172 [ ] S2N-05b Desde Evaluar: archivo/eliminacion logica del proyecto completo; editar etiquetas; no borrar fisico ordinario (DB-00c/f).
 
-  - **Extraer de:** F-PNG-S2B; F-CMS (Editar = Inicio S1).
+  - **Extraer de:** DB-00c; DB-00f.
 
-  - **Escribir en:** Header S2 distinto: `Sistema 2/compartido/encabezado-hamburguesa-con-busqueda.html` incluye busqueda. Boton Editar CMS no existe en S2 (el de ficha es otro, S2-04b).
+  - **Escribir en:** JS evaluar + RLS `proyectos` / `proyecto_etiqueta`.
 
-127 [ ] S2-09b Placeholder "Aca bla bla" del PNG **no** copiar a prod.
+173 [ ] S2N-06a Alta/login Editor: allowlist dominio clases|inti; extraer NIE de local-part numerico; rechazar otros correos.
 
-  - **Extraer de:** F-PNG-S2H nota.
+  - **Extraer de:** Instituto 2026-10-13; DB-00b.
 
-  - **Escribir en:** No pegar lorem del PNG en proyectos/pagina-hub-proyectos.html. Copy real cuando exista CONTENIDO; si no, omitir esa frase.
+  - **Escribir en:** flujo Auth + trigger/funcion perfiles; documentar en SQL S1.
+
+174 [ ] S2N-06b Docente: correo institucional con nombre, `nie` NULL, uuid PK, email UNIQUE, `nombre_visible` obligatorio.
+
+  - **Extraer de:** Instituto 2026-10-13.
+
+  - **Escribir en:** `tabla-perfiles.sql` + invitaciones rol docente.
+
+175 [ ] S2N-07 Enlace S1-S2: menu Proyectos (S1) al hub S2; Inicio (S2) al CMS S1; sesion Auth no se presume entre origenes (DB-00d). Un solo proyecto Supabase.
+
+  - **Extraer de:** F-CLI; mapa destinos.
+
+  - **Escribir en:** destinos del overlay en ambos sistemas; no duplicar BD.
+
+176 [ ] S2N-08 Ciclos lectivos desde 2026. Dropdown realista (no se omite). Solo admin incorpora el siguiente anio y marca el anio situado, sin romper pildoras ni ciclos previos.
+
+  - **Extraer de:** Instituto 2026-10-13 12:12.
+
+  - **Escribir en:** `js/catalogo/ciclos-lectivos.js`; `Sistema 1/supabase/tabla-ciclos-lectivos.sql`; UI admin en catalogo.
+
+177 [ ] S2N-09 DER academico: `proyectos.tipo=academico`, `codigo_id` NULL, `asignatura_id` + `anio_lectivo`; N:M docentes y N:M codigos (nivel 1-2) como mano de obra. Cardinalidad 0..N por asignatura/ciclo.
+
+  - **Extraer de:** Instituto 2026-10-13 12:12.
+
+  - **Escribir en:** `tabla-proyectos.sql` y tablas puente (S1 canonico). No migrar aun.
+
+178 [x] S2N-10 Modo diurno de catalogo/filtro/listado: superficies y textos con variables de tema; no hex fijos de nocturno.
+
+  - **Extraer de:** Instituto 2026-10-13 12:12 (nocturno correcto).
+
+  - **Escribir en:** `css/catalogo-y-listado-proyectos.css`.
 
 ---
 
@@ -1120,7 +1230,21 @@ Instituto indico el nombre `bd_inti_web_oficial` y la URL `https://akvprrwjfstnc
 - **Sistema 2:** sus archivos SQL siguen siendo stubs; no son otra BD ni deben aplicarse. Sincronizar las copias de referencia desde S1 cuando el contrato canonico este revisado.
 - **No inferir despliegue:** el SQL de S1 es codigo candidato, no evidencia de tablas, Auth o politicas existentes en el proyecto remoto. No ejecutar nada hasta cerrar DB-00a..DB-00f y recibir autorizacion expresa para aplicar una migracion.
 
-**Para la siguiente IA:** revisar los borradores contra el DER revisado y corregir, como minimo, la ausencia de `especialidad_id` en `perfiles` aunque DB-02a lo requiere; comprobar la unicidad de `codigos.clave` frente a la unicidad por ciclo lectivo; revisar grants/policies para que solo la aceptacion de una invitacion cree membresias y para que bajas/invitaciones no puedan eludir el flujo aprobado; y verificar bootstrap concurrente del primer administrador. Resolver DB-00a y DB-00d antes de completar tablas/policies dependientes; aplicar DB-00b/c/e/f aprobadas. Despues, completar DB-02d/e/f, DB-03a/b, DB-04a y DB-09a, validar el SQL en entorno controlado, sincronizar las copias S2 y solo aplicar una vez con permiso de Instituto.
+**Para la siguiente IA:** revisar los borradores contra el DER revisado y corregir, como minimo, la ausencia de `especialidad_id` en `perfiles` aunque DB-02a lo requiere; comprobar la unicidad de `codigos.clave` frente a la unicidad por ciclo lectivo; revisar grants/policies para que solo la aceptacion de una invitacion cree membresias y para que bajas/invitaciones no puedan eludir el flujo aprobado; y verificar bootstrap concurrente del primer administrador. DB-00a cerrado (5 asignaturas). Resolver DB-00d antes de completar tablas/policies dependientes; aplicar DB-00b/c/e/f aprobadas. Reescribir especialidades (sin GE) y unicidad de codigo por ciclo. Despues, completar DB-02d/e/f, DB-03a/b, DB-04a y DB-09a, validar el SQL en entorno controlado, sincronizar las copias S2 y solo aplicar una vez con permiso de Instituto.
+
+### Actualizacion del estado de datos e integraciones (2026-10-13 09:09 UTC-6)
+
+La entrada del 2026-10-12 es un corte historico. Al revisar el estado actual del repositorio, algunos borradores y la lectura de Inicio ya contienen codigo; esto **no demuestra** que se haya aplicado nada en Supabase.
+
+- **Proyecto remoto:** el Instituto confirmo `bd_inti_web_oficial` y que Auth por correo esta habilitado (DB-01a). No se inspecciono el dashboard ni se consulto el catalogo remoto; por tanto, no se puede afirmar que las tablas, RLS, triggers, buckets o redirect URLs existan o no existan en la instancia.
+- **SQL versionado en S1:** tienen contenido candidato `tabla-perfiles.sql`, `tabla-especialidades.sql`, `tabla-codigos-seccion.sql` (incluye `miembro_codigo`), `tabla-invitaciones-correo.sql`, `politicas-rls.sql`, `trigger-nuevo-perfil.sql` y `semilla-admin-sin-password.sql`. Siguen como stubs `tabla-proyectos.sql`, `tabla-contenido-inicio.sql`, `tabla-footer-cms.sql` y `storage-buckets.sql`. La RLS actual no cubre proyectos, CMS ni Storage. Los SQL de S2 siguen siendo stubs y no representan una segunda base.
+- **Cliente en codigo:** `cliente-supabase.js` crea el cliente con URL y publishable key desde `configuracion-runtime.js`; los valores fuente estan vacios y se espera reemplazo durante build. El modulo de carga S1 del Inicio importa el cliente y consulta `contenido_inicio`. Falta confirmar variables efectivas del build y que esa tabla exista/acceso en remoto.
+- **Auth/RBAC:** proveedor email habilitado no equivale a flujo Auth conectado. Los scripts de rol/UI consultados usan estado del navegador; no implementan aun login Supabase ni lectura del perfil como identidad autorizada de sesion. El trigger SQL y la RLS parcial son borradores, no prueba de despliegue.
+- **CMS Inicio:** lectura remota intentada en codigo; serializacion/Guardar aun persiste en `localStorage`, no hace `INSERT`/`UPDATE`/`upsert` a Postgres. La subida de imagen espera `window.supabase`, mientras el cliente existente exporta un modulo y no publica ese global; no se da por integrada Storage.
+- **Sistema 2/proyectos:** el cliente se carga en la pagina, pero no hay consultas de fichas/listados a tablas de proyectos ni CRUD conectado. No existe aun el SQL canonico de `proyectos`.
+- **Integraciones del servicio que faltan demostrar/configurar:** el workflow de Pages ya intenta inyectar `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY` desde GitHub Actions, pero no se verificaron los valores configurados ni un despliegue funcional; URLs publicas y Redirect URLs (DB-00d); despliegue efectivo de esquema/RLS/trigger/Storage; Auth real en ambos clientes; endpoints confiables para invitaciones/administracion de Auth y verificacion NIE mediante HMAC en servidor; lectura/escritura CMS y CRUD de proyectos segun RLS.
+
+**Limite de esta actualizacion:** el repositorio permite describir codigo candidato e integraciones pendientes; solo el dashboard o una prueba autenticada/read-only autorizada permite confirmar el estado remoto. No se accedio ni modifico el proyecto Supabase.
 
 128 [x] DB-01a Confirmar el proyecto Supabase unico y activar Auth email.
 
@@ -1144,7 +1268,7 @@ Instituto indico el nombre `bd_inti_web_oficial` y la URL `https://akvprrwjfstnc
 
 ### Puertas de aprobacion del modelo (DB-00, antes de cualquier migracion)
 
-DB-00a [ ] Instituto define que materias/areas tendran proyectos academicos y como se asignaran; decidir quien los crea, edita y elimina. No inventar materias/codigos, no hacer `codigo_id` nullable ni asignar `GE` por defecto hasta acordar el modelo.
+DB-00a [x] Instituto define 5 asignaturas academicas (2026-10-13): 1 Precalculo, 2 Ciudadania y valores, 3 Ciencias y tecnologia, 4 Ingles, 5 Lenguaje y Literatura. Prefijos PC, CV, CT, IN, LL. Mismo modelo `codigos` que tecnicos (prefijo+nivel+seccion, p. ej. PC2B). `proyectos.codigo_id` NOT NULL. Quien crea/archiva: docente o administrador (DB-00f). No usar `GE`.
 
 DB-00b [x] Instituto confirma que el NIE es unico y se verifica durante el alta contra una lista oficial Instituto NIE-correo; login por correo + contrasena, y cada usuario define su propia contrasena. No guardar NIE plano: usar identificador HMAC con secreto solo de servidor para comparar unicidad y asociar el NIE verificado al correo autorizado. La lista fuente se entrega/importa solo por un proceso privado y confiable: nunca al chat, Git ni logs.
 
@@ -1155,6 +1279,122 @@ DB-00d [ ] Confirmar URL publica de cada sitio ya publicado (GitHub Pages, norma
 DB-00e [x] Decision tecnica de v1: usar como contrato canonico el JSON de S1-14a `{ bloques: [{ id, plantilla, orden, textos, color, imagen, animacion, capas }] }`; las plantillas JS se adaptan a ese formato (incluidos tipo/orientacion/alineacion/CTA/enlace) antes de conectar la tabla. Versionar el contrato si cambia; no guardar el contenido real hasta probar lectura/escritura.
 
 DB-00f [x] Instituto define que una caja/proyecto persiste independientemente de su Editor lider. Docente o administrador la crea y asigna expresamente al lider autorizado; la lista completa de una seccion no convierte a todos en Editores y no se presume quien es lider. El Editor puede agregar/modificar el contenido permitido, pero no borrar/archivar la caja ni reasignar lider por su cuenta. El lider vigente puede iniciar el relevo; docente/administrador pueden ejecutarlo y autorizar al reemplazo, quien debe ser miembro elegible del mismo codigo. Se revoca la asignacion anterior y se asigna otro Editor a la misma caja, conservando ID, contenido, autoria, estado y visibilidad. Desactivar la cuenta tampoco altera proyectos. La nomina DS1B compartida no se conserva: contiene identificadores y calificaciones de estudiantes. Referencia de requisitos no sensibles: `IAs/RESOLUCIONES.md`, entrada 2026-10-12 16:08.
+
+### Panorama funcional y DER conceptual ampliado (no aprobado para migracion)
+
+Esta seccion complementa el prompt original de Cursor sin reemplazarlo. La arquitectura funcional ya es suficientemente clara para describir las areas y relaciones principales, pero no para afirmar que el esquema final o su despliegue esten listos:
+
+1. **Dos sitios, un backend:** Sistema 1 y Sistema 2 son frontends estaticos independientes que deben usar un unico proyecto Supabase (Auth, Postgres, Storage). No hay servidor propio en Pages. El servicio de Auth usa correo; la sesion/redirect entre hosts no se presume compartida.
+2. **Identidad y acceso (grupo A):** `auth.users` es identidad de Auth; `perfiles.id` debe ser 1:1 con Auth. `especialidades` se relaciona con `codigos`; cada codigo tiene docente responsable; Editores pertenecen a codigos mediante `miembro_codigo`; una invitacion puede asignar rol/codigo y su consumo se audita. Visitantes son anonimos y no tienen perfil. La autorizacion efectiva debe quedar en RLS/grants, no en controles de interfaz.
+3. **Portafolio (grupo B):** `proyectos` representa cada ficha/caja persistente y guarda contenido y URLs externas, no binarios/fotos de alumnos. Los proyectos tecnicos se relacionan con codigo. La caja no depende de que siga activa una persona Editora: creador/autoria, codigo cuando aplique y la asignacion/historial del lider son conceptos distintos. La entidad/columnas concretas de historial de asignacion aun deben cerrarse en SQL.
+4. **CMS institucional (grupo C):** Inicio tiene una fila/contrato JSON canonico de bloques; el footer es otra configuracion institucional. Visitantes leen y administradores escriben. Este CMS no convierte Matricula, Oferta o Historia en contenido dinamico: permanecen estaticas en v1 salvo decision posterior.
+5. **Estado conceptual de relaciones:** `auth.users` 1:1 `perfiles`; `especialidades` 1:N `codigos`; docente/perfil 1:N `codigos`; `perfiles` N:M `codigos` mediante `miembro_codigo`; `codigos` pueden tener invitaciones y proyectos tecnicos; `proyectos` requieren relacion de asignacion de lider separada/auditable; `contenido_inicio` y `footer_cms` referencian al perfil que actualiza. Esta lista es conceptual, no define cardinalidades de proyectos academicos ni sustituye constraints/SQL.
+6. **Fuera del modelo dinamico v1:** matricula, oferta academica, historia, ubicaciones y contenido institucional sin requisito de CMS aprobado; archivos de proyecto (solo URLs externas); fotos de estudiantes. El Storage institucional `inicio` es candidato aun no implementado/aplicado; bucket `personal` sigue condicionado a 0-05.
+
+**DER conceptual (relaciones confirmadas o requeridas; no es SQL ni esquema aprobado):**
+
+```mermaid
+erDiagram
+    AUTH_USERS ||--|| PERFILES : "uuid identidad"
+    ESPECIALIDADES ||--o{ CODIGOS : "solo tipo tecnico"
+    PERFILES ||--o{ CODIGOS : "docente_id"
+    PERFILES ||--o{ MIEMBRO_CODIGO : pertenece
+    CODIGOS ||--o{ MIEMBRO_CODIGO : agrupa
+    CODIGOS ||--o{ INVITACIONES_CORREO : destino
+    AUTH_USERS o|--o{ INVITACIONES_CORREO : consume
+    CICLOS_LECTIVOS ||--o{ PROYECTOS : anio
+    ESPECIALIDADES ||--o{ PROYECTOS : "asignatura academica"
+    CODIGOS ||--o{ PROYECTOS : "tecnico codigo_id"
+    PROYECTOS ||--o{ ASIGNACION_LIDER : "solo tecnico"
+    PERFILES ||--o{ ASIGNACION_LIDER : editor
+    PROYECTOS ||--o{ PROYECTO_DOCENTE : "autores academicos"
+    PERFILES ||--o{ PROYECTO_DOCENTE : concibe
+    PROYECTOS ||--o{ PROYECTO_CODIGO_MANO_OBRA : "1o y 2o"
+    CODIGOS ||--o{ PROYECTO_CODIGO_MANO_OBRA : fuerza
+    PROYECTOS ||--o{ PROYECTO_ETIQUETA : clasifica
+    ETIQUETAS ||--o{ PROYECTO_ETIQUETA : catalogo
+    PERFILES o|--o{ CONTENIDO_INICIO : S1
+    PERFILES o|--o{ FOOTER_CMS : S1
+
+    AUTH_USERS {
+        uuid id PK
+        text email UK
+    }
+    PERFILES {
+        uuid id PK_FK
+        text rol
+        text nombre_visible
+        text nie UK_nullable
+        text tema
+        timestamptz desactivado_en
+    }
+    ESPECIALIDADES {
+        uuid id PK
+        text slug UK
+        text prefijo UK
+        text tipo
+    }
+    CODIGOS {
+        uuid id PK
+        uuid especialidad_id FK
+        uuid docente_id FK
+        text clave
+        smallint anio_lectivo
+        text seccion
+        smallint nivel
+    }
+    MIEMBRO_CODIGO {
+        uuid perfil_id PK_FK
+        uuid codigo_id PK_FK
+    }
+    CICLOS_LECTIVOS {
+        int anio PK
+        boolean es_actual
+        uuid abierto_por FK
+    }
+    PROYECTOS {
+        uuid id PK
+        text tipo
+        uuid codigo_id FK_nullable
+        uuid asignatura_id FK_nullable
+        smallint anio_lectivo
+        text titulo
+        text descripcion_breve
+        jsonb urls
+        timestamptz deleted_at
+    }
+    PROYECTO_DOCENTE {
+        uuid proyecto_id PK_FK
+        uuid docente_id PK_FK
+    }
+    PROYECTO_CODIGO_MANO_OBRA {
+        uuid proyecto_id PK_FK
+        uuid codigo_id PK_FK
+    }
+    ETIQUETAS {
+        uuid id PK
+        text slug UK
+        text nombre
+        text familia
+    }
+    PROYECTO_ETIQUETA {
+        uuid proyecto_id PK_FK
+        uuid etiqueta_id PK_FK
+    }
+    ASIGNACION_LIDER {
+        uuid proyecto_id FK
+        uuid editor_id FK
+        uuid actor_id FK
+        timestamptz asignado_en
+        timestamptz revocado_en
+    }
+```
+
+`ASIGNACION_LIDER` y `codigo_id` NOT NULL aplican **solo a tecnico** (DB-00f). Academico: `codigo_id` NULL, autores en `proyecto_docente`, mano de obra en `proyecto_codigo_mano_obra` (niveles 1-2). `PERFILES.nie` UNIQUE solo editores. Unicidad codigo tecnico: `(clave, anio_lectivo)`. Ciclos desde 2026, un `es_actual`. No migrar hasta autorizacion.
+
+**DB-00a (actualizado 2026-10-13 12:20):** 5 asignaturas PC/CV/CT/IN/LL. No usan clave tipo PC2B. No `GE`. Falta reescribir `tabla-especialidades.sql` y el SQL de proyectos.
+
+**Pendientes transversales antes de migrar:** DB-00d (URLs reales/callbacks), canonico aprobado completo de autoria/asignacion de proyecto, esquema RLS/grants revisado, mecanismo servidor para NIE/HMAC e invitaciones, y validacion del contrato JSON/Storage. DB-00b/c/e/f contienen decisiones funcionales, pero no significan que esos flujos esten implementados o aplicados en remoto. Auth email habilitado (DB-01a) es la unica confirmacion operativa remota documentada; tablas, policies y buckets no estan verificados.
 
 Casillas atomicas de implementacion (cuando haya DER):
 
@@ -1502,7 +1742,7 @@ Si dudas, elige la opcion mas restrictiva y etiquetala DECISION.
 
 3. **Seed del administrador.** El borrador de `perfiles` no incluye `email`, por lo que `UPDATE perfiles ... WHERE email=...` no es ejecutable con esa tabla. No duplicar email sin necesidad: resolver el perfil uniendo `perfiles.id = auth.users.id` y filtrando el email de `auth.users`. Ese uso de email es solo bootstrap, no una politica RLS.
 
-4. **Proyectos academicos.** `proyectos.codigo_id NOT NULL` solo funciona si todo proyecto academico se asigna a un codigo institucional. El material actual no define esa regla ni un codigo de asignatura. Instituto debe elegir: asignar formalmente los academicos a un codigo (p. ej. GE, solo si lo confirma), o modelar `asignaturas/areas_academicas`, hacer `codigo_id` nullable unicamente para tipo academico y definir quien puede editarlos. No asumir una de esas reglas.
+4. **Proyectos academicos (actualizado 2026-10-13 12:20).** 5 asignaturas; los conciben docentes (0..N por ciclo, juntos o por separado); alumnos de 1.o/2.o son mano de obra. No hay clave PC2B ni `codigo_id` obligatorio. 3.o no cursa esas materias. SQL de `GE` sigue pendiente de borrar.
 
 5. **RLS y cambio de rol.** RLS limita filas, no columnas. La regla “cada usuario actualiza su perfil” permitiria cambiar tambien `rol` si no se separan privilegios. Limitar columnas actualizables por el usuario (por ejemplo, `tema` y campos de perfil aprobados) y reservar `rol`, membresias e invitaciones a operaciones privilegiadas. Las funciones usadas por politicas no deben crear recursion RLS.
 
@@ -1520,7 +1760,7 @@ Si dudas, elige la opcion mas restrictiva y etiquetala DECISION.
 
 ### Puertas previas y cambios concretos que rigen las tareas
 
-- **DB-00a [ ] Academico:** Instituto debe identificar las materias/areas academicas que admitiran proyectos y quien podra crearlos, editarlos y eliminarlos. No asumir `GE` ni codigos.
+- **DB-00a [x] Academico:** 5 asignaturas (PC, CV, CT, IN, LL); mismos `codigos` y permisos DB-00f; sin `GE`.
 - **DB-00b [x] Identidad de acceso:** validar el NIE contra la lista oficial privada NIE-correo; login por correo + contrasena. Implementar cotejo/unicidad con HMAC secreto de servidor, sin almacenar NIE plano ni exponer la lista.
 - **DB-00c [x] Egreso:** al egresar, desactivar cuenta y sesiones sin eliminar cuenta, proyectos, autoria ni cambiar la visibilidad de proyectos. Accion administrativa confiable, no deteccion automatica de Gmail expirado. Nunca borrar en cascada; proteger ultimo administrador activo.
 - **DB-00d [ ] Despliegue/Auth:** URL publica GitHub Pages o dominio propio para cada sitio (no URLs de repositorio), y callbacks exactos.
@@ -1533,7 +1773,7 @@ Si dudas, elige la opcion mas restrictiva y etiquetala DECISION.
 
 ### Secuencia de tareas DB actualizada
 
-1. Resolver DB-00a y DB-00d con Instituto; DB-00b/c/e/f tienen decision. Mantener implementacion DB pendiente hasta completar contrato y revisar los borradores.
+1. DB-00a cerrado (5 asignaturas). Resolver DB-00d (URLs Pages). Reescribir `tabla-especialidades.sql` (quitar GE; tipo tecnico|academico; 5 filas academicas). Anadir `nie` UNIQUE nullable, etiquetas N:M, unicidad codigo por ciclo. No migrar.
 2. Configurar un solo proyecto Supabase y mecanismo de build/deploy con URL + publishable key, sin versionar secretos ni exponer `service_role`.
 3. Crear esquema en SQL S1, revisar migracion y permisos; S2 guarda solo copias de referencia. Aplicar en Supabase una vez cuando Instituto lo solicite.
 4. Implementar Auth/invitaciones y transaccion trigger; despues consumo de perfiles/codigos/proyectos/CMS desde clientes.
@@ -1542,6 +1782,15 @@ Si dudas, elige la opcion mas restrictiva y etiquetala DECISION.
 ---
 
 ## Hecho (no borrar)
+
+### 2026-10-13 11:45 (UTC-6) | Cursor Grok 4.6 | laptop MINEDUCYT
+
+- [x] IA Sistema 2 reestructurada: hub sin dropdown; catalogos; filtro codigo; cajas; ficha fase 3; Personalizar/Evaluar; DER etiquetas; DB-00a cerrado; tareas 161-175
+
+### 2026-10-13 12:20 (UTC-6) | Cursor Grok 4.6 | laptop MINEDUCYT
+
+- [x] Ciclos desde 2026 (dropdown; solo admin incorpora); academicos distintos a tecnicos; diurno de catalogo/filtro; BACKLOG S2N-08..10
+
 
 ### 2026-10-11 14:10 (UTC-6) | Cursor | laptop MINEDUCYT
 

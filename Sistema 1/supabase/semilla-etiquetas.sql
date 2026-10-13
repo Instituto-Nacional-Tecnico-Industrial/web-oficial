@@ -1,0 +1,5 @@
+-- INTIWO SQL | catalogo amplio de etiquetas precreadas | BACKLOG S2N-04a
+-- NO APLICAR. No versionar padrones. Familias: 6 especialidades, 5 asignaturas, oficios,
+-- salud, ambiente, energia, software/datos, audiovisual, cultura, y tematicas
+-- (horror, terror, halloween, navidad, deporte, musica, historia, comunidad).
+-- Completar filas en una pasada revisada; no inventar etiquetas en el chat a ciegas.

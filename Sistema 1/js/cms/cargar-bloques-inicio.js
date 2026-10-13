@@ -59,11 +59,10 @@ async function cargarBloquesInicio() {
     inicio.removeAttribute("aria-busy");
   }
 
-  if (contenidoPublicado) {
-    window.dispatchEvent(new CustomEvent("intiwo:contenido-inicio-cargado", {
-      detail: contenidoPublicado
-    }));
-  }
+  const detalle = contenidoPublicado || { bloques: [] };
+  window.dispatchEvent(new CustomEvent("intiwo:contenido-inicio-cargado", {
+    detail: detalle
+  }));
 }
 
 cargarBloquesInicio().catch((error) => {

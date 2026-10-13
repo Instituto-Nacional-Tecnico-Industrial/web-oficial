@@ -61,6 +61,10 @@ html[data-theme="dark"] .intiwo-distintivo {
   text-decoration: none;
 }
 
+#intiwo-accion-rol[hidden] {
+  display: none !important;
+}
+
 .intiwo-pildora svg {
   width: 18px;
   height: 18px;

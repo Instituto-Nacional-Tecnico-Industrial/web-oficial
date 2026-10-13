@@ -53,6 +53,10 @@
         <svg class="intiwo-tema-icon intiwo-tema-icon--sun" width="14" height="14"><use href="#i-sun"/></svg>
         <svg class="intiwo-tema-icon intiwo-tema-icon--moon" width="14" height="14"><use href="#i-moon"/></svg>
       </button>
+      <a class="intiwo-pildora" id="intiwo-accion-rol" hidden href="#">
+        <svg aria-hidden="true"><use href="#i-pencil"/></svg>
+        <span data-intiwo-accion-rol-texto></span>
+      </a>
     </div>
   </header>
 
@@ -91,26 +95,12 @@
       <article class="intiwo-card">
         <h2 class="intiwo-card-titulo"><span class="intiwo-card-icono"><svg width="22" height="22"><use href="#i-folder"/></svg></span> Proyectos Técnicos</h2>
         <p>Es donde encontrarás los proyectos desarrollados por los alumnos, donde estos aplican los conocimientos adquiridos en sus talleres durante todo el año, en sus correspondientes proyectos.</p>
-        <button class="intiwo-pildora" type="button" data-abrir-tecnicos aria-expanded="false" aria-controls="intiwo-lista-especialidades"><span class="intiwo-pildora-icono"><svg><use href="#i-refresh"/></svg></span><span class="intiwo-desplegable-texto">Ver más</span></button>
-        <section id="intiwo-especialidades" class="intiwo-especialidades">
-          <p class="intiwo-especialidades-etiqueta">Especialidades</p>
-          <div class="intiwo-especialidades-caja">
-            <button class="intiwo-especialidades-chevron" type="button" data-cerrar-tecnicos aria-label="Mostrar especialidades" aria-expanded="false" aria-controls="intiwo-lista-especialidades"><svg width="18" height="18"><use href="#i-chevron"/></svg></button>
-            <div id="intiwo-lista-especialidades" class="intiwo-especialidades-lista es-colapsada">
-              <button class="intiwo-pildora-esp" type="button" data-esp="automotriz"><span class="intiwo-pildora-icono"><svg><use href="#i-car"/></svg></span> Mantenimiento Automotriz</button>
-              <button class="intiwo-pildora-esp" type="button" data-esp="mecanica"><span class="intiwo-pildora-icono"><svg><use href="#i-gear"/></svg></span> Mecanica Industrial</button>
-              <button class="intiwo-pildora-esp" type="button" data-esp="electricos"><span class="intiwo-pildora-icono"><svg><use href="#i-bolt"/></svg></span> Sistemas Electricos y Energia Renovable</button>
-              <button class="intiwo-pildora-esp" type="button" data-esp="electronica"><span class="intiwo-pildora-icono"><svg><use href="#i-chip"/></svg></span> Electrónica</button>
-              <button class="intiwo-pildora-esp" type="button" data-esp="software"><span class="intiwo-pildora-icono"><svg><use href="#i-monitor"/></svg></span> Desarrollo de Software</button>
-              <button class="intiwo-pildora-esp" type="button" data-esp="itsi"><span class="intiwo-pildora-icono"><svg><use href="#i-settings"/></svg></span> Infraestructura Tecnológica</button>
-            </div>
-          </div>
-        </section>
+        <a class="intiwo-pildora" href="../catalogo/pagina-catalogo-tecnicos.html"><span class="intiwo-pildora-icono"><svg><use href="#i-refresh"/></svg></span> Ver más</a>
       </article>
       <article class="intiwo-card">
         <h2 class="intiwo-card-titulo"><span class="intiwo-card-icono"><svg width="22" height="22"><use href="#i-cap"/></svg></span> Proyectos Académicos</h2>
         <p>En esta encontrarás los proyectos desarrollados por las asignaturas básicas, tales como Inglés, Ciencias y Tecnología, Ciudadanía y valores, etc. Estos no son algo distinto a los proyectos técnicos.</p>
-        <a class="intiwo-pildora" href="#academicos"><span class="intiwo-pildora-icono"><svg><use href="#i-refresh"/></svg></span> Ver más</a>
+        <a class="intiwo-pildora" href="../catalogo/pagina-catalogo-academicos.html"><span class="intiwo-pildora-icono"><svg><use href="#i-refresh"/></svg></span> Ver más</a>
       </article>
     </section>
 
@@ -153,8 +143,8 @@
   <script src="../../js/auth/panel-configuraciones-cuentas.js"></script>
   <script src="../../js/cromo/cursor-intiwo.js"></script>
   <script src="../../js/cromo/menu-hamburguesa-overlay.js"></script>
+  <script src="../../js/cromo/boton-personalizar-o-evaluar.js"></script>
   <script src="../../js/busqueda/buscar-proyectos.js"></script>
-  <script src="../../js/busqueda/filtrar-proyectos-especialidad.js"></script>
   <script type="module" src="../../js/supabase/cliente-supabase.js"></script>
 </body>
 </html>

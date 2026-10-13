@@ -1,16 +1,20 @@
 # Sistema 2 - INTIWO (proyectos)
 
-Solo proyectos. HTML (nombres reales; no usar index.html):
+Solo proyectos. HTML (nombres reales; no usar index.html). IA 2026-10-13: el hub no lleva dropdowns; Ver mas abre otro documento.
 
-- `paginas/proyectos/pagina-hub-proyectos.html`
-- `paginas/ficha/pagina-ficha-proyecto.html`
+- `paginas/proyectos/pagina-hub-proyectos.html` (dos cards)
+- `paginas/catalogo/pagina-catalogo-tecnicos.html` (dropdown anio desde 2026 + 6 especialidades)
+- `paginas/catalogo/pagina-catalogo-academicos.html` (mismo anio + 5 asignaturas; no codigo PC2B)
+- `paginas/filtro/pagina-filtro-anio-seccion.html` (solo tecnico: nivel + seccion = DS2B)
+- `paginas/listado/pagina-listado-proyectos-codigo.html` (cajas apiladas)
+- `paginas/ficha/pagina-ficha-proyecto.html` (fase 3, URLs)
+- `paginas/evaluar/pagina-evaluar-codigos-docente.html`
+- `paginas/evaluar/pagina-evaluar-proyectos-codigo.html`
 
-Cromo: `compartido/encabezado-hamburguesa-con-busqueda.html` (lleva el input de busqueda) y `compartido/pie-institucional.html`.
-CSS: `css/hub-y-pildoras-proyectos.css`, `css/ficha-proyecto.css`.
-JS: `js/busqueda/buscar-proyectos.js`, `js/ficha/editar-ficha-propia.js`.
+Cromo: identico a S1 salvo busqueda y boton Personalizar/Evaluar. CSS: `hub-y-pildoras-proyectos.css`, `catalogo-y-listado-proyectos.css`, `ficha-proyecto.css`.
 Cliente: `js/supabase/cliente-supabase.js` (misma base que Sistema 1).
 SQL en `supabase/` es copia de Sistema 1, no otra base.
-Repo futuro: web-oficial-proyectos. Completar segun `IAs/BACKLOG.md`.
+Repo futuro: web-oficial-proyectos. Completar segun `IAs/BACKLOG.md` S2N-01..07.
 
 ## Despliegue y Supabase
 

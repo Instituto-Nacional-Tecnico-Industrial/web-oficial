@@ -1,4 +1,4 @@
-/* INTIWO S2 | Ver mas tecnicos + pildoras hover | BACKLOG S2-02 */
+/* INTIWO S2 | SUPERSEDED 2026-10-13: pildoras ya no viven en el hub (S2N-01a). Conservado por si una pagina antigua lo carga. */
 (function () {
   var btn = document.querySelector("[data-abrir-tecnicos]");
   var caja = document.getElementById("intiwo-especialidades");

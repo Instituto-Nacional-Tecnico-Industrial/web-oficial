@@ -1,0 +1,5 @@
+-- INTIWO SQL | anios del portafolio desde 2026 | BACKLOG S2N-08 | fuente canonica S1
+-- NO APLICAR hasta autorizacion. Solo administrador inserta/actualiza.
+-- ciclos_lectivos: anio int PK check (>= 2026), es_actual boolean, abierto_por uuid FK perfiles, abierto_en timestamptz
+-- Un solo es_actual = true. Semilla: 2026.
+-- El dropdown de visitante lista unicamente filas existentes; no inventar 2020-2025.

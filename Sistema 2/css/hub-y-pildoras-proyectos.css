@@ -213,6 +213,27 @@
   color: var(--esp-itsi);
 }
 
+.intiwo-main > .intiwo-especialidades.es-abierto {
+  max-width: 560px;
+  margin: 3rem auto 4rem;
+  padding: 1.25rem 1.4rem 1.6rem;
+  border-radius: 32px;
+  background: var(--superficie);
+}
+
+.intiwo-pildora-esp[data-rama="electricos"]:hover,
+.intiwo-pildora-esp[data-rama="electricos"]:focus-visible,
+.intiwo-pildora-esp[data-rama="electricos"].es-activa {
+  background: #E61010;
+  color: #fff;
+  filter: none;
+}
+
+.intiwo-pildora-esp[data-rama="electricos"]:hover .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-rama="electricos"].es-activa .intiwo-pildora-icono {
+  color: #E61010;
+}
+
 @media (max-width: 768px) {
   .intiwo-hub {
     grid-template-columns: 1fr;
