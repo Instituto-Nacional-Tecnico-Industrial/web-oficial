@@ -1,6 +1,6 @@
 # Resoluciones (c�mo lo hizo cada IA)
 
-**Ultima modificacion:** 2026-10-13 16:29 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-13 16:55 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Solo existen estos dos archivos de IAs, en `IAs/`: este y `BACKLOG.md`. Al cambiar uno: **�ltima modificaci�n** con fecha, hora **UTC-6**, nombre de la IA y dispositivo. Si cambia una tarea, la misma marca en ambos.
 
@@ -1011,4 +1011,30 @@ Bachillerato General a distancia, 1� y 2�, s�bados y domingo. Requisito: m
 **Causa:** el chequeo leía `perfiles` con `supabaseAdmin` (claves nuevas); esa consulta salía vacía y se confundía con "no es admin". En el navegador el mismo usuario sí pasa RLS.
 
 **Como:** la funcion usa `rpc('intiwo_es_admin')` con el cliente del usuario (igual que Pages) y acepta el Gmail matriz. Insert de invitacion también por ese cliente. `inviteUserByEmail` sigue con `supabaseAdmin`. Instituto debe pegar otra vez `index.ts` y Deploy.
+
+---
+
+### 2026-10-13 16:41 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ya llegan correos. Disenar Configuraciones para que el docente agregue alumnos (Editores).
+
+**Como:** Vista docente con tarjeta destacada "Alumnos (editores)" e Invitar alumno (NIE@clases). JS `alta-cuentas-admin.js` atiende admin y docente. Edge Function: admin invita docente|editor; docente solo editor. SQL `invitaciones-docente-editor.sql` para el INSERT por RLS. No se vincula aun a codigo. Instituto debe correr el SQL, pegar de nuevo `invitar-cuenta` y publicar Pages.
+
+---
+
+### 2026-10-13 16:47 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** La cuenta matriz no podia agregar otro administrador; corregirlo.
+
+**Causa:** el formulario, el check SQL de `rol_destino` y la funcion solo permitian docente|editor a proposito.
+
+**Como:** Solo `intiwo11543@gmail.com` ve y puede elegir rol Administrador. El nuevo admin debe ser @inti.edu.sv o @clases.edu.sv (no otro Gmail). SQL `invitaciones-admin-matriz.sql`. La funcion rechaza ese rol si no es la matriz. Otros administradores siguen invitando solo docente/editor. Instituto: Run SQL, pegar `invitar-cuenta`, publicar Pages. Entra con el Gmail matriz para ver la opcion.
+
+---
+
+### 2026-10-13 16:55 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Admin y docente ven lista de correos; admin elimina otro admin/docente/editor; docente elimina editores de sus codigos. El alta exige nombres y apellidos. El admin debe tener tambien las funciones de docente del backlog.
+
+**Como:** Formularios con nombres/apellidos. Lista con nombre, correo, rol, estado y boton Eliminar. Baja logica (revocar invitacion o `perfiles.desactivado_en` + ban Auth): no se borra historial ni proyectos (DB-00c). No se da de baja la matriz, uno mismo ni el ultimo administrador. Docente solo editores que el invito (hasta existir `codigos`/`miembro_codigo`). Vista admin: cuentas + alumnos + arbol Academico/Tecnico (S1-07b/c/f) como estructura, datos de grupos pendientes. SQL `cuentas-nombres-y-bajas.sql`. La misma Edge Function `invitar-cuenta` acepta `accion: invitar|baja`. Instituto: Run SQL, pegar funcion, publicar Pages.
 

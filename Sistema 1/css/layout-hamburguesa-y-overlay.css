@@ -731,6 +731,68 @@ html[data-theme="light"] .intiwo-cuentas-form select {
   background: var(--fondo);
 }
 
+.intiwo-config-tarjeta--destacada {
+  grid-column: 1 / -1;
+}
+
+.intiwo-config-tarjeta .intiwo-cuentas-form {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.intiwo-config-lista-altas {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.intiwo-config-lista-altas p {
+  margin: 0 0 8px;
+}
+
+.intiwo-config-fila-cuenta {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--superficie-2);
+}
+
+.intiwo-config-fila-cuenta p {
+  margin: 0;
+  color: var(--texto);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.intiwo-config-baja {
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid var(--superficie-2);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--texto);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.intiwo-config-arbol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 0;
+}
+
+.intiwo-config-arbol span {
+  padding: 6px 10px;
+  border: 1px solid var(--superficie-2);
+  border-radius: 999px;
+  color: var(--texto-suave);
+  font-size: 13px;
+}
+
 .intiwo-config-tarjeta h3 {
   margin: 0 0 8px;
   font-size: 18px;

@@ -66,7 +66,7 @@
       <h1>Configuraciones</h1>
       <p data-config-descripcion>Preparando las opciones de tu cuenta…</p>
     </header>
-    <p class="intiwo-config-aviso" role="note">Esta vista organiza las opciones por rol. El acceso real requiere integrar Supabase Auth y validar permisos en el servidor; la información del navegador no autoriza acciones.</p>
+    <p class="intiwo-config-aviso" role="note">Las altas envían un correo de invitación. El alumno o docente elige su propia contraseña en Cuentas. Nadie del instituto la asigna ni la conoce.</p>
 
     <section class="intiwo-config-vista" data-config-vista="sin-acceso" hidden aria-labelledby="config-sin-acceso">
       <h2 id="config-sin-acceso">Inicia sesión para continuar</h2>
@@ -76,33 +76,46 @@
 
     <section class="intiwo-config-vista" data-config-vista="administrador" hidden aria-labelledby="config-admin">
       <h2 id="config-admin">Administración institucional</h2>
-      <p class="intiwo-config-resumen">Vista amplia para gestionar contenido institucional, permisos y cuentas.</p>
+      <p class="intiwo-config-resumen">Administras cuentas institucionales y, como el docente, también alumnos-editores y códigos. Eliminar desactiva el acceso; no borra proyectos ni historial.</p>
       <div class="intiwo-config-tarjetas">
-        <article class="intiwo-config-tarjeta">
-          <h3>Contenido institucional</h3>
-          <p>Administración de secciones y bloques del sitio.</p>
-          <span class="intiwo-config-estado">Herramientas pendientes de conexión</span>
-        </article>
-        <article class="intiwo-config-tarjeta">
+        <article class="intiwo-config-tarjeta intiwo-config-tarjeta--destacada">
           <h3>Permisos y cuentas</h3>
-          <p>Da de alta un correo institucional. El sistema envía un correo con un enlace a Cuentas para elegir contraseña. No se crean administradores desde aquí.</p>
-          <form id="intiwo-form-alta" class="intiwo-cuentas-form">
+          <p>Alta con correo, nombres, apellidos y rol. La lista muestra a quién invitaste. Puedes desactivar a otro administrador, docente o editor. La cuenta matriz no se elimina. Solo la matriz da de alta administradores.</p>
+          <form class="intiwo-cuentas-form" data-form-alta>
+            <label>Nombres <input type="text" name="nombres" required minlength="2" autocomplete="given-name"></label>
+            <label>Apellidos <input type="text" name="apellidos" required minlength="2" autocomplete="family-name"></label>
             <label>Correo <input type="email" name="email" required placeholder="19795194@inti.edu.sv"></label>
             <label>Rol
               <select name="rol" required>
                 <option value="docente">Docente</option>
                 <option value="editor">Editor</option>
+                <option value="administrador" data-opcion-matriz hidden>Administrador</option>
               </select>
             </label>
             <button class="intiwo-pildora" type="submit">Dar de alta</button>
           </form>
           <p data-alta-mensaje class="intiwo-config-estado" aria-live="polite"></p>
-          <div id="intiwo-altas-lista" class="intiwo-config-estado"></div>
+          <div class="intiwo-config-lista-altas" data-altas-lista></div>
         </article>
         <article class="intiwo-config-tarjeta">
-          <h3>Docentes y grupos</h3>
-          <p>Consulta administrativa de docentes, códigos y membresías autorizadas.</p>
-          <span class="intiwo-config-estado">Datos pendientes de conexión</span>
+          <h3>Alumnos (editores)</h3>
+          <p>Misma función que el docente: invitar alumnos con NIE en el correo. El vínculo a un código (DS2B) se completará con la tabla de grupos.</p>
+          <span class="intiwo-config-estado">Usa el formulario de Permisos y elige rol Editor, o la vista docente si entras con esa cuenta.</span>
+        </article>
+        <article class="intiwo-config-tarjeta">
+          <h3>Docentes y códigos</h3>
+          <p>Árbol del backlog: Administradores | Docentes → Académico o Técnico. Técnico: MA, MI, SE, EL, DS, IT. Académico: las 5 asignaturas. Al elegir especialidad se listarán docentes, códigos y editores.</p>
+          <div class="intiwo-config-arbol" aria-hidden="true">
+            <span>Académico</span>
+            <span>Técnico</span>
+            <span>MA</span><span>MI</span><span>SE</span><span>EL</span><span>DS</span><span>IT</span>
+          </div>
+          <span class="intiwo-config-estado">Pendiente de la tabla de códigos. Aquí no se inventan grupos.</span>
+        </article>
+        <article class="intiwo-config-tarjeta">
+          <h3>Contenido institucional</h3>
+          <p>CMS de Inicio y bloques del sitio público.</p>
+          <span class="intiwo-config-estado">Herramientas pendientes de conexión</span>
         </article>
       </div>
       <section class="intiwo-config-editor-footer" aria-labelledby="config-footer-titulo">
@@ -142,17 +155,25 @@
 
     <section class="intiwo-config-vista" data-config-vista="docente" hidden aria-labelledby="config-docente">
       <h2 id="config-docente">Espacio docente</h2>
-      <p class="intiwo-config-resumen">Las opciones docentes se limitan a los códigos y contenidos que tengas asignados. No se muestran datos de otros docentes ni controles globales.</p>
+      <p class="intiwo-config-resumen">Desde aquí das de alta a tus alumnos como Editores. Cada uno recibe un correo para elegir su contraseña. No ves las cuentas de otros docentes ni puedes crear administradores.</p>
       <div class="intiwo-config-tarjetas">
-        <article class="intiwo-config-tarjeta">
-          <h3>Mis códigos</h3>
-          <p>Consulta y administra únicamente tus códigos y sus grupos.</p>
-          <span class="intiwo-config-estado">Pendiente de conectar los datos de la cuenta</span>
+        <article class="intiwo-config-tarjeta intiwo-config-tarjeta--destacada">
+          <h3>Alumnos (editores)</h3>
+          <p>El correo del alumno debe llevar el NIE en la parte local, por ejemplo <strong>19795194@clases.edu.sv</strong>. Escribe también nombres y apellidos. En la lista puedes desactivar solo a los editores que invitaste (sus códigos, cuando existan los grupos).</p>
+          <form class="intiwo-cuentas-form" data-form-alta data-alta-rol-fijo="editor">
+            <label>Nombres <input type="text" name="nombres" required minlength="2" autocomplete="given-name"></label>
+            <label>Apellidos <input type="text" name="apellidos" required minlength="2" autocomplete="family-name"></label>
+            <label>Correo del alumno <input type="email" name="email" required placeholder="19795194@clases.edu.sv" autocomplete="off"></label>
+            <input type="hidden" name="rol" value="editor">
+            <button class="intiwo-pildora" type="submit">Invitar alumno</button>
+          </form>
+          <p data-alta-mensaje class="intiwo-config-estado" aria-live="polite"></p>
+          <div class="intiwo-config-lista-altas" data-altas-lista></div>
         </article>
         <article class="intiwo-config-tarjeta">
-          <h3>Alumnos y editores</h3>
-          <p>Gestiona invitaciones y membresías de tus propios códigos, según los permisos asignados.</p>
-          <span class="intiwo-config-estado">Pendiente de Auth y validación del NIE</span>
+          <h3>Mis códigos</h3>
+          <p>Código = especialidad + nivel 1|2|3 + sección, por ejemplo DS2B. Solo ves y administras los tuyos.</p>
+          <span class="intiwo-config-estado">Alta de códigos pendiente de la tabla. Eliminar un alumno de un código no borra sus proyectos.</span>
         </article>
         <article class="intiwo-config-tarjeta">
           <h3>Contenido de mi área</h3>
@@ -160,7 +181,7 @@
           <span class="intiwo-config-estado">Pendiente de conectar el contenido</span>
         </article>
       </div>
-      <p class="intiwo-config-comun">Puedes cambiar el tema desde el botón de la barra superior. El cambio de contraseña estará disponible al integrar Supabase Auth.</p>
+      <p class="intiwo-config-comun">El tema se cambia en el botón de la barra superior.</p>
     </section>
 
     <section class="intiwo-config-vista" data-config-vista="editor" hidden aria-labelledby="config-editor">

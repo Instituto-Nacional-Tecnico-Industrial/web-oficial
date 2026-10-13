@@ -1,6 +1,6 @@
 # Backlog INTIWO
 
-**Ultima modificacion:** 2026-10-13 16:29 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-13 16:55 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Carpeta exclusiva de IAs: `IAs/` (solo este archivo y `RESOLUCIONES.md`). Al marcar o agregar: misma fecha, hora (UTC-6) e IA en ambos; indica el dispositivo. Apuntes en orden cronologico.
 
@@ -516,6 +516,7 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Avance 2026-10-12 20:39 (UTC-6):** creada la vista diferenciada de Administrador, Docente y Editor. Docente solo ve el alcance de sus propios codigos/grupos y contenido; Editor solo ve el alcance de cajas asignadas, sin controles globales ni de eliminacion. La pagina S2 reutiliza la de S1 mediante su enlace existente. Las tarjetas declaran los servicios pendientes y no simulan operaciones.
   - **Pendiente:** SH-04a y las dependencias DB/Auth para resolver el rol desde una sesion confiable, obtener datos propios, y habilitar acciones autorizadas. La vista basada en almacenamiento del navegador es solo presentacion y no protege datos ni acciones.
+  - **Avance 2026-10-13 16:41 (UTC-6):** el docente ya tiene formulario "Invitar alumno" (rol editor, NIE en el correo). La funcion `invitar-cuenta` acepta docente→editor. Falta que Instituto corra `invitaciones-docente-editor.sql`, redespliegue la funcion y publique Pages. Vincular editor a codigo sigue pendiente.
 
 36 [ ] SH-05a `<link>` Roboto Serif (400 y 700) en el head de ambas raices.
 
@@ -963,7 +964,7 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Escribir en:** `Sistema 1/js/auth/panel-configuraciones-cuentas.js` listas desde `codigos.docente_id` y `miembro_codigo`; usar correo de invitaciones consumidas (`usado_por`) mediante RLS/RPC autorizada, no leer `auth.users` desde el navegador ni exponer NIE. No HTML de proyectos.
 
-98 [ ] S1-07e Admin invita/activa/desactiva Admin, Docente, Editor (correo+nombre; NIE segun DB-00b).
+98 [~] S1-07e Admin invita/activa/desactiva Admin, Docente, Editor (correo+nombre; NIE segun DB-00b).
 
   - **Extraer de:** F-RES 14:10; F-OLD P9 (invitacion por correo).
 
@@ -1802,6 +1803,18 @@ Si dudas, elige la opcion mas restrictiva y etiquetala DECISION.
 ### 2026-10-13 16:14 (UTC-6) | Cursor Grok 4.6 | laptop MINEDUCYT
 
 - [~] `invitar-cuenta` reescrita con `withSupabase({ auth: "user" })` (claves nuevas). Dar de alta devolvia non-2xx. Instituto debe volver a pegar `index.ts` en el editor de Functions y Deploy. JWT legacy OFF.
+
+### 2026-10-13 16:41 (UTC-6) | Cursor Grok 4.6 | laptop MINEDUCYT
+
+- [~] Configuraciones docente: invitar alumnos-editores (formulario + funcion + SQL `invitaciones-docente-editor.sql`). Falta redesplegar funcion, correr SQL y publicar Pages.
+
+### 2026-10-13 16:47 (UTC-6) | Cursor Grok 4.6 | laptop MINEDUCYT
+
+- [~] Cuenta matriz puede invitar rol administrador (`invitaciones-admin-matriz.sql` + opcion en Configuraciones). Otros admin solo docente/editor. Instituto: correr SQL, redesplegar `invitar-cuenta`, publicar Pages.
+
+### 2026-10-13 16:55 (UTC-6) | Cursor Grok 4.6 | laptop MINEDUCYT
+
+- [~] Configuraciones: nombres+apellidos obligatorios; lista de correos con Eliminar (baja logica DB-00c). Admin baja admin/docente/editor (no matriz ni ultimo admin). Docente baja editores que invito. Admin hereda tarjetas de alumnos/codigos del backlog S1-07. SQL `cuentas-nombres-y-bajas.sql`. Redesplegar `invitar-cuenta` (acciones invitar|baja). Codigos reales y NIE HMAC siguen pendientes.
 
 
 ### 2026-10-11 14:10 (UTC-6) | Cursor | laptop MINEDUCYT
