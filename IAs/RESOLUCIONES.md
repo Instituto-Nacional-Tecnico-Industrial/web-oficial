@@ -1,6 +1,6 @@
 # Resoluciones (c�mo lo hizo cada IA)
 
-**Ultima modificacion:** 2026-10-12 00:26 (UTC-6) - **IA:** GitHub Copilot - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-12 21:29 (UTC-6) - **IA:** GitHub Copilot - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Solo existen estos dos archivos de IAs, en `IAs/`: este y `BACKLOG.md`. Al cambiar uno: **�ltima modificaci�n** con fecha, hora **UTC-6**, nombre de la IA y dispositivo. Si cambia una tarea, la misma marca en ambos.
 
@@ -134,6 +134,8 @@ El verde institucional en esta paleta es `#539507` (no el `#A8C200` de conversac
 
 ---
 
+---
+
 ### 2026-10-09 12:54 (UTC-6) � IA: Cursor � Dispositivo: laptop Windows (MINEDUCYT)
 
 **Pedido:** Organizar los grupos de color ya extra�dos en una tabla de tres columnas.
@@ -196,6 +198,78 @@ El HTML de `index.html` es a�n m�s tosco (sesi�n en la barra, sin logo I.N
 **C�mo:** Se modific� el pie del overlay en `Sistema 1/compartido/encabezado-hamburguesa.html` y `Sistema 2/compartido/encabezado-hamburguesa-con-busqueda.html` para mostrar un panel verde con el t�tulo "Cuentas" y dos botones: "Iniciar sesi�n" y "Registrarse". El visitante puede ignorarlo, y la UI mantiene la jerarqu�a del mockup: la navegaci�n principal arriba, los accesos de autenticaci�n abajo. Tambi�n se agreg� la capa JS en `Sistema 1/js/auth/panel-configuraciones-cuentas.js` y `Sistema 2/js/auth/panel-configuraciones-cuentas.js` para cambiar el texto de ayuda al pulsar cada acci�n, sin bloquear el resto del flujo ni crear rutas nuevas.
 
 **Verificaci�n:** se valid� la sintaxis de ambos scripts con `node --check` y se comprob� que la carga del script qued� incluida en las p�ginas activas del sistema 1 y sistema 2.
+
+---
+
+### 2026-10-12 17:31 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Restaurar el icono sencillo de Cuentas, sacar las opciones del menu hamburguesa y dirigir al usuario a una pagina separada con Iniciar sesion y Registrarse.
+
+**Cómo:** Se reemplazó el panel verde de cuentas en los menus por un icono de acceso en la barra superior. Se crearon las paginas `Sistema 1/paginas/cuentas/pagina-cuentas.html` y `Sistema 2/paginas/cuentas/pagina-cuentas.html`, cada una con ambas opciones y mensajes explicativos. Se actualizaron los encabezados compartidos, las vistas activas, CSS y scripts de ambas plataformas.
+
+**Nota:** El registro indica que requiere invitacion vigente. El flujo real de autenticacion con Supabase aun no esta conectado.
+
+### 2026-10-12 19:40 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Aclaracion:** El icono de Cuentas no debe aparecer en la barra superior. Se restaura como una sola franja verde fija al pie del menu hamburguesa, como en la captura; al seleccionarla abre la pagina de Cuentas independiente. El scroll queda limitado a la lista de secciones para que la franja no desaparezca en pantallas cortas.
+
+### 2026-10-12 20:34 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 34 del backlog: mostrar Editar solo al administrador en Inicio y habilitar Configuraciones segun el rol.
+
+**Cómo:** Se aisló la visibilidad admin-only del botón Editar en `Sistema 1/js/cms/editor-cms-inicio-admin.js` y se enlazó solo desde Inicio S1. Los guards de roles S1/S2 ahora actualizan Configuraciones tanto al cambiar el almacenamiento en otra pestaña como al recibir `intiwo:auth-state-changed`, evento que deberá emitirse al iniciar/cerrar sesión.
+
+**Verificación y límite:** en navegador, admin/administrador muestran Editar solo en Inicio S1; docente/editor no lo muestran; roles permitidos habilitan Configuraciones y visitante permanece bloqueado. Los scripts pasan `node --check` y `git diff --check`. La autenticación real Supabase sigue pendiente de SH-04a; por ello la tarea 34 permanece parcial y no se considera que el rol guardado en el navegador sea autorización de seguridad.
+
+### 2026-10-12 20:39 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 35: mostrar opciones de Configuraciones reducidas para Docente y Editor, compartiendo el panel entre S1/S2.
+
+**Cómo:** Se completó `Sistema 1/paginas/configuraciones/pagina-configuraciones.html` como panel adaptable a rol, con tarjetas separadas para Administrador, Docente y Editor. Docente ve únicamente el alcance conceptual de sus códigos/grupos y contenido; Editor ve el alcance de sus cajas y límites de edición. El enlace de S2 continúa llevando al panel S1, sin duplicar el árbol. Las capacidades todavía no conectadas aparecen como pendientes y no se presentan formularios que aparenten funcionar.
+
+**Verificación y límite:** se incluyó un aviso de que el rol de navegador es solo presentación y no autorización. La sesión Supabase, los datos filtrados por usuario, los formularios y controles efectivos dependen de SH-04a y DB/RLS; por ello la tarea 35 queda parcial `[~]`. La ficha S2 existente corresponde a una ficha de proyecto, no a una ficha de cuenta, así que no se enlaza incorrectamente como perfil del Editor.
+
+### 2026-10-12 20:46 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 37, SH-05b: usar Roboto Serif en todo el contenido de ambos sistemas.
+
+**Verificación:** las hojas `Sistema 1/css/variables-tema-diurno-nocturno.css` y `Sistema 2/css/variables-tema-diurno-nocturno.css` ya declaran `font-family: "Roboto Serif", serif` en `body`. En navegador, S1 y S2 computan esa familia. La búsqueda de reglas de tipografía no encontró otra familia, solo `inherit` en componentes, por lo que no se requirió cambio de CSS. El backlog marca la tarea completa.
+
+### 2026-10-12 20:51 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 38: colocar los nueve SVG Lucide requeridos en ambos sistemas, con trazo 2.5 y `currentColor`.
+
+**Cómo:** Se añadieron `menu`, `house`, `search`, `sun`, `moon`, `pencil`, `plus`, `folder` y `graduation-cap` a los directorios `Sistema 1/iconos/` y `Sistema 2/iconos/`, tomando los paths del repositorio oficial de Lucide. Se corrigió un error preexistente donde `sun.svg` y `moon.svg` tenían los dibujos intercambiados. Los SVG se mantienen como recursos autónomos; no se cambiaron los símbolos inline existentes ni las páginas.
+
+**Verificación:** 18 archivos parsean como XML, todos declaran `stroke-width="2.5"` y `stroke="currentColor"`, y cada par S1/S2 tiene hash idéntico. En ese momento faltaba extraer/verificar los iconos desde lucide.dev; esa parte se completó en la entrada siguiente.
+
+### 2026-10-12 21:00 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Completar la tarea 39 extrayendo/verificando cada SVG desde las páginas oficiales de Lucide.
+
+**Cómo y verificación:** Se consultaron las páginas oficiales de `menu`, `house`, `search`, `sun`, `moon`, `pencil`, `plus`, `folder` y `graduation-cap` en lucide.dev y se extrajo su marcado SVG de preview. Se compararon los elementos gráficos locales en ambas carpetas contra cada SVG oficial; los paths y formas coinciden. Se removieron los atributos de preview que no aplican a recursos autónomos y se conserva `stroke-width="2.5"` exigido por el diseño INTIWO, frente al valor predeterminado 2 que muestra Lucide. La tarea 39 quedó `[x]`; la resolución anterior de tarea 38 registraba que esta extracción seguía pendiente en ese momento.
+
+### 2026-10-12 21:07 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Seguimiento:** El Instituto volvió a solicitar la tarea 39. El backlog ya mostraba SH-05d como `[x]` con fuentes oficiales y verificación por icono; confirmé que se extrajo el `svg.preview-icon` de las nueve páginas Lucide individuales y se compararon los elementos gráficos de las 18 copias locales. Actualicé la cabecera de modificación y corregí la nota histórica de tarea 38 para indicar que la extracción quedó pendiente solo en ese momento, sin duplicar la evidencia ni cambiar código de iconos.
+
+### 2026-10-12 21:10 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 42: permitir que Administrador edite telefonos y redes del footer.
+
+**Cómo:** Se agregó a la vista administrativa de Configuraciones un panel para WhatsApp principal/alternativo, Facebook, Instagram y TikTok, con los valores institucionales conocidos. Los campos y botón Guardar se dejan deshabilitados, con explicación visible, porque todavía no existe una ruta confiable para autenticar y persistir el cambio.
+
+**Límite:** `Sistema 1/js/cms/cargar-footer-cms.js` y `Sistema 1/supabase/tabla-footer-cms.sql` siguen como stubs; DB-02e, DB-03a y SH-07a no están completos. Un `localStorage` de rol no es autorización. La tarea queda `[~]` hasta definir/aplicar/probar esquema y RLS admin y enlazar Auth/persistencia; no se guardan cambios falsos en navegador.
+
+### 2026-10-12 21:29 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Completar la tarea 43 para inicializar el cliente Supabase sin versionar credenciales y preparar la publicacion de Sistema 1 y Sistema 2 en GitHub Pages.
+
+**Como:** Se implementaron en ambos sistemas los clientes con `createClient` y configuracion runtime generada durante el build. Se agregaron el script `.github/scripts/build-pages.mjs` y el workflow `.github/workflows/deploy-pages.yml`; el artefacto incluye los assets web de S1/S2, valida la URL HTTPS y el prefijo `sb_publishable_`, e inyecta la misma configuracion en los dos clientes sin guardar valores reales en Git. Se documentaron las variables requeridas y el cambio de fuente de Pages en ambos `LEEME.md`. La casilla 43 del BACKLOG queda `[~]`.
+
+**Estado y limites:** falta que una persona con permisos administrativos configure las Actions Variables `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY`, establezca GitHub Pages con Source = GitHub Actions y verifique una ejecucion real exitosa. No se agregaron credenciales reales o incompletas, no se hizo despliegue ni se modifico configuracion remota de GitHub o Supabase.
+
+**Verificacion:** `node --check` paso para los clientes, modulos runtime, stubs y script de build; `git diff --check` paso. El script de build se probo con valores ficticios: genero la entrada y configuracion de ambos sistemas, compartio la configuracion y excluyo los directorios SQL. No se pudo validar el workflow en GitHub ni la carga remota de esm.sh, y no estan disponibles `actionlint`, Ruby ni `yq`.
 
 ---
 
@@ -578,3 +652,70 @@ Bachillerato General a distancia, 1� y 2�, s�bados y domingo. Requisito: m
 **Verificado en navegador:** hub 2 cards; menu Proyectos verde y Oferta gris; query `disenooh jafico` muestra aviso + 4 disenos y al elegir Diseño Grafico se pone verde/negro; electricos rojo.
 
 **Pendiente:** favicon PNG 32/180/192/512; auth que oculte Editar al visitante (el PNG lo muestra); filtro especialidad con data Supabase; no se subio Adobe ni Documentacion.
+---
+
+### 2026-10-12 11:01 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Leer la documentacion completa, ubicar donde quedo a medias la ampliacion del DER y preparar el BACKLOG para que otra IA pueda continuar sin confundir el SQL del repositorio con cambios en la base remota.
+
+**Hallazgos:** el backlog enumera DB-02a/b/c/g, DB-03c/d y DB-05a como trabajo no terminado. Los SQL versionados de Sistema 1 ya contienen borradores parciales para esas entidades/politicas/trigger; los SQL de Sistema 2 siguen como stubs. Siguen vacios los SQL de contenido de Inicio, footer, proyectos, Storage y seed admin. Hay puntos de revision antes de continuar: `perfiles.especialidad_id` esta pedido por DB-02a pero no aparece en el borrador; la clave de codigo es unica globalmente aunque tambien se modela la unicidad por ciclo; y hay que validar que las policies/trigger mantengan el alta de membresias ligada a invitaciones y que el bootstrap de admin sea seguro ante concurrencia.
+
+**Tarea 30 / SH-02e:** permanece `[~]`, no completada. Aunque el borrador de `perfiles` ya declara `tema`, faltan aprobacion/aplicacion de DB-02a y DB-03c, cliente Supabase y sesion Auth SH-04a para leer/guardar el tema. El fallback local del visitante debe conservarse.
+
+**Proyecto Supabase:** Instituto indico el nombre `bd_inti_web_oficial` y compartio `https://akvprrwjfstncadkybeh.supabase.co` (ref `akvprrwjfstncadkybeh`). No se accedio al dashboard ni se aplico SQL; DB-01a y las puertas DB-00a..e siguen pendientes. El BACKLOG registra el inventario de borradores, sus discrepancias y el orden de continuacion. No se tocaron `Sistema 2/supabase/` ni `Adobe Ilustrador/`.
+
+---
+
+### 2026-10-12 11:31 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Evaluar captura de ajustes de seguridad de Supabase Auth, confirmar si afecta al desarrollo e indicar cuales notificaciones conviene activar.
+
+**Confirmacion de Instituto:** proveedor de inicio de sesion por correo activado en `bd_inti_web_oficial` (ref `akvprrwjfstncadkybeh`). Se marca DB-01a `[x]`; no implica que las tablas SQL del repo se hayan desplegado ni resuelve DB-00a..e.
+
+**Captura:** corresponde a notificaciones de seguridad por correo, no a activar/desactivar registro, proveedores, MFA ni funciones de la BD. Aparecen activas las notificaciones de cambio de contrasena/correo, metodo de inicio vinculado y MFA agregado; apagadas las de telefono cambiado, metodo de inicio eliminado y MFA eliminado. Esta configuracion no bloquea el desarrollo. Recomendacion: mantener activas las cuatro primeras; activar tambien las alertas de metodo de inicio y MFA eliminados; telefono puede seguir apagado mientras Auth por telefono no se use.
+
+**Limites:** no se cambiaron opciones en Supabase. Antes de modificar registro publico, confirmacion de correo, MFA obligatorio, callbacks u otros ajustes se debe revisar el flujo Auth invitado/aprobado del proyecto; habilitar proveedor email por si solo no valida ese flujo. Las credenciales y `service_role` no se comparten.
+
+---
+
+### 2026-10-12 12:54 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Aclarar decisiones pendientes del DER, el flujo de contrasena, que hacer con DB-00a..e y el significado de la baja de cuentas.
+
+**Decisiones y aclaraciones registradas:**
+- Instituto confirma que el NIE de alumno es unico y debe comprobarse durante el alta contra una lista oficial Instituto NIE-correo para evitar duplicados. El NIE no es secreto ni contrasena; no se guardara en texto plano. El identificador de inicio de sesion sera correo + contrasena. Para el cotejo, usar HMAC con secreto solo de servidor (no hash simple); la lista se carga por proceso privado, nunca al chat, Git o logs.
+- Instituto elige inicio con contrasena, no enlace magico. Cada usuario establece su propia contrasena mediante un flujo de invitacion/verificacion seguro; admin/docente no asignan ni conocen contrasenas. No habilitar autoasignacion de roles por registro libre.
+- DB-00a sigue pendiente: Instituto consultara que materias/areas tendran proyectos academicos y como se generaran/asignaran.
+- DB-00c queda confirmado por Instituto: al egresar, la cuenta se desactiva pero no se elimina, se conservan todos los proyectos y la autoria, sin cambiar su visibilidad. Un administrador debe ordenar la baja; la expiracion del Gmail institucional no borra datos ni sustituye la accion de desactivacion. El flujo debe revocar sesiones de forma confiable y preservar al ultimo administrador activo.
+- DB-00d pide las URLs de las paginas publicadas (GitHub Pages o dominio propio), no los enlaces a repositorios. Se pueden obtener en el repositorio GitHub, Settings > Pages; si aun no se publicaron, queda pendiente.
+- DB-00e queda definido con el JSON canonico ya especificado en S1-14a; antes de conectar la BD, se adaptan y prueban las plantillas JS al contrato.
+
+**Confirmacion posterior del Instituto (2026-10-12 12:54 UTC-6):** el alumno escribira correo + contrasena al iniciar sesion; el NIE se verificara al crear/validar la cuenta, no sera el nombre de usuario. Cada usuario establece su propia contrasena desde el flujo seguro de alta/invitacion.
+
+**Decision posterior sobre egresos (2026-10-12 12:54 UTC-6):** cuando un alumno concluya sus estudios, su cuenta queda inactiva sin importar el rol. No se elimina la cuenta, ningun proyecto ni su autoria; la visibilidad de proyectos se conserva. La expiracion del Gmail institucional no debe disparar borrados. La baja requiere accion administrativa y revocacion de sesiones.
+
+**Confirmacion posterior del Instituto (2026-10-12 12:54 UTC-6):** la fuente para verificar el NIE sera una lista oficial del Instituto que relaciona NIE y correo. Debe recibirse y manejarse por un canal privado; no pegar la lista en el chat ni versionarla en Git. La aplicacion validara el NIE y su correspondencia al correo antes de completar el alta, usando un HMAC calculado en servidor para evitar guardar NIE plano.
+
+**SQL y Supabase:** no se pide al Instituto copiar ni ejecutar SQL. Primero se terminan decisiones y se revisa el esquema en archivos; luego Copilot prepara instrucciones claras y un plan de respaldo/verificacion antes de cualquier aplicacion. No se hicieron cambios en el proyecto remoto.
+
+---
+
+### 2026-10-12 16:08 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Recibir temporalmente los datos de alumnos del codigo DS1B; aclarar que solo lideres pueden ser Editores; mantener el proyecto/caja cuando se retira el lider y permitir reemplazarlo.
+
+**Privacidad:** no se copiaron ni conservaron nombres, NIE ni calificaciones de la lista compartida. Son datos personales identificables de estudiantes y el NIE es identificador; el repositorio puede sincronizarse/publicarse y no es un almacen restringido para padrones escolares. No se creo documento temporal con la nomina. La ruta indicada en el BACKLOG apunta a esta nota de requisitos sin datos identificables (`IAs/RESOLUCIONES.md`, entrada 2026-10-12 16:08). Si la nomina se necesita para operacion, debe permanecer en un sistema institucional con acceso restringido, fuera de Git y del chat.
+
+**Decision funcional DB-00f / caja de proyecto:** cada proyecto/caja conserva ID, contenido, autoria, estado y visibilidad independientemente de la cuenta Editor asignada. Docente o administrador crea la caja y designa expresamente al lider/editor autorizado; que el padron enumere estudiantes no los convierte a todos en Editores, y no se infiere quien es lider. El Editor asignado puede agregar/modificar contenido permitido, pero no eliminar/archivar la caja ni cambiar permisos estructurales. El lider vigente puede iniciar el relevo; docente/administrador revocan la asignacion anterior y autorizan/asignan un reemplazo elegible del mismo codigo a la misma caja. Se conserva ID, contenido, autoria, estado y visibilidad; desactivar la cuenta tampoco borra ni oculta proyectos. Docente responsable/administrador puede archivar el proyecto con accion separada, sin borrado fisico ordinario.
+
+**Diseno de datos previo a SQL:** separar creador/autor de la asignacion vigente del Editor; guardar historial de asignaciones/revocaciones, con actor y fechas; mantener la membresia del Editor a su codigo y limitar permisos de edicion a contenido aprobado. RLS y privilegios deben impedir borrado o reasignacion aunque se manipule el cliente. No se escribio ni ejecuto SQL y no se modifico Supabase.
+
+---
+
+### 2026-10-12 16:22 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Enlazar el boton seleccionado "Inscríbete ahora" al formulario oficial.
+
+**Como:** Se asigno `https://docs.google.com/forms/d/e/1FAIpQLSchOv93fiyvoxF2z_mahlUcUhzbt5FyxfZTupLeODpdBcJjhw/viewform` al CTA en `Sistema 1/compartido/pie-institucional.html`, `Sistema 2/compartido/pie-institucional.html`, y en los footers embebidos de `Sistema 1/paginas/inicio/pagina-inicio-cms.html` y `Sistema 2/paginas/proyectos/pagina-hub-proyectos.html`. El formulario abre en pestaña nueva con `rel="noopener noreferrer"`. Se actualizo el destino en SH-06a y S1-02d del BACKLOG.
+
+**Verificacion:** se comprobo que los cuatro enlaces usan la URL oficial y protegen la pestaña de origen; no se cambio ninguna otra navegacion.

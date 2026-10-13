@@ -14,6 +14,7 @@
     menu.classList.toggle("es-abierto", valor);
     if (velo) velo.classList.toggle("es-abierto", valor);
     boton.setAttribute("aria-expanded", valor ? "true" : "false");
+    boton.setAttribute("aria-label", valor ? "Cerrar menu" : "Abrir menu");
     document.body.style.overflow = valor ? "hidden" : "";
   }
 

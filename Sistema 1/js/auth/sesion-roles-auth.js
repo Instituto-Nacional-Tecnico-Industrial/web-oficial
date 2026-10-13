@@ -68,7 +68,10 @@
   function iniciar() {
     prepararItem();
     aplicarEstadoConfiguraciones();
-    window.addEventListener('storage', aplicarEstadoConfiguraciones);
+    window.addEventListener('storage', () => {
+      aplicarEstadoConfiguraciones();
+    });
+    window.addEventListener('intiwo:auth-state-changed', aplicarEstadoConfiguraciones);
   }
 
   if (document.readyState === 'loading') {

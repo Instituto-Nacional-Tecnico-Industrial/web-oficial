@@ -1,3 +1,9 @@
-/* INTIWO S1 | archivo: cliente-supabase.js | para: createClient URL+anon reales del proyecto, nunca service_role | local-only | BACKLOG SH-07 */
-export const SUPABASE_URL = "https://akvprrwjfstncadkybeh.supabase.co";
-export const SUPABASE_ANON_KEY = "sb_publishable_ojj4829x-ddZ6D6uL0u_g_j05W...";
+/* INTIWO S1 | shared Supabase project client | runtime-configured, publishable key only */
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "./configuracion-runtime.js";
+
+if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+  throw new Error("[INTIWO Supabase] Falta configuración runtime; el cliente no se inicializó.");
+}
+
+export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);

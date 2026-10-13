@@ -1,1 +1,184 @@
-<!-- INTIWO S1 | archivo: pagina-configuraciones.html | para: cuentas y codigos por rol | VACIO a proposito | completar: IAs/BACKLOG.md S1-07 -->
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Configuraciones | INTIWO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../iconos/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/variables-tema-diurno-nocturno.css">
+  <link rel="stylesheet" href="../../css/layout-hamburguesa-y-overlay.css">
+</head>
+<body data-seccion-actual="configuraciones">
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute">
+    <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+    <symbol id="i-house" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/><path d="M8 7h6"/><path d="M8 11h8"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+  </svg>
+
+  <header class="intiwo-barra">
+    <button class="intiwo-btn-icono" type="button" data-intiwo-menu aria-expanded="false" aria-controls="intiwo-menu" aria-label="Abrir menú">
+      <svg width="24" height="24"><use href="#i-menu"/></svg>
+    </button>
+    <a href="../inicio/pagina-inicio-cms.html" aria-label="INTI">
+      <img class="intiwo-distintivo" src="../../iconos/marca-inti/Logotipo%20Barra-01.svg" alt="I.N.T.I.">
+    </a>
+    <div class="intiwo-barra-derecha">
+      <button class="intiwo-interruptor-tema" type="button" data-intiwo-tema aria-label="Cambiar tema">
+        <svg class="intiwo-tema-icon intiwo-tema-icon--sun" width="14" height="14"><use href="#i-sun"/></svg>
+        <svg class="intiwo-tema-icon intiwo-tema-icon--moon" width="14" height="14"><use href="#i-moon"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div id="intiwo-velo" class="intiwo-velo"></div>
+  <nav id="intiwo-menu" class="intiwo-menu" aria-label="Secciones INTIWO">
+    <ul class="intiwo-menu-lista">
+      <li><a class="intiwo-menu-item" data-seccion="inicio" href="../inicio/pagina-inicio-cms.html"><svg><use href="#i-house"/></svg> Inicio</a></li>
+      <li><a class="intiwo-menu-item" data-seccion="matricula" href="../matricula/pagina-matricula-nuevo-ingreso.html"><svg><use href="#i-clipboard"/></svg> Matrícula</a></li>
+      <li><a class="intiwo-menu-item" data-seccion="oferta" href="../oferta-academica/pagina-oferta-academica.html"><svg><use href="#i-book"/></svg> Oferta académica</a></li>
+      <li><a class="intiwo-menu-item" data-seccion="proyectos" href="../../../Sistema 2/paginas/proyectos/pagina-hub-proyectos.html"><svg><use href="#i-folder"/></svg> Proyectos</a></li>
+      <li><a class="intiwo-menu-item" data-seccion="personal" href="../personal/pagina-personal-instituto.html"><svg><use href="#i-users"/></svg> Personal</a></li>
+      <li><a class="intiwo-menu-item" data-seccion="ubicaciones" href="../ubicaciones/pagina-ubicaciones.html"><svg><use href="#i-map"/></svg> Ubicaciones</a></li>
+      <li><a class="intiwo-menu-item" data-seccion="historia" href="../historia/pagina-historia-instituto.html"><svg><use href="#i-clock"/></svg> Historia</a></li>
+      <li><a class="intiwo-menu-item es-activo" data-seccion="configuraciones" data-config-href="pagina-configuraciones.html" aria-disabled="true"><svg><use href="#i-settings"/></svg> Configuraciones</a></li>
+    </ul>
+    <div class="intiwo-menu-pie">
+      <a class="intiwo-menu-item intiwo-menu-cuentas" href="../cuentas/pagina-cuentas.html">
+        <svg aria-hidden="true"><use href="#i-user"/></svg> Cuentas
+      </a>
+    </div>
+  </nav>
+
+  <main class="intiwo-config-main">
+    <header class="intiwo-config-encabezado">
+      <p class="intiwo-config-etiqueta">Espacio personal</p>
+      <h1>Configuraciones</h1>
+      <p data-config-descripcion>Preparando las opciones de tu cuenta…</p>
+    </header>
+    <p class="intiwo-config-aviso" role="note">Esta vista organiza las opciones por rol. El acceso real requiere integrar Supabase Auth y validar permisos en el servidor; la información del navegador no autoriza acciones.</p>
+
+    <section class="intiwo-config-vista" data-config-vista="sin-acceso" hidden aria-labelledby="config-sin-acceso">
+      <h2 id="config-sin-acceso">Inicia sesión para continuar</h2>
+      <p>Configuraciones está disponible únicamente para cuentas institucionales autorizadas.</p>
+      <a class="intiwo-pildora" href="../cuentas/pagina-cuentas.html">Ir a Cuentas</a>
+    </section>
+
+    <section class="intiwo-config-vista" data-config-vista="administrador" hidden aria-labelledby="config-admin">
+      <h2 id="config-admin">Administración institucional</h2>
+      <p class="intiwo-config-resumen">Vista amplia para gestionar contenido institucional, permisos y cuentas.</p>
+      <div class="intiwo-config-tarjetas">
+        <article class="intiwo-config-tarjeta">
+          <h3>Contenido institucional</h3>
+          <p>Administración de secciones y bloques del sitio.</p>
+          <span class="intiwo-config-estado">Herramientas pendientes de conexión</span>
+        </article>
+        <article class="intiwo-config-tarjeta">
+          <h3>Permisos y cuentas</h3>
+          <p>Administración de las cuentas institucionales y sus permisos.</p>
+          <span class="intiwo-config-estado">Herramientas pendientes de conexión</span>
+        </article>
+        <article class="intiwo-config-tarjeta">
+          <h3>Docentes y grupos</h3>
+          <p>Consulta administrativa de docentes, códigos y membresías autorizadas.</p>
+          <span class="intiwo-config-estado">Datos pendientes de conexión</span>
+        </article>
+      </div>
+      <section class="intiwo-config-editor-footer" aria-labelledby="config-footer-titulo">
+        <h3 id="config-footer-titulo">Contacto y redes del footer</h3>
+        <p>Estos datos se mostrarán en el pie institucional de ambos sistemas. La edición quedará disponible cuando exista sesión Auth real y la tabla tenga políticas RLS de administrador.</p>
+        <form>
+          <fieldset disabled>
+            <legend>Datos institucionales</legend>
+            <div class="intiwo-config-campos">
+              <label>
+                WhatsApp principal
+                <input type="tel" name="whatsapp_principal" value="+503 7441-1075" autocomplete="tel">
+              </label>
+              <label>
+                WhatsApp alternativo
+                <input type="tel" name="whatsapp_alterno" value="+503 6674-3159" autocomplete="tel">
+              </label>
+              <label>
+                Facebook
+                <input type="url" name="facebook_url" value="https://www.facebook.com/tecnicosinti/?locale=es_LA">
+              </label>
+              <label>
+                Instagram
+                <input type="url" name="instagram_url" value="https://www.instagram.com/inti.edu.sv/">
+              </label>
+              <label>
+                TikTok
+                <input type="url" name="tiktok_url" value="https://www.tiktok.com/@intitecnicos">
+              </label>
+            </div>
+          </fieldset>
+          <p class="intiwo-config-estado">Edición y guardado deshabilitados: falta integrar SH-07a, DB-02e y DB-03a.</p>
+          <button type="button" disabled>Guardar cambios</button>
+        </form>
+      </section>
+    </section>
+
+    <section class="intiwo-config-vista" data-config-vista="docente" hidden aria-labelledby="config-docente">
+      <h2 id="config-docente">Espacio docente</h2>
+      <p class="intiwo-config-resumen">Las opciones docentes se limitan a los códigos y contenidos que tengas asignados. No se muestran datos de otros docentes ni controles globales.</p>
+      <div class="intiwo-config-tarjetas">
+        <article class="intiwo-config-tarjeta">
+          <h3>Mis códigos</h3>
+          <p>Consulta y administra únicamente tus códigos y sus grupos.</p>
+          <span class="intiwo-config-estado">Pendiente de conectar los datos de la cuenta</span>
+        </article>
+        <article class="intiwo-config-tarjeta">
+          <h3>Alumnos y editores</h3>
+          <p>Gestiona invitaciones y membresías de tus propios códigos, según los permisos asignados.</p>
+          <span class="intiwo-config-estado">Pendiente de Auth y validación del NIE</span>
+        </article>
+        <article class="intiwo-config-tarjeta">
+          <h3>Contenido de mi área</h3>
+          <p>Consulta y revisa los bloques correspondientes a tu área.</p>
+          <span class="intiwo-config-estado">Pendiente de conectar el contenido</span>
+        </article>
+      </div>
+      <p class="intiwo-config-comun">Puedes cambiar el tema desde el botón de la barra superior. El cambio de contraseña estará disponible al integrar Supabase Auth.</p>
+    </section>
+
+    <section class="intiwo-config-vista" data-config-vista="editor" hidden aria-labelledby="config-editor">
+      <h2 id="config-editor">Espacio de Editor</h2>
+      <p class="intiwo-config-resumen">Vista reducida: solo corresponde a las cajas de proyectos que te asignen. No puedes eliminarlas ni reasignarlas.</p>
+      <div class="intiwo-config-tarjetas">
+        <article class="intiwo-config-tarjeta">
+          <h3>Proyectos asignados</h3>
+          <p>La edición debe limitarse al contenido permitido dentro de cada caja asignada.</p>
+          <span class="intiwo-config-estado">Pendiente de asignaciones y permisos del servidor</span>
+        </article>
+        <article class="intiwo-config-tarjeta">
+          <h3>Cuenta</h3>
+          <p>El tema puede cambiarse desde la barra superior. La ficha de cuenta y el cambio de contraseña requieren Auth.</p>
+          <span class="intiwo-config-estado">Opciones de cuenta pendientes de conexión</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="intiwo-config-vista" data-config-vista="rol-desconocido" hidden aria-labelledby="config-rol-desconocido">
+      <h2 id="config-rol-desconocido">No se pudo identificar el rol</h2>
+      <p>Por seguridad, no se muestran opciones de configuración. Cierra sesión y vuelve a ingresar con tu cuenta institucional.</p>
+    </section>
+  </main>
+
+  <script src="../../js/tema/persistir-tema-diurno-nocturno.js"></script>
+  <script src="../../js/cromo/menu-hamburguesa-overlay.js"></script>
+  <script src="../../js/auth/sesion-roles-auth.js"></script>
+  <script src="../../js/auth/pagina-configuraciones-roles.js"></script>
+  <script type="module" src="../../js/supabase/cliente-supabase.js"></script>
+</body>
+</html>

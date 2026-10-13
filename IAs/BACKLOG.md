@@ -1,6 +1,6 @@
 # Backlog INTIWO
 
-**Ultima modificacion:** 2026-10-12 00:26 (UTC-6) | **IA:** GitHub Copilot | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-12 21:29 (UTC-6) | **IA:** GitHub Copilot | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Carpeta exclusiva de IAs: `IAs/` (solo este archivo y `RESOLUCIONES.md`). Al marcar o agregar: misma fecha, hora (UTC-6) e IA en ambos; indica el dispositivo. Apuntes en orden cronologico.
 
@@ -320,6 +320,8 @@ Tabla institucional (telefonos/redes): `RESOLUCIONES.md` seccion "Datos instituc
 
   - **Escribir en:** Decision en `IAs/RESOLUCIONES.md`. Columna NIE solo en SQL `Sistema 1/supabase/` si dice si.
 
+  - **Correccion 2026-10-12 12:54 (UTC-6):** la decision vigente sustituye la nota anterior: cotejar el NIE contra la lista oficial privada del Instituto y usar HMAC de servidor para unicidad; nunca guardar el NIE plano.
+
   - **Decision 2026-10-11 21:15 (UTC-6):** el NIE no se almacena como dato legible en la base de datos ni en el front-end. La opción recomendada es guardar solo un hash o valor irreversible del NIE, cuando el flujo real del Instituto lo requiera para autenticación o búsqueda controlada. Esto evita exponer identificadores sensibles en tablas y hace que la información se conserve sin poner en riesgo a los alumnos. Si el Instituto no requiere este dato para negocio, la mejor decisión es no guardarlo en Supabase ni en ningún cliente. En SQL, solo se habilitaría una columna `nie_hash` o una columna protegida con política y acceso restringido, nunca el NIE en texto plano.
 
 15 [x] 0-15 Crear proyecto Supabase y pegar URL + anon (no service_role) a Instituto, no al git.
@@ -368,19 +370,24 @@ Tabla institucional (telefonos/redes): `RESOLUCIONES.md` seccion "Datos instituc
 
 Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hasta el split).
 
-20 [x] SH-01a Crear `compartido/encabezado-hamburguesa.html` (o JS que lo inyecte): hamburguesa izquierda, distintivo I.N.T.I., tema a la derecha, **sin** "Iniciar sesion" en la barra (Cuentas va al pie del menu).
+20 [x] SH-01a Crear `compartido/encabezado-hamburguesa.html` (o JS que lo inyecte): hamburguesa izquierda, distintivo I.N.T.I., tema a la derecha; Cuentas va en el menu, no en la barra superior.
 
   - **Extraer de:** F-PNG-MENU. No F-GEM ni F-PDF-S2 (ponen Acceder en header).
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/compartido/encabezado-hamburguesa.html` y COPIAR el mismo markup a `Sistema 2/compartido/encabezado-hamburguesa-con-busqueda.html`. Incluirlo desde cada pagina. Prohibido `index.html` en la raiz del repo.
 
-  - **Decision 2026-10-11 21:45 (UTC-6):** el encabezado compartido usa la hamburguesa a la izquierda, el distintivo institucional en el centro y el selector de tema a la derecha, sin mostrar "Iniciar sesión" ni acceso directo en la barra superior. El acceso a cuentas se deja al pie del panel del menú para respetar el diseño del mockup y mantener la navegación principal limpia.
+  - **Decision 2026-10-11 21:45 (UTC-6):** el encabezado compartido usa la hamburguesa a la izquierda, el distintivo institucional en el centro y el selector de tema a la derecha, sin acciones de cuenta en la barra.
 
 21 [x] SH-01b Menu overlay (no sidebar permanente). `aria-expanded`, `aria-controls`, Escape cierra, backdrop clic cierra.
 
   - **Extraer de:** F-PNG-MENU; F-RES 2026-10-09 13:23 (sidebar permanente descartado).
 
   - **Escribir en:** `Sistema 1/js/` (ej. `js/cromo/menu-hamburguesa-overlay.js` o `js/cromo/menu-hamburguesa-overlay.js`) + la copia identica en `Sistema 2/js/`. CSS overlay: `Sistema 1/css/layout-hamburguesa-y-overlay.css` y `Sistema 2/css/layout-hamburguesa-y-overlay.css`.
+
+  - **Ajuste 2026-10-12 16:55 (UTC-6):** barra superior fija y visible sobre el overlay; el panel empieza debajo del encabezado, sin duplicar logo ni hamburguesa; panel con scroll vertical propio. Los iconos del menu llevan circulo de fondo adaptado al tema y glifo verde. Validado en S1/S2 a 375x560.
+  - **Ajuste 2026-10-12 17:03 (UTC-6):** en pantallas de hasta 600px el panel usa ancho maximo de 280px (con margen minimo de 24px en pantallas mas estrechas), reduciendo el vacio lateral sin cambiar el ancho de tabletas/escritorio.
+  - **Ajuste 2026-10-12 17:12 (UTC-6):** Cuentas se distingue al pie del menu con rectangulo verde de ancho completo e icono propio, de acuerdo con el mockup.
+  - **Correccion 2026-10-12 17:19 (UTC-6):** hover/foco de secciones usa el mismo verde translúcido del boton hamburguesa; la seccion activa conserva el verde solido para no confundir estados.
 
 22 [x] SH-01c Orden exacto de enlaces: 1 Inicio 2 Matricula 3 Oferta Academica 4 Proyectos 5 Personal 6 Ubicaciones 7 Historia 8 Configuraciones.
 
@@ -396,13 +403,13 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Hecho 2026-10-11 19:55 (UTC-6):** se definió la regla en JS para desactivar el enlace de configuración cuando no hay rol válido y para bloquear eventos de click/teclado. Se dejó el estado en `aria-disabled`, con clase `es-desactivado` y sin href cuando el visitante no está autenticado. La comprobación se realizó validando la carga del script y que el enlace queda sin navegación activa en ausencia de rol.
 
-24 [x] SH-01e Item Cuentas al final del panel (como el PNG, abajo): login/registro; visitante puede ignorarlo.
+24 [x] SH-01e Item Cuentas al final del panel hamburguesa como en el mockup; enlaza a la pagina independiente de cuenta.
 
   - **Extraer de:** F-PNG-MENU zona inferior.
 
-  - **Escribir en:** Panel inferior del overlay en `Sistema 1/compartido/encabezado-hamburguesa.html` y `Sistema 2/compartido/encabezado-hamburguesa-con-busqueda.html`. Formulario de login puede ser un `<dialog>` ahi; no crear `paginas/cuentas/` salvo que haga falta. No F-GEM.
+  - **Escribir en:** Enlace Cuentas al final del menu apunta a `Sistema 1/paginas/cuentas/pagina-cuentas.html` o `Sistema 2/paginas/cuentas/pagina-cuentas.html`. Sin icono adicional en la barra superior.
 
-  - **Hecho 2026-10-11 20:00 (UTC-6):** se convirtió el bloque final del menú en un panel de cuentas con dos acciones visibles: "Iniciar sesión" y "Registrarse"; ambos quedan en la parte inferior del overlay, sin competir con la navegación principal. El visitante puede ignorarlo y la interfaz mantiene el mismo estilo institucional del bloque verde del panel. La lógica del panel queda en `Sistema 1/js/auth/panel-configuraciones-cuentas.js` y `Sistema 2/js/auth/panel-configuraciones-cuentas.js`, con mensajes de estado sin interrumpir la experiencia.
+  - **Ajuste 2026-10-12 19:40 (UTC-6):** se quitó el icono de Cuentas de la barra superior. La franja verde de Cuentas vuelve al pie fijo del menu, como en la imagen; el acceso abre su pagina propia con las opciones de inicio de sesion y registro. Solo la lista de secciones tiene scroll.
 
 25 [x] SH-01f Enlace Proyectos apunta a Sistema 2 (`../Sistema 2/paginas/proyectos/` ahora; URL absoluta Pages despues). Comentario href.
 
@@ -448,35 +455,49 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **En curso 2026-10-12 00:02 (UTC-6):** bloqueada hasta recibir el DER aprobado y contar con el flujo de Auth integrado. `tabla-perfiles.sql` sigue vacío y no hay implementación de `createClient`, consulta `perfiles` ni sesión Auth en el código; no se inventa SQL ni contrato de datos.
 
-31 [ ] SH-03a Visitante: no forzar registro. Vista PDF = sin Editar ni Config.
+  - **Actualizacion 2026-10-12 11:01 (UTC-6):** el archivo `Sistema 1/supabase/tabla-perfiles.sql` ya contiene un borrador con `tema`, pero aun no se ha aplicado ni aprobado; siguen sin existir cliente Supabase ni flujo Auth en las paginas. SH-02e sigue bloqueada por DB-02a, DB-03c y SH-04a. La nota de las 00:02 describe correctamente el estado de ese momento.
+
+31 [x] SH-03a Visitante: no forzar registro. Vista PDF = sin Editar ni Config.
 
   - **Extraer de:** F-RES 14:10; F-C-INI.
 
   - **Escribir en:** No archivo nuevo. Verificar `Sistema 1/paginas/inicio/pagina-inicio-cms.html` sin boton Editar para anon y Config disabled en ambos headers.
 
-32 [ ] SH-04a Pantalla Cuentas: email + contrasena o magic link (elegir uno; documentar en resoluciones).
+  - **Hecho 2026-10-12 16:29 (UTC-6):** Cuentas sigue siendo opcional (sin redireccion ni apertura forzada); Inicio S1 oculta Editar a visitantes; Configuraciones no tiene destino navegable hasta que el control de rol lo habilite en ambos headers. Estado inicial seguro incluso sin JavaScript.
+  - **Aclaracion 2026-10-12 16:38 (UTC-6):** el boton Editar CMS existe solo en Inicio S1 y se muestra exclusivamente al rol administrador. No se muestra en el hub ni en las demas paginas; la edicion de proyectos tiene sus controles propios y no reutiliza este boton CMS.
 
-  - **Extraer de:** F-PNG-MENU Cuentas; no copiar formulario F-GEM.
+32 [~] SH-04a Pantalla Cuentas: correo + contrasena propia.
 
-  - **Escribir en:** UI Cuentas: overlay en `compartido/encabezado-hamburguesa.html` (ambos) + `Sistema 1/js/auth/sesion-roles-auth.js` y copia S2. Auth es el mismo proyecto Supabase.
+  - **Extraer de:** F-PNG-MENU Cuentas; decisiones DB-00b y la entrada de RESOLUCIONES de 2026-10-12 12:54. No copiar formulario F-GEM.
 
-33 [ ] SH-04b Registro Editor: si el correo no esta en un codigo/invitacion, mensaje "Tu docente aun no te dio de alta" y no crea perfil editor.
+  - **Escribir en:** UI Cuentas: overlay en `compartido/encabezado-hamburguesa.html` (ambos) + `Sistema 1/js/auth/sesion-roles-auth.js` y copia S2. Auth es el mismo proyecto Supabase. Instituto elige correo + contrasena; cada usuario establece la suya mediante alta/invitacion segura, no la asigna el admin/docente.
+
+33 [~] SH-04b Alta Editor por invitacion: sin invitacion valida, informar que el docente aun no dio de alta; impedir la creacion de perfil editor.
 
   - **Extraer de:** F-RES 14:10 roles.
 
-  - **Escribir en:** `Sistema 1/js/auth/sesion-roles-auth.js` y copia S2. Mensaje en overlay; consumir invitacion una sola vez y crear membresia de codigo en transaccion. No crear perfil editor ni membresia si no existe invitacion valida.
+  - **Escribir en:** `Sistema 1/js/auth/sesion-roles-auth.js` y copia S2. Mensaje en overlay; consumir invitacion una sola vez y crear membresia de codigo en transaccion. Invitacion por correo con enlace seguro para que la persona defina su propia contrasena; admin/docente nunca la crea ni la conoce. No crear perfil editor ni membresia si no existe invitacion valida. No habilitar autoasignacion de roles desde un registro publico.
 
-34 [ ] SH-04c Tras login Admin: mostrar Editar en Inicio y habilitar Configuraciones.
+  - **Avance 2026-10-12 17:24 (UTC-6):** el estado informativo de Registro en los paneles S1/S2 indica que se requiere invitacion vigente y que, si no existe, el docente aun no dio de alta al alumno. Los botones quedaron conectados tambien en las paginas activas S1/S2. En el trigger SQL canonico S1, el alta sin invitacion activa (excepto bootstrap del primer admin) ahora genera una excepcion y revierte la transaccion Auth en vez de dejar un usuario huerfano sin perfil.
+  - **Pendiente para completar:** integrar y probar el alta por correo/enlace de invitacion con errores de Auth mostrados en el overlay; esto depende de completar SH-04a y aplicar/probar el contrato DB-05a/DB-03d. El SQL es solo borrador local y no se ha aplicado a Supabase. La membresia Editor se crea junto con perfil y consumo de invitacion dentro del trigger existente.
+
+34 [~] SH-04c Tras login Admin: mostrar Editar en Inicio y habilitar Configuraciones.
 
   - **Extraer de:** F-CMS; F-C-INI email matriz.
 
   - **Escribir en:** `Sistema 1/js/cms/editor-cms-inicio-admin.js` (boton Editar SOLO se pinta en `Sistema 1/paginas/inicio/`). Config: ambos headers via `js/auth/sesion-roles-auth.js`.
 
-35 [ ] SH-04d Tras login Docente/Editor: Configuraciones con menos opciones (S1-07).
+  - **Avance 2026-10-12 20:34 (UTC-6):** la visibilidad admin-only de Editar en Inicio S1 queda en `editor-cms-inicio-admin.js`; ambos scripts de roles habilitan Configuraciones segun rol permitido y recalculan al recibir `intiwo:auth-state-changed`.
+  - **Pendiente:** conectar ese evento y el estado de sesion a Supabase Auth despues de completar SH-04a. Sin Auth real no se simula ni se concede un rol desde el frontend.
+
+35 [~] SH-04d Tras login Docente/Editor: Configuraciones con menos opciones (S1-07).
 
   - **Extraer de:** F-RES 14:10.
 
-  - **Escribir en:** `Sistema 1/paginas/configuraciones/pagina-configuraciones.html` + `Sistema 1/js/auth/sesion-roles-auth.js`. S2 no duplica el arbol de docentes; redirige o muestra subset.
+  - **Escribir en:** `Sistema 1/paginas/configuraciones/pagina-configuraciones.html` + `Sistema 1/js/auth/pagina-configuraciones-roles.js`. S2 apunta a este panel compartido; no duplica el arbol de docentes.
+
+  - **Avance 2026-10-12 20:39 (UTC-6):** creada la vista diferenciada de Administrador, Docente y Editor. Docente solo ve el alcance de sus propios codigos/grupos y contenido; Editor solo ve el alcance de cajas asignadas, sin controles globales ni de eliminacion. La pagina S2 reutiliza la de S1 mediante su enlace existente. Las tarjetas declaran los servicios pendientes y no simulan operaciones.
+  - **Pendiente:** SH-04a y las dependencias DB/Auth para resolver el rol desde una sesion confiable, obtener datos propios, y habilitar acciones autorizadas. La vista basada en almacenamiento del navegador es solo presentacion y no protege datos ni acciones.
 
 36 [ ] SH-05a `<link>` Roboto Serif (400 y 700) en el head de ambas raices.
 
@@ -484,47 +505,59 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Escribir en:** `<head>` de TODOS los pagina-*.html bajo `Sistema 1/paginas/` y `Sistema 2/paginas/`. Extraer snippet de Google Fonts (F-FONT).
 
-37 [ ] SH-05b `body { font-family: "Roboto Serif", serif; }`. Prohibido otras familias en contenido.
+37 [x] SH-05b `body { font-family: "Roboto Serif", serif; }`. Prohibido otras familias en contenido.
 
   - **Extraer de:** F-FONT; F-CMS (dentro de bloques igual).
 
   - **Escribir en:** `Sistema 1/css/variables-tema-diurno-nocturno.css` y `Sistema 2/css/variables-tema-diurno-nocturno.css` regla `body`.
 
-38 [ ] SH-05c Copiar SVG Lucide a `Sistema 1/iconos/` y `Sistema 2/iconos/` con `stroke-width="2.5"` `stroke="currentColor"`.
+  - **Verificado 2026-10-12 20:46 (UTC-6):** la regla ya estaba aplicada en ambas hojas globales; la cascada no define otras familias tipográficas en CSS, solo `inherit` en controles/componentes. En navegador, S1 y S2 computan `"Roboto Serif", serif`. No fue necesario cambiar CSS.
+
+38 [x] SH-05c Copiar SVG Lucide a `Sistema 1/iconos/` y `Sistema 2/iconos/` con `stroke-width="2.5"` `stroke="currentColor"`.
 
   - **Extraer de:** F-LUCIDE. Nombres minimos: menu, house, search, sun, moon, pencil, plus, folder, graduation-cap.
 
   - **Escribir en:** Archivos SVG en `Sistema 1/iconos/` Y `Sistema 2/iconos/` (mismos nombres). No carpeta Adobe.
 
-39 [ ] SH-05d Extraer cada SVG desde lucide.dev (regla 6 de RESOLUCIONES).
+39 [x] SH-05d Extraer cada SVG desde lucide.dev (regla 6 de RESOLUCIONES).
 
   - **Extraer de:** F-LUCIDE; F-RES regla 6.
 
   - **Escribir en:** Misma carpeta `iconos/` de SH-05c. Bajar de lucide.dev, no inventar paths.
 
-40 [ ] SH-06a Footer: slogan, redes oficiales, LLAMANOS +503 7441-1075 (canónico), +503 6674-3159 como respaldo, enlaces del menu sin Config, copyright 2026, Inscribete -> Matricula.
+  - **Verificado 2026-10-12 21:00 (UTC-6):** extraido el marcado SVG de las paginas oficiales individuales: `https://lucide.dev/icons/menu`, `/house`, `/search`, `/sun`, `/moon`, `/pencil`, `/plus`, `/folder` y `/graduation-cap`. Los elementos graficos de las 18 copias locales coinciden con el SVG de cada pagina; se quitaron atributos de preview y se conserva `stroke-width="2.5"` requerido por INTIWO (Lucide publica 2 como valor predeterminado).
+
+40 [x] SH-06a Footer: slogan, redes oficiales, LLAMANOS +503 7441-1075 (canónico), +503 6674-3159 como respaldo, enlaces del menu sin Config, copyright 2026, Inscribete -> formulario oficial.
 
   - **Extraer de:** F-PNG-FOOT (layout); F-RES tabla (datos); IG/FB/TT de F-HIST P1.
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/compartido/pie-institucional.html` y copia `Sistema 2/compartido/pie-institucional.html`. Incluir al final de cada pagina.
 
-41 [ ] SH-06b Footer textos desde `footer_cms` si hay fila; si no, valores F-RES.
+  - **Destino CTA confirmado 2026-10-12 16:22 (UTC-6):** formulario oficial `https://docs.google.com/forms/d/e/1FAIpQLSchOv93fiyvoxF2z_mahlUcUhzbt5FyxfZTupLeODpdBcJjhw/viewform`, abrir en nueva pestana con `rel="noopener noreferrer"`. Aplicado tambien a los footers embebidos de las paginas activas S1 y S2.
+
+41 [x] SH-06b Footer textos desde `footer_cms` si hay fila; si no, valores F-RES.
 
   - **Extraer de:** F-CMS intencion secretarias; seccion D.
 
   - **Escribir en:** `Sistema 1/js/cms/cargar-footer-cms.js` (puede copiarse a S2). Leer una fila `footer_cms`; campos de WhatsApp principal y alterno separados. Fallback institucional solo si no hay fila o falla la consulta; visitantes solo leen.
 
-42 [ ] SH-06c Admin edita telefonos/redes del footer (Guardar CMS o Config).
+42 [~] SH-06c Admin edita telefonos/redes del footer (Guardar CMS o Config).
 
   - **Extraer de:** F-OLD P2 (secretarias sin codigo); F-CMS.
 
   - **Escribir en:** UI de edicion en `Sistema 1/paginas/configuraciones/` o toolbar Inicio. Persistencia: `footer_cms` via `Sistema 1/js/cms/cargar-footer-cms.js`. Solo admin escribe por RLS; incluir WhatsApp principal/alterno. No editar PNG Adobe.
 
-43 [ ] SH-07a `cliente-supabase.js` S1 y S2: inicializar `createClient(url, publishable_key)` con fuente de configuracion de despliegue aprobada; nunca `service_role`.
+  - **Avance 2026-10-12 21:10 (UTC-6):** agregada en Configuraciones la estructura del editor para WhatsApp principal/alternativo y redes Facebook, Instagram y TikTok, usando los contactos/URLs institucionales conocidos. Campos y guardado quedan deshabilitados y se informa el motivo: `cargar-footer-cms.js` y `tabla-footer-cms.sql` siguen vacios, y faltan cliente Auth, tabla `footer_cms` y RLS admin (`SH-07a`, `DB-02e`, `DB-03a`). La vista admin basada en almacenamiento local no se acepta como control de autorizacion.
+  - **Pendiente para cerrar:** implementar la carga/guardado real en `cargar-footer-cms.js`, completar el contrato DB y probar que un admin autenticado guarda mientras roles no-admin y anonimo reciben denegacion RLS. Sin estas dependencias, mantener los controles bloqueados; no simular persistencia local.
+
+43 [~] SH-07a `cliente-supabase.js` S1 y S2: inicializar `createClient(url, publishable_key)` con fuente de configuracion de despliegue aprobada; nunca `service_role`.
 
   - **Extraer de:** F-CLI.
 
   - **Escribir en:** EDITAR `Sistema 1/js/supabase/cliente-supabase.js` y `Sistema 2/js/supabase/cliente-supabase.js` (ya existen). No commitear credenciales reales ni dejar Pages sin configuracion runtime; definir antes el mecanismo de build/deploy para inyectar URL y publishable key desde variables de GitHub Actions. No crear `supabase.js` en la raiz.
+
+  - **Avance 2026-10-12 21:15 (UTC-6):** definidos ambos clientes con `createClient` usando URL/clave de un modulo runtime generado por `.github/scripts/build-pages.mjs`, y agregada carga en las paginas activas S1/S2. El workflow `.github/workflows/deploy-pages.yml` empaqueta solo assets web de ambos sistemas, valida HTTPS + prefijo `sb_publishable_`, genera configuracion fuera del codigo versionado y despliega GitHub Pages. Se documentaron las Actions Variables y el cambio de Pages a Source=GitHub Actions en ambos LEEME.
+  - **Pendiente para cerrar:** configurar en GitHub las Actions Variables `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY`, cambiar Pages a Source=GitHub Actions y comprobar un despliegue exitoso. Esas configuraciones requieren acceso administrativo a GitHub; no se pusieron valores reales o parciales en Git.
 
 44 [ ] SH-07b Prohibido `service_role` en JS. Criterio: `rg service_role` = 0.
 
@@ -538,11 +571,13 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Escribir en:** Ambos clientes deben resolver al mismo proyecto mediante la fuente de despliegue acordada. Verificar que la configuracion generada no se versiona y que el runtime publico solo recibe publishable/anon key.
 
-46 [ ] SH-08a Overlay menu `position:fixed; inset:0` en ?768px.
+46 [x] SH-08a Overlay menu bajo barra fija; scroll propio y adaptable a ?768px.
 
   - **Extraer de:** F-PNG-MENU (cubre, no empuja).
 
   - **Escribir en:** `Sistema 1/css/layout-hamburguesa-y-overlay.css` y `Sistema 2/css/layout-hamburguesa-y-overlay.css`.
+
+  - **Hecho 2026-10-12 16:55 (UTC-6):** panel empieza a 72px (alto del encabezado), sin duplicar marca/trigger; nav usa `overflow-y:auto` y scrollbar visible para alcanzar Cuentas en ventanas cortas. Barra tiene z-index superior al velo/panel.
 
 47 [ ] SH-08b Targets tactiles >=44x44 px (hamburguesa, tema, Cuentas, +).
 
@@ -762,11 +797,13 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Escribir en:** Misma pagina matricula/pagina-matricula-nuevo-ingreso.html, seccion debajo de 2027.
 
-82 [ ] S1-02d CTA Inscribete: usar +503 7441-1075 como contacto principal o enlace a Matrícula.
+82 [ ] S1-02d CTA Inscribete: enlazar al formulario oficial de Google Forms; el WhatsApp oficial queda como contacto alternativo, no como destino del boton.
 
   - **Extraer de:** F-PNG-FOOT CTA; F-RES tabla vs F-SITE-MAT.
 
   - **Escribir en:** CTA en matricula/pagina-matricula-nuevo-ingreso.html y en footer compartido (href a esta pagina).
+
+  - **Destino oficial confirmado 2026-10-12 16:22 (UTC-6):** `https://docs.google.com/forms/d/e/1FAIpQLSchOv93fiyvoxF2z_mahlUcUhzbt5FyxfZTupLeODpdBcJjhw/viewform`. Los enlaces "Inscríbete ahora" en la página activa Inicio S1, hub S2 y ambos footers abren el formulario en nueva pestaña con `rel="noopener noreferrer"`.
 
 83 [ ] S1-03a Pagina oferta: dropdown/pildoras como PNG (fondo `#539507`, activo/hover).
 
@@ -860,11 +897,11 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Escribir en:** `Sistema 1/js/auth/panel-configuraciones-cuentas.js` listas desde `codigos.docente_id` y `miembro_codigo`; usar correo de invitaciones consumidas (`usado_por`) mediante RLS/RPC autorizada, no leer `auth.users` desde el navegador ni exponer NIE. No HTML de proyectos.
 
-98 [ ] S1-07e Admin invita/activa/desactiva Admin, Docente, Editor (correo+nombre; NIE solo si DB-00b lo aprueba).
+98 [ ] S1-07e Admin invita/activa/desactiva Admin, Docente, Editor (correo+nombre; NIE segun DB-00b).
 
   - **Extraer de:** F-RES 14:10; F-OLD P9 (invitacion por correo).
 
-  - **Escribir en:** Formularios en configuraciones/pagina-configuraciones.html. Crear invitaciones/usuarios mediante Auth confiable; nunca invocar Admin API ni `service_role` desde Pages. No borrar perfiles con referencias: desactivar segun DB-00c. NIE queda fuera de v1 salvo aprobacion y hash.
+  - **Escribir en:** Formularios en configuraciones/pagina-configuraciones.html. Crear invitaciones/usuarios mediante Auth confiable; nunca invocar Admin API ni `service_role` desde Pages. No asignar contrasena: el invitado la define desde el enlace de activacion. No borrar perfiles con referencias: desactivar segun DB-00c. Aplicar identificador NIE/login solo segun flujo seguro DB-00b.
 
 99 [ ] S1-07f Docente: codigo = Especialidad + Nivel 1/2/3 + Seccion ? `DS2B`. Prefijos DS, EL, MI, MA, SE, IT, GE.
 
@@ -872,11 +909,11 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Escribir en:** `Sistema 1/js/auth/panel-configuraciones-cuentas.js` genera y valida clave; guardar `codigos` con unicidad por especialidad/nivel/seccion/anio_lectivo y docente propietario.
 
-100 [ ] S1-07g Docente: dentro del codigo, correos/n_lista de editores; NIE no se solicita en v1.
+100 [ ] S1-07g Docente: dentro del codigo, correo/n_lista de editores; verificar el NIE del alumno contra la lista oficial DB-00b.
 
   - **Extraer de:** F-RES 14:10.
 
-  - **Escribir en:** Mismo panel de Config. Invitar por correo normalizado y codigo; al aceptar, crear perfil + membresia persistente. Permitir otra invitacion para otro codigo sin mas de una invitacion pendiente por email/codigo. NIE fuera de v1; si se aprueba, solo hash.
+  - **Escribir en:** Mismo panel de Config. Invitar por correo normalizado y codigo; el flujo confiable coteja el NIE contra la lista oficial privada antes del alta y conserva solo HMAC/estado de verificacion, no NIE plano. Al aceptar, crear perfil + membresia persistente. Permitir otra invitacion para otro codigo sin mas de una invitacion pendiente por email/codigo.
 
 101 [ ] S1-07h Docente: eliminar codigo o alumno de su codigo; no ve otros docentes.
 
@@ -968,11 +1005,11 @@ Look: F-PNG-S2H, F-PNG-S2T, F-PNG-S2B. Estructura de datos (URLs, no fotos de al
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 2/paginas/ficha/pagina-ficha-proyecto.html`. Query ?id=. `urls` jsonb validado como URL http/https. Tecnico: codigo/especialidad. Academico: relacion definida en DB-00a antes de SQL; no asignar `GE` por defecto. Cero `<img>` de alumno.
 
-115 [ ] S2-04b Editor: form solo si `proyecto.editor_id === auth.uid()`.
+115 [ ] S2-04b Editor lider asignado: form de contenido solo si existe asignacion activa a la caja/proyecto.
 
   - **Extraer de:** F-RES 14:10.
 
-  - **Escribir en:** `Sistema 2/js/ficha/editar-ficha-propia.js`. Solo si perfil habilitado, `editor_id === auth.uid()` y pertenece al codigo del proyecto mediante `miembro_codigo`; RLS valida cada mutacion.
+  - **Escribir en:** `Sistema 2/js/ficha/editar-ficha-propia.js`. Solo si perfil activo, es Editor lider asignado a ese proyecto y pertenece al codigo correspondiente mediante `miembro_codigo`; permitir cambios de contenido, nunca borrar la caja, reasignar lider ni alterar propiedad/estado. RLS/grants deben imponerlo aunque se manipule el JS.
 
 116 [ ] S2-04c Editor viendo otro proyecto: mismo DOM que visitante.
 
@@ -986,11 +1023,11 @@ Look: F-PNG-S2H, F-PNG-S2T, F-PNG-S2B. Estructura de datos (URLs, no fotos de al
 
   - **Escribir en:** Listado docente S2 filtrado por `codigos.docente_id`; Editor por `miembro_codigo`. Acceso docente a proyectos academicos depende de DB-00a.
 
-118 [ ] S2-05b Docente: borrar proyecto (confirm). Soft-delete `deleted_at`.
+118 [ ] S2-05b Docente: archivar proyecto (confirmacion). Soft-delete administrativo `deleted_at`.
 
   - **Extraer de:** F-RES 14:10.
 
-  - **Escribir en:** Boton en ficha o listado S2. Soft-delete con `deleted_at`, permitido por RLS al docente dueño del codigo; conservar autoria e historial.
+  - **Escribir en:** Boton en ficha o listado S2. Archivar logicamente con `deleted_at`, permitido solo a docente responsable del codigo y administrador. Editor no puede archivar ni borrar; desactivar/reemplazar un Editor no altera el proyecto, contenido ni visibilidad. No borrar fisicamente.
 
 119 [ ] S2-05c Toggle docente: ver como visitante | como editor solo en proyectos de sus alumnos.
 
@@ -998,11 +1035,11 @@ Look: F-PNG-S2H, F-PNG-S2T, F-PNG-S2B. Estructura de datos (URLs, no fotos de al
 
   - **Escribir en:** Toggle en ficha/pagina-ficha-proyecto.html (solo docente). Reusa render visitante/editor.
 
-120 [ ] S2-06a Admin S2: borrar pagina de proyecto (cualquier codigo). No "borrar un archivo del repo".
+120 [ ] S2-06a Admin S2: archivar pagina/caja de proyecto (cualquier codigo). No "borrar un archivo del repo".
 
   - **Extraer de:** F-RES 14:10 (los adjuntos son URLs externas).
 
-  - **Escribir en:** Admin: mismo soft-delete `deleted_at` desde S2 ficha. No borrado fisico ni `git rm`.
+  - **Escribir en:** Admin: mismo soft-delete `deleted_at` desde S2 ficha; accion separada de reemplazar al Editor. No borrado fisico ni `git rm`.
 
 121 [ ] S2-06b Admin S2: alta correos Docente (misma API que S1-07e).
 
@@ -1034,7 +1071,7 @@ Look: F-PNG-S2H, F-PNG-S2T, F-PNG-S2B. Estructura de datos (URLs, no fotos de al
 
   - **Escribir en:** Panel Auth de Supabase (no archivo git) + nota en `Sistema 1/supabase/README.md` si se crea. Origenes Pages S1 y S2.
 
-126 [ ] S2-09a Header S2: busqueda centrada como PNG; Editar solo admin (CMS no aplica a fichas de alumnos).
+126 [ ] S2-09a Header S2: busqueda centrada como PNG; no mostrar el boton Editar CMS (es exclusivo de Inicio S1).
 
   - **Extraer de:** F-PNG-S2B; F-CMS (Editar = Inicio S1).
 
@@ -1050,13 +1087,26 @@ Look: F-PNG-S2H, F-PNG-S2T, F-PNG-S2B. Estructura de datos (URLs, no fotos de al
 
 ## D. Supabase (un proyecto, dos fronts)
 
-No ejecutar migraciones en Supabase hasta que Instituto apruebe el **DER revisado** y confirme DB-00a..DB-00e. El permiso para redactar SQL no cambia el estado de las tareas ni autoriza aplicarlo en la instancia. Las casillas DB-* implementan el contrato aprobado, no un esquema inventado. El anexo original de Cursor se conserva como borrador de entrada; la seccion "Revision del DER propuesto" define las correcciones y decisiones que deben resolverse primero.
+No ejecutar migraciones en Supabase hasta que Instituto apruebe el **DER revisado** y confirme DB-00a..DB-00f. El permiso para redactar SQL no cambia el estado de las tareas ni autoriza aplicarlo en la instancia. Las casillas DB-* implementan el contrato aprobado, no un esquema inventado. El anexo original de Cursor se conserva como borrador de entrada; la seccion "Revision del DER propuesto" define las correcciones y decisiones que deben resolverse primero.
 
-128 [ ] DB-01a Confirmar el proyecto Supabase unico y activar Auth email.
+### Estado real de los borradores SQL (2026-10-12 11:01 UTC-6)
+
+Instituto indico el nombre `bd_inti_web_oficial` y la URL `https://akvprrwjfstncadkybeh.supabase.co` (ref `akvprrwjfstncadkybeh`). No se inspecciono ni modifico Supabase: el estado siguiente describe unicamente los archivos versionados.
+
+- **Borradores parciales en `Sistema 1/supabase/`:** `tabla-perfiles.sql`, `tabla-especialidades.sql`, `tabla-codigos-seccion.sql` (incluye `miembro_codigo`), `tabla-invitaciones-correo.sql`, `politicas-rls.sql` (solo perfiles/especialidades/codigos/membresias/invitaciones) y `trigger-nuevo-perfil.sql`.
+- **Aun stubs:** `tabla-contenido-inicio.sql`, `tabla-footer-cms.sql`, `tabla-proyectos.sql`, `storage-buckets.sql` y `semilla-admin-sin-password.sql`. Faltan ademas las politicas de CMS, proyectos y Storage.
+- **Sistema 2:** sus archivos SQL siguen siendo stubs; no son otra BD ni deben aplicarse. Sincronizar las copias de referencia desde S1 cuando el contrato canonico este revisado.
+- **No inferir despliegue:** el SQL de S1 es codigo candidato, no evidencia de tablas, Auth o politicas existentes en el proyecto remoto. No ejecutar nada hasta cerrar DB-00a..DB-00f y recibir autorizacion expresa para aplicar una migracion.
+
+**Para la siguiente IA:** revisar los borradores contra el DER revisado y corregir, como minimo, la ausencia de `especialidad_id` en `perfiles` aunque DB-02a lo requiere; comprobar la unicidad de `codigos.clave` frente a la unicidad por ciclo lectivo; revisar grants/policies para que solo la aceptacion de una invitacion cree membresias y para que bajas/invitaciones no puedan eludir el flujo aprobado; y verificar bootstrap concurrente del primer administrador. Resolver DB-00a y DB-00d antes de completar tablas/policies dependientes; aplicar DB-00b/c/e/f aprobadas. Despues, completar DB-02d/e/f, DB-03a/b, DB-04a y DB-09a, validar el SQL en entorno controlado, sincronizar las copias S2 y solo aplicar una vez con permiso de Instituto.
+
+128 [x] DB-01a Confirmar el proyecto Supabase unico y activar Auth email.
 
   - **Extraer de:** F-CLI; 0-15.
 
-  - **Escribir en:** Confirmacion en dashboard Supabase y resoluciones. No desplegar tablas ni aplicar SQL hasta aprobar DB-00a..DB-00e.
+  - **Escribir en:** Confirmacion en dashboard Supabase y resoluciones. No desplegar tablas ni aplicar SQL hasta cerrar DB-00a..DB-00f.
+
+  - **Confirmado 2026-10-12 11:31 (UTC-6):** Instituto confirma que Auth email esta activado en el proyecto `bd_inti_web_oficial` (ref `akvprrwjfstncadkybeh`). Esto confirma proveedor email; no confirma todavia ajustes de registro publico, confirmacion de correo, URL/callbacks ni el despliegue de tablas.
 
 129 [ ] DB-01b Definir configuracion de cliente/deploy sin claves en Git.
 
@@ -1064,7 +1114,7 @@ No ejecutar migraciones en Supabase hasta que Instituto apruebe el **DER revisad
 
   - **Escribir en:** Variables de entorno/Actions y config local ignorada. Para GitHub Pages, inyectar URL y publishable/anon key durante el build; no usar `service_role` ni dejar el sitio publicado sin config. Documentar y probar el mecanismo antes de SH-07a.
 
-130 [ ] DB-02a a DB-09b: implementar el contrato aprobado y sus decisiones de seguridad; no iniciar hasta cerrar DB-00a..DB-00e.
+130 [ ] DB-02a a DB-09b: implementar el contrato aprobado y sus decisiones de seguridad; no iniciar hasta cerrar DB-00a..DB-00f.
 
   - **Extraer de:** Anexo DER; F-OLD P10 grupos A/B/C; F-CMS `contenido_inicio`; F-RES 14:33 RLS por `rol` no por email.
 
@@ -1072,29 +1122,31 @@ No ejecutar migraciones en Supabase hasta que Instituto apruebe el **DER revisad
 
 ### Puertas de aprobacion del modelo (DB-00, antes de cualquier migracion)
 
-DB-00a [ ] Instituto define asignacion y permisos para proyectos academicos: relacion a asignatura/area aprobada o codigo institucional confirmado; decidir si los docentes de basicas pueden crear/editar y quien puede borrar. Hasta entonces no hacer `codigo_id` nullable ni asignar `GE` por defecto.
+DB-00a [ ] Instituto define que materias/areas tendran proyectos academicos y como se asignaran; decidir quien los crea, edita y elimina. No inventar materias/codigos, no hacer `codigo_id` nullable ni asignar `GE` por defecto hasta acordar el modelo.
 
-DB-00b [ ] Confirmar que NIE queda fuera de v1. Si se requiere, aprobar uso de `nie_hash` y flujo confiable; nunca texto plano en perfil, invitacion, cliente ni logs.
+DB-00b [x] Instituto confirma que el NIE es unico y se verifica durante el alta contra una lista oficial Instituto NIE-correo; login por correo + contrasena, y cada usuario define su propia contrasena. No guardar NIE plano: usar identificador HMAC con secreto solo de servidor para comparar unicidad y asociar el NIE verificado al correo autorizado. La lista fuente se entrega/importa solo por un proceso privado y confiable: nunca al chat, Git ni logs.
 
-DB-00c [ ] Aprobar baja/desactivacion de cuentas y retencion: perfiles/codigos/proyectos tienen referencias historicas; preferir desactivar perfil/membresia y soft-delete de proyectos. Definir FKs `ON DELETE` antes de crear tablas.
+DB-00c [x] Decision del Instituto: cuando un alumno egrese, su cuenta queda inactiva (sin importar el rol); se conserva el registro de la cuenta y no se elimina ningun proyecto ni su autoria. La cuenta no se borra por dejar de existir su Gmail institucional; un administrador debe desactivarla y revocar sus sesiones mediante un flujo confiable. La visibilidad/estado aprobado de proyectos no cambia por desactivar la cuenta. No usar borrado en cascada. Proteger siempre al ultimo administrador activo.
 
-DB-00d [ ] Confirmar URLs reales de GitHub Pages, dominios personalizados y mecanismo de configuracion de Supabase para deploy estatico. Determinar mismo-origin vs origenes distintos y callback URLs; no asumir que Redirect URLs comparten sesion.
+DB-00d [ ] Confirmar URL publica de cada sitio ya publicado (GitHub Pages, normalmente termina en `github.io/...`, o dominio propio), NO la URL del repositorio GitHub. Anotar Sistema 1 y Sistema 2; determinar origenes y callbacks Auth. Si aun no estan publicados, dejar pendiente hasta habilitar Pages. La URL de repo sirve para codigo, no para configurar callbacks del sitio.
 
-DB-00e [ ] Congelar el JSON canonico de Inicio tomando S1-10d/S1-14a como contrato y alinear `plantillas-bloques-inicio.js` antes de crear/consumir `contenido_inicio`.
+DB-00e [x] Decision tecnica de v1: usar como contrato canonico el JSON de S1-14a `{ bloques: [{ id, plantilla, orden, textos, color, imagen, animacion, capas }] }`; las plantillas JS se adaptan a ese formato (incluidos tipo/orientacion/alineacion/CTA/enlace) antes de conectar la tabla. Versionar el contrato si cambia; no guardar el contenido real hasta probar lectura/escritura.
+
+DB-00f [x] Instituto define que una caja/proyecto persiste independientemente de su Editor lider. Docente o administrador la crea y asigna expresamente al lider autorizado; la lista completa de una seccion no convierte a todos en Editores y no se presume quien es lider. El Editor puede agregar/modificar el contenido permitido, pero no borrar/archivar la caja ni reasignar lider por su cuenta. El lider vigente puede iniciar el relevo; docente/administrador pueden ejecutarlo y autorizar al reemplazo, quien debe ser miembro elegible del mismo codigo. Se revoca la asignacion anterior y se asigna otro Editor a la misma caja, conservando ID, contenido, autoria, estado y visibilidad. Desactivar la cuenta tampoco altera proyectos. La nomina DS1B compartida no se conserva: contiene identificadores y calificaciones de estudiantes. Referencia de requisitos no sensibles: `IAs/RESOLUCIONES.md`, entrada 2026-10-12 16:08.
 
 Casillas atomicas de implementacion (cuando haya DER):
 
-131 [ ] DB-02a Tabla `perfiles` ligada 1:1 a `auth.users`
+131 [~] DB-02a Tabla `perfiles` ligada 1:1 a `auth.users`
 
 
   - **Escribir en:** `tabla-perfiles.sql`: PK/FK `id = auth.users.id`, rol validado, nombre, tema `light|dark` default `dark`, especialidad docente nullable, timestamps y estado de desactivacion. No duplicar email ni almacenar NIE plano. No permitir que el usuario cambie su rol mediante update propio.
 
-132 [ ] DB-02b Tabla `codigos` y membresia persistente `miembro_codigo`
+132 [~] DB-02b Tabla `codigos` y membresia persistente `miembro_codigo`
 
 
   - **Escribir en:** `tabla-codigos-seccion.sql` define codigos unicos por especialidad/nivel/seccion/anio y owner docente; incluir `miembro_codigo(perfil_id,codigo_id,...)` con unique por pareja para la pertenencia persistente de editores. No tratar invitacion consumida como unica relacion.
 
-133 [ ] DB-02c Tabla `especialidades` seed 6+General+hex
+133 [~] DB-02c Tabla `especialidades` seed 6+General+hex
 
 
   - **Escribir en:** `Sistema 1/supabase/tabla-especialidades.sql` con INSERT seed hex.
@@ -1112,9 +1164,9 @@ Casillas atomicas de implementacion (cuando haya DER):
 136 [ ] DB-02f Tabla `proyectos` con owner, soft-delete y URLs externas
 
 
-  - **Escribir en:** `tabla-proyectos.sql`: `editor_id` FK, `codigo_id` y `tipo` con reglas pendientes DB-00a para tecnico/academico, año, cuerpo y `urls` jsonb solo http/https, `deleted_at`. No incluir binarios/fotos. No implementar hasta resolver pertenencia academica.
+  - **Escribir en:** `tabla-proyectos.sql`: caja con identidad estable, `creado_por`/autor y codigo/tipo segun DB-00a, año, contenido y `urls` jsonb solo http/https; nunca hacer que su existencia dependa del Editor asignado. Modelar en `asignaciones_editor_proyecto` el historial de `proyecto_id`, `editor_id`, `asignado_por`, `asignado_en` y `revocado_en`, con una sola asignacion vigente de lider por caja. Docente/admin crean y asignan; el lider vigente puede iniciar un relevo y docente/admin lo confirman; el reemplazo debe ser miembro elegible del codigo. Solo docente responsable/admin archivan con `deleted_at`; Editor asignado modifica campos de contenido permitidos, no elimina ni cambia asignacion por su cuenta. No incluir NIE, calificaciones, padrones, binarios ni fotos de alumnos. No implementar hasta resolver modelo academico.
 
-137 [ ] DB-02g Tabla `invitaciones_correo` con consumo/auditoria
+137 [~] DB-02g Tabla `invitaciones_correo` con consumo/auditoria
 
 
   - **Escribir en:** `tabla-invitaciones-correo.sql`: email normalizado, rol destino, codigo destino para editor, invitador, timestamps de creacion/uso y usuario que la consumio (`auth.users.id`). Definir unicidad para invitaciones activas por email/codigo; permitir re-invitacion autorizada tras consumo.
@@ -1127,14 +1179,14 @@ Casillas atomicas de implementacion (cuando haya DER):
 139 [ ] DB-03b RLS proyectos: SELECT activos publico; escritura segun owner/codigo/rol
 
 
-  - **Escribir en:** Mismo archivo. SELECT solo no borrados; INSERT editor habilitado y miembro del codigo; UPDATE editor dueño y miembro; soft-delete por docente owner del codigo o admin. Definir aparte el permiso académico en DB-00a.
+  - **Escribir en:** Mismo archivo. SELECT proyectos no archivados; INSERT por docente/admin con caja y asignacion valida; UPDATE limitado de contenido por Editor lider asignado y miembro activo del codigo; reasignacion/cambios estructurales por docente/admin; soft-delete solo por docente responsable/admin. Desactivar o reemplazar al Editor no elimina, archiva ni oculta el proyecto. Definir aparte permisos academicos en DB-00a; no otorgar DELETE fisico a Editor ni depender solo de controles UI.
 
-140 [ ] DB-03c RLS perfiles sin auto-escalacion de rol
+140 [~] DB-03c RLS perfiles sin auto-escalacion de rol
 
 
   - **Escribir en:** SELECT propio con columnas privadas, SELECT amplio solo admin. Usuario actualiza solo campos aprobados (tema/nombre); rol, estado, NIE hash y metadatos protegidos solo por operación admin confiable. Probar que no puede cambiar `rol` por REST/PostgREST.
 
-141 [ ] DB-03d RLS codigos / membresias / invitaciones
+141 [~] DB-03d RLS codigos / membresias / invitaciones
 
 
   - **Escribir en:** Docente lee/administra solo codigos propios; editor solo ve membresias/codigos propios; invitaciones solo visible al invitador/admin y nunca anonimo. Evitar recursion RLS con funciones seguras y `search_path` fijo.
@@ -1149,7 +1201,7 @@ Casillas atomicas de implementacion (cuando haya DER):
 
   - **Escribir en:** No crear hasta 0-05=si. Si si: bucket `personal` + storage-buckets.sql.
 
-144 [ ] DB-05a Trigger transaccional auth.users -> perfil e invitacion
+144 [~] DB-05a Trigger transaccional auth.users -> perfil e invitacion
 
 
   - **Escribir en:** `trigger-nuevo-perfil.sql`: crear perfil minimo; validar/consumir invitacion y crear `miembro_codigo` en la misma transaccion. Rechazar editor sin invitacion. Bootstrap admin solo para la cuenta matriz si no existe otro admin, consultando `auth.users`; funcion segura con `search_path` fijo. No guardar contraseña/email duplicado.
@@ -1228,7 +1280,7 @@ Casillas atomicas de implementacion (cuando haya DER):
 
   - **Extraer de:** Anexo DER.
 
-  - **Escribir en:** Probar dos editores, dos codigos, update de `perfiles.rol`, invitacion usada/reusada y docente fuera de sus codigos; verificar tambien soft-delete y project academic conforme a DB-00a.
+  - **Escribir en:** Probar dos editores, dos codigos, update de `perfiles.rol`, invitacion usada/reusada y docente fuera de sus codigos; comprobar que Editor no puede eliminar ni reasignar la caja, que docente/admin transfieren la asignacion conservando el mismo proyecto y que desactivar al Editor no borra ni oculta la caja; verificar soft-delete y proyectos academicos conforme a DB-00a.
 
 158 [ ] E-08 Copiar S2: grep `Sistema 1` = 0 o documentado.
 
@@ -1252,7 +1304,7 @@ Casillas atomicas de implementacion (cuando haya DER):
 
 ## Anexo | Prompt para la IA de DER / ERD (borrador original de Cursor)
 
-**No copiar ni ejecutar tal cual:** es el insumo original, no una aprobacion de esquema. Aplicar primero la seccion "Revision del DER propuesto" y cerrar DB-00a..DB-00e; los requisitos corregidos del backlog prevalecen sobre contradicciones del prompt original.
+**No copiar ni ejecutar tal cual:** es el insumo original, no una aprobacion de esquema. Aplicar primero la seccion "Revision del DER propuesto" y cerrar DB-00a..DB-00f; los requisitos corregidos del backlog prevalecen sobre contradicciones del prompt original.
 
 El nombre que buscas es el de una IA o modo de **diagrama entidad-relacion (DER / ERD)**, no un ERP tipo SAP. Pegar el bloque siguiente en Gemini, ChatGPT, Claude, v0, o el canvas de diagramas. Pedirle: (1) diagrama Mermaid `erDiagram`, (2) diccionario de datos, (3) SQL Postgres/Supabase comentado, (4) politicas RLS. **No debe inventar tablas fuera de la lista. No debe poner passwords. No debe usar el email como unica regla RLS.**
 
@@ -1288,7 +1340,7 @@ CONTEXTO DE SISTEMA
 
 - Prefijos sugeridos: DS software, EL electronica, MI mecanica industrial, MA automotriz, SE sistemas electricos, IT ITSI, GE general
 
-- Editor: solo su ficha de proyecto. Docente: codigos propios, invita correos, borra proyectos de sus alumnos. Admin: ambos sistemas, CMS Inicio, alta de cuentas, borrar cualquier pagina de proyecto.
+- Editor: lider asignado que agrega/modifica contenido de su caja sin poder eliminarla ni reasignarla. Docente: codigos propios, invita correos, crea cajas de su alcance, reasigna lideres y puede archivar proyectos autorizados. Admin: ambos sistemas, CMS Inicio, alta de cuentas, reasigna lideres y puede archivar cualquier proyecto.
 
 - NIE: columna nullable; Instituto no ha autorizado guardarlo. No lo hagas NOT NULL.
 
@@ -1328,7 +1380,7 @@ ENTIDADES MINIMAS (usar estos nombres en espanol_snake o los equivalentes claros
 
    Un alumno editor no se registra si su email no esta aqui.
 
-5. miembro_codigo (si hace falta N:N docente-codigo o alumno-codigo extra; si no, editor_id en proyectos + invitacion basta)
+5. miembro_codigo para membresia de editor a codigo; la asignacion de lider a caja es una relacion separada y auditable (no hacer depender la fila del proyecto de ese usuario).
 
    Justifica si la omites.
 
@@ -1354,7 +1406,7 @@ ENTIDADES MINIMAS (usar estos nombres en espanol_snake o los equivalentes claros
 
    PK: id uuid
 
-   Atributos: codigo_id FK codigos NOT NULL, editor_id FK perfiles NOT NULL, tipo text check (tecnico|academico), titulo text, cuerpo text, anio int, urls jsonb not null default '{}',
+   Atributos del borrador original; **editor_id NOT NULL queda sustituido por DB-00f**: la caja conserva identidad y creador/autor propios, y la asignacion del lider activo se gestiona por relacion separada; codigo_id segun DB-00a, tipo text check (tecnico|academico), titulo text, cuerpo text, anio int, urls jsonb not null default '{}',
 
      ejemplo urls: {"github":"https://github.com/org/repo","drive":"https://drive.google.com/...","youtube":"https://youtube.com/...","otros":[]}
 
@@ -1386,13 +1438,13 @@ RLS (obligatorio, por rol, NO por email)
 
 - invitaciones: docente ve/inserta las de sus codigos; admin todas
 
-- proyectos: SELECT where deleted_at is null para anon; UPDATE if editor_id = auth.uid(); DELETE if admin OR docente del codigo; INSERT if editor y su email ligado al codigo
+- proyectos (politica corregida por DB-00f): lectura publica de cajas no archivadas; Editor activo asignado actualiza solo contenido permitido; docente responsable/admin crea, reasigna o archiva; Editor no puede borrar ni reasignar. No eliminar proyecto al desactivar su Editor.
 
 - contenido_inicio / footer_cms: SELECT anon; WRITE admin
 
 INDICES
 
-- proyectos(codigo_id), proyectos(editor_id), invitaciones(email), unique perfiles(id)
+- proyectos(codigo_id), relacion de asignacion editor-proyecto (asignado_perfil_id/proyecto_id/estado), invitaciones(email), unique perfiles(id)
 
 - GIN en contenido_inicio.bloques opcional v1
 
@@ -1408,7 +1460,7 @@ SALIDA QUE DEBES ENTREGAR
 
 5. SQL: trigger handle_new_user
 
-6. Lista de lo que NO modelaste (Oferta estatica, Historia estatica, NIE pendiente, fotos personal pendientes)
+6. Lista de lo que NO modelaste (Oferta estatica, Historia estatica, NIE fuera del SQL hasta cerrar DB-00b, fotos personal pendientes)
 
 7. Como se relacionan los dos GitHub Pages con Auth redirect URLs
 
@@ -1424,7 +1476,7 @@ Si dudas, elige la opcion mas restrictiva y etiquetala DECISION.
 
 1. **Relacion persistente editor-codigo.** `miembro_codigo` no debe quedar como opcional mientras Configuracion lista alumnos por codigo y los proyectos de Editor pertenecen a un codigo. La aceptacion de una invitacion debe crear el perfil, insertar su membresia y marcar la invitacion como usada en una misma transaccion. Agregar a `invitaciones_correo` un `usado_por` FK a `auth.users` o `perfiles` (definir una sola referencia canonica); conservar `codigo_id` para editor.
 
-2. **NIE.** La columna `nie text` del borrador contradice 0-14. Omitir NIE mientras Instituto no lo requiera; si lo aprueba, guardar solo `nie_hash`, nunca texto plano. `n_lista` tambien requiere RLS que limite su lectura al docente del codigo y al administrador.
+2. **NIE (corregido por decision posterior):** el borrador `nie text` sigue prohibido. La decision vigente DB-00b exige verificacion del NIE con la lista oficial y comparacion con HMAC secreto del servidor; no se ejecuta ni registra NIE plano. `n_lista` requiere RLS que limite su lectura al docente del codigo y al administrador.
 
 3. **Seed del administrador.** El borrador de `perfiles` no incluye `email`, por lo que `UPDATE perfiles ... WHERE email=...` no es ejecutable con esa tabla. No duplicar email sin necesidad: resolver el perfil uniendo `perfiles.id = auth.users.id` y filtrando el email de `auth.users`. Ese uso de email es solo bootstrap, no una politica RLS.
 
@@ -1442,21 +1494,24 @@ Si dudas, elige la opcion mas restrictiva y etiquetala DECISION.
 
 10. **Origenes de Auth.** La allowlist de Redirect URLs no comparte por si sola una sesion entre origenes. Confirmar si ambos Pages usaran el mismo hostname; si son origenes distintos, `localStorage` y la sesion Auth quedan aislados y debe definirse el reingreso/autenticacion en cada uno. `perfiles.tema` puede restaurar la preferencia despues de autenticar, pero no transfiere la sesion.
 
-**Pendiente de Instituto:** resolver DB-00a..DB-00d. DB-00b toma como valor inicial seguro omitir NIE de v1; cualquier uso de hash requiere confirmar necesidad/flujo. DB-00e es un contrato tecnico que debe fijarse antes de conectar CMS. Mantener todas las tareas DB y SH-02e pendientes/en curso; no generar ni ejecutar migraciones mientras falten puertas de aprobacion.
+**Correccion posterior (2026-10-12 12:54 UTC-6):** el Instituto confirma que el NIE es unico y debe verificarse en el alta; el login usa correo + contrasena. La recomendacion anterior de excluirlo de v1 queda superada. Verificar con lista oficial y HMAC calculado solo en servidor, sin NIE plano ni hash simple.
 
 ### Puertas previas y cambios concretos que rigen las tareas
 
-- **DB-00a [ ] Academico:** elegir si los proyectos de asignaturas basicas se asocian a una tabla/catalogo `asignaturas_academicas` o a codigos oficialmente confirmados, y definir quién los crea/edita/borra. Hasta entonces, no imponer `codigo_id NOT NULL` a ambos tipos ni inventar materias/codigos.
-- **DB-00b [ ] Datos personales:** mantener NIE fuera de v1; solo considerar `nie_hash` con autorizacion expresa y mecanismo confiable. `n_lista` queda visible solo a admin/docente autorizado.
-- **DB-00c [ ] Ciclo de cuentas y datos:** confirmar desactivacion y retencion. Preferir perfil/membresia desactivable + `proyectos.deleted_at`; fijar FKs y prohibir cascadas que borren proyectos al eliminar una cuenta. Bloquear baja del ultimo admin.
-- **DB-00d [ ] Despliegue/Auth:** confirmar URLs publicadas, mismo origin o dominios distintos y como se inyecta config al Pages sin versionar claves. Confirmar callbacks Auth exactos.
-- **DB-00e [ ] Contrato CMS:** congelar estructura JSON de `contenido_inicio`, alineada con S1-10d/S1-14a y plantillas JS. Versionar/cambiar el contrato antes de persistir contenido.
+- **DB-00a [ ] Academico:** Instituto debe identificar las materias/areas academicas que admitiran proyectos y quien podra crearlos, editarlos y eliminarlos. No asumir `GE` ni codigos.
+- **DB-00b [x] Identidad de acceso:** validar el NIE contra la lista oficial privada NIE-correo; login por correo + contrasena. Implementar cotejo/unicidad con HMAC secreto de servidor, sin almacenar NIE plano ni exponer la lista.
+- **DB-00c [x] Egreso:** al egresar, desactivar cuenta y sesiones sin eliminar cuenta, proyectos, autoria ni cambiar la visibilidad de proyectos. Accion administrativa confiable, no deteccion automatica de Gmail expirado. Nunca borrar en cascada; proteger ultimo administrador activo.
+- **DB-00d [ ] Despliegue/Auth:** URL publica GitHub Pages o dominio propio para cada sitio (no URLs de repositorio), y callbacks exactos.
+- **DB-00e [x] Contrato CMS:** JSON canonico S1-14a; adaptar y probar las plantillas antes de persistir.
+- **DB-00f [x] Caja de proyecto:** identidad/proyecto independiente del Editor asignado; historial auditable de asignaciones; solo docente/admin crean, reasignan o archivan; Editor lider modifica contenido permitido y no borra ni reasigna.
 
-**Alineacion obligatoria:** `perfiles` referencia `auth.users` por id y no duplica email/password; invitacion aceptada genera una membresia persistente `miembro_codigo`; `proyectos` conserva owner, codigo (cuando aplique), tipo y borrado logico; `footer_cms` tiene ambos WhatsApp; perfiles/codigos/invitaciones no son publicos. Operaciones que usan Auth Admin van en backend confiable, nunca en Pages.
+**DB-00c en palabras simples:** cuando un alumno egresa, se le cierra el acceso, pero la cuenta queda registrada y sus proyectos permanecen tal como estaban. Que deje de funcionar su Gmail institucional no debe borrar ni proyectos ni datos.
+
+**Alineacion obligatoria:** `perfiles` referencia `auth.users` por id y no duplica email/password; invitacion aceptada genera una membresia persistente `miembro_codigo`; `proyectos` conserva identidad, creador/autor, codigo (cuando aplique), tipo y estado independientemente de su Editor asignado; la asignacion de lider es separada y auditable. Editor solo modifica contenido permitido; docente/admin reasignan o archivan. Desactivar una cuenta no borra/oculta proyectos. `footer_cms` tiene ambos WhatsApp; perfiles/codigos/invitaciones no son publicos. Operaciones que usan Auth Admin van en backend confiable, nunca en Pages.
 
 ### Secuencia de tareas DB actualizada
 
-1. Resolver DB-00a..DB-00e con Instituto; mantener DB-01/DB-02 pendientes mientras falte alguna decision.
+1. Resolver DB-00a y DB-00d con Instituto; DB-00b/c/e/f tienen decision. Mantener implementacion DB pendiente hasta completar contrato y revisar los borradores.
 2. Configurar un solo proyecto Supabase y mecanismo de build/deploy con URL + publishable key, sin versionar secretos ni exponer `service_role`.
 3. Crear esquema en SQL S1, revisar migracion y permisos; S2 guarda solo copias de referencia. Aplicar en Supabase una vez cuando Instituto lo solicite.
 4. Implementar Auth/invitaciones y transaccion trigger; despues consumo de perfiles/codigos/proyectos/CMS desde clientes.
@@ -1515,4 +1570,3 @@ Si dudas, elige la opcion mas restrictiva y etiquetala DECISION.
 - [x] Hamburguesa, sin Visitante-cuenta, Lucide 2.5, Roboto Serif, paleta `.ase`, texto Site, PDF historia retenida, Adobe = referencia final
 
 - [x] Incidente Copilot / `IAs/` documentado
-

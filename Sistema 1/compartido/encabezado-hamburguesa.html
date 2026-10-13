@@ -33,13 +33,6 @@
 <div id="intiwo-velo" class="intiwo-velo"></div>
 
 <nav id="intiwo-menu" class="intiwo-menu" aria-label="Menú de navegación">
-  <div class="intiwo-menu-cabeza">
-    <button class="intiwo-btn-icono" type="button" data-intiwo-menu aria-label="Cerrar menu">
-      <svg width="24" height="24"><use href="#i-menu"/></svg>
-    </button>
-    <img class="intiwo-distintivo" src="../Sistema 1/iconos/marca-inti/Logotipo%20Barra-01.svg" alt="INTI">
-  </div>
-
   <ul class="intiwo-menu-lista">
     <li><a class="intiwo-menu-item" data-seccion="inicio" href="../Sistema 1/paginas/inicio/pagina-inicio-cms.html"><svg><use href="#i-house"/></svg> Inicio</a></li>
     <li><a class="intiwo-menu-item" data-seccion="matricula" href="../Sistema 1/paginas/matricula/pagina-matricula-nuevo-ingreso.html"><svg><use href="#i-clipboard"/></svg> Matrícula</a></li>
@@ -48,19 +41,11 @@
     <li><a class="intiwo-menu-item" data-seccion="personal" href="../Sistema 1/paginas/personal/pagina-personal-instituto.html"><svg><use href="#i-users"/></svg> Personal</a></li>
     <li><a class="intiwo-menu-item" data-seccion="ubicaciones" href="../Sistema 1/paginas/ubicaciones/pagina-ubicaciones.html"><svg><use href="#i-map"/></svg> Ubicaciones</a></li>
     <li><a class="intiwo-menu-item" data-seccion="historia" href="../Sistema 1/paginas/historia/pagina-historia-instituto.html"><svg><use href="#i-clock"/></svg> Historia</a></li>
-    <li><a class="intiwo-menu-item es-desactivado" data-seccion="configuraciones" href="../Sistema 1/paginas/configuraciones/pagina-configuraciones.html" aria-disabled="true"><svg><use href="#i-settings"/></svg> Configuraciones</a></li>
+    <li><a class="intiwo-menu-item es-desactivado" data-seccion="configuraciones" data-config-href="../Sistema 1/paginas/configuraciones/pagina-configuraciones.html" aria-disabled="true"><svg><use href="#i-settings"/></svg> Configuraciones</a></li>
   </ul>
-
   <div class="intiwo-menu-pie">
-    <div class="intiwo-menu-cuentas-panel" aria-label="Cuentas institucionales">
-      <p class="intiwo-menu-cuentas-titulo">Cuentas</p>
-      <div class="intiwo-menu-cuentas-acciones">
-        <button class="intiwo-menu-cuentas-btn" type="button" data-cuentas-accion="login">Iniciar sesión</button>
-        <button class="intiwo-menu-cuentas-btn intiwo-menu-cuentas-btn--secundario" type="button" data-cuentas-accion="registro">Registrarse</button>
-      </div>
-      <p class="intiwo-menu-cuentas-status">Acceso reservado para docentes, editores y administradores.</p>
-    </div>
+    <a class="intiwo-menu-item intiwo-menu-cuentas" href="../Sistema 1/paginas/cuentas/pagina-cuentas.html">
+      <svg aria-hidden="true"><use href="#i-user"/></svg> Cuentas
+    </a>
   </div>
 </nav>
-
-<!-- Sin "Iniciar sesión" en la barra. Cuentas queda al pie del menú como panel de acceso. -->

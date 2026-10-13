@@ -8,7 +8,7 @@
   background: var(--superficie);
   position: sticky;
   top: 0;
-  z-index: 40;
+  z-index: 70;
 }
 
 .intiwo-btn-icono {
@@ -187,9 +187,25 @@ html[data-theme="dark"] .intiwo-distintivo {
   caret-color: var(--verde);
 }
 
+.intiwo-busqueda input:focus {
+  position: relative;
+  z-index: 1;
+  outline: 3px solid var(--verde);
+  outline-offset: 2px;
+}
+
+.intiwo-busqueda input:focus::placeholder {
+  opacity: 0;
+}
+
 .intiwo-busqueda input::placeholder {
   color: var(--texto-suave);
   opacity: 1;
+}
+
+html[data-theme="dark"] .intiwo-busqueda-lupa,
+html[data-theme="dark"] .intiwo-card-icono {
+  color: #0f0f0f;
 }
 
 .intiwo-sugerencias {
@@ -238,7 +254,7 @@ html[data-theme="dark"] .intiwo-distintivo {
 
 .intiwo-velo {
   position: fixed;
-  inset: 0;
+  inset: 72px 0 0;
   background: rgba(0, 0, 0, 0.46);
   opacity: 0;
   visibility: hidden;
@@ -255,8 +271,12 @@ html[data-theme="dark"] .intiwo-distintivo {
 
 .intiwo-menu {
   position: fixed;
-  inset: 0 auto 0 0;
+  top: 72px;
+  bottom: 0;
+  left: 0;
   width: min(320px, 92vw);
+  max-height: calc(100vh - 72px);
+  max-height: calc(100dvh - 72px);
   background: var(--superficie-2);
   z-index: 60;
   transform: translateX(-104%) scale(0.985);
@@ -265,36 +285,16 @@ html[data-theme="dark"] .intiwo-distintivo {
   box-shadow: 12px 0 28px rgba(0, 0, 0, 0.18);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--verde) var(--superficie-2);
+  scrollbar-width: thin;
   will-change: transform, opacity;
 }
 
 .intiwo-menu.es-abierto {
   transform: translateX(0) scale(1);
   opacity: 1;
-}
-
-.intiwo-menu-cabeza {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 56px;
-  padding: 8px 12px;
-  background: var(--verde);
-  color: var(--negro);
-}
-
-.intiwo-menu-cabeza .intiwo-btn-icono,
-.intiwo-menu-cabeza .intiwo-btn-icono svg {
-  color: var(--negro);
-}
-
-.intiwo-menu-cabeza .intiwo-btn-icono:hover {
-  background: color-mix(in srgb, var(--negro) 12%, transparent);
-}
-
-.intiwo-menu-cabeza .intiwo-distintivo,
-html[data-theme="dark"] .intiwo-menu-cabeza .intiwo-distintivo {
-  filter: none;
 }
 
 .intiwo-menu-lista {
@@ -304,7 +304,12 @@ html[data-theme="dark"] .intiwo-menu-cabeza .intiwo-distintivo {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--verde) var(--superficie-2);
+  scrollbar-width: thin;
 }
 
 .intiwo-menu-item {
@@ -320,8 +325,12 @@ html[data-theme="dark"] .intiwo-menu-cabeza .intiwo-distintivo {
 }
 
 .intiwo-menu-item svg {
-  width: 22px;
-  height: 22px;
+  box-sizing: content-box;
+  width: 20px;
+  height: 20px;
+  padding: 5px;
+  border-radius: 50%;
+  background: var(--fondo);
   color: var(--verde);
   flex-shrink: 0;
 }
@@ -329,14 +338,8 @@ html[data-theme="dark"] .intiwo-menu-cabeza .intiwo-distintivo {
 .intiwo-menu-item:hover,
 .intiwo-menu-item:focus,
 .intiwo-menu-item:focus-visible {
-  background: var(--hover-menu);
-  color: var(--negro);
-}
-
-.intiwo-menu-item:hover svg,
-.intiwo-menu-item:focus svg,
-.intiwo-menu-item:focus-visible svg {
-  color: var(--negro);
+  background: color-mix(in srgb, var(--verde) 35%, transparent);
+  color: var(--texto);
 }
 
 .intiwo-menu-item.es-actual:hover,
@@ -351,10 +354,6 @@ html[data-theme="dark"] .intiwo-menu-cabeza .intiwo-distintivo {
   color: var(--negro);
 }
 
-.intiwo-menu-item.es-actual svg {
-  color: var(--negro);
-}
-
 .intiwo-menu-item.es-desactivado {
   opacity: 0.45;
   pointer-events: none;
@@ -362,58 +361,34 @@ html[data-theme="dark"] .intiwo-menu-cabeza .intiwo-distintivo {
 
 .intiwo-menu-pie {
   margin-top: auto;
+  padding: 0 4px 4px;
+  flex-shrink: 0;
 }
 
-.intiwo-menu-cuentas-panel {
+.intiwo-menu-item.intiwo-menu-cuentas {
+  box-sizing: border-box;
+  min-height: 64px;
+  padding: 8px 24px;
+  border-radius: 0;
   background: var(--verde);
   color: var(--negro);
-  padding: 12px 14px 14px;
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-.intiwo-menu-cuentas-titulo {
-  margin: 0 0 8px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.intiwo-menu-item.intiwo-menu-cuentas:hover,
+.intiwo-menu-item.intiwo-menu-cuentas:focus-visible {
+  background: var(--verde);
+  color: var(--negro);
 }
 
-.intiwo-menu-cuentas-acciones {
-  display: flex;
-  gap: 8px;
-}
-
-.intiwo-menu-cuentas-btn {
-  flex: 1;
-  min-height: 38px;
-  border: 0;
-  border-radius: 999px;
-  cursor: pointer;
-  font: inherit;
-  font-weight: 700;
-  background: var(--negro);
-  color: var(--fondo);
-  transition: transform 0.18s ease, opacity 0.18s ease;
-}
-
-.intiwo-menu-cuentas-btn:hover,
-.intiwo-menu-cuentas-btn:focus-visible {
-  transform: translateY(-1px);
-  opacity: 0.92;
-}
-
-.intiwo-menu-cuentas-btn--secundario {
+.intiwo-menu-item.intiwo-menu-cuentas svg {
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  padding: 2px;
+  border: 1.5px solid var(--negro);
+  border-radius: 50%;
   background: transparent;
   color: var(--negro);
-  border: 1px solid rgba(15, 15, 15, 0.5);
-}
-
-.intiwo-menu-cuentas-status {
-  margin: 8px 0 0;
-  font-size: 11px;
-  line-height: 1.4;
-  opacity: 0.82;
 }
 
 .intiwo-pie {
@@ -607,6 +582,68 @@ html[data-theme="dark"] .intiwo-sello-hero {
   margin-top: 32px;
 }
 
+.intiwo-cuentas-main {
+  display: grid;
+  min-height: calc(100vh - 72px);
+  place-items: center;
+  padding: 32px 20px;
+}
+
+.intiwo-cuentas-card {
+  box-sizing: border-box;
+  width: min(100%, 480px);
+  padding: 32px;
+  border: 1px solid var(--superficie-2);
+  border-radius: 16px;
+  background: var(--superficie);
+  text-align: center;
+}
+
+.intiwo-cuentas-card h1 {
+  margin: 0 0 12px;
+  font-size: clamp(26px, 5vw, 34px);
+}
+
+.intiwo-cuentas-card > p {
+  color: var(--texto-suave);
+  line-height: 1.6;
+}
+
+.intiwo-cuentas-acciones {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.intiwo-cuentas-opcion {
+  min-height: 48px;
+  padding: 10px 18px;
+  border: 1px solid var(--verde);
+  border-radius: 999px;
+  background: var(--verde);
+  color: var(--negro);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.intiwo-cuentas-opcion--secundaria {
+  background: transparent;
+  color: var(--texto);
+}
+
+.intiwo-cuentas-mensaje {
+  min-height: 48px;
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+.intiwo-cuentas-volver {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--texto);
+}
+
 @media (max-width: 768px) {
   .intiwo-pie-grid {
     grid-template-columns: 1fr;
@@ -614,6 +651,12 @@ html[data-theme="dark"] .intiwo-sello-hero {
 
   .intiwo-busqueda {
     width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .intiwo-menu {
+    width: min(280px, calc(100vw - 48px));
   }
 }
 
@@ -663,6 +706,36 @@ input[type="search"] {
   width: 20px;
   height: 20px;
   background-size: 20px 20px;
+}
+
+.intiwo-cursor.es-escritura,
+.intiwo-cursor.es-escritura.es-clic {
+  width: 3px;
+  height: 24px;
+  background: var(--verde);
+  background-image: none;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px var(--fondo), 0 0 8px var(--verde);
+}
+
+.intiwo-cursor.es-escritura::before,
+.intiwo-cursor.es-escritura::after {
+  position: absolute;
+  left: -3px;
+  width: 9px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--verde);
+  box-shadow: 0 0 0 1px var(--fondo);
+  content: "";
+}
+
+.intiwo-cursor.es-escritura::before {
+  top: 0;
+}
+
+.intiwo-cursor.es-escritura::after {
+  bottom: 0;
 }
 
 html.intiwo-cursor-on,

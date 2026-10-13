@@ -27,6 +27,12 @@
   }
 
   document.addEventListener("mousemove", mover, { passive: true });
+  document.addEventListener("focusin", function (ev) {
+    if (ev.target.matches("#intiwo-q")) el.classList.add("es-escritura");
+  });
+  document.addEventListener("focusout", function (ev) {
+    if (ev.target.matches("#intiwo-q")) el.classList.remove("es-escritura");
+  });
   document.addEventListener("mousedown", function () { el.classList.add("es-clic"); });
   document.addEventListener("mouseup", function () { el.classList.remove("es-clic"); });
   document.addEventListener("mouseleave", function () { el.style.opacity = "0"; });

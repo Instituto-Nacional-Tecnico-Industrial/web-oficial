@@ -48,7 +48,9 @@ begin
 			and i.revocado_en is null;
 
 		if v_role_count = 0 then
-			return new;
+			raise exception using
+				errcode = 'P0001',
+				message = 'Tu docente aun no te ha dado de alta.';
 		end if;
 
 		if v_role_count > 1 then

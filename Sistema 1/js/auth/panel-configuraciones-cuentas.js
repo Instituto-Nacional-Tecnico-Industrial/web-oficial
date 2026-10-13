@@ -2,22 +2,15 @@
 
 (function () {
   function actualizarEstado(status) {
-    const panel = document.querySelector('.intiwo-menu-cuentas-panel');
-    if (!panel) return;
-
-    let nodo = panel.querySelector('.intiwo-menu-cuentas-status');
-    if (!nodo) {
-      nodo = document.createElement('p');
-      nodo.className = 'intiwo-menu-cuentas-status';
-      panel.appendChild(nodo);
-    }
+    const nodo = document.querySelector('[data-cuentas-mensaje]');
+    if (!nodo) return;
 
     const mensajes = {
-      login: 'Acceso reservado para docentes, editores y administradores.',
-      registro: 'El registro se gestiona por invitación institucional.',
+      login: 'El inicio de sesión con correo y contraseña todavía no está conectado.',
+      registro: 'El registro requiere una invitación vigente. Si no tienes una, tu docente aún no te ha dado de alta.',
     };
 
-    nodo.textContent = mensajes[status] || 'Cuentas institucionales.';
+    if (mensajes[status]) nodo.textContent = mensajes[status];
   }
 
   function inicializar() {
