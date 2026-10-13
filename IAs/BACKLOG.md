@@ -1,6 +1,6 @@
 # Backlog INTIWO
 
-**Ultima modificacion:** 2026-10-12 21:29 (UTC-6) | **IA:** GitHub Copilot | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-12 23:42 (UTC-6) | **IA:** GitHub Copilot | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Carpeta exclusiva de IAs: `IAs/` (solo este archivo y `RESOLUCIONES.md`). Al marcar o agregar: misma fecha, hora (UTC-6) e IA en ambos; indica el dispositivo. Apuntes en orden cronologico.
 
@@ -550,26 +550,30 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
   - **Avance 2026-10-12 21:10 (UTC-6):** agregada en Configuraciones la estructura del editor para WhatsApp principal/alternativo y redes Facebook, Instagram y TikTok, usando los contactos/URLs institucionales conocidos. Campos y guardado quedan deshabilitados y se informa el motivo: `cargar-footer-cms.js` y `tabla-footer-cms.sql` siguen vacios, y faltan cliente Auth, tabla `footer_cms` y RLS admin (`SH-07a`, `DB-02e`, `DB-03a`). La vista admin basada en almacenamiento local no se acepta como control de autorizacion.
   - **Pendiente para cerrar:** implementar la carga/guardado real en `cargar-footer-cms.js`, completar el contrato DB y probar que un admin autenticado guarda mientras roles no-admin y anonimo reciben denegacion RLS. Sin estas dependencias, mantener los controles bloqueados; no simular persistencia local.
 
-43 [~] SH-07a `cliente-supabase.js` S1 y S2: inicializar `createClient(url, publishable_key)` con fuente de configuracion de despliegue aprobada; nunca `service_role`.
+43 [x] SH-07a `cliente-supabase.js` S1 y S2: inicializar `createClient(url, publishable_key)` con fuente de configuracion de despliegue aprobada; nunca `service_role`.
 
   - **Extraer de:** F-CLI.
 
   - **Escribir en:** EDITAR `Sistema 1/js/supabase/cliente-supabase.js` y `Sistema 2/js/supabase/cliente-supabase.js` (ya existen). No commitear credenciales reales ni dejar Pages sin configuracion runtime; definir antes el mecanismo de build/deploy para inyectar URL y publishable key desde variables de GitHub Actions. No crear `supabase.js` en la raiz.
 
   - **Avance 2026-10-12 21:15 (UTC-6):** definidos ambos clientes con `createClient` usando URL/clave de un modulo runtime generado por `.github/scripts/build-pages.mjs`, y agregada carga en las paginas activas S1/S2. El workflow `.github/workflows/deploy-pages.yml` empaqueta solo assets web de ambos sistemas, valida HTTPS + prefijo `sb_publishable_`, genera configuracion fuera del codigo versionado y despliega GitHub Pages. Se documentaron las Actions Variables y el cambio de Pages a Source=GitHub Actions en ambos LEEME.
-  - **Pendiente para cerrar:** configurar en GitHub las Actions Variables `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY`, cambiar Pages a Source=GitHub Actions y comprobar un despliegue exitoso. Esas configuraciones requieren acceso administrativo a GitHub; no se pusieron valores reales o parciales en Git.
+  - **Verificacion 2026-10-12 22:25 (UTC-6):** el usuario confirma con capturas que el workflow `Deploy INTIWO GitHub Pages` se ejecuto manualmente en `main` (ejecucion #2, commit `57650bb`) y termino con Success. Settings > Pages muestra el sitio activo en `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/` y Source = GitHub Actions. La pagina Inicio de S1 carga desde la URL publicada. Se cierra la tarea de cliente y despliegue; esta evidencia no certifica todas las rutas ni la conexion funcional de cada operacion de Supabase.
 
-44 [ ] SH-07b Prohibido `service_role` en JS. Criterio: `rg service_role` = 0.
+44 [x] SH-07b Prohibido `service_role` en JS. Criterio: `rg service_role` = 0.
 
   - **Extraer de:** F-CMS punto 1 (password/keys nunca en Pages).
 
   - **Escribir en:** Grep de todo el repo. Si aparece, borrar esa linea. Destino de keys: nunca estos JS.
 
-45 [ ] SH-07c Misma instancia Supabase configurada en S1 y S2, sin duplicar credenciales en Git.
+  - **Verificacion 2026-10-12 22:28 (UTC-6):** escaneo de todos los archivos `*.js`, `*.mjs`, `*.cjs`, `*.jsx`, `*.ts` y `*.tsx` del repositorio con `rg --hidden`, excluyendo `.git`: cero coincidencias. Se conservan menciones documentales que explican la prohibicion; no son codigo cliente ni credenciales.
+
+45 [x] SH-07c Misma instancia Supabase configurada en S1 y S2, sin duplicar credenciales en Git.
 
   - **Extraer de:** F-OLD P10 (un proyecto); F-S1L F-S2L.
 
   - **Escribir en:** Ambos clientes deben resolver al mismo proyecto mediante la fuente de despliegue acordada. Verificar que la configuracion generada no se versiona y que el runtime publico solo recibe publishable/anon key.
+
+  - **Verificacion 2026-10-12 22:30 (UTC-6):** ambos clientes importan su modulo `configuracion-runtime.js` y usan `createClient` con `SUPABASE_URL` + `SUPABASE_PUBLISHABLE_KEY`. El workflow pasa las mismas dos Actions Variables al unico build; `.github/scripts/build-pages.mjs` genera en el artefacto ignorado `_site/` los dos modulos runtime con esos mismos valores. Los modulos fuente en S1/S2 estan versionados como plantillas vacias (sin URL ni clave); `git ls-files` confirma que no se versionan configuraciones generadas con valores. Prueba del build con valores ficticios: las configuraciones generadas en S1/S2 resultaron identicas y el script no modifico las plantillas fuente. Solo se permite clave `sb_publishable_`; el cliente nunca recibe una clave secreta. Tarea completada.
 
 46 [x] SH-08a Overlay menu bajo barra fija; scroll propio y adaptable a ?768px.
 
@@ -579,47 +583,59 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Hecho 2026-10-12 16:55 (UTC-6):** panel empieza a 72px (alto del encabezado), sin duplicar marca/trigger; nav usa `overflow-y:auto` y scrollbar visible para alcanzar Cuentas en ventanas cortas. Barra tiene z-index superior al velo/panel.
 
-47 [ ] SH-08b Targets tactiles >=44x44 px (hamburguesa, tema, Cuentas, +).
+47 [~] SH-08b Targets tactiles >=44x44 px (hamburguesa, tema, Cuentas, +).
 
   - **Extraer de:** criterio a11y; F-CMS toolbar.
 
-  - **Escribir en:** Mismo `cromo.css` (ambos). Toolbar admin: `Sistema 1/css/editor-cms-inicio.css`.
+  - **Escribir en:** `Sistema 1/css/layout-hamburguesa-y-overlay.css` y copia S2. Toolbar admin: `Sistema 1/css/editor-cms-inicio.css`.
 
-48 [ ] SH-08c Probar 320, 375, 768, 1280. Anotar roturas en resoluciones.
+  - **Avance 2026-10-12 22:41 (UTC-6):** hamburguesa ya mide 44x44 px; los enlaces del menu miden como minimo 44 px de alto y Cuentas 64 px. En ambos sistemas se aumento el interruptor de tema de 74x36 a 74x44 px y se centro su indicador visual para conservar el diseño. **Pendiente:** la barra del editor CMS y su boton `+` aun no existen (`editor-cms-inicio.css` sigue vacio); medir/ajustar ese target cuando se implemente. Mantener `[~]` hasta entonces.
+
+48 [x] SH-08c Probar 320, 375, 768, 1280. Anotar roturas en resoluciones.
 
   - **Extraer de:** F-CMS critica movil.
 
   - **Escribir en:** No codigo nuevo. Notas en `IAs/RESOLUCIONES.md`. Paginas a abrir: Inicio S1 + hub S2.
 
-49 [ ] SH-08d Dropdown especialidades: max-height + scroll; no se sale a 320px.
+  - **Verificacion 2026-10-12 22:47 (UTC-6):** ambas paginas probadas en navegador a 320, 375, 768 y 1280 px. S2 no presenta desbordamiento horizontal en ninguna anchura. S1 no presenta desbordamiento a 375/768/1280; a 320 px, con el boton `Editar` visible, el documento alcanza 327 px y el boton termina en x=327, desbordando 7 px. Hallazgo anotado en `RESOLUCIONES.md` para corregir en una tarea de CSS; no se cambio codigo porque esta tarea pide registrar la prueba, no implementa ajustes.
+
+49 [~] SH-08d Dropdown especialidades: max-height + scroll; no se sale a 320px.
 
   - **Extraer de:** F-PNG-S2T.
 
   - **Escribir en:** `Sistema 2/css/hub-y-pildoras-proyectos.css` (pildoras S2) y `Sistema 1/css/pildoras-oferta-academica.css` (pildoras Oferta).
 
-50 [ ] SH-08e Barra busqueda S2: no tapa distintivo; 320px fila bajo header.
+  - **Avance 2026-10-12 22:55 (UTC-6):** en S2, `.intiwo-especialidades-lista` ahora limita su alto a `min(60vh, 24rem)` y tiene scroll vertical interno con overscroll contenido. A 320 px de ancho el menu abierto cabe en la tarjeta sin desbordamiento horizontal; a 480 px de alto, la lista se limita y puede desplazarse internamente. **Pendiente S1:** `pagina-oferta-academica.html` esta vacia a proposito y `pildoras-oferta-academica.css` no tiene markup/selectores que se puedan verificar; completar el limite/scroll cuando exista esa estructura. Mantener `[~]`.
+
+50 [x] SH-08e Barra busqueda S2: no tapa distintivo; 320px fila bajo header.
 
   - **Extraer de:** F-PNG-S2B.
 
   - **Escribir en:** `Sistema 2/css/layout-hamburguesa-y-overlay.css` + markup busqueda en `Sistema 2/compartido/encabezado-hamburguesa-con-busqueda.html` (solo S2 muestra el input). S1 header NO lleva busqueda.
 
-51 [ ] SH-08f Hub S2: 2 cols desktop, 1 col movil.
+51 [x] SH-08f Hub S2: 2 cols desktop, 1 col movil.
 
   - **Extraer de:** F-PNG-S2H.
 
   - **Escribir en:** `Sistema 2/css/hub-y-pildoras-proyectos.css` + `Sistema 2/paginas/proyectos/pagina-hub-proyectos.html`.
 
-52 [ ] SH-09a Comentario `TODO-SPLIT-REPO` en href Proyectos.
+  - **Verificacion 2026-10-12 23:06 (UTC-6):** el HTML ya contiene las tarjetas Tecnicos y Academicos, y el CSS define dos columnas por defecto con una columna en `max-width: 768px`. Navegador: a 320, 375 y 768 px ambas tarjetas aparecen apiladas; a 769 y 1280 px aparecen lado a lado. Sin desbordamiento horizontal en las cinco medidas. No fue necesario cambiar codigo.
+
+52 [x] SH-09a Comentario `TODO-SPLIT-REPO` en href Proyectos.
 
   - **Extraer de:** F-GH-S2.
 
   - **Escribir en:** Comentario HTML/JS junto al href Proyectos en `Sistema 1/compartido/encabezado-hamburguesa.html` y `Sistema 2/compartido/encabezado-hamburguesa-con-busqueda.html`.
 
-53 [ ] SH-09b Checklist al copiar S2 al otro GitHub (cliente, quitar `../Sistema 1`, Auth URL).
+  - **Verificacion 2026-10-12 23:09 (UTC-6):** ambos encabezados ya tienen `<!-- TODO-SPLIT-REPO -->` inmediatamente junto al enlace de Proyectos, en S1 hacia el hub actual de S2 y en S2 hacia su pagina local. Se conserva el comentario para recordar que debe revisarse el href al separar repositorios; no se requirieron cambios HTML.
+
+53 [x] SH-09b Checklist al copiar S2 al otro GitHub (cliente, quitar `../Sistema 1`, Auth URL).
 
   - **Extraer de:** F-OLD P10 hosts github.io; F-GH-S1 F-GH-S2.
 
   - **Escribir en:** Checklist escrito en `Sistema 2/LEEME.md` (no en BACKLOG copiar de mas). Codigo sigue en este clone hasta el split.
+
+  - **Verificacion 2026-10-12 23:14 (UTC-6):** agregado a `Sistema 2/LEEME.md` un checklist de siete etapas: crear/copiar al nuevo repo, sustituir enlaces a S1, preparar Pages independiente (el build actual requiere ambos sistemas), configurar el mismo cliente/proyecto Supabase y sus Actions Variables, actualizar Redirect URLs de Auth cuando corresponda, evitar reejecutar las copias SQL y validar el despliegue/rutas. No se separo ni publico el repositorio; la lista es para ejecutar cuando el Instituto autorice el split.
 
 ---
 
@@ -627,23 +643,29 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
 ### B0. Inicio CMS (prioridad)
 
-54 [ ] S1-01a `paginas/inicio/pagina-inicio-cms.html`: header + `<main id="inicio-root"></main>` + footer. Main vacio si no hay JSON.
+54 [x] S1-01a `paginas/inicio/pagina-inicio-cms.html`: header + `<main id="inicio-root"></main>` + footer. Main vacio si no hay JSON.
 
   - **Extraer de:** F-C-INI; F-CMS. No F-SITE (mision/vision no van hardcode).
 
   - **Escribir en:** SOLO `Sistema 1/paginas/inicio/pagina-inicio-cms.html`. Incluye header+footer compartidos S1. NO crear inicio en Sistema 2.
 
-55 [ ] S1-01b JS: `select` `contenido_inicio`. Si 0 filas o `bloques=[]`, no insertar bloques.
+  - **Verificacion 2026-10-12 23:17 (UTC-6):** el header/navegacion y footer institucional permanecen en la pagina S1; se retiro el hero hardcodeado (titulo/sello) y su separador, y se dejo `<main id="inicio-root"></main>` vacio. No se agrego carga local o contenido de fallback; la consulta JSON pertenece a S1-01b. No se creo Inicio en S2.
+
+55 [~] S1-01b JS: `select` `contenido_inicio`. Si 0 filas o `bloques=[]`, no insertar bloques.
 
   - **Extraer de:** F-CMS; nombre de tabla canonico `contenido_inicio` (CONTENIDO.md decia `paginas_cms`: ignorar ese nombre).
 
-  - **Escribir en:** `Sistema 1/js/cms/cargar-bloques-inicio.js` (select contenido_inicio). Lo llama `paginas/inicio/pagina-inicio-cms.html`. Consumir el JSON canonico fijado en DB-02d/S1-14a; 0 filas o `bloques=[]` deja Inicio vacio. No guardar JSON local como fuente de verdad.
+  - **Escribir en:** `Sistema 1/js/cms/cargar-bloques-inicio.js` (select contenido_inicio). Lo llama `paginas/inicio/pagina-inicio-cms.html`. Consumir el JSON canonico fijado en DB-02d/S1-14a desde `contenido_inicio.contenido`; 0 filas o `bloques=[]` deja Inicio vacio. No guardar JSON local como fuente de verdad. Emite `intiwo:contenido-inicio-cargado` para el renderizador de la tarea 57.
 
-56 [ ] S1-01c Skeleton 200ms (fondo paleta) para que el footer no salte.
+  - **Verificacion 2026-10-12 23:30 (UTC-6):** implementada la consulta como modulo ES que usa el cliente Supabase compartido; pruebas simuladas confirmaron cero filas, `bloques=[]`, emision del evento para datos validos y errores explicitos para fallos/respuestas invalidas. El flujo no modifica `#inicio-root`; los bloques se pintaran en S1-01d. Tarea `[~]`: `tabla-contenido-inicio.sql` sigue siendo stub, asi que no se pudo verificar contra la tabla remota.
 
-  - **Extraer de:** F-CMS 14:33 punto 6; F-ASE.
+56 [x] S1-01c Skeleton 200ms (fondo paleta) para que el footer no salte.
+
+  - **Extraer de:** F -CMS 14:33 punto 6; F-ASE.
 
   - **Escribir en:** `Sistema 1/js/cms/cargar-bloques-inicio.js` + `Sistema 1/css/pagina-inicio-visitante.css` (skeleton).
+
+  - **Verificacion 2026-10-12 23:42 (UTC-6):** se muestra un placeholder con colores de la paleta durante la consulta y se garantiza una duracion minima de 200 ms; usa `aria-busy`, respeta `prefers-reduced-motion` y se limpia en respuestas vacias y errores. Probado con respuestas simuladas rapidas/lentas; tarea `[x]`.
 
 57 [ ] S1-01d Render visitante: mismos componentes que el editor, `contenteditable=false`, sin Sortable.
 
@@ -1154,7 +1176,7 @@ Casillas atomicas de implementacion (cuando haya DER):
 134 [ ] DB-02d Tabla `contenido_inicio` JSON canonico de bloques, una fila
 
 
-  - **Escribir en:** `tabla-contenido-inicio.sql`: una fila con JSON acorde al contrato S1-10d/S1-14a; version/campos documentados, `updated_by` FK `perfiles`, `updated_at` automatico. Normalizar el modulo de plantillas antes de conectar persistencia.
+  - **Escribir en:** `tabla-contenido-inicio.sql`: una fila con columna JSONB `contenido` acorde al contrato S1-10d/S1-14a; version/campos documentados, `updated_by` FK `perfiles`, `updated_at` automatico. Normalizar el modulo de plantillas antes de conectar persistencia.
 
 135 [ ] DB-02e Tabla `footer_cms` editable, fila unica
 

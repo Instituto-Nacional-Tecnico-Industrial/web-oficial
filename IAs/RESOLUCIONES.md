@@ -1,6 +1,6 @@
 # Resoluciones (c�mo lo hizo cada IA)
 
-**Ultima modificacion:** 2026-10-12 21:29 (UTC-6) - **IA:** GitHub Copilot - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-12 23:42 (UTC-6) - **IA:** GitHub Copilot - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Solo existen estos dos archivos de IAs, en `IAs/`: este y `BACKLOG.md`. Al cambiar uno: **�ltima modificaci�n** con fecha, hora **UTC-6**, nombre de la IA y dispositivo. Si cambia una tarea, la misma marca en ambos.
 
@@ -265,11 +265,93 @@ El HTML de `index.html` es a�n m�s tosco (sesi�n en la barra, sin logo I.N
 
 **Pedido:** Completar la tarea 43 para inicializar el cliente Supabase sin versionar credenciales y preparar la publicacion de Sistema 1 y Sistema 2 en GitHub Pages.
 
-**Como:** Se implementaron en ambos sistemas los clientes con `createClient` y configuracion runtime generada durante el build. Se agregaron el script `.github/scripts/build-pages.mjs` y el workflow `.github/workflows/deploy-pages.yml`; el artefacto incluye los assets web de S1/S2, valida la URL HTTPS y el prefijo `sb_publishable_`, e inyecta la misma configuracion en los dos clientes sin guardar valores reales en Git. Se documentaron las variables requeridas y el cambio de fuente de Pages en ambos `LEEME.md`. La casilla 43 del BACKLOG queda `[~]`.
+**Como:** Se implementaron en ambos sistemas los clientes con `createClient` y configuracion runtime generada durante el build. Se agregaron el script `.github/scripts/build-pages.mjs` y el workflow `.github/workflows/deploy-pages.yml`; el artefacto incluye los assets web de S1/S2, valida la URL HTTPS y el prefijo `sb_publishable_`, e inyecta la misma configuracion en los dos clientes sin guardar valores reales en Git. Se documentaron las variables requeridas y el cambio de fuente de Pages en ambos `LEEME.md`.
 
-**Estado y limites:** falta que una persona con permisos administrativos configure las Actions Variables `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY`, establezca GitHub Pages con Source = GitHub Actions y verifique una ejecucion real exitosa. No se agregaron credenciales reales o incompletas, no se hizo despliegue ni se modifico configuracion remota de GitHub o Supabase.
+### 2026-10-12 22:25 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
 
-**Verificacion:** `node --check` paso para los clientes, modulos runtime, stubs y script de build; `git diff --check` paso. El script de build se probo con valores ficticios: genero la entrada y configuracion de ambos sistemas, compartio la configuracion y excluyo los directorios SQL. No se pudo validar el workflow en GitHub ni la carga remota de esm.sh, y no estan disponibles `actionlint`, Ruby ni `yq`.
+**Seguimiento y cierre de tarea 43:** el usuario configuro en GitHub las Actions Variables requeridas y Pages con Source = GitHub Actions. Las capturas muestran la ejecucion manual #2 del workflow `Deploy INTIWO GitHub Pages`, en la rama `main`, commit `57650bb`, con estado **Success**; Settings > Pages informa que el sitio esta publicado en `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/`. La captura adicional muestra la pagina Inicio de S1 cargada desde el sitio. Se actualizo la casilla 43 del BACKLOG a `[x]`.
+
+**Alcance de la evidencia:** el despliegue exitoso confirma que el artefacto se genero y publico con la configuracion runtime aceptada. No equivale a una prueba de todas las rutas S1/S2 ni a comprobar consultas, autenticacion o persistencia Supabase; esas funciones requieren sus tareas y pruebas correspondientes.
+
+### 2026-10-12 22:28 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 44: verificar que no haya referencias a `service_role` en JavaScript del repositorio.
+
+**Verificacion y resultado:** se escanearon, incluyendo archivos ocultos y excluyendo `.git`, los archivos `*.js`, `*.mjs`, `*.cjs`, `*.jsx`, `*.ts` y `*.tsx` con `rg`. El resultado fue cero coincidencias, asi que no se requirieron cambios en codigo. Se mantuvieron las menciones en documentacion y backlog que describen la regla de seguridad. La tarea 44 del BACKLOG quedo `[x]`.
+
+### 2026-10-12 22:30 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 45: confirmar que Sistema 1 y Sistema 2 usan el mismo proyecto Supabase sin versionar credenciales duplicadas.
+
+**Verificacion:** los dos clientes inicializan `createClient` leyendo `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY` de sus respectivos modulos runtime. El unico workflow entrega las mismas Actions Variables a un build que genera ambos modulos dentro de `_site/`, directorio ignorado por Git. Las plantillas runtime que si estan versionadas en S1/S2 contienen valores vacios, no URL ni clave. Se ejecuto el build con URL/clave ficticias y se comprobo que los dos modulos runtime de salida fueran identicos; el build no modifica las plantillas fuente. El proceso valida HTTPS y prefijo `sb_publishable_`; no se aceptan claves secretas. Tarea 45 marcada `[x]`. No se usaron ni expusieron credenciales reales en la prueba.
+
+### 2026-10-12 22:41 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 47, SH-08b, para asegurar areas tactiles de al menos 44x44 px en hamburguesa, selector de tema, Cuentas y boton `+` del CMS.
+
+**Como:** se verifico que los botones de hamburguesa ya miden 44x44 px, los enlaces del menu tienen al menos 44 px de alto, y Cuentas tiene 64 px de alto en ambos sistemas. Se actualizo el interruptor de tema en los CSS de S1/S2 a 74x44 px y se centro verticalmente el indicador para conservar su posicion visual. No se creo un boton `+` sin contexto: la barra de edicion CMS todavia no esta implementada y `editor-cms-inicio.css` sigue vacio.
+
+**Estado/verificacion:** tarea 47 permanece `[~]` hasta implementar la barra CMS y comprobar el tamano del boton `+`. La copia de S1/S2 se edito simetricamente; las reglas medidas se revisaran con diff y comprobacion estatica, sin afirmar prueba visual de una barra que no existe.
+
+### 2026-10-12 22:47 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 48 (SH-08c): probar Inicio de S1 y hub de Proyectos S2 en anchos de 320, 375, 768 y 1280 px y documentar roturas.
+
+**Resultados medidos en navegador:** S2 no tuvo overflow horizontal en ninguno de los cuatro anchos; las dos tarjetas de proyectos se adaptan a una columna movil y dos columnas amplias. S1 no tuvo overflow a 375, 768 o 1280 px. A 320 px, al estar visible el boton `Editar`, el ancho del documento fue 327 px y el borde derecho del boton quedo en x=327: overflow horizontal de 7 px en el encabezado. Este boton aparece para la sesion local probada; si esta oculto, esta medicion no representa el estado de edicion. El hallazgo requiere un ajuste CSS posterior del encabezado/boton en ancho muy estrecho.
+
+**Limite de prueba:** se usaron las paginas fuente locales; el cliente Supabase dio el error esperado por no existir configuracion runtime en esas plantillas vacias, pero ambas paginas renderizaron para inspeccionar la geometria. No se cambio codigo, conforme a la instruccion de esta tarea; SH-08c queda `[x]` porque la prueba y el registro estan completos, aunque el defecto responsive de S1 se mantiene pendiente.
+
+### 2026-10-12 22:55 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 49 (SH-08d): evitar que el desplegable de especialidades se salga de pantalla a 320 px y agregar max-height con scroll.
+
+**Como/verificacion S2:** se agrego a `.intiwo-especialidades-lista` `max-height: min(60vh, 24rem)`, `overflow-y: auto` y `overscroll-behavior: contain`. En el hub abierto a 320 px de ancho y 480 px de alto, el bloque quedo dentro de la tarjeta (234 px de ancho); la lista antes media 366 px de alto, ahora se limita a 288 px y permite desplazamiento interno, sin overflow horizontal del documento.
+
+**Limite S1:** `Sistema 1/paginas/oferta-academica/pagina-oferta-academica.html` sigue siendo un stub vacio y `Sistema 1/css/pildoras-oferta-academica.css` no contiene estructura ni reglas; no se invento markup ni selectores inactivos. La tarea 49 queda `[~]` hasta que la estructura de Oferta se implemente y se pueda aplicar/verificar el mismo comportamiento alli.
+
+### 2026-10-12 23:06 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar SH-08f (tarea 51): hub de Sistema 2 con dos columnas en escritorio y una en movil.
+
+**Verificacion:** la pagina ya incluye las tarjetas Proyectos Tecnicos y Proyectos Academicos. El CSS de `.intiwo-hub` fija dos columnas y cambia a una en `@media (max-width: 768px)`. Se midieron ambas tarjetas en el navegador a 320, 375, 768, 769 y 1280 px: apiladas hasta 768 px, lado a lado desde 769 px, sin desbordamiento horizontal. No hizo falta modificar HTML/CSS; tarea 51 marcada `[x]`.
+
+### 2026-10-12 23:09 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 52 (SH-09a): asegurar que el href de Proyectos tenga un comentario `TODO-SPLIT-REPO` en los encabezados compartidos S1 y S2.
+
+**Verificacion:** el comentario HTML esta presente junto a cada enlace: S1 apunta al hub de S2 dentro del clone actual y S2 apunta a su ruta local. El comentario alerta que el href debe revisarse cuando se separen los repositorios. No se modifico codigo porque ambos puntos ya cumplen; tarea 52 marcada `[x]`.
+
+### 2026-10-12 23:14 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 53 (SH-09b): documentar como trasladar Sistema 2 a su propio repositorio de GitHub, incluyendo cliente Supabase, enlaces a S1 y Auth URL.
+
+**Como:** se agrego a `Sistema 2/LEEME.md` una lista de siete pasos con alcance antes/durante/despues del split: copiar S2 a la raiz del repo nuevo; reemplazar referencias relativas a S1 por el dominio institucional acordado; crear build/workflow independiente porque el actual exige ambas carpetas; configurar Actions Variables con los valores compartidos y mantener un unico proyecto Supabase; revisar Redirect URLs de Auth al implementar el flujo; tratar los SQL de S2 como copias de referencia y no volver a aplicarlos; y validar Pages, recursos, navegacion y Auth.
+
+**Limites:** no se creo el repo, no se movieron archivos ni se cambiaron URLs de Auth/Supabase. Los dominios futuros y callbacks deben definirse cuando se autorice la separacion. `git diff --check` paso; tarea 53 marcada `[x]`.
+
+### 2026-10-12 23:17 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 54 (S1-01a): dejar la pagina Inicio S1 como cromo institucional con un main vacio destinado al CMS.
+
+**Como:** se mantuvieron el encabezado/navegacion y el footer existentes en `Sistema 1/paginas/inicio/pagina-inicio-cms.html`; se removieron el titulo y sello institucional hardcodeados y el separador; se dejo `<main id="inicio-root"></main>`. No se agrego contenido por defecto ni consulta local; el comportamiento de carga desde el JSON se aborda en S1-01b. No se creo pagina Inicio en S2.
+
+**Verificacion:** se verificara que exista un unico `main#inicio-root` vacio, con header y footer presentes; tarea 54 marcada `[x]`.
+
+### 2026-10-12 23:30 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 55 (S1-01b): consultar el contenido publicado de Inicio en `contenido_inicio`.
+
+**Como:** `Sistema 1/js/cms/cargar-bloques-inicio.js` importa la instancia Supabase compartida y consulta la fila unica mediante `select("contenido").maybeSingle()`, haciendo que una cardinalidad inesperada se reporte como error en vez de ocultarse. El contrato acordado para DB-02d guarda el objeto completo `{ bloques: [...] }` en la columna `contenido` JSONB. Cero filas y `bloques=[]` no insertan nada; los datos no conformes y errores de consulta se reportan de forma explicita en consola. Si hay bloques, se emite `intiwo:contenido-inicio-cargado` para que S1-01d los renderice posteriormente; esta tarea no implementa el render ni almacena una fuente local. La pagina Inicio carga este modulo directamente.
+
+**Verificacion y limite:** `node --input-type=module --check`, `git diff --check` y pruebas simuladas de cero filas, `bloques=[]`, evento de datos validos, respuesta invalida y error de consulta pasan. No se consulto el proyecto remoto ni se aplico SQL; `tabla-contenido-inicio.sql` continua vacio y DB-02d sigue pendiente. Por eso la tarea 55 queda `[~]` hasta que la tabla y su politica de lectura existan y puedan probarse.
+
+### 2026-10-12 23:42 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ejecutar la tarea 56 (S1-01c): mostrar un skeleton con la paleta del sitio durante la carga para evitar el salto visual del footer.
+
+**Como:** se implemento en `Sistema 1/css/pagina-inicio-visitante.css` un placeholder animado con las variables de superficie existentes, respetando `prefers-reduced-motion`. `cargar-bloques-inicio.js` marca el main con `aria-busy`, conserva el skeleton por un minimo de 200 ms incluso si Supabase responde antes, y lo limpia al finalizar tanto con cero filas/bloques como ante errores. Se enlazo la hoja CSS desde la pagina Inicio. No se agrego contenido de reserva persistente.
+
+**Verificacion:** pruebas con Supabase simulado comprobaron la duracion minima ante respuesta rapida, limpieza de fila ausente/`bloques=[]` y error, permanencia ante una consulta lenta y emision del evento cuando hay bloques; sintaxis del modulo y `git diff --check` pasan. Tarea 56 marcada `[x]`. La tabla remota sigue sin validar y la tarea 55 permanece `[~]`.
 
 ---
 

@@ -9,6 +9,7 @@
   <link rel="icon" href="../../iconos/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../../css/variables-tema-diurno-nocturno.css">
   <link rel="stylesheet" href="../../css/layout-hamburguesa-y-overlay.css">
+  <link rel="stylesheet" href="../../css/pagina-inicio-visitante.css">
 </head>
 <body data-seccion-actual="inicio">
   <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute">
@@ -68,11 +69,7 @@
     </div>
   </nav>
 
-  <main class="intiwo-hero">
-    <h1>Instituto Nacional Técnico Industrial</h1>
-    <img class="intiwo-sello-hero" src="../../iconos/marca-inti/Logotipo%20Circular-01.svg" alt="Sello I.N.T.I.">
-  </main>
-  <hr class="intiwo-separador">
+  <main id="inicio-root"></main>
 
   <footer class="intiwo-pie">
     <div class="intiwo-pie-grid">
@@ -112,6 +109,6 @@
   <script src="../../js/auth/panel-configuraciones-cuentas.js"></script>
   <script src="../../js/cromo/cursor-intiwo.js"></script>
   <script src="../../js/cromo/menu-hamburguesa-overlay.js"></script>
-  <script type="module" src="../../js/supabase/cliente-supabase.js"></script>
+  <script type="module" src="../../js/cms/cargar-bloques-inicio.js"></script>
 </body>
 </html>
