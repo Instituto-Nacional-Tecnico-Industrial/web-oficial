@@ -1,6 +1,6 @@
 # Backlog INTIWO
 
-**Ultima modificacion:** 2026-10-13 16:55 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-13 19:22 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Carpeta exclusiva de IAs: `IAs/` (solo este archivo y `RESOLUCIONES.md`). Al marcar o agregar: misma fecha, hora (UTC-6) e IA en ambos; indica el dispositivo. Apuntes en orden cronologico.
 
@@ -484,7 +484,7 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
   - **Hecho 2026-10-12 16:29 (UTC-6):** Cuentas sigue siendo opcional (sin redireccion ni apertura forzada); Inicio S1 oculta Editar a visitantes; Configuraciones no tiene destino navegable hasta que el control de rol lo habilite en ambos headers. Estado inicial seguro incluso sin JavaScript.
   - **Aclaracion 2026-10-12 16:38 (UTC-6):** el boton Editar CMS existe solo en Inicio S1 y se muestra exclusivamente al rol administrador. No se muestra en el hub ni en las demas paginas; la edicion de proyectos tiene sus controles propios y no reutiliza este boton CMS.
 
-32 [~] SH-04a Pantalla Cuentas: correo + contrasena propia.
+32 [~] SH-04a Pantalla Cuentas: correo + contrasena propia. Hub + paginas separadas (login/registro/restablecer/definir), ojo Lucide, varias sesiones en el navegador.
 
   - **Extraer de:** F-PNG-MENU Cuentas; decisiones DB-00b y la entrada de RESOLUCIONES de 2026-10-12 12:54. No copiar formulario F-GEM.
 
@@ -1815,6 +1815,10 @@ Si dudas, elige la opcion mas restrictiva y etiquetala DECISION.
 ### 2026-10-13 16:55 (UTC-6) | Cursor Grok 4.6 | laptop MINEDUCYT
 
 - [~] Configuraciones: nombres+apellidos obligatorios; lista de correos con Eliminar (baja logica DB-00c). Admin baja admin/docente/editor (no matriz ni ultimo admin). Docente baja editores que invito. Admin hereda tarjetas de alumnos/codigos del backlog S1-07. SQL `cuentas-nombres-y-bajas.sql`. Redesplegar `invitar-cuenta` (acciones invitar|baja). Codigos reales y NIE HMAC siguen pendientes.
+
+### 2026-10-13 19:22 (UTC-6) | Cursor Grok 4.6 | laptop MINEDUCYT
+
+- [~] Cuentas en paginas separadas (hub, iniciar, registrarme, restablecer, definir). Varias sesiones en el navegador (X). Salir no borra la base. Ojo Lucide + generar clave 9 chars. Config por botones. Redirect invitacion a `pagina-definir-contrasena.html`. Publicar Pages + Redirect URLs + redesplegar funcion.
 
 
 ### 2026-10-11 14:10 (UTC-6) | Cursor | laptop MINEDUCYT

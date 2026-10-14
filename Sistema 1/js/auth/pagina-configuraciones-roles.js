@@ -29,6 +29,15 @@
       seccion.hidden = seccion.dataset.configVista !== vista;
     });
 
+    const botonera = document.querySelector('[data-config-botones]');
+    if (botonera) {
+      botonera.hidden = vista === 'sin-acceso' || vista === 'rol-desconocido';
+    }
+    const esStaff = vista === 'administrador' || vista === 'docente';
+    document.querySelectorAll('[data-config-staff]').forEach((boton) => {
+      boton.hidden = !esStaff;
+    });
+
     if (descripcion) {
       descripcion.textContent = vista === 'sin-acceso'
         ? 'Inicia sesión con tu cuenta institucional para consultar las opciones disponibles.'

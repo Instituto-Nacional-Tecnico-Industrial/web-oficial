@@ -9,6 +9,7 @@
   <link rel="icon" href="../../iconos/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../../css/variables-tema-diurno-nocturno.css">
   <link rel="stylesheet" href="../../css/layout-hamburguesa-y-overlay.css">
+  <link rel="stylesheet" href="../../css/cuentas-acceso.css">
 </head>
 <body data-seccion-actual="configuraciones">
   <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute">
@@ -66,7 +67,26 @@
       <h1>Configuraciones</h1>
       <p data-config-descripcion>Preparando las opciones de tu cuenta…</p>
     </header>
-    <p class="intiwo-config-aviso" role="note">Las altas envían un correo de invitación. El alumno o docente elige su propia contraseña en Cuentas. Nadie del instituto la asigna ni la conoce.</p>
+    <p class="intiwo-config-aviso" role="note">Las altas envían un correo de invitación. Salir de una cuenta no la borra de la base. Eliminar en el sistema solo desactiva el acceso.</p>
+
+    <nav class="intiwo-config-botones" data-config-botones hidden aria-label="Funciones de configuración">
+      <button type="button" data-config-abrir="sesion">Cuentas en este navegador</button>
+      <button type="button" data-config-abrir="salir">Salir de esta cuenta</button>
+      <button type="button" data-config-abrir="alta" data-config-staff>Agregar al sistema</button>
+      <button type="button" data-config-abrir="baja" data-config-staff>Eliminar en el sistema</button>
+    </nav>
+
+    <section class="intiwo-config-panel intiwo-config-tarjeta" data-config-panel="sesion" hidden>
+      <h3>Cuentas en este navegador</h3>
+      <p>Puedes tener varias cuentas autorizadas a la vez, como en X. Cambia con Usar. Quitar del navegador no elimina la cuenta del instituto.</p>
+      <div class="intiwo-cuentas-lista-sesiones" data-sesiones-lista></div>
+      <p><a class="intiwo-pildora" href="../cuentas/pagina-iniciar-sesion.html">Iniciar sesión con otra cuenta</a></p>
+    </section>
+    <section class="intiwo-config-panel intiwo-config-tarjeta" data-config-panel="salir" hidden>
+      <h3>Salir de esta cuenta</h3>
+      <p>Cierra la sesión en este navegador. La cuenta sigue existiendo y podrás volver a entrar.</p>
+      <button class="intiwo-pildora" type="button" id="intiwo-salir-cuenta">Salir de esta cuenta</button>
+    </section>
 
     <section class="intiwo-config-vista" data-config-vista="sin-acceso" hidden aria-labelledby="config-sin-acceso">
       <h2 id="config-sin-acceso">Inicia sesión para continuar</h2>
@@ -78,8 +98,8 @@
       <h2 id="config-admin">Administración institucional</h2>
       <p class="intiwo-config-resumen">Administras cuentas institucionales y, como el docente, también alumnos-editores y códigos. Eliminar desactiva el acceso; no borra proyectos ni historial.</p>
       <div class="intiwo-config-tarjetas">
-        <article class="intiwo-config-tarjeta intiwo-config-tarjeta--destacada">
-          <h3>Permisos y cuentas</h3>
+        <article class="intiwo-config-tarjeta intiwo-config-tarjeta--destacada intiwo-config-panel" data-config-panel="alta" hidden>
+          <h3>Agregar al sistema</h3>
           <p>Alta con correo, nombres, apellidos y rol. La lista muestra a quién invitaste. Puedes desactivar a otro administrador, docente o editor. La cuenta matriz no se elimina. Solo la matriz da de alta administradores.</p>
           <form class="intiwo-cuentas-form" data-form-alta>
             <label>Nombres <input type="text" name="nombres" required minlength="2" autocomplete="given-name"></label>
@@ -95,6 +115,10 @@
             <button class="intiwo-pildora" type="submit">Dar de alta</button>
           </form>
           <p data-alta-mensaje class="intiwo-config-estado" aria-live="polite"></p>
+        </article>
+        <article class="intiwo-config-tarjeta intiwo-config-panel" data-config-panel="baja" hidden>
+          <h3>Eliminar en el sistema</h3>
+          <p>Desactiva el acceso. No borra proyectos ni el historial. La cuenta matriz no se elimina.</p>
           <div class="intiwo-config-lista-altas" data-altas-lista></div>
         </article>
         <article class="intiwo-config-tarjeta">
@@ -157,8 +181,8 @@
       <h2 id="config-docente">Espacio docente</h2>
       <p class="intiwo-config-resumen">Desde aquí das de alta a tus alumnos como Editores. Cada uno recibe un correo para elegir su contraseña. No ves las cuentas de otros docentes ni puedes crear administradores.</p>
       <div class="intiwo-config-tarjetas">
-        <article class="intiwo-config-tarjeta intiwo-config-tarjeta--destacada">
-          <h3>Alumnos (editores)</h3>
+        <article class="intiwo-config-tarjeta intiwo-config-tarjeta--destacada intiwo-config-panel" data-config-panel="alta" hidden>
+          <h3>Agregar al sistema</h3>
           <p>El correo del alumno debe llevar el NIE en la parte local, por ejemplo <strong>19795194@clases.edu.sv</strong>. Escribe también nombres y apellidos. En la lista puedes desactivar solo a los editores que invitaste (sus códigos, cuando existan los grupos).</p>
           <form class="intiwo-cuentas-form" data-form-alta data-alta-rol-fijo="editor">
             <label>Nombres <input type="text" name="nombres" required minlength="2" autocomplete="given-name"></label>
@@ -168,6 +192,10 @@
             <button class="intiwo-pildora" type="submit">Invitar alumno</button>
           </form>
           <p data-alta-mensaje class="intiwo-config-estado" aria-live="polite"></p>
+        </article>
+        <article class="intiwo-config-tarjeta intiwo-config-panel" data-config-panel="baja" hidden>
+          <h3>Eliminar en el sistema</h3>
+          <p>Solo puedes desactivar editores que invitaste. No se borra la base ni los proyectos.</p>
           <div class="intiwo-config-lista-altas" data-altas-lista></div>
         </article>
         <article class="intiwo-config-tarjeta">
@@ -212,6 +240,8 @@
   <script src="../../js/auth/sesion-roles-auth.js"></script>
   <script src="../../js/auth/pagina-configuraciones-roles.js"></script>
   <script type="module" src="../../js/auth/sesion-supabase.js"></script>
+  <script src="../../js/auth/pagina-configuraciones-paneles.js"></script>
   <script type="module" src="../../js/auth/alta-cuentas-admin.js"></script>
+  <script type="module" src="../../js/auth/panel-config-cuentas-multiples.js"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { withSupabase } from "jsr:@supabase/server@1";
 
 const REDIRECT =
-  "https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/cuentas/pagina-cuentas.html";
+  "https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/cuentas/pagina-definir-contrasena.html";
 
 const DOMINIOS = /@(inti|clases)\.edu\.sv$/i;
 const MATRIZ = "intiwo11543@gmail.com";

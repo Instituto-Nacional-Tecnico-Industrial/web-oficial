@@ -1,5 +1,6 @@
 /* INTIWO | sincroniza Auth real con intiwo-rol | BACKLOG login */
 import { supabase } from "../supabase/cliente-supabase.js";
+import { recordarSesion } from "./cuentas-sesiones.js";
 
 const CLAVE_ROL = "intiwo-rol";
 
@@ -48,6 +49,7 @@ async function sincronizar() {
   }
   const perfil = await cargarPerfil(user.id);
   publicarRol(perfil ? perfil.rol : "", perfil);
+  if (perfil) await recordarSesion(supabase, perfil.rol, perfil);
 }
 
 supabase && supabase.auth.onAuthStateChange(() => {

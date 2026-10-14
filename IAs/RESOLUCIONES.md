@@ -1,6 +1,6 @@
 # Resoluciones (c�mo lo hizo cada IA)
 
-**Ultima modificacion:** 2026-10-13 16:55 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-13 19:22 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Solo existen estos dos archivos de IAs, en `IAs/`: este y `BACKLOG.md`. Al cambiar uno: **�ltima modificaci�n** con fecha, hora **UTC-6**, nombre de la IA y dispositivo. Si cambia una tarea, la misma marca en ambos.
 
@@ -1037,4 +1037,12 @@ Bachillerato General a distancia, 1� y 2�, s�bados y domingo. Requisito: m
 **Pedido:** Admin y docente ven lista de correos; admin elimina otro admin/docente/editor; docente elimina editores de sus codigos. El alta exige nombres y apellidos. El admin debe tener tambien las funciones de docente del backlog.
 
 **Como:** Formularios con nombres/apellidos. Lista con nombre, correo, rol, estado y boton Eliminar. Baja logica (revocar invitacion o `perfiles.desactivado_en` + ban Auth): no se borra historial ni proyectos (DB-00c). No se da de baja la matriz, uno mismo ni el ultimo administrador. Docente solo editores que el invito (hasta existir `codigos`/`miembro_codigo`). Vista admin: cuentas + alumnos + arbol Academico/Tecnico (S1-07b/c/f) como estructura, datos de grupos pendientes. SQL `cuentas-nombres-y-bajas.sql`. La misma Edge Function `invitar-cuenta` acepta `accion: invitar|baja`. Instituto: Run SQL, pegar funcion, publicar Pages.
+
+---
+
+### 2026-10-13 19:22 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Varias cuentas en el mismo navegador; salir sin borrar la base; restablecer contrasena; login convencional en HTML separados; ojo Lucide; en Registrarme primera clave sin ojo, confirmar con ojo y generar clave; diurno/nocturno; Configuraciones por botones. UX de referencia en Python (Isla Frutalia) solo como guia visual, sin escribir Python.
+
+**Como:** Hub `pagina-cuentas.html` (Iniciar sesion / Registrarme). Paginas: iniciar, registrarme (enlace olvide contrasena), restablecer, definir (invitacion y recovery). CSS `cuentas-acceso.css`. Generador 3 letras + 3 numeros + 3 signos. Sesiones en `localStorage intiwo-sesiones` (como X). Salir = `signOut` local. Config: botones Cuentas en el navegador / Salir / Agregar al sistema / Eliminar en el sistema. Redirect de invitacion a definir-contrasena. Instituto: publicar Pages, anadir esa URL a Redirect URLs y redesplegar `invitar-cuenta`.
 

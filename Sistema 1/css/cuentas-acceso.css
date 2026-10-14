@@ -1,0 +1,216 @@
+/* INTIWO | pantallas de Cuentas (hub, login, registro, restablecer) */
+.intiwo-cuentas-main {
+  display: grid;
+  min-height: calc(100vh - 72px);
+  place-items: center;
+  padding: 32px 20px;
+}
+
+.intiwo-cuentas-card {
+  box-sizing: border-box;
+  width: min(100%, 480px);
+  padding: 32px;
+  border: 1px solid var(--superficie-2);
+  border-radius: 16px;
+  background: var(--superficie);
+  text-align: center;
+}
+
+.intiwo-cuentas-card h1 {
+  margin: 0 0 12px;
+  font-size: clamp(26px, 5vw, 34px);
+}
+
+.intiwo-cuentas-card > p {
+  color: var(--texto-suave);
+  line-height: 1.6;
+}
+
+.intiwo-cuentas-acciones {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.intiwo-cuentas-form {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+  text-align: left;
+}
+
+.intiwo-cuentas-campo {
+  display: grid;
+  gap: 6px;
+}
+
+.intiwo-cuentas-campo > span {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--texto);
+}
+
+.intiwo-cuentas-ayuda {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.intiwo-cuentas-form input,
+.intiwo-cuentas-form select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--superficie-2);
+  border-radius: 12px;
+  background: var(--fondo);
+  color: var(--texto);
+  font: inherit;
+}
+
+.intiwo-cuentas-form input::placeholder {
+  color: var(--texto-suave);
+  opacity: 0.85;
+}
+
+.intiwo-cuentas-form input:focus,
+.intiwo-cuentas-form select:focus {
+  outline: 2px solid var(--verde);
+  outline-offset: 1px;
+}
+
+.intiwo-cuentas-clave {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.intiwo-cuentas-ojo {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid var(--superficie-2);
+  border-radius: 12px;
+  background: var(--fondo);
+  color: var(--texto);
+  cursor: pointer;
+}
+
+.intiwo-cuentas-ojo svg {
+  width: 22px;
+  height: 22px;
+}
+
+.intiwo-cuentas-opcion {
+  min-height: 48px;
+  padding: 10px 18px;
+  border: 1px solid var(--verde);
+  border-radius: 999px;
+  background: var(--verde);
+  color: var(--negro);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-grid;
+  place-items: center;
+}
+
+.intiwo-cuentas-opcion--secundaria {
+  background: transparent;
+  color: var(--texto);
+}
+
+.intiwo-cuentas-enlace {
+  display: inline-block;
+  margin-top: 4px;
+  color: var(--verde);
+  font-size: 14px;
+}
+
+.intiwo-cuentas-mensaje {
+  min-height: 24px;
+  margin: 16px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--texto-suave);
+}
+
+.intiwo-cuentas-mensaje.es-error {
+  color: #e53935;
+}
+
+html[data-theme="dark"] .intiwo-cuentas-mensaje.es-error {
+  color: #ff8a80;
+}
+
+.intiwo-cuentas-volver {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--texto);
+}
+
+.intiwo-cuentas-lista-sesiones {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+  text-align: left;
+}
+
+.intiwo-cuentas-sesion {
+  display: grid;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--superficie-2);
+  border-radius: 12px;
+  background: var(--fondo);
+}
+
+.intiwo-cuentas-sesion div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.intiwo-cuentas-sesion p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.intiwo-cuentas-sesion.es-activa {
+  border-color: var(--verde);
+}
+
+.intiwo-config-botones {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 10px;
+  margin: 0 0 20px;
+}
+
+.intiwo-config-botones button {
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1px solid var(--superficie-2);
+  border-radius: 12px;
+  background: var(--fondo);
+  color: var(--texto);
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.intiwo-config-botones button.es-activo {
+  border-color: var(--verde);
+  color: var(--verde);
+}
+
+.intiwo-config-panel[hidden] {
+  display: none !important;
+}
