@@ -294,19 +294,29 @@
       { label: 'Capa', icono: 'i-layers', accion: () => {} },
       { label: 'Animación', icono: 'i-sparkles', accion: () => {} },
       { label: 'Vista móvil', icono: 'i-layout-template', accion: toggleVistaMovil },
-      { label: 'Guardar', icono: 'i-save', accion: () => {
+      { label: 'Guardar', icono: 'i-save', accion: async () => {
         const botonGuardar = document.querySelector('[data-accion="Guardar"]');
         if (botonGuardar && botonGuardar.disabled) {
           return;
         }
 
         const apiGuardar = window.INTIWO_GUARDAR_CONTENIDO_INICIO;
-        if (apiGuardar && typeof apiGuardar.guardarContenidoInicio === 'function') {
-          const contenidoGuardado = apiGuardar.guardarContenidoInicio('#inicio-root');
+        if (!apiGuardar || typeof apiGuardar.guardarContenidoInicio !== 'function') {
+          window.alert('No se pudo publicar el Inicio.');
+          return;
+        }
+
+        if (botonGuardar) botonGuardar.disabled = true;
+        try {
+          const contenidoGuardado = await apiGuardar.guardarContenidoInicio('#inicio-root');
           window.INTIWO_INICIO_CONTENIDO_PUBLICADO = contenidoGuardado;
           window.INTIWO_INICIO_EDITOR_SNAPSHOT = contenidoGuardado;
           document.body.classList.remove(PREVIEW_MOBILE_CLASS);
           setModoEditorActivo(false);
+        } catch (error) {
+          console.error('[INTIWO Inicio] Fallo el upsert de contenido_inicio.', error);
+          window.alert('No se pudo publicar el Inicio. Inicia sesión como administrador e inténtalo de nuevo.');
+          if (botonGuardar) botonGuardar.disabled = false;
         }
       } },
       { label: 'Cancelar', icono: 'i-x', accion: () => {
@@ -356,19 +366,6 @@
     if (guardado && typeof guardado === 'object' && Array.isArray(guardado.bloques)) {
       return { bloques: guardado.bloques };
     }
-
-    try {
-      const valor = localStorage.getItem('intiwo-contenido-inicio');
-      if (valor) {
-        const parsed = JSON.parse(valor);
-        if (parsed && typeof parsed === 'object' && Array.isArray(parsed.bloques)) {
-          return { bloques: parsed.bloques };
-        }
-      }
-    } catch (error) {
-      console.warn('[INTIWO Inicio] No se pudo leer el contenido guardado previo.', error);
-    }
-
     return { bloques: [] };
   }
 

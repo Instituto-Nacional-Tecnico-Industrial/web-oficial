@@ -1,1 +1,2 @@
--- INTIWO SQL | archivo: storage-buckets.sql | para: bucket inicio (personal solo si 0-05) | VACIO | BACKLOG DB-04 | copiar tambien a Sistema 2/supabase/
+-- Referencia S2 (misma BD). Canonico: Sistema 1/supabase/storage-buckets.sql. No aplicar dos veces.
+-- Bucket `inicio` publico; escritura admin. Sin bucket personal.

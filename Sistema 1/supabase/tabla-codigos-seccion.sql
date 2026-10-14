@@ -1,15 +1,17 @@
 -- INTIWO SQL | codigos y membresias persistentes por ciclo lectivo.
+-- Unicidad: misma clave (DS2B) puede repetirse en otro anio, no en el mismo ciclo.
 
 create table if not exists public.codigos (
 	id uuid primary key default gen_random_uuid(),
-	clave text not null unique check (clave ~ '^[A-Z]{2}[123][A-Z]$'),
+	clave text not null check (clave ~ '^[A-Z]{2}[123][A-Z]$'),
 	especialidad_id uuid not null references public.especialidades (id) on delete restrict,
 	nivel smallint not null check (nivel between 1 and 3),
 	seccion text not null check (seccion ~ '^[A-Z]$'),
 	docente_id uuid not null references public.perfiles (id) on delete restrict,
-	anio_lectivo smallint not null,
+	anio_lectivo smallint not null check (anio_lectivo >= 2026),
 	desactivado_en timestamptz,
 	created_at timestamptz not null default now(),
+	unique (clave, anio_lectivo),
 	unique (especialidad_id, nivel, seccion, anio_lectivo)
 );
 

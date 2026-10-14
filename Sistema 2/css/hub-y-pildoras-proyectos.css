@@ -86,7 +86,9 @@
   flex-direction: column;
   max-height: min(60vh, 24rem);
   overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
+  min-width: 0;
 }
 
 .intiwo-especialidades-lista.es-colapsada {
@@ -241,5 +243,20 @@
 
   .intiwo-especialidades.es-abierto {
     align-items: stretch;
+  }
+}
+
+@media (max-width: 320px) {
+  .intiwo-main > .intiwo-especialidades.es-abierto {
+    width: calc(100% - 16px);
+    max-width: none;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem 0.75rem 1.2rem;
+    box-sizing: border-box;
+  }
+
+  .intiwo-pildora-esp {
+    font-size: 14px;
   }
 }

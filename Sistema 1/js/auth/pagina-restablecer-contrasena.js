@@ -21,7 +21,7 @@ if (!supabase) {
       mensaje("Usa el correo institucional con el que te dieron de alta.", true);
       return;
     }
-    mensaje("Enviando enlace…");
+    mensaje("Enviando enlaceâ€¦");
     const destino = new URL("pagina-definir-contrasena.html", window.location.href).href;
     const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: destino });
     if (error) {

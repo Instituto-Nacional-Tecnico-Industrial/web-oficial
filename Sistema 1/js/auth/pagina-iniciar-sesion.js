@@ -26,7 +26,7 @@ if (!supabase) {
       mensaje("Solo el administrador matriz o correos @inti.edu.sv / @clases.edu.sv.", true);
       return;
     }
-    mensaje("Entrando…");
+    mensaje("Entrandoâ€¦");
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       mensaje(error.message === "Invalid login credentials" ? "Correo o contrasena incorrectos." : error.message, true);

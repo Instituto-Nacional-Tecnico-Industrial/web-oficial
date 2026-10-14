@@ -40,10 +40,14 @@
 
     if (descripcion) {
       descripcion.textContent = vista === 'sin-acceso'
-        ? 'Inicia sesión con tu cuenta institucional para consultar las opciones disponibles.'
+        ? 'Inicia sesion con tu cuenta institucional para consultar las opciones disponibles.'
         : vista === 'rol-desconocido'
-          ? 'No se pudo determinar qué opciones corresponden a esta cuenta.'
-          : `Opciones disponibles para el rol ${vista}.`;
+          ? 'No se pudo determinar que opciones corresponden a esta cuenta.'
+          : vista === 'editor'
+            ? 'Opciones reducidas: tema, restablecer clave y salir. No creas cuentas ni ves otros grupos.'
+            : vista === 'docente'
+              ? 'Puedes dar de alta editores, crear tus codigos y desactivar los tuyos. No ves a otros docentes.'
+              : 'Opciones de administrador: cuentas, grupos Tecnico/Academico y bajas logicas.';
     }
   }
 

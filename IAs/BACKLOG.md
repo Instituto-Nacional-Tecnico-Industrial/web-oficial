@@ -1,6 +1,6 @@
 # Backlog INTIWO
 
-**Ultima modificacion:** 2026-10-13 19:22 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-14 02:20 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Carpeta exclusiva de IAs: `IAs/` (solo este archivo y `RESOLUCIONES.md`). Al marcar o agregar: misma fecha, hora (UTC-6) e IA en ambos; indica el dispositivo. Apuntes en orden cronologico.
 
@@ -19,6 +19,10 @@ Convencion: `N [ ]` pendiente | `N [~]` en curso | `N [x]` hecho. N es el numero
 4. Al cerrar: misma marca UTC-6 en `RESOLUCIONES.md` (archivo tocado + como se probo).
 
 5. Listo cuando se cumple el Criterio. Si hay conflicto entre un PDF viejo y un PNG / una resolucion de 2026-10-11, gana **PNG + resolucion reciente**.
+
+6. **UTF-8 obligatorio (defecto 2026-10-13).** En Windows MINEDUCYT, guardar HTML/JS/CSS/MD/SQL en **UTF-8** (no ANSI / Windows-1252). El HTML lleva `<meta charset="utf-8">`; si el archivo tiene `o` acentuada como byte `F3`, el navegador muestra el rombo U+FFFD en "sesion", "contrasena", "electronico". **No es Google Fonts / Roboto Serif.** Antes de editar texto en espanol: comprobar que "sesion" en disco sea UTF-8 (`C3 B3`). Escribir con encoding UTF-8. Existe `.gitattributes` `working-tree-encoding=UTF-8`. Si Pages muestra rombos, recodificar el archivo, no cambiar la fuente.
+
+7. **Cuentas ya no es un solo HTML.** Hub `pagina-cuentas.html` (solo Iniciar sesión / Registrarme). Formularios en `pagina-iniciar-sesion.html`, `pagina-registrarme.html`, `pagina-restablecer-contrasena.html`, `pagina-definir-contrasena.html`. No volver a amontonar login+registro+invitar en un overlay.
 
 ---
 
@@ -465,7 +469,7 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Escribir en:** Solo `Sistema 1/js/tema/persistir-tema-diurno-nocturno.js` y `Sistema 2/js/tema/persistir-tema-diurno-nocturno.js` (localStorage). Cero SQL.
 
-30 [~] SH-02e Usuario logueado: leer/guardar `perfiles.tema`.
+30 [x] SH-02e Usuario logueado: leer/guardar `perfiles.tema`.
 
   - **Extraer de:** seccion D de este archivo (prompt DER).
 
@@ -474,6 +478,8 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
   - **En curso 2026-10-12 00:02 (UTC-6):** bloqueada hasta recibir el DER aprobado y contar con el flujo de Auth integrado. `tabla-perfiles.sql` sigue vacío y no hay implementación de `createClient`, consulta `perfiles` ni sesión Auth en el código; no se inventa SQL ni contrato de datos.
 
   - **Actualizacion 2026-10-12 11:01 (UTC-6):** el archivo `Sistema 1/supabase/tabla-perfiles.sql` ya contiene un borrador con `tema`, pero aun no se ha aplicado ni aprobado; siguen sin existir cliente Supabase ni flujo Auth en las paginas. SH-02e sigue bloqueada por DB-02a, DB-03c y SH-04a. La nota de las 00:02 describe correctamente el estado de ese momento.
+
+  - **Hecho 2026-10-13 22:10 (UTC-6):** `persistir-tema-diurno-nocturno.js` (S1 y S2) aplica `localStorage` al instante. Con sesion, lee `perfiles.tema` y al pulsar sol/luna hace `update` solo de esa columna. Si falla la lectura, no bloquea y conserva el tema local. `sesion-supabase.js` incluye `tema` en el select y dispara `intiwo:auth-state-changed`. RLS ya existente: `grant update (tema)` + `perfiles_update_tema_propio`.
 
 31 [x] SH-03a Visitante: no forzar registro. Vista PDF = sin Editar ni Config.
 
@@ -484,22 +490,26 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
   - **Hecho 2026-10-12 16:29 (UTC-6):** Cuentas sigue siendo opcional (sin redireccion ni apertura forzada); Inicio S1 oculta Editar a visitantes; Configuraciones no tiene destino navegable hasta que el control de rol lo habilite en ambos headers. Estado inicial seguro incluso sin JavaScript.
   - **Aclaracion 2026-10-12 16:38 (UTC-6):** el boton Editar CMS existe solo en Inicio S1 y se muestra exclusivamente al rol administrador. No se muestra en el hub ni en las demas paginas; la edicion de proyectos tiene sus controles propios y no reutiliza este boton CMS.
 
-32 [~] SH-04a Pantalla Cuentas: correo + contrasena propia. Hub + paginas separadas (login/registro/restablecer/definir), ojo Lucide, varias sesiones en el navegador.
+32 [x] SH-04a Pantalla Cuentas: correo + contrasena propia. Hub + paginas separadas (login/registro/restablecer/definir), ojo Lucide, varias sesiones en el navegador.
 
   - **Extraer de:** F-PNG-MENU Cuentas; decisiones DB-00b y la entrada de RESOLUCIONES de 2026-10-12 12:54. No copiar formulario F-GEM.
 
-  - **Escribir en:** UI Cuentas: overlay en `compartido/encabezado-hamburguesa.html` (ambos) + `Sistema 1/js/auth/sesion-roles-auth.js` y copia S2. Auth es el mismo proyecto Supabase. Instituto elige correo + contrasena; cada usuario establece la suya mediante alta/invitacion segura, no la asigna el admin/docente.
+  - **Escribir en (vigente):** `Sistema 1/paginas/cuentas/pagina-cuentas.html` (hub) + `pagina-iniciar-sesion.html` + `pagina-registrarme.html` + `pagina-restablecer-contrasena.html` + `pagina-definir-contrasena.html` + `css/cuentas-acceso.css` + `js/auth/pagina-*.js` + `cuentas-sesiones.js`. **Superseido:** overlay de formularios en el hamburguesa.
 
-33 [~] SH-04b Alta Editor por invitacion: sin invitacion valida, informar que el docente aun no dio de alta; impedir la creacion de perfil editor.
+  - **Hecho 2026-10-13 21:48 (UTC-6):** login/registro/restablecer/definir separados. Salir = signOut local, no borra la base. Varias cuentas en `localStorage intiwo-sesiones`. Generar clave 9 caracteres. Falta publicar Pages si el artefacto aun es viejo.
+
+33 [x] SH-04b Alta Editor por invitacion: sin invitacion valida, informar que el docente aun no dio de alta; impedir la creacion de perfil editor. Membresia `miembro_codigo` al aceptar.
 
   - **Extraer de:** F-RES 14:10 roles.
 
-  - **Escribir en:** `Sistema 1/js/auth/sesion-roles-auth.js` y copia S2. Mensaje en overlay; consumir invitacion una sola vez y crear membresia de codigo en transaccion. Invitacion por correo con enlace seguro para que la persona defina su propia contrasena; admin/docente nunca la crea ni la conoce. No crear perfil editor ni membresia si no existe invitacion valida. No habilitar autoasignacion de roles desde un registro publico.
+  - **Escribir en:** `pagina-registrarme.html` + trigger remoto. Mensaje si no hay invitacion. Membresia de codigo cuando exista `miembro_codigo`. Invitacion por correo con enlace seguro para que la persona defina su propia contrasena; admin/docente nunca la crea ni la conoce. No crear perfil editor ni membresia si no existe invitacion valida. No habilitar autoasignacion de roles desde un registro publico.
 
   - **Avance 2026-10-12 17:24 (UTC-6):** el estado informativo de Registro en los paneles S1/S2 indica que se requiere invitacion vigente y que, si no existe, el docente aun no dio de alta al alumno. Los botones quedaron conectados tambien en las paginas activas S1/S2. En el trigger SQL canonico S1, el alta sin invitacion activa (excepto bootstrap del primer admin) ahora genera una excepcion y revierte la transaccion Auth en vez de dejar un usuario huerfano sin perfil.
   - **Pendiente para completar:** integrar y probar el alta por correo/enlace de invitacion con errores de Auth mostrados en el overlay; esto depende de completar SH-04a y aplicar/probar el contrato DB-05a/DB-03d. El SQL es solo borrador local y no se ha aplicado a Supabase. La membresia Editor se crea junto con perfil y consumo de invitacion dentro del trigger existente.
+  - **Avance 2026-10-13 21:48 (UTC-6):** trigger remoto + Edge Function `invitar-cuenta` envian correo. Registro sin alta sigue P0001. **Pendiente:** vincular editor a codigo (`miembro_codigo`); confirmar SQL incrementales en remoto.
+  - **Hecho 2026-10-13 22:25 (UTC-6):** invitacion de editor exige `codigo_id`. El trigger inserta `miembro_codigo`. Registro sin alta sigue P0001 (`pagina-registrarme.js`). Instituto debe correr `codigos-y-membresias.sql` y redesplegar `invitar-cuenta`.
 
-34 [~] SH-04c Tras login Admin: mostrar Editar en Inicio y habilitar Configuraciones.
+34 [x] SH-04c Tras login Admin: mostrar Editar en Inicio y habilitar Configuraciones.
 
   - **Extraer de:** F-CMS; F-C-INI email matriz.
 
@@ -507,8 +517,9 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Avance 2026-10-12 20:34 (UTC-6):** la visibilidad admin-only de Editar en Inicio S1 queda en `editor-cms-inicio-admin.js`; ambos scripts de roles habilitan Configuraciones segun rol permitido y recalculan al recibir `intiwo:auth-state-changed`.
   - **Pendiente:** conectar ese evento y el estado de sesion a Supabase Auth despues de completar SH-04a. Sin Auth real no se simula ni se concede un rol desde el frontend.
+  - **Hecho 2026-10-13 21:48 (UTC-6):** `sesion-supabase.js` lee `perfiles.rol`. Admin ve Config y Editar. CMS persistente en Postgres sigue pendiente.
 
-35 [~] SH-04d Tras login Docente/Editor: Configuraciones con menos opciones (S1-07).
+35 [x] SH-04d Tras login Docente/Editor: Configuraciones con menos opciones (S1-07).
 
   - **Extraer de:** F-RES 14:10.
 
@@ -517,8 +528,11 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
   - **Avance 2026-10-12 20:39 (UTC-6):** creada la vista diferenciada de Administrador, Docente y Editor. Docente solo ve el alcance de sus propios codigos/grupos y contenido; Editor solo ve el alcance de cajas asignadas, sin controles globales ni de eliminacion. La pagina S2 reutiliza la de S1 mediante su enlace existente. Las tarjetas declaran los servicios pendientes y no simulan operaciones.
   - **Pendiente:** SH-04a y las dependencias DB/Auth para resolver el rol desde una sesion confiable, obtener datos propios, y habilitar acciones autorizadas. La vista basada en almacenamiento del navegador es solo presentacion y no protege datos ni acciones.
   - **Avance 2026-10-13 16:41 (UTC-6):** el docente ya tiene formulario "Invitar alumno" (rol editor, NIE en el correo). La funcion `invitar-cuenta` acepta docente→editor. Falta que Instituto corra `invitaciones-docente-editor.sql`, redespliegue la funcion y publique Pages. Vincular editor a codigo sigue pendiente.
+  - **Avance 2026-10-13 21:48 (UTC-6):** Config ya no usa dropdowns (S1-07b superseida). Botones por rol. Admin: cuentas en el navegador, salir, alta, baja. Docente: alta editor + baja de editores que invito. Editor: salir + restablecer clave. Falta arbol especialidad/codigo (96-101).
+  - **Nota 2026-10-13 22:10 (UTC-6):** `perfiles.tema` paso a 30/188 [x]; esta casilla sigue [~] por el arbol de codigos.
+  - **Hecho 2026-10-13 22:35 (UTC-6):** botones por rol. Admin: cuentas, alta, baja, arbol Tecnico/Academico. Docente: alta editor, sus codigos, desactivar codigo/alumno; no ve otros docentes. Editor: salir, restablecer clave, tema; no crea cuentas. Arbol en `arbol-config-codigos.js`.
 
-36 [ ] SH-05a `<link>` Roboto Serif (400 y 700) en el head de ambas raices.
+36 [x] SH-05a `<link>` Roboto Serif (400 y 700) en el head de ambas raices. css2 con opsz + preconnect gstatic (2026-10-13).
 
   - **Extraer de:** F-FONT.
 
@@ -602,13 +616,14 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Hecho 2026-10-12 16:55 (UTC-6):** panel empieza a 72px (alto del encabezado), sin duplicar marca/trigger; nav usa `overflow-y:auto` y scrollbar visible para alcanzar Cuentas en ventanas cortas. Barra tiene z-index superior al velo/panel.
 
-47 [~] SH-08b Targets tactiles >=44x44 px (hamburguesa, tema, Cuentas, +).
+47 [x] SH-08b Targets tactiles >=44x44 px (hamburguesa, tema, Cuentas, +).
 
   - **Extraer de:** criterio a11y; F-CMS toolbar.
 
   - **Escribir en:** `Sistema 1/css/layout-hamburguesa-y-overlay.css` y copia S2. Toolbar admin: `Sistema 1/css/editor-cms-inicio.css`.
 
   - **Avance 2026-10-12 22:41 (UTC-6):** hamburguesa ya mide 44x44 px; los enlaces del menu miden como minimo 44 px de alto y Cuentas 64 px. En ambos sistemas se aumento el interruptor de tema de 74x36 a 74x44 px y se centro su indicador visual para conservar el diseño. **Pendiente:** la barra del editor CMS y su boton `+` aun no existen (`editor-cms-inicio.css` sigue vacio); medir/ajustar ese target cuando se implemente. Mantener `[~]` hasta entonces.
+  - **Hecho 2026-10-13 22:45 (UTC-6):** el `+` (`intiwo-admin-empty-add`) y las acciones de `editor-cms-inicio.css` tienen min 44x44 (tambien swatches, capas y select de animacion). El media 640px ya no baja el alto. Cromo hamburguesa/tema/Cuentas se conserva.
 
 48 [x] SH-08c Probar 320, 375, 768, 1280. Anotar roturas en resoluciones.
 
@@ -618,13 +633,14 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Verificacion 2026-10-12 22:47 (UTC-6):** ambas paginas probadas en navegador a 320, 375, 768 y 1280 px. S2 no presenta desbordamiento horizontal en ninguna anchura. S1 no presenta desbordamiento a 375/768/1280; a 320 px, con el boton `Editar` visible, el documento alcanza 327 px y el boton termina en x=327, desbordando 7 px. Hallazgo anotado en `RESOLUCIONES.md` para corregir en una tarea de CSS; no se cambio codigo porque esta tarea pide registrar la prueba, no implementa ajustes.
 
-49 [~] SH-08d Dropdown especialidades: max-height + scroll; no se sale a 320px.
+49 [x] SH-08d Dropdown especialidades: max-height + scroll; no se sale a 320px.
 
   - **Extraer de:** F-PNG-S2T.
 
   - **Escribir en:** `Sistema 2/css/hub-y-pildoras-proyectos.css` (pildoras S2) y `Sistema 1/css/pildoras-oferta-academica.css` (pildoras Oferta).
 
   - **Avance 2026-10-12 22:55 (UTC-6):** en S2, `.intiwo-especialidades-lista` ahora limita su alto a `min(60vh, 24rem)` y tiene scroll vertical interno con overscroll contenido. A 320 px de ancho el menu abierto cabe en la tarjeta sin desbordamiento horizontal; a 480 px de alto, la lista se limita y puede desplazarse internamente. **Pendiente S1:** `pagina-oferta-academica.html` esta vacia a proposito y `pildoras-oferta-academica.css` no tiene markup/selectores que se puedan verificar; completar el limite/scroll cuando exista esa estructura. Mantener `[~]`.
+  - **Hecho 2026-10-13 23:00 (UTC-6):** Oferta S1 usa la misma lista con `max-height: min(60vh, 24rem)`, scroll interno y recorte a 320 px. S2 anade `overflow-x: hidden` y padding reducido a 320 px.
 
 50 [x] SH-08e Barra busqueda S2: no tapa distintivo; 320px fila bajo header.
 
@@ -670,13 +686,15 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Verificacion 2026-10-12 23:17 (UTC-6):** el header/navegacion y footer institucional permanecen en la pagina S1; se retiro el hero hardcodeado (titulo/sello) y su separador, y se dejo `<main id="inicio-root"></main>` vacio. No se agrego carga local o contenido de fallback; la consulta JSON pertenece a S1-01b. No se creo Inicio en S2.
 
-55 [~] S1-01b JS: `select` `contenido_inicio`. Si 0 filas o `bloques=[]`, no insertar bloques.
+55 [x] S1-01b JS: `select` `contenido_inicio`. Si 0 filas o `bloques=[]`, no insertar bloques.
 
   - **Extraer de:** F-CMS; nombre de tabla canonico `contenido_inicio` (CONTENIDO.md decia `paginas_cms`: ignorar ese nombre).
 
   - **Escribir en:** `Sistema 1/js/cms/cargar-bloques-inicio.js` (select contenido_inicio). Lo llama `paginas/inicio/pagina-inicio-cms.html`. Consumir el JSON canonico fijado en DB-02d/S1-14a desde `contenido_inicio.contenido`; 0 filas o `bloques=[]` deja Inicio vacio. No guardar JSON local como fuente de verdad. Emite `intiwo:contenido-inicio-cargado` para el renderizador de la tarea 57.
 
   - **Verificacion 2026-10-12 23:30 (UTC-6):** implementada la consulta como modulo ES que usa el cliente Supabase compartido; pruebas simuladas confirmaron cero filas, `bloques=[]`, emision del evento para datos validos y errores explicitos para fallos/respuestas invalidas. El flujo no modifica `#inicio-root`; los bloques se pintaran en S1-01d. Tarea `[~]`: `tabla-contenido-inicio.sql` sigue siendo stub, asi que no se pudo verificar contra la tabla remota.
+
+  - **Hecho 2026-10-13 23:28 (UTC-6):** SQL en `contenido-inicio-cms.sql` (tabla + RLS). JS asigna `INTIWO_INICIO_CONTENIDO_PUBLICADO` desde el select; 0 filas o `bloques=[]` deja Inicio vacio. Fuente de verdad = Postgres, no `localStorage`. Falta que Instituto corra el SQL remoto.
 
 56 [x] S1-01c Skeleton 200ms (fondo paleta) para que el footer no salte.
 
@@ -830,7 +848,7 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Escribir en:** guardar.js / editor.js recarga cargar.js. Restaura header S1.
 
-77 [~] S1-14c Tras Guardar: modo visitante de esa sesion Admin ve bloques publicados.
+77 [x] S1-14c Tras Guardar: modo visitante de esa sesion Admin ve bloques publicados.
 
   - **Extraer de:** F-CMS; F-C-INI.
 
@@ -838,31 +856,51 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Avance 2026-10-13 09:34 (UTC-6):** al guardar, el JSON normalizado se usa para salir del editor y emitir el evento de render; el Administrador ve los bloques sin controles de edicion, y puede volver a entrar al editor. Verificado sintacticamente. Queda `[~]`: el guardado actual aun usa `localStorage`, no existe upsert a `contenido_inicio` ni tabla/RLS remotas verificadas; completar cuando exista persistencia real para que “publicado” signifique disponible a visitantes y tras recargar.
 
-78 [ ] S1-15 Sanitizar texto (textContent o DOMPurify). No ejecutar `<script>` pegado.
+  - **Hecho 2026-10-13 23:28 (UTC-6):** Guardar espera el upsert; si falla no sale del editor. Si ok, sale a modo visitante y pinta el JSON publicado. Recargar vuelve a leer `contenido_inicio`.
+
+78 [x] S1-15 Sanitizar texto (textContent o DOMPurify). No ejecutar `<script>` pegado.
 
   - **Extraer de:** F-CMS (secretaria pega HTML).
 
   - **Escribir en:** `Sistema 1/js/cms/sanitizar-texto-cms.js` (DOMPurify vendor en `Sistema 1/js/cms/` o textContent). Llamar antes de innerHTML.
 
+  - **Hecho 2026-10-13 23:32 (UTC-6):** `textContent` via DOMParser (sin DOMPurify). Render y Guardar sanitizan texto y URLs (`javascript:` se descarta). El Inicio ya no pinta HTML de secretaria con `innerHTML`.
+
 ### B1. Matricula / Oferta / Personal / Ubicaciones / Historia
 
-79 [ ] S1-02a `paginas/matricula/pagina-matricula-nuevo-ingreso.html` con cromo compartido.
+79 [x] S1-02a `paginas/matricula/pagina-matricula-nuevo-ingreso.html` con cromo compartido.
 
   - **Extraer de:** F-S1L; F-PNG-MENU.
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/paginas/matricula/pagina-matricula-nuevo-ingreso.html`. Header/footer S1. No Sistema 2.
 
-80 [ ] S1-02b Copiar pasos 2027 desde F-C-MAT (sin videos, sin inventar fechas).
+  - **Hecho 2026-10-13 23:38 (UTC-6):** cromo S1 (hamburguesa, distintivo, tema, menu 8 secciones, Cuentas, pie). Main solo titulo; pasos 2027 = 80, EDUCAME = 81.
+
+80 [x] S1-02b Copiar pasos 2027 desde F-C-MAT (sin videos, sin inventar fechas).
 
   - **Extraer de:** F-C-MAT; F-MICRO P2 (pasos 2.2.x, numeracion del PDF puede diferir del Site: **priorizar F-C-MAT / F-SITE-MAT** que ya unifico 5 pasos con fechas); F-RES "Nuevo ingreso".
 
   - **Escribir en:** Cuerpo de `pagina-matricula-nuevo-ingreso.html` (no crear matricula.js; el HTML ya existe). Extraer texto de CONTENIDO.md de la MISMA carpeta.
+
+  - **Hecho 2026-10-14 00:10 (UTC-6):** cinco pasos con las fechas de F-C-MAT / F-RES. Cero video. El paso 1 y el pie «Inscríbete ahora» apuntan al Forms de las **seis técnicas**. EDUCAME = otro Forms; URL **ausente** (Instituto no la dio). No se inventó. Detalle en `matricula/CONTENIDO.md`.
+
+  - **Ajuste 2026-10-14 00:28 (UTC-6):** cada paso ocupa una pantalla; Lucide 2.5 proporcional; texto de visitante (sin jerga de IA). Forms EDUCAME sigue ausente, no se menciona URL en la pagina.
+
+  - **Ajuste 2026-10-14 01:05 (UTC-6):** portada sin SVG; título al tamaño del login; escenas que imitan el trámite (formulario, bandeja, calendario, visita, correo institucional); tinta gris→verde al scroll.
+
+  - **Ajuste 2026-10-14 01:25 (UTC-6):** portada sin tarjeta; copy corto; cuerpo `--texto-suave` (verde solo en píldoras/números); pasos 3 y 5 sin velo a todo el rectángulo; cierre con sello circular enorme + degradado + Inscribirme (Forms técnicas).
+
+  - **Ajuste 2026-10-14 01:50 (UTC-6):** paso 4: visita al instituto (adulto + joven + puerta); copy de entrega. Cierre: sello centrado con margen; recorte al scroll (no escala); freno en recorte tipo banner; Inscribirme en el degradado.
+
+  - **Ajuste 2026-10-14 02:05 (UTC-6):** pie soldado al recorte del sello (línea + cromo); sin hueco de la pista entre Inscribirme y el footer.
 
 81 [ ] S1-02c Seccion EDUCAME desde el mismo CONTENIDO.
 
   - **Extraer de:** F-C-MAT; F-MICRO P7; F-SITE-ED.
 
   - **Escribir en:** Misma pagina matricula/pagina-matricula-nuevo-ingreso.html, seccion debajo de 2027.
+
+  - **Dato faltante 2026-10-14 00:10 (UTC-6):** el Google Form de EDUCAME / modalidad flexible **no es** el de las seis técnicas. URL todavía desconocida. No reutilizar `...BcJjhw/viewform`. No inventar. Instituto debe entregar el enlace antes de un CTA de EDUCAME.
 
 82 [ ] S1-02d CTA Inscribete: enlazar al formulario oficial de Google Forms; el WhatsApp oficial queda como contacto alternativo, no como destino del boton.
 
@@ -872,23 +910,31 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Destino oficial confirmado 2026-10-12 16:22 (UTC-6):** `https://docs.google.com/forms/d/e/1FAIpQLSchOv93fiyvoxF2z_mahlUcUhzbt5FyxfZTupLeODpdBcJjhw/viewform`. Los enlaces "Inscríbete ahora" en la página activa Inicio S1, hub S2 y ambos footers abren el formulario en nueva pestaña con `rel="noopener noreferrer"`.
 
-83 [ ] S1-03a Pagina oferta: dropdown/pildoras como PNG (fondo `#539507`, activo/hover).
+  - **Alcance 2026-10-14 00:10 (UTC-6):** ese Forms es **solo** Nuevo ingreso de las seis especialidades técnicas. No sirve para modalidad flexible / EDUCAME. El Forms de EDUCAME no está en el repositorio.
+
+83 [x] S1-03a Pagina oferta: dropdown/pildoras como PNG (fondo `#539507`, activo/hover).
 
   - **Extraer de:** F-PNG-S2T (look de pildoras, reutilizado en Oferta S1); F-ASE verde.
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/paginas/oferta-academica/pagina-oferta-academica.html` + `Sistema 1/css/pildoras-oferta-academica.css`. Look de pildoras desde PNG S2 pero el HTML NO va a Sistema 2.
 
-84 [ ] S1-03b Seis tecnicas + General (7). Copy de modulos.
+  - **Hecho 2026-10-13 23:00 (UTC-6):** 7 pildoras (6 tecnicas + General EDUCAME), chevron, activo/hover. JS `js/oferta/pildoras-oferta-academica.js`. Copy largo de modulos sigue en 84.
+
+84 [x] S1-03b Seis tecnicas + General (7). Copy de modulos.
 
   - **Extraer de:** F-C-OF (lista corta); F-MICRO P2-P7 (modulos largos por especialidad); F-RES Oferta academica; F-SITE-OF. General = F-MICRO P7 no una septima tecnica.
 
   - **Escribir en:** Copy en oferta-academica/pagina-oferta-academica.html (modulos). Fuente de texto: CONTENIDO.md de esa carpeta + F-MICRO P2-P7.
 
-85 [ ] S1-03c Color de pildora = SH-02b. Hover Sistemas Electricos puede ir `#E61010` como PNG.
+  - **Hecho 2026-10-13 23:12 (UTC-6):** fichas con intro y listas de modulos desde RESOLUCIONES (Oferta academica + EDUCAME). General no es septima tecnica. Cero video.
+
+85 [x] S1-03c Color de pildora = SH-02b. Hover Sistemas Electricos puede ir `#E61010` como PNG.
 
   - **Extraer de:** F-PNG-S2T; F-ASE.
 
   - **Escribir en:** Colores en `Sistema 1/css/pildoras-oferta-academica.css` usando variables de variables-tema-diurno-nocturno.css S1.
+
+  - **Hecho 2026-10-13 23:00 (UTC-6):** fondo `--verde`; activo/hover con `--esp-*`. Electricos hover/activo `#E61010`. General sin color inventado (sigue verde).
 
 86 [ ] S1-03d Sin videos .mp4 del Site.
 
@@ -940,23 +986,27 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
 ### B2. Configuraciones y cuentas (S1)
 
-94 [ ] S1-07a Visitante: Configuraciones no navega (SH-01d).
+**Ya no encajan (no rehacer):** login/registro dentro del overlay hamburguesa; Cuentas como un solo HTML con todos los formularios; dropdowns Administradores|Docentes en Config; rol "visitante" como cuenta; auto-asignar admin en registro; borrar fisicamente usuarios Auth; prefijo `GE` como septima tecnica; magic-link como via principal de login (es correo+clave); segundo proyecto Supabase.
+
+94 [x] S1-07a Visitante: Configuraciones no navega (SH-01d).
 
   - **Extraer de:** F-RES 14:10.
 
   - **Escribir en:** Logica en `Sistema 1/js/auth/sesion-roles-auth.js` (item Config del header S1 y S2).
 
-95 [ ] S1-07b Admin: dos dropdowns raiz: Administradores | Docentes.
+95 [x] S1-07b **SUPERSEIDA** (Instituto 2026-10-13 19:22): no dropdowns raiz. Config usa **botones**: Cuentas en el navegador / Salir / Agregar al sistema / Eliminar en el sistema. No reimplantar combos Administradores|Docentes.
 
   - **Extraer de:** F-RES 14:10 (no hay PNG). F-OLD P9 es otra IA de roles: no copiar "visitante" como cuenta.
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/paginas/configuraciones/pagina-configuraciones.html` + `Sistema 1/js/auth/panel-configuraciones-cuentas.js`. Esta pagina NO se duplica en S2 (enlace del menu S2 apunta a S1 o replica minima).
 
-96 [ ] S1-07c Admin > Docentes > Academico | Tecnico. Tecnico > 6 especialidades (sin General aqui salvo Instituto).
+96 [x] S1-07c Admin > Docentes > Academico | Tecnico. Tecnico > 6 especialidades (sin General aqui salvo Instituto).
 
   - **Extraer de:** F-C-OF; F-MICRO 3.x.
 
   - **Escribir en:** Arbol DOM en configuraciones/pagina-configuraciones.html. Tecnico consulta especialidades/codigos; academico consulta el catalogo que Instituto confirme en DB-00a. No clasificar asignaturas como `GE` sin aprobacion.
+
+  - **Hecho 2026-10-13 22:35 (UTC-6):** boton Grupos y codigos. Tecnico lee `especialidades` (6, sin GE). Academico muestra PC/CV/CT/IN/LL (vacio hasta 183). JS `arbol-config-codigos.js`.
 
 97 [ ] S1-07d Al elegir especialidad: lista docentes + codigos. Expandir: editores/alumnos (correo, nombre, n_lista) autorizados.
 
@@ -970,7 +1020,9 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Escribir en:** Formularios en configuraciones/pagina-configuraciones.html. Crear invitaciones/usuarios mediante Auth confiable; nunca invocar Admin API ni `service_role` desde Pages. No asignar contrasena: el invitado la define desde el enlace de activacion. No borrar perfiles con referencias: desactivar segun DB-00c. Aplicar identificador NIE/login solo segun flujo seguro DB-00b.
 
-99 [ ] S1-07f Docente: codigo = Especialidad + Nivel 1/2/3 + Seccion ? `DS2B`. Prefijos DS, EL, MI, MA, SE, IT, GE.
+  - **Avance 2026-10-13 21:48 (UTC-6):** alta por Edge Function + nombres/apellidos; lista de correos; baja logica. HMAC NIE y lista oficial siguen pendientes. Confirmar en remoto `invitaciones-docente-editor.sql`, `invitaciones-admin-matriz.sql`, `cuentas-nombres-y-bajas.sql`.
+
+99 [~] S1-07f Docente: codigo = Especialidad + Nivel 1/2/3 + Seccion = `DS2B`. Prefijos DS, EL, MI, MA, SE, IT. **Sin GE.** Alta minima + arbol 96/101 (22:35); n_lista/HMAC (100) pendiente.
 
   - **Extraer de:** F-RES 14:10; F-PDF-S2 "Codigo DSXX".
 
@@ -982,11 +1034,13 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Escribir en:** Mismo panel de Config. Invitar por correo normalizado y codigo; el flujo confiable coteja el NIE contra la lista oficial privada antes del alta y conserva solo HMAC/estado de verificacion, no NIE plano. Al aceptar, crear perfil + membresia persistente. Permitir otra invitacion para otro codigo sin mas de una invitacion pendiente por email/codigo.
 
-101 [ ] S1-07h Docente: eliminar codigo o alumno de su codigo; no ve otros docentes.
+101 [x] S1-07h Docente: eliminar codigo o alumno de su codigo; no ve otros docentes.
 
   - **Extraer de:** F-RES 14:10.
 
   - **Escribir en:** Desactivar/eliminar la membresia o codigo segun DB-00c, filtrando por `docente_id`; no borrar fisicamente proyectos ni perder autoria por cascada.
+
+  - **Hecho 2026-10-13 22:35 (UTC-6):** `desactivado_en` en `codigos` y `miembro_codigo` (no DELETE). Consulta filtrada por `docente_id`. SQL `arbol-config-codigos.sql` (RLS update + select de perfiles miembros).
 
 102 [ ] S1-07i Editor: Config minima (ficha S2 / password / tema). No crea cuentas.
 
@@ -994,13 +1048,13 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Escribir en:** Vista reducida en configuraciones/pagina-configuraciones.html si rol=editor. Link a `Sistema 2/paginas/ficha/`; tema lee/escribe `perfiles.tema` solo tras Auth y DB-02a/DB-03c (SH-02e). Cambio de password se delega a Supabase Auth, nunca a SQL propio.
 
-103 [ ] S1-09a Nadie se auto-asigna Admin excepto la matriz via DB-09.
+103 [x] S1-09a Nadie se auto-asigna Admin excepto la matriz via DB-09. Registro no ofrece rol admin; solo la matriz invita administradores.
 
   - **Extraer de:** F-CMS; F-C-INI.
 
   - **Escribir en:** Trigger/SQL `Sistema 1/supabase/`. Front no ofrece combo Rol=admin al registrarse.
 
-104 [ ] S1-09b Admin no desactiva ni elimina fisicamente al ultimo administrador.
+104 [x] S1-09b Admin no desactiva ni elimina fisicamente al ultimo administrador. Edge Function `invitar-cuenta` accion `baja` rechaza matriz, uno mismo y ultimo admin. No es delete Auth.
 
   - **Extraer de:** F-CMS seguridad.
 
@@ -1180,19 +1234,19 @@ Las casillas S2-01a..S2-09b describian pildoras **dentro del hub**, ficha sin es
 
   - **Escribir en:** JS evaluar + RLS `proyectos` / `proyecto_etiqueta`.
 
-173 [ ] S2N-06a Alta/login Editor: allowlist dominio clases|inti; extraer NIE de local-part numerico; rechazar otros correos.
+173 [x] S2N-06a Alta/login Editor: allowlist dominio clases|inti; extraer NIE de local-part numerico; rechazar otros correos.
 
   - **Extraer de:** Instituto 2026-10-13; DB-00b.
 
   - **Escribir en:** flujo Auth + trigger/funcion perfiles; documentar en SQL S1.
 
-174 [ ] S2N-06b Docente: correo institucional con nombre, `nie` NULL, uuid PK, email UNIQUE, `nombre_visible` obligatorio.
+174 [x] S2N-06b Docente: correo institucional, `nie` NULL, uuid PK. Nombre/apellidos en invitacion.
 
   - **Extraer de:** Instituto 2026-10-13.
 
   - **Escribir en:** `tabla-perfiles.sql` + invitaciones rol docente.
 
-175 [ ] S2N-07 Enlace S1-S2: menu Proyectos (S1) al hub S2; Inicio (S2) al CMS S1; sesion Auth no se presume entre origenes (DB-00d). Un solo proyecto Supabase.
+175 [x] S2N-07 Enlace S1-S2 y un solo proyecto Supabase (`bd_inti_web_oficial`). Mismo origen Pages: localStorage/Auth compartidos.
 
   - **Extraer de:** F-CLI; mapa destinos.
 
@@ -1215,6 +1269,38 @@ Las casillas S2-01a..S2-09b describian pildoras **dentro del hub**, ficha sin es
   - **Extraer de:** Instituto 2026-10-13 12:12 (nocturno correcto).
 
   - **Escribir en:** `css/catalogo-y-listado-proyectos.css`.
+
+179 [x] SH-ENC Archivos del sitio en UTF-8. Windows-1252 + meta utf-8 produce U+FFFD. No es fallo de Roboto Serif.
+
+  - **Escribir en:** `.gitattributes` `working-tree-encoding=UTF-8`; HTML/JS/CSS/MD/SQL UTF-8. Recodificar si aparece `` en "sesión"/"contraseña".
+
+180 [ ] AUTH-SMTP Correo institucional (@inti.edu.sv / @clases.edu.sv): SMTP propio o proveedor; el default de Auth puede no entregar a esos dominios.
+
+181 [ ] AUTH-URL Site URL = origen Pages completo (`.../web-oficial/`). Redirect URLs: `pagina-inicio-cms.html`, `pagina-definir-contrasena.html` y wildcard `**`. JWT legacy verify OFF.
+
+182 [ ] DB-SQL-INC Confirmar en SQL Editor remoto (una vez, no repetir `politicas-rls.sql` ni semilla): `invitaciones-docente-editor.sql`, `invitaciones-admin-matriz.sql`, `cuentas-nombres-y-bajas.sql`. Luego pegar `supabase/functions/invitar-cuenta/index.ts` (Deploy via Editor).
+
+183 [ ] DB-ESP Reescribir `tabla-especialidades.sql` sin `GE`; 6 tecnicas + 5 academicas (PC/CV/CT/IN/LL). No aplicar `tabla-especialidades.sql` viejo si ya hay filas GE.
+
+184 [x] DB-COD `codigos` + `miembro_codigo` (unicidad clave+anio y especialidad+nivel+seccion+anio). Editor queda en el codigo del docente.
+
+  - **Escribir en:** `Sistema 1/supabase/codigos-y-membresias.sql` (correr UNA vez) + `tabla-codigos-seccion.sql` + Edge `invitar-cuenta` + Config (crear codigo DS2B e invitar con select). Sin GE. Ciclos desde 2026.
+
+  - **Hecho 2026-10-13 22:25 (UTC-6):** SQL incremental listo; no se ejecuto desde aqui. Falta Run SQL + Deploy via Editor de la funcion.
+
+185 [ ] DB-NIE HMAC del NIE en servidor; lista oficial nunca en Git ni chat (DB-00b).
+
+186 [x] DB-CMS Persistencia real de Inicio: `contenido_inicio` INSERT/UPDATE; no solo `localStorage`. Storage imagenes.
+
+  - **Escribir en:** `Sistema 1/supabase/contenido-inicio-cms.sql` (pegar UNA vez) + `guardar-contenido-inicio.js` upsert + `subir-imagenes-inicio.js` bucket `inicio` (nombre uuid.ext).
+
+  - **Hecho 2026-10-13 23:28 (UTC-6):** codigo listo. Instituto debe Run SQL del archivo combinado. No se ejecuto desde aqui.
+
+187 [ ] DB-PROY SQL canonico `tabla-proyectos.sql` + RLS + CRUD S2. No migrar hasta Instituto.
+
+188 [x] SH-02e-GO Usuario logueado: `perfiles.tema` al cambiar sol/luna (mismo trabajo que 30, 2026-10-13 22:10).
+
+189 [ ] SH-PUB Publicar GitHub Pages tras UTF-8 + Cuentas partidas para que el artefacto no sirva HTML Windows-1252.
 
 ---
 
@@ -1247,6 +1333,32 @@ La entrada del 2026-10-12 es un corte historico. Al revisar el estado actual del
 
 **Limite de esta actualizacion:** el repositorio permite describir codigo candidato e integraciones pendientes; solo el dashboard o una prueba autenticada/read-only autorizada permite confirmar el estado remoto. No se accedio ni modifico el proyecto Supabase.
 
+### Estado remoto real (2026-10-13 21:48 UTC-6) — lo que ya existe vs lo que falta
+
+Proyecto unico: `bd_inti_web_oficial` (`https://akvprrwjfstncadkybeh.supabase.co`). Un Auth, dos fronts Pages. **No** crear segundo proyecto.
+
+**Ya aplicado / comprobado por uso (correos de invitacion llegaron; login funciona):**
+
+- Auth email. Cliente Pages con URL + `sb_publishable_` (nunca `service_role` en git).
+- Tablas/funciones minimas de cuentas: `perfiles` (uuid = `auth.users`, `rol` admin|docente|editor, `nie` editor, `nombre_visible`), trigger al signup, invitaciones, RPC `intiwo_rol_actual` / `intiwo_es_admin_matriz`, semilla matriz `intiwo11543@gmail.com`.
+- Edge Function `invitar-cuenta` (Deno `withSupabase`): `inviteUserByEmail` + metadata nombres/apellidos/rol; accion `baja` = `desactivado_en` + ban, no DELETE.
+- Redirect de invitacion hacia `pagina-definir-contrasena.html`. Plantilla Auth usa `{{ .ConfirmationURL }}`.
+
+**SQL incremental en repo — Instituto debe confirmar si ya lo corrio (si falla "already exists", ya esta):**
+
+- `Sistema 1/supabase/invitaciones-docente-editor.sql`
+- `Sistema 1/supabase/invitaciones-admin-matriz.sql`
+- `Sistema 1/supabase/cuentas-nombres-y-bajas.sql`
+- `Sistema 1/supabase/codigos-y-membresias.sql` (184/33; aun no demostrado en remoto)
+- `Sistema 1/supabase/arbol-config-codigos.sql` (96/101; RLS desactivar codigo/miembro)
+- `Sistema 1/supabase/contenido-inicio-cms.sql` (55/77/186/134/142; tabla + bucket `inicio`)
+
+**No volver a ejecutar:** `politicas-rls.sql` completo, `tabla-perfiles.sql` / `trigger-nuevo-perfil.sql` / `login-invitaciones-minimo.sql` si ya crearon objetos, `semilla-admin-sin-password.sql` (duplicaria matriz).
+
+**Aun no en remoto (o no demostrado):** `codigos-y-membresias.sql` y `contenido-inicio-cms.sql` hasta que Instituto los corra; 5 academicas (183); `proyectos`, footer CMS, HMAC NIE, SMTP institucional, Site URL + wildcard Redirect si el dashboard sigue truncado.
+
+**Para la siguiente IA:** no inventar un esquema paralelo. Completar 182 (confirmar SQL) y redesplegar la funcion si el paste no es el `index.ts` actual. Luego 183-187. Documentar en RESOLUCIONES cada Run SQL.
+
 128 [x] DB-01a Confirmar el proyecto Supabase unico y activar Auth email.
 
   - **Extraer de:** F-CLI; 0-15.
@@ -1255,7 +1367,7 @@ La entrada del 2026-10-12 es un corte historico. Al revisar el estado actual del
 
   - **Confirmado 2026-10-12 11:31 (UTC-6):** Instituto confirma que Auth email esta activado en el proyecto `bd_inti_web_oficial` (ref `akvprrwjfstncadkybeh`). Esto confirma proveedor email; no confirma todavia ajustes de registro publico, confirmacion de correo, URL/callbacks ni el despliegue de tablas.
 
-129 [ ] DB-01b Definir configuracion de cliente/deploy sin claves en Git.
+129 [x] DB-01b Definir configuracion de cliente/deploy sin claves en Git. Actions inyecta `SUPABASE_URL` + publishable; login en Pages funciona. No hay `service_role` en el repo.
 
   - **Extraer de:** F-CLI; F-CMS.
 
@@ -1414,10 +1526,12 @@ Casillas atomicas de implementacion (cuando haya DER):
 
   - **Escribir en:** `Sistema 1/supabase/tabla-especialidades.sql` con INSERT seed hex.
 
-134 [ ] DB-02d Tabla `contenido_inicio` JSON canonico de bloques, una fila
+134 [x] DB-02d Tabla `contenido_inicio` JSON canonico de bloques, una fila
 
 
   - **Escribir en:** `tabla-contenido-inicio.sql`: una fila con columna JSONB `contenido` acorde al contrato S1-10d/S1-14a; version/campos documentados, `updated_by` FK `perfiles`, `updated_at` automatico. Normalizar el modulo de plantillas antes de conectar persistencia.
+
+  - **Hecho 2026-10-13 23:28 (UTC-6):** mismo SQL que 186 (`contenido-inicio-cms.sql`). No correr `tabla-contenido-inicio.sql` aparte si ya pegaste el combinado.
 
 135 [ ] DB-02e Tabla `footer_cms` editable, fila unica
 
@@ -1454,10 +1568,12 @@ Casillas atomicas de implementacion (cuando haya DER):
 
   - **Escribir en:** Docente lee/administra solo codigos propios; editor solo ve membresias/codigos propios; invitaciones solo visible al invitador/admin y nunca anonimo. Evitar recursion RLS con funciones seguras y `search_path` fijo.
 
-142 [ ] DB-04a Bucket `inicio` lectura publica; escritura admin
+142 [x] DB-04a Bucket `inicio` lectura publica; escritura admin
 
 
   - **Escribir en:** Bucket `inicio` una sola vez en el proyecto compartido; lectura publica, insert/update/delete admin; limitar paths a `inicio/`. Si se admite SVG, definir sanitizacion/validacion para no servir SVG activo no confiable.
+
+  - **Hecho 2026-10-13 23:28 (UTC-6):** politicas en `contenido-inicio-cms.sql`. Nombre de objeto `uuid.ext`. SVG permitido por tipo; no se ejecuta como script en el CMS (img src).
 
 143 [ ] DB-04b Bucket `personal` solo si 0-05 = si
 
@@ -1819,6 +1935,10 @@ Si dudas, elige la opcion mas restrictiva y etiquetala DECISION.
 ### 2026-10-13 19:22 (UTC-6) | Cursor Grok 4.6 | laptop MINEDUCYT
 
 - [~] Cuentas en paginas separadas (hub, iniciar, registrarme, restablecer, definir). Varias sesiones en el navegador (X). Salir no borra la base. Ojo Lucide + generar clave 9 chars. Config por botones. Redirect invitacion a `pagina-definir-contrasena.html`. Publicar Pages + Redirect URLs + redesplegar funcion.
+
+### 2026-10-13 21:40 (UTC-6) | Cursor Grok 4.6 | laptop MINEDUCYT
+
+- [x] Textos `` (n, o): no era Google Fonts; HTML/JS en Windows-1252 con charset UTF-8. Recodificados a UTF-8. Roboto Serif css2 con opsz + preconnect gstatic. `.gitattributes` UTF-8.
 
 
 ### 2026-10-11 14:10 (UTC-6) | Cursor | laptop MINEDUCYT

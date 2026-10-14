@@ -29,7 +29,7 @@
 
   function setImageInBlock(block, src, altText) {
     const media = ensureMediaContainer(block);
-    media.innerHTML = '';
+    media.replaceChildren();
 
     const img = document.createElement('img');
     img.src = src;
@@ -54,25 +54,52 @@
     return fileInput;
   }
 
-  async function uploadToSupabaseStorage(file) {
-    const supabase = window.supabase || null;
-    if (!supabase || !supabase.storage) return null;
+  function extensionArchivo(file) {
+    const nombre = (file && file.name) || '';
+    const ext = nombre.split('.').pop().toLowerCase();
+    if (ext === 'jpg' || ext === 'jpeg') return 'jpg';
+    if (ext === 'png' || ext === 'webp' || ext === 'svg') return ext;
+    if (file && file.type === 'image/png') return 'png';
+    if (file && file.type === 'image/webp') return 'webp';
+    if (file && file.type === 'image/jpeg') return 'jpg';
+    if (file && file.type === 'image/svg+xml') return 'svg';
+    return '';
+  }
 
-    const fileName = `${Date.now()}-${file.name.replace(/\s+/g, '-').toLowerCase()}`;
+  async function uploadToSupabaseStorage(file) {
+    const supabase = window.intiwoSupabase || window.supabase || null;
+    if (!supabase || !supabase.storage) {
+      throw new Error('[INTIWO Inicio] Cliente Supabase no configurado para Storage.');
+    }
+
+    const ext = extensionArchivo(file);
+    if (!ext) {
+      throw new Error('[INTIWO Inicio] Extension de imagen no permitida.');
+    }
+
+    let fileName;
+    if (crypto.randomUUID) {
+      fileName = crypto.randomUUID() + '.' + ext;
+    } else {
+      const bytes = new Uint8Array(16);
+      crypto.getRandomValues(bytes);
+      bytes[6] = (bytes[6] & 15) | 64;
+      bytes[8] = (bytes[8] & 63) | 128;
+      const hex = Array.from(bytes, function (x) { return x.toString(16).padStart(2, '0'); }).join('');
+      fileName = hex.slice(0, 8) + '-' + hex.slice(8, 12) + '-' + hex.slice(12, 16) + '-' + hex.slice(16, 20) + '-' + hex.slice(20) + '.' + ext;
+    }
     const bucket = 'inicio';
     const { data, error } = await supabase.storage.from(bucket).upload(fileName, file, {
       cacheControl: '3600',
-      upsert: true,
+      upsert: false,
       contentType: file.type || 'application/octet-stream'
     });
 
     if (error) {
-      console.warn('[INTIWO Inicio] No se pudo subir la imagen al bucket remoto.', error);
-      return null;
+      throw new Error('[INTIWO Inicio] No se pudo subir la imagen al bucket inicio.', { cause: error });
     }
 
-    const publicUrl = supabase.storage.from(bucket).getPublicUrl(data.path).data.publicUrl;
-    return publicUrl;
+    return supabase.storage.from(bucket).getPublicUrl(data.path).data.publicUrl;
   }
 
   async function handleSelectedFile(file) {
@@ -94,15 +121,13 @@
       return;
     }
 
-    let src = URL.createObjectURL(file);
     try {
       const remoteUrl = await uploadToSupabaseStorage(file);
-      if (remoteUrl) src = remoteUrl;
+      setImageInBlock(bloque, remoteUrl, file.name);
     } catch (error) {
-      console.warn('[INTIWO Inicio] Fallback a preview local.', error);
+      console.error('[INTIWO Inicio] Fallo la subida al bucket inicio.', error);
+      window.alert('No se pudo subir la imagen. Inicia sesión como administrador e inténtalo de nuevo.');
     }
-
-    setImageInBlock(bloque, src, file.name);
     const input = buildInputFile();
     input.value = '';
   }

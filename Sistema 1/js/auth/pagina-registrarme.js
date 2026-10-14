@@ -40,7 +40,7 @@ if (!supabase) {
       mensaje("Las contrasenas no coinciden. Revisa mayusculas y minusculas.", true);
       return;
     }
-    mensaje("Creando cuenta…");
+    mensaje("Creando cuentaâ€¦");
     const destino = new URL("pagina-definir-contrasena.html", window.location.href).href;
     const { error } = await supabase.auth.signUp({
       email,

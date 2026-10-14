@@ -1,26 +1,27 @@
-# Resoluciones (c�mo lo hizo cada IA)
+# Resoluciones (cómo lo hizo cada IA)
 
-**Ultima modificacion:** 2026-10-13 19:22 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-14 02:20 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
-Solo existen estos dos archivos de IAs, en `IAs/`: este y `BACKLOG.md`. Al cambiar uno: **�ltima modificaci�n** con fecha, hora **UTC-6**, nombre de la IA y dispositivo. Si cambia una tarea, la misma marca en ambos.
+Solo existen estos dos archivos de IAs, en `IAs/`: este y `BACKLOG.md`. Al cambiar uno: **última modificación** con fecha, hora **UTC-6**, nombre de la IA y dispositivo. Si cambia una tarea, la misma marca en ambos.
 
 Formato de entrada:
 
-`### AAAA-MM-DD HH:MM (UTC-6) � IA: nombre � Dispositivo: �`
+`### AAAA-MM-DD HH:MM (UTC-6) — IA: nombre — Dispositivo: …`
 
-Las entradas van **en orden cronol�gico** (la m�s antigua arriba, la m�s nueva abajo). Si trabajas en un intervalo (p. ej. 14:00�16:00) y la otra IA ya escribi� a las 14:30, **inserta** tu nota donde caiga en el tiempo; no la pongas al final fuera de orden.
+Las entradas van **en orden cronológico** (la más antigua arriba, la más nueva abajo). Si trabajas en un intervalo (p. ej. 14:00–16:00) y la otra IA ya escribió a las 14:30, **inserta** tu nota donde caiga en el tiempo; no la pongas al final fuera de orden.
 
 ## Reglas entre IAs (Cursor y GitHub Copilot)
 
-1. **Leer antes de c�digo.** Obligatorio leer `IAs/BACKLOG.md` e `IAs/RESOLUCIONES.md` **de inicio a fin** antes de tocar una sola l�nea de c�digo del proyecto. Despu�s se sigue el prompt del usuario.
-2. **No borrar** lo que la otra IA ya escribi� en estos dos archivos. Se puede a�adir, insertar en orden, o aclarar debajo. No recortar ni sustituir el texto ajeno.
-3. **C�digo del proyecto:** s� se puede corregir si la otra IA se confundi� o tom� una mala decisi�n. Ese cambio **debe quedar escrito aqu�** (y casilla en el backlog si aplica), dejando **en claro en qu� se equivoc�** la otra IA.
-4. **Dos PCs a la vez:** si Copilot avanza en una computadora y Cursor en otra, los apuntes deben ser coherentes: misma zona horaria UTC-6, orden cronol�gico, sin contradecir casillas sin explicaci�n.
+1. **Leer antes de código.** Obligatorio leer `IAs/BACKLOG.md` e `IAs/RESOLUCIONES.md` **de inicio a fin** antes de tocar una sola línea de código del proyecto. Después se sigue el prompt del usuario.
+2. **No borrar** lo que la otra IA ya escribió en estos dos archivos. Se puede añadir, insertar en orden, o aclarar debajo. No recortar ni sustituir el texto ajeno.
+3. **Código del proyecto:** sí se puede corregir si la otra IA se confundió o tomó una mala decisión. Ese cambio **debe quedar escrito aquí** (y casilla en el backlog si aplica), dejando **en claro en qué se equivocó** la otra IA.
+4. **Dos PCs a la vez:** si Copilot avanza en una computadora y Cursor en otra, los apuntes deben ser coherentes: misma zona horaria UTC-6, orden cronológico, sin contradecir casillas sin explicación.
 5. **Adobe Ilustrador/:** no editar. `.ai` no se parsea. PNG/PDF solo referencia.
-6. **Fuentes e iconos (Lucide / Google Fonts):** Instituto puede pegar el **enlace** del sitio, el **snippet** (CSS o SVG), o **solo el nombre**. En los tres casos Cursor y Copilot **est�n obligados** a ir a la p�gina oficial, extraer el c�digo web vigente e incorporarlo al HTML. La personalizaci�n (color, tama�o, `font-weight`, tema) es **CSS**. No inventar otra familia ni otro set de iconos si Instituto ya eligi� Lucide y Roboto Serif. Trazo de icono: **2.5** en el SVG.
-7. **Paleta `.ase`:** se puede **leer** `Adobe Ilustrador/Muestras de color INTIWO.ai.ase` (no editar). Es binario: extraer RGB/hex y copiar los valores a estos documentos. No hace falta que Instituto convierta el archivo si ya est� en esa carpeta.
-8. **Im�genes en `Adobe Ilustrador/`:** son las **finales / m�s recientes** (PNG/PDF de referencia). Sigue prohibido editar esa carpeta. **No** construir el backlog Frontend/Backend ni el sistema hasta que Instituto lo indique de forma expl�cita.
-9. **Antes del backlog (cuando Instituto lo pida):** la IA debe listar primero lo que falta (favicon de pesta�a, textos legales, mapa, etc.). No inventar esos assets.
+6. **Fuentes e iconos (Lucide / Google Fonts):** Instituto puede pegar el **enlace** del sitio, el **snippet** (CSS o SVG), o **solo el nombre**. En los tres casos Cursor y Copilot **están obligados** a ir a la página oficial, extraer el código web vigente e incorporarlo al HTML. La personalización (color, tamaño, `font-weight`, tema) es **CSS**. No inventar otra familia ni otro set de iconos si Instituto ya eligió Lucide y Roboto Serif. Trazo de icono: **2.5** en el SVG.
+7. **Paleta `.ase`:** se puede **leer** `Adobe Ilustrador/Muestras de color INTIWO.ai.ase` (no editar). Es binario: extraer RGB/hex y copiar los valores a estos documentos. No hace falta que Instituto convierta el archivo si ya está en esa carpeta.
+8. **Imágenes en `Adobe Ilustrador/`:** son las **finales / más recientes** (PNG/PDF de referencia). Sigue prohibido editar esa carpeta. **No** construir el backlog Frontend/Backend ni el sistema hasta que Instituto lo indique de forma explícita.
+9. **Antes del backlog (cuando Instituto lo pida):** la IA debe listar primero lo que falta (favicon de pestaña, textos legales, mapa, etc.). No inventar esos assets.
+10. **UTF-8 obligatorio (defecto 2026-10-13).** Guardar HTML/JS/CSS/MD/SQL en UTF-8, nunca ANSI/Windows-1252. El `<meta charset="utf-8">` no corrige un archivo guardado en 1252: `ó` (byte F3) se vuelve U+FFFD en "sesión", "contraseña", "electrónico". **No es Google Fonts ni Roboto Serif.** Antes de editar español: `sesión` en disco debe ser bytes `C3 B3`. Existe `.gitattributes` `working-tree-encoding=UTF-8`. Si Pages muestra rombos, recodificar el archivo y publicar; no cambiar la fuente. Este documento y BACKLOG también se escriben en UTF-8.
 
 ---
 
@@ -1046,3 +1047,206 @@ Bachillerato General a distancia, 1� y 2�, s�bados y domingo. Requisito: m
 
 **Como:** Hub `pagina-cuentas.html` (Iniciar sesion / Registrarme). Paginas: iniciar, registrarme (enlace olvide contrasena), restablecer, definir (invitacion y recovery). CSS `cuentas-acceso.css`. Generador 3 letras + 3 numeros + 3 signos. Sesiones en `localStorage intiwo-sesiones` (como X). Salir = `signOut` local. Config: botones Cuentas en el navegador / Salir / Agregar al sistema / Eliminar en el sistema. Redirect de invitacion a definir-contrasena. Instituto: publicar Pages, anadir esa URL a Redirect URLs y redesplegar `invitar-cuenta`.
 
+---
+
+### 2026-10-13 21:40 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Caracteres n, o, u se ven como ``; consultar si es Google Fonts.
+
+**Hallazgo:** no es la fuente. Roboto Serif incluye latin. El HTML declara UTF-8 pero varios archivos (Cuentas y JS nuevos) estaban en Windows-1252 (`o` = byte F3). El navegador marca esos bytes invalidos como U+FFFD.
+
+**Como:** recodificar a UTF-8; `.gitattributes` working-tree-encoding UTF-8; enlace css2 de Roboto Serif con `opsz` y preconnect a fonts.gstatic.com (API actual). Hay que publicar Pages para que se vea.
+
+---
+
+### 2026-10-13 21:48 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Dejar en BACKLOG y RESOLUCIONES el defecto de encoding (las IAs no lo conocian); marcar tareas hechas; quitar las que ya no encajan; agregar las que faltan; indicar avances reales de Supabase.
+
+**Defecto para toda IA:** Windows MINEDUCYT a menudo guarda como Windows-1252. El navegador lee UTF-8 y muestra U+FFFD. No consultar Google Fonts como primera hipotesis. Comprobar bytes. Escribir siempre UTF-8.
+
+**Cuentas vigente:** hub + paginas separadas. Superseido: formularios dentro del overlay hamburguesa; un solo HTML de Cuentas; dropdowns Administradores|Docentes; visitante como cuenta; borrar Auth; prefijo GE; segundo proyecto Supabase.
+
+**Casillas cerradas o superseidas (BACKLOG):** 32 SH-04a [x]; 34 SH-04c [x]; 36 SH-05a [x]; 94 [x]; 95 SUPERSEIDA; 103 [x]; 104 [x]; 129 [x]; 173-175 [x]; 179 SH-ENC [x]. Siguen [~]: 33 (falta miembro_codigo), 35 (falta arbol codigos), 98 (confirmar SQL remoto).
+
+**Nuevas:** 180 AUTH-SMTP; 181 AUTH-URL; 182 confirmar SQL incremental + redesplegar funcion; 183 especialidades sin GE; 184 codigos/membresias; 185 HMAC NIE; 186 CMS persistente; 187 proyectos SQL; 188 perfiles.tema; 189 publicar Pages UTF-8.
+
+**Supabase (remoto, 21:48):** proyecto `bd_inti_web_oficial` / `akvprrwjfstncadkybeh`. Auth + perfiles + trigger + invitaciones + Edge `invitar-cuenta` (correos llegaron). SQL a confirmar una vez: `invitaciones-docente-editor.sql`, `invitaciones-admin-matriz.sql`, `cuentas-nombres-y-bajas.sql`. No reejecutar `politicas-rls.sql` ni semilla matriz. Falta especialidades/codigos/CMS/proyectos/Storage/HMAC/SMTP y Site URL + Redirect `**`.
+
+**No se toco codigo del sitio en este paso.** Solo `IAs/BACKLOG.md` e `IAs/RESOLUCIONES.md`.
+
+---
+
+### 2026-10-13 22:10 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Completar tareas 188 y 30 (`perfiles.tema`).
+
+**Como:** `Sistema 1/js/tema/persistir-tema-diurno-nocturno.js` y copia S2. Visitante: `localStorage.intiwo-tema`. Con sesion (`window.intiwoSupabase`): SELECT `perfiles.tema` y UPDATE solo `tema` al pulsar el interruptor. Evento `intiwo:auth-state-changed` aplica el tema del perfil. `sesion-supabase.js` (S1 y S2) ahora selecciona `tema`. No se toco SQL: la columna y RLS `perfiles_update_tema_propio` ya estaban en `login-invitaciones-minimo.sql`. Si la consulta falla, se conserva el tema local.
+
+**Casillas:** 30 [x], 188 [x].
+
+---
+
+### 2026-10-13 22:25 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tareas 184 y 33 (`codigos` / `miembro_codigo` y alta de editor vinculada al grupo).
+
+**Como:** SQL incremental `Sistema 1/supabase/codigos-y-membresias.sql`: 6 especialidades tecnicas (borra GE si existia), `codigos` con unicidad por ciclo (clave+anio y especialidad+nivel+seccion+anio, desde 2026), `miembro_codigo`, FK `invitaciones_correo.codigo_id`, trigger que inserta membresia al aceptar, RLS docente/admin. UI Config: docente crea DS2B e invita eligiendo codigo; admin elige codigo si el rol es Editor. Edge Function `invitar-cuenta` exige `codigo_id` para editor y en baja desactiva la membresia. Registro sin invitacion sigue P0001.
+
+**Instituto:** Run `codigos-y-membresias.sql` UNA vez; pegar `supabase/functions/invitar-cuenta/index.ts` (Deploy via Editor); publicar Pages.
+
+**Casillas:** 33 [x], 184 [x]. 99 [~] (alta de codigo minima; arbol pendiente). 183 sigue abierta (5 academicas).
+
+---
+
+### 2026-10-13 22:35 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tareas 35, 96 y 101 (Config por rol, arbol Academico|Tecnico, docente desactiva codigo o alumno).
+
+**Como:** Boton "Grupos y codigos". Admin ve Tecnico (6 especialidades, sin GE) y Academico (PC/CV/CT/IN/LL vacio hasta 183). Docente solo sus `docente_id`. Desactivar = `desactivado_en` en codigo (tras desactivar miembros) o en `miembro_codigo`; no DELETE ni cascada de proyectos. Editor: restablecer clave, sin altas ni arbol. JS `arbol-config-codigos.js`. SQL `arbol-config-codigos.sql` (el docente puede leer perfiles de sus alumnos y UPDATE de codigo/membresia).
+
+**Instituto:** correr `codigos-y-membresias.sql` si no lo ha hecho, luego `arbol-config-codigos.sql`; publicar Pages.
+
+**Casillas:** 35 [x], 96 [x], 101 [x]. 97/100 siguen abiertas (n_lista/HMAC).
+
+---
+
+### 2026-10-13 22:45 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 47 (targets tactiles >= 44x44: hamburguesa, tema, Cuentas, +).
+
+**Como:** El cromo ya cumplia. Faltaba el `+` del CMS. En `editor-cms-inicio.css`: `.intiwo-admin-empty-add`, `.intiwo-admin-toolbar__action`, swatches, input de color, botones de capa y select de animacion con `min-width/min-height: 44px`. El breakpoint 640px ya no reduce el alto. No se duplico CSS en S2 (el editor vive solo en Inicio S1).
+
+**Casilla:** 47 [x].
+
+---
+
+### 2026-10-13 23:00 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tareas 49, 83 y 85 (dropdown a 320 px, pagina Oferta, colores de pildora).
+
+**Como:** Se relleno `pagina-oferta-academica.html` (cromo S1, no HTML en S2) con 7 pildoras: 6 tecnicas + Bachillerato General EDUCAME (no es tecnica ni GE). Fondo `--verde` (#539507). Activo/hover usan `--esp-*`; Electricos `#E61010`. Lista con `max-height: min(60vh, 24rem)` y scroll. A 320 px el recuadro usa `calc(100% - 16px)` y `overflow-x: hidden`. JS `pildoras-oferta-academica.js`. S2 catalogo recibe el mismo recorte a 320. Los modulos largos siguen en 84. Cero video.
+
+**Casillas:** 49 [x], 83 [x], 85 [x].
+
+---
+
+### 2026-10-13 23:12 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 84 (copy de modulos de Oferta).
+
+**Como:** Se rellenaron las 7 fichas de `pagina-oferta-academica.html` con el texto de Oferta academica y EDUCAME ya volcado en RESOLUCIONES (origen Site / F-MICRO; videos omitidos). Cada pildora muestra descripcion + lista de modulos; Electronica va por ano. General = EDUCAME a distancia, mayor de 18, cinco materias; no es tecnica ni GE. Estilos de listas en `pildoras-oferta-academica.css`. Cero `<video>`.
+
+**Casilla:** 84 [x].
+
+---
+
+### 2026-10-13 23:28 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Completar 55, 77 y 186 (lectura, Guardar visitante, persistencia real + Storage).
+
+**Como:** `cargar-bloques-inicio.js` hace `select` de `contenido_inicio` y no pinta si 0 filas o `bloques=[]`. Guardar espera el `upsert` y, si ok, sale del editor y pinta lo publicado. Imagenes van al bucket `inicio` con nombre `uuid.ext` (coincide con RLS). Ya no se usa `localStorage` como fuente del Inicio. SQL unico para pegar: `Sistema 1/supabase/contenido-inicio-cms.sql`. No se ejecuto en el dashboard desde aqui.
+
+**Casillas:** 55 [x], 77 [x], 186 [x], 134 [x], 142 [x]. 138 sigue abierta (falta RLS de footer).
+
+---
+
+### 2026-10-13 23:32 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 78 (sanitizar texto del CMS; no ejecutar script pegado).
+
+**Como:** Se relleno `sanitizar-texto-cms.js` con `textContent` via `DOMParser` (sin vendor DOMPurify). Se carga en Inicio antes de guardar/render. Titulos, cuerpos y CTA pasan por `texto`; enlaces e imagenes por `url` (bloquea javascript/data/vbscript). El render vacia `#inicio-root` con `replaceChildren`, no con HTML de secretaria.
+
+**Casilla:** 78 [x].
+
+---
+
+### 2026-10-13 23:38 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 79 (pagina Matricula con cromo S1).
+
+**Como:** Se relleno `pagina-matricula-nuevo-ingreso.html` con header, overlay de 8 secciones, Cuentas y pie institucionales de Sistema 1. No hay HTML de Matricula en Sistema 2. El cuerpo queda en un `main.intiwo-cuerpo` con el titulo; los cinco pasos 2027 y EDUCAME siguen en 80 y 81.
+
+**Casilla:** 79 [x].
+
+---
+
+### 2026-10-14 00:10 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 80 (pasos 2027) y dejar claro que el Forms de «Inscríbete ahora» no es el de EDUCAME.
+
+**Como:** Se copiaron los cinco pasos de F-C-MAT / F-RES en `pagina-matricula-nuevo-ingreso.html`, sin videos ni fechas inventadas. El paso 1 enlaza el Google Form ya confirmado de las **seis técnicas**. El pie sigue yendo a ese mismo Forms. Instituto indicó que la modalidad flexible usa **otra URL**; esa URL **no existe aún** en el repo. Quedó escrito en `matricula/CONTENIDO.md`, en las notas de 80/81/82 del backlog y aquí. No se reutilizó el Forms técnico para EDUCAME. WhatsApp +503 7441-1075 queda como contacto alternativo.
+
+**Dato que Instituto debe entregar:** URL del Google Form de EDUCAME / modalidad flexible.
+
+**Casilla:** 80 [x]. 81 y 82 siguen abiertas.
+
+---
+
+### 2026-10-14 00:28 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Arreglar Matricula (un numeral por pantalla, botones, SVG Lucide 2.5 proporcional, movimiento) y quitar textos de programador en lo que ve la gente.
+
+**Como:** `pagina-matricula.css` + `pasos-matricula.js`: intro + cinco pasos a `100svh`, scroll suave, vectores de fondo animados, iconos Lucide stroke 2.5 en viewBox 24 (al agrandar el SVG el trazo escala). Tipografia de titulos/parrafos igual que antes. Copy de visitante: Inscribirme, Escribir al Instituto, Siguiente, Ver especialidades. Sin mencionar URL faltante ni “no se inventa”. EDUCAME sigue documentado solo en CONTENIDO/IAs. Tambien se suavizo texto visible en Oferta, Configuraciones, Evaluar S2 y avisos del CMS.
+
+**Casilla:** 80 [x] (ajuste UX).
+
+---
+
+### 2026-10-14 00:40 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Quitar el fondo de iconos gigantes; cada paso en su rectangulo; colores de tema (no especialidades); movimientos distintos y vivos; conservar Siguiente.
+
+**Como:** Cada paso es una tarjeta `var(--superficie)` / `--superficie-2` (diurno/nocturno). Escena a un lado, texto y botones al otro. Seis animaciones distintas (orbitas, avion por trayectoria, correos que caen, manecilla, camino que se dibuja, ola). Cero `--esp-*`. Tipografia igual. Boton Siguiente se mantiene.
+
+**Casilla:** 80 [x].
+
+---
+
+### 2026-10-14 01:05 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Quitar el SVG de la portada Matrícula; título centrado al tamaño del login; texto de apertura con peso; cada escena representa el trámite; layouts distintos (izq/der/velo); tinta de texto al scroll (gris → verde); botones que responden al avance.
+
+**Como:** Portada sin escena. `h1` `clamp(26px, 5vw, 34px)` como Cuentas. Cinco escenas: formulario que se llena + puntero; sobre que cae a la bandeja; calendario 25 y folios a todo el rectángulo; joven y encargado caminando al edificio; sobre que abre y salen @ y escuela. `--avance` pinta `.intiwo-tinta` y despierta las píldoras. Cero `--esp-*`. Fechas de F-C-MAT intactas.
+
+**Casilla:** 80 [x] (ajuste visual).
+
+---
+
+### 2026-10-14 01:25 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Identidad de PNGs (barra vs circular); quitar tarjeta de portada; no pintar el cuerpo de verde; no velo a todo el rectángulo en 3 y 5; cierre con logo circular enorme + fade + Inscribirme; copy corto.
+
+**Como:** Portada sobre `--fondo`, sin `intiwo-paso-tarjeta`. Párrafos `--texto-suave`; verde en píldoras y numeral. Paso 3 escena arriba, paso 5 a la derecha. Tras el 5: `paso-cierre` con `Logotipo Circular-01.svg` (máscara a transparente, invert en nocturno) y píldora Inscribirme al Forms de técnicas. Paso 5 usa Siguiente hacia ese cierre.
+
+**Casilla:** 80 [x].
+
+---
+
+### 2026-10-14 01:50 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Paso 4 más bonito (adulto y adolescente a la institución) y texto de entrega; sello circular con márgenes; al bajar, recortar el bloque como si el logo se hundiera (sin achicarlo); freno en el recorte del banner; Inscribirme en el degradado.
+
+**Como:** Escena 4: camino, fachada, puerta que abre, joven con papel y encargado con carpeta. Cierre: pista 240vh + sticky; `--recorte-alto` baja el recuadro; el sello no cambia de tamaño (`min(100% - 48px, 520px)`).
+
+**Casilla:** 80 [x].
+
+---
+
+### 2026-10-14 02:05 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Que el footer (línea y cromo) quede soldado al bloque del sello, como Inscribirme, sin el gran vacío de la pista.
+
+**Como:** El `intiwo-pie` vive dentro del sticky, debajo de `.intiwo-cierre-recorte`. El recorte baja; el pie sube pegado (margin-top 0). Inscribirme sigue en el degradado.
+
+**Casilla:** 80 [x].
+
+---
+
+### 2026-10-14 02:20 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** El pie con sello circular, recorte, Inscribirme y footer soldado pasa a ser el pie de casi todo el sitio. Queda fuera Login, Proyectos y Configuraciones.
+
+**Como:** CSS en `layout-hamburguesa-y-overlay.css` (S1). JS `js/cromo/pie-sello-recorte.js`. Plantilla `compartido/pie-institucional.html`. Aplicado en Inicio, Oferta y Matrícula. S2 y Config no se tocaron. Cuentas/login siguen sin este pie.
+
+**Casilla:** SH-06a (ajuste visual).

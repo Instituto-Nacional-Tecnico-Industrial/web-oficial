@@ -1,4 +1,4 @@
--- INTIWO SQL | crea perfil solo para cuenta matriz inicial o invitacion vigente.
+-- INTIWO SQL | borrador. En remoto aplicar `codigos-y-membresias.sql` (trigger vigente con nie + miembro_codigo).
 -- El trigger corre dentro de la transaccion de Auth; las credenciales no se leen ni almacenan aqui.
 
 create or replace function public.intiwo_handle_new_auth_user()

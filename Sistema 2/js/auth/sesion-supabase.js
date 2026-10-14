@@ -25,7 +25,7 @@ async function cargarPerfil(userId) {
   if (!supabase || !userId) return null;
   const { data, error } = await supabase
     .from("perfiles")
-    .select("id, rol, nombre, nie, desactivado_en")
+    .select("id, rol, nombre, nie, tema, desactivado_en")
     .eq("id", userId)
     .maybeSingle();
   if (error) {

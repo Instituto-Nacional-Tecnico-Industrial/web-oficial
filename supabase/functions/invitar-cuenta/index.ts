@@ -72,21 +72,41 @@ export default {
     }
 
     const db = ctx.supabase;
-    const { data: pendiente } = await db
+    const codigoId = String(cuerpo.codigo_id || "").trim();
+    if (rol === "editor") {
+      if (!codigoId) return json({ error: "Elige el codigo del grupo (ejemplo DS2B)" }, 400);
+      const { data: codigo, error: codigoErr } = await db
+        .from("codigos")
+        .select("id, docente_id, desactivado_en")
+        .eq("id", codigoId)
+        .maybeSingle();
+      if (codigoErr) return json({ error: codigoErr.message }, 400);
+      if (!codigo || codigo.desactivado_en) return json({ error: "Ese codigo no existe o esta inactivo" }, 400);
+      if (esDocente && codigo.docente_id !== user.id) {
+        return json({ error: "Ese codigo no te pertenece" }, 403);
+      }
+    } else if (codigoId) {
+      return json({ error: "Solo el editor se vincula a un codigo" }, 400);
+    }
+
+    let pendienteQuery = db
       .from("invitaciones_correo")
       .select("id")
       .eq("email", email)
       .is("usado_en", null)
-      .is("revocado_en", null)
-      .maybeSingle();
+      .is("revocado_en", null);
+    if (rol === "editor") pendienteQuery = pendienteQuery.eq("codigo_id", codigoId);
+    else pendienteQuery = pendienteQuery.is("codigo_id", null);
+    const { data: pendiente } = await pendienteQuery.maybeSingle();
 
-    const fila = {
+    const fila: Record<string, unknown> = {
       email,
       rol_destino: rol,
       invitado_por: user.id,
       nombres,
       apellidos,
       nombre: nombres + " " + apellidos,
+      codigo_id: rol === "editor" ? codigoId : null,
     };
 
     if (pendiente) {
@@ -127,7 +147,7 @@ async function bajaCuenta(
 
   const { data: fila, error: filaError } = await ctx.supabase
     .from("invitaciones_correo")
-    .select("id, email, rol_destino, invitado_por, usado_por, usado_en, revocado_en")
+    .select("id, email, rol_destino, invitado_por, usado_por, usado_en, revocado_en, codigo_id")
     .eq("id", invitacionId)
     .maybeSingle();
   if (filaError) return json({ error: filaError.message }, 400);
@@ -137,11 +157,20 @@ async function bajaCuenta(
     return json({ error: "No puedes darte de baja a ti mismo" }, 403);
   }
 
+  let docenteDelCodigo = false;
+  if (esDocente && fila.rol_destino === "editor" && fila.codigo_id) {
+    const { data: codigo } = await ctx.supabase
+      .from("codigos")
+      .select("docente_id")
+      .eq("id", fila.codigo_id)
+      .maybeSingle();
+    docenteDelCodigo = Boolean(codigo && codigo.docente_id === actorId);
+  }
   const esEditorInvitado = fila.rol_destino === "editor" && fila.invitado_por === actorId;
   if (esAdmin) {
     /* admin baja admin/docente/editor ajenos */
-  } else if (esDocente && esEditorInvitado) {
-    /* docente baja editores que el invito (sus grupos, hasta existir codigos) */
+  } else if (esDocente && (esEditorInvitado || docenteDelCodigo)) {
+    /* docente baja editores de sus codigos */
   } else {
     return json({ error: "No tienes permiso para esta baja" }, 403);
   }
@@ -172,6 +201,13 @@ async function bajaCuenta(
     await ctx.supabaseAdmin.auth.admin.updateUserById(fila.usado_por, {
       ban_duration: "876000h",
     });
+    if (fila.codigo_id) {
+      await ctx.supabaseAdmin
+        .from("miembro_codigo")
+        .update({ desactivado_en: new Date().toISOString() })
+        .eq("perfil_id", fila.usado_por)
+        .eq("codigo_id", fila.codigo_id);
+    }
   }
 
   return json({ ok: true });

@@ -13,7 +13,7 @@
 
   if (tipo === "academico") {
     if (encabezado) encabezado.textContent = etiqueta || "Asignatura";
-    if (contexto) contexto.textContent = "Ciclo " + anio + " · proyectos concebidos por docentes (1.o y 2.o). Tercero no cursa estas asignaturas.";
+    if (contexto) contexto.textContent = "Ciclo " + anio + " Â· proyectos concebidos por docentes (1.o y 2.o). Tercero no cursa estas asignaturas.";
     if (vacio) {
       vacio.hidden = false;
       vacio.textContent = "Este ciclo aun no tiene proyectos academicos publicados para esta asignatura. El numero de proyectos lo deciden los docentes (juntos, en grupos o cada uno), no un codigo de alumno.";
@@ -22,7 +22,7 @@
   }
 
   if (encabezado) encabezado.textContent = clave || "Codigo";
-  if (contexto) contexto.textContent = [etiqueta, anio ? "ciclo " + anio : ""].filter(Boolean).join(" · ");
+  if (contexto) contexto.textContent = [etiqueta, anio ? "ciclo " + anio : ""].filter(Boolean).join(" Â· ");
   if (vacio) {
     vacio.hidden = false;
     vacio.textContent = "Aun no hay cajas publicadas para este codigo. El listado se llenara desde la base cuando exista proyectos.";

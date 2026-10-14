@@ -2,8 +2,16 @@
 
 (function () {
   function toText(value) {
+    var api = typeof window !== 'undefined' ? window.INTIWO_SANITIZAR_TEXTO_CMS : null;
+    if (api && typeof api.texto === 'function') return api.texto(value);
     if (value === null || value === undefined) return '';
     return String(value).trim();
+  }
+
+  function toUrl(value) {
+    var api = typeof window !== 'undefined' ? window.INTIWO_SANITIZAR_TEXTO_CMS : null;
+    if (api && typeof api.url === 'function') return api.url(value);
+    return toText(value);
   }
 
   function normalizarPlantilla(tipo) {
@@ -28,7 +36,7 @@
       subtitulo: toText(subtitulo ? subtitulo.textContent : ''),
       texto: toText(texto ? texto.textContent : ''),
       cta: toText(cta ? cta.textContent : ''),
-      enlace: toText(cta && cta.href ? cta.href : '')
+      enlace: toUrl(cta && cta.href ? cta.href : '')
     };
   }
 
@@ -36,8 +44,8 @@
     if (!bloque) return 'banner';
     const clases = bloque.className || '';
     if (String(clases).includes('tres-columnas')) return 'tres-columnas';
-    if (String(clases).includes('texto-imagen') || String(clases).includes('texto-imagen')) return 'texto-imagen-izq';
     if (String(clases).includes('imagen-derecha')) return 'texto-imagen-der';
+    if (String(clases).includes('texto-imagen')) return 'texto-imagen-izq';
     return 'banner';
   }
 
@@ -61,7 +69,7 @@
         orden: Number(bloque.dataset.orden || (index + 1)),
         textos: textos,
         color: toText(bloque.dataset.color || bloque.style.background || ''),
-        imagen: toText((imagen && imagen.src) || bloque.dataset.imagen || ''),
+        imagen: normalizarUrlImagen(toText((imagen && imagen.src) || bloque.dataset.imagen || '')),
         animacion: toText(bloque.dataset.animacion || 'ninguna') || 'ninguna',
         capas: Array.from(bloque.children).filter((nodo) => nodo.nodeType === 1).map((nodo, layerIndex) => ({
           id: 'capa-' + (layerIndex + 1),
@@ -105,10 +113,10 @@
         subtitulo: toText((bloque.textos && bloque.textos.subtitulo) || bloque.subtitulo || ''),
         texto: toText((bloque.textos && bloque.textos.texto) || bloque.texto || ''),
         cta: toText((bloque.textos && bloque.textos.cta) || bloque.cta || ''),
-        enlace: toText((bloque.textos && bloque.textos.enlace) || bloque.enlace || '')
+        enlace: toUrl((bloque.textos && bloque.textos.enlace) || bloque.enlace || '')
       },
       color: toText(bloque.color || ''),
-      imagen: toText(bloque.imagen || ''),
+      imagen: normalizarUrlImagen(toUrl(bloque.imagen || '')),
       animacion: toText(bloque.animacion || 'ninguna') || 'ninguna',
       capas: Array.isArray(bloque.capas) ? bloque.capas.map((capa) => ({ ...capa })) : []
     };
@@ -128,6 +136,16 @@
     return normalizado;
   }
 
+  function clienteSupabase() {
+    return (typeof window !== 'undefined' && (window.intiwoSupabase || window.supabase)) || null;
+  }
+
+  function normalizarUrlImagen(url) {
+    if (!url) return '';
+    if (/^(blob:|data:)/i.test(url)) return '';
+    return url;
+  }
+
   function normalizarContenidoParaGuardar(contenido) {
     const entrada = contenido && typeof contenido === 'object' && !Array.isArray(contenido)
       ? contenido
@@ -140,15 +158,25 @@
     return { bloques: bloques };
   }
 
-  function guardarContenidoInicio(rootSelector) {
+  async function guardarContenidoInicio(rootSelector) {
     const contenido = serializarBloquesDesdeDOM(rootSelector);
     const validado = normalizarContenidoParaGuardar(contenido);
+    const sb = clienteSupabase();
 
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('intiwo-contenido-inicio', JSON.stringify(validado));
+    if (!sb) {
+      throw new Error('[INTIWO Inicio] Cliente Supabase no configurado; no se publica en contenido_inicio.');
+    }
+
+    const { error } = await sb
+      .from('contenido_inicio')
+      .upsert({ id: 1, contenido: validado }, { onConflict: 'id' });
+
+    if (error) {
+      throw new Error('[INTIWO Inicio] No se pudo guardar contenido_inicio.', { cause: error });
     }
 
     if (typeof window !== 'undefined') {
+      window.INTIWO_INICIO_CONTENIDO_PUBLICADO = validado;
       window.dispatchEvent(new CustomEvent('intiwo:contenido-inicio-guardado', { detail: validado }));
     }
 

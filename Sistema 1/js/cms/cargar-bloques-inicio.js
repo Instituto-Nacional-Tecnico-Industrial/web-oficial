@@ -63,6 +63,7 @@ async function cargarBloquesInicio() {
   }
 
   const detalle = contenidoPublicado || { bloques: [] };
+  window.INTIWO_INICIO_CONTENIDO_PUBLICADO = detalle;
   window.dispatchEvent(new CustomEvent("intiwo:contenido-inicio-cargado", {
     detail: detalle
   }));

@@ -14,7 +14,7 @@ function pintar() {
     const articulo = document.createElement("article");
     articulo.className = "intiwo-cuentas-sesion";
     const texto = document.createElement("p");
-    texto.textContent = (fila.nombre ? fila.nombre + " · " : "") + fila.email + (fila.rol ? " · " + fila.rol : "");
+    texto.textContent = (fila.nombre ? fila.nombre + " Â· " : "") + fila.email + (fila.rol ? " Â· " + fila.rol : "");
     articulo.appendChild(texto);
     const acciones = document.createElement("div");
     const usar = document.createElement("button");

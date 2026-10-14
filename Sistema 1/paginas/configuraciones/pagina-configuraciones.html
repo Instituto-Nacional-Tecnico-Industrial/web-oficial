@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Configuraciones | INTIWO</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,400;0,8..144,700&display=swap" rel="stylesheet">
   <link rel="icon" href="../../iconos/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../../css/variables-tema-diurno-nocturno.css">
   <link rel="stylesheet" href="../../css/layout-hamburguesa-y-overlay.css">
@@ -74,6 +75,7 @@
       <button type="button" data-config-abrir="salir">Salir de esta cuenta</button>
       <button type="button" data-config-abrir="alta" data-config-staff>Agregar al sistema</button>
       <button type="button" data-config-abrir="baja" data-config-staff>Eliminar en el sistema</button>
+      <button type="button" data-config-abrir="grupos" data-config-staff>Grupos y codigos</button>
     </nav>
 
     <section class="intiwo-config-panel intiwo-config-tarjeta" data-config-panel="sesion" hidden>
@@ -112,6 +114,11 @@
                 <option value="administrador" data-opcion-matriz hidden>Administrador</option>
               </select>
             </label>
+            <label data-campo-codigo hidden>Codigo del grupo
+              <select name="codigo_id" data-codigos-select>
+                <option value="">Elige un codigo</option>
+              </select>
+            </label>
             <button class="intiwo-pildora" type="submit">Dar de alta</button>
           </form>
           <p data-alta-mensaje class="intiwo-config-estado" aria-live="polite"></p>
@@ -123,18 +130,13 @@
         </article>
         <article class="intiwo-config-tarjeta">
           <h3>Alumnos (editores)</h3>
-          <p>Misma función que el docente: invitar alumnos con NIE en el correo. El vínculo a un código (DS2B) se completará con la tabla de grupos.</p>
-          <span class="intiwo-config-estado">Usa el formulario de Permisos y elige rol Editor, o la vista docente si entras con esa cuenta.</span>
+          <p>Misma funcion que el docente: elige rol Editor y el codigo (DS2B) en Agregar al sistema.</p>
+          <span class="intiwo-config-estado">El alumno queda en miembro_codigo de ese grupo al aceptar el correo.</span>
         </article>
-        <article class="intiwo-config-tarjeta">
-          <h3>Docentes y códigos</h3>
-          <p>Árbol del backlog: Administradores | Docentes → Académico o Técnico. Técnico: MA, MI, SE, EL, DS, IT. Académico: las 5 asignaturas. Al elegir especialidad se listarán docentes, códigos y editores.</p>
-          <div class="intiwo-config-arbol" aria-hidden="true">
-            <span>Académico</span>
-            <span>Técnico</span>
-            <span>MA</span><span>MI</span><span>SE</span><span>EL</span><span>DS</span><span>IT</span>
-          </div>
-          <span class="intiwo-config-estado">Pendiente de la tabla de códigos. Aquí no se inventan grupos.</span>
+        <article class="intiwo-config-tarjeta intiwo-config-panel" data-config-panel="grupos" hidden>
+          <h3>Docentes y codigos</h3>
+          <p>Tecnico: 6 especialidades (sin GE). Academico: las 5 asignaturas. Al expandir ves docentes, codigos y editores. Desactivar no borra proyectos.</p>
+          <div data-arbol-codigos class="intiwo-arbol"></div>
         </article>
         <article class="intiwo-config-tarjeta">
           <h3>Contenido institucional</h3>
@@ -144,7 +146,7 @@
       </div>
       <section class="intiwo-config-editor-footer" aria-labelledby="config-footer-titulo">
         <h3 id="config-footer-titulo">Contacto y redes del footer</h3>
-        <p>Estos datos se mostrarán en el pie institucional de ambos sistemas. La edición quedará disponible cuando exista sesión Auth real y la tabla tenga políticas RLS de administrador.</p>
+        <p>Estos datos aparecen en el pie de ambas webs. Podrás editarlos cuando inicies sesión como administrador.</p>
         <form>
           <fieldset disabled>
             <legend>Datos institucionales</legend>
@@ -183,11 +185,16 @@
       <div class="intiwo-config-tarjetas">
         <article class="intiwo-config-tarjeta intiwo-config-tarjeta--destacada intiwo-config-panel" data-config-panel="alta" hidden>
           <h3>Agregar al sistema</h3>
-          <p>El correo del alumno debe llevar el NIE en la parte local, por ejemplo <strong>19795194@clases.edu.sv</strong>. Escribe también nombres y apellidos. En la lista puedes desactivar solo a los editores que invitaste (sus códigos, cuando existan los grupos).</p>
+          <p>El correo del alumno debe llevar el NIE en la parte local, por ejemplo <strong>19795194@clases.edu.sv</strong>. Elige el codigo del grupo. En la lista puedes desactivar a los editores de tus codigos.</p>
           <form class="intiwo-cuentas-form" data-form-alta data-alta-rol-fijo="editor">
             <label>Nombres <input type="text" name="nombres" required minlength="2" autocomplete="given-name"></label>
             <label>Apellidos <input type="text" name="apellidos" required minlength="2" autocomplete="family-name"></label>
             <label>Correo del alumno <input type="email" name="email" required placeholder="19795194@clases.edu.sv" autocomplete="off"></label>
+            <label>Codigo del grupo
+              <select name="codigo_id" data-codigos-select required>
+                <option value="">Crea o elige un codigo</option>
+              </select>
+            </label>
             <input type="hidden" name="rol" value="editor">
             <button class="intiwo-pildora" type="submit">Invitar alumno</button>
           </form>
@@ -199,9 +206,32 @@
           <div class="intiwo-config-lista-altas" data-altas-lista></div>
         </article>
         <article class="intiwo-config-tarjeta">
-          <h3>Mis códigos</h3>
-          <p>Código = especialidad + nivel 1|2|3 + sección, por ejemplo DS2B. Solo ves y administras los tuyos.</p>
-          <span class="intiwo-config-estado">Alta de códigos pendiente de la tabla. Eliminar un alumno de un código no borra sus proyectos.</span>
+          <h3>Mis codigos</h3>
+          <p>Codigo = especialidad + nivel 1|2|3 + seccion, por ejemplo DS2B. Solo ves y administras los tuyos.</p>
+          <form class="intiwo-cuentas-form" data-form-codigo>
+            <label>Especialidad
+              <select name="especialidad_id" required data-especialidad-select>
+                <option value="">Elige especialidad</option>
+              </select>
+            </label>
+            <label>Nivel
+              <select name="nivel" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+            </label>
+            <label>Seccion <input type="text" name="seccion" required maxlength="1" pattern="[A-Za-z]" placeholder="B"></label>
+            <label>Anio lectivo <input type="number" name="anio_lectivo" required min="2026" value="2026"></label>
+            <button class="intiwo-pildora" type="submit">Crear codigo</button>
+          </form>
+          <p data-codigo-mensaje class="intiwo-config-estado" aria-live="polite"></p>
+          <div data-codigos-mios class="intiwo-config-lista-altas"></div>
+        </article>
+        <article class="intiwo-config-tarjeta intiwo-config-panel" data-config-panel="grupos" hidden>
+          <h3>Mis grupos</h3>
+          <p>Solo tus codigos. Puedes desactivar un codigo o quitar un alumno. No ves a otros docentes.</p>
+          <div data-arbol-codigos class="intiwo-arbol"></div>
         </article>
         <article class="intiwo-config-tarjeta">
           <h3>Contenido de mi área</h3>
@@ -223,8 +253,8 @@
         </article>
         <article class="intiwo-config-tarjeta">
           <h3>Cuenta</h3>
-          <p>El tema puede cambiarse desde la barra superior. La ficha de cuenta y el cambio de contraseña requieren Auth.</p>
-          <span class="intiwo-config-estado">Opciones de cuenta pendientes de conexión</span>
+          <p>El tema se cambia en la barra superior. Para la clave usa restablecer; no puedes crear cuentas ni ver otros docentes.</p>
+          <p><a class="intiwo-pildora" href="../cuentas/pagina-restablecer-contrasena.html">Restablecer contrasena</a></p>
         </article>
       </div>
     </section>
@@ -242,6 +272,7 @@
   <script type="module" src="../../js/auth/sesion-supabase.js"></script>
   <script src="../../js/auth/pagina-configuraciones-paneles.js"></script>
   <script type="module" src="../../js/auth/alta-cuentas-admin.js"></script>
+  <script type="module" src="../../js/auth/arbol-config-codigos.js"></script>
   <script type="module" src="../../js/auth/panel-config-cuentas-multiples.js"></script>
 </body>
 </html>

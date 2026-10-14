@@ -22,7 +22,7 @@
 
   function refrescar() {
     var clave = window.intiwoConstruirClave(meta.prefijo, nivelEl.value, seccionEl.value);
-    claveEl.textContent = clave || "—";
+    claveEl.textContent = clave || "â€”";
     if (!clave) {
       ir.setAttribute("aria-disabled", "true");
       ir.removeAttribute("href");

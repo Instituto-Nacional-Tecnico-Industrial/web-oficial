@@ -793,6 +793,40 @@ html[data-theme="light"] .intiwo-cuentas-form select {
   font-size: 13px;
 }
 
+.intiwo-arbol {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.intiwo-arbol-rama {
+  border: 1px solid var(--superficie-2);
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+
+.intiwo-arbol-rama summary {
+  cursor: pointer;
+  font-weight: 700;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.intiwo-arbol-rama .intiwo-arbol-rama {
+  margin: 8px 0 0 8px;
+}
+
+.intiwo-arbol-codigo {
+  display: grid;
+  gap: 8px;
+  margin: 8px 0 0 8px;
+}
+
+.intiwo-arbol-codigo > p {
+  margin: 0;
+}
+
 .intiwo-config-tarjeta h3 {
   margin: 0 0 8px;
   font-size: 18px;
@@ -986,6 +1020,144 @@ input[type="search"] {
 html.intiwo-cursor-on,
 html.intiwo-cursor-on * {
   cursor: none !important;
+}
+
+.intiwo-cuerpo {
+  width: min(100% - 24px, 560px);
+  margin: 0 auto;
+  padding: 32px 0 48px;
+  box-sizing: border-box;
+}
+
+.intiwo-cuerpo h1 {
+  margin: 0 0 8px;
+  font-size: 1.6rem;
+}
+
+.intiwo-cuerpo h2 {
+  margin: 20px 0 8px;
+  font-size: 1.15rem;
+}
+
+.intiwo-cuerpo p,
+.intiwo-cuerpo li {
+  color: var(--texto-suave);
+  line-height: 1.5;
+}
+
+.intiwo-cuerpo ol {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.intiwo-cuerpo li {
+  margin: 0 0 10px;
+}
+
+.intiwo-cuerpo a {
+  color: var(--verde);
+}
+
+/* Pie con sello circular recortado al scroll (no Login, no Proyectos, no Config) */
+.intiwo-pie-sello {
+  background: var(--fondo);
+}
+
+.intiwo-cierre-pista {
+  position: relative;
+  width: 100%;
+  height: 240vh;
+}
+
+.intiwo-cierre {
+  position: sticky;
+  top: 56px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: visible;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.intiwo-cierre-recorte {
+  position: relative;
+  flex: 0 0 auto;
+  height: var(--recorte-alto, calc(100svh - 56px));
+  overflow: hidden;
+}
+
+.intiwo-cierre .intiwo-pie {
+  flex: 0 0 auto;
+  margin-top: 0;
+  pointer-events: auto;
+}
+
+.intiwo-cierre-sello-caja {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.intiwo-cierre-sello {
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  width: min(calc(100vw - 48px), 520px);
+  max-width: none;
+  height: auto;
+  transform: translateX(-50%);
+  filter: brightness(0) invert(1);
+}
+
+html[data-theme="light"] .intiwo-cierre-sello {
+  filter: none;
+}
+
+.intiwo-cierre-velo {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 28%,
+    color-mix(in srgb, var(--fondo) 40%, transparent) 58%,
+    var(--fondo) 88%,
+    var(--fondo) 100%
+  );
+}
+
+.intiwo-cierre-cta {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  z-index: 2;
+  transform: translateX(-50%);
+  min-height: 52px;
+  padding: 0 28px;
+  pointer-events: auto;
+}
+
+.intiwo-cierre-cta .intiwo-pildora-icono {
+  background: var(--negro);
+  color: var(--verde);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intiwo-cierre-pista {
+    height: auto;
+  }
+
+  .intiwo-cierre {
+    position: relative;
+    top: 0;
+  }
+
+  .intiwo-cierre-recorte {
+    height: min(46svh, 340px);
+  }
 }
 
 @media (pointer: coarse) {

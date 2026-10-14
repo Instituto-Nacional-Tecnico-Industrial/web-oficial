@@ -1,8 +1,20 @@
 /* INTIWO S1 | render de bloques del Inicio para visitante y admin */
 (function () {
+  function sanitizar() {
+    return window.INTIWO_SANITIZAR_TEXTO_CMS || null;
+  }
+
   function textValue(value) {
+    const api = sanitizar();
+    if (api && typeof api.texto === "function") return api.texto(value);
     if (value === null || value === undefined) return "";
     return String(value);
+  }
+
+  function urlValue(value) {
+    const api = sanitizar();
+    if (api && typeof api.url === "function") return api.url(value);
+    return textValue(value).trim();
   }
 
   function logRenderError(message, detail) {
@@ -23,7 +35,7 @@
   }
 
   function renderCTA(texto, enlace) {
-    const href = textValue(enlace || "").trim();
+    const href = urlValue(enlace || "");
     const label = textValue(texto || "").trim();
     if (!href || !label) return null;
     const link = document.createElement("a");
@@ -82,7 +94,7 @@
     }
     aplicarAnimacionRender(bloque, section);
 
-    const imageSource = textValue(bloque.imagen || textos.imagen || "");
+    const imageSource = urlValue(bloque.imagen || textos.imagen || "");
     if (imageSource) {
       const img = document.createElement("img");
       img.src = imageSource;
@@ -139,7 +151,7 @@
     const cta = renderCTA(textos.cta || bloque.cta, textos.enlace || bloque.enlace);
     if (cta) textBlock.appendChild(cta);
 
-    const imageSource = textValue(bloque.imagen || textos.imagen || "");
+    const imageSource = urlValue(bloque.imagen || textos.imagen || "");
     if (imageSource) {
       const img = document.createElement("img");
       img.src = imageSource;
@@ -195,20 +207,42 @@
 
   function renderBloque(bloque) {
     const plantilla = textValue(bloque && (bloque.plantilla || bloque.tipo || "banner")).toLowerCase();
+    let nodo;
     switch (plantilla) {
-      case "banner":
-        return renderBanner(bloque);
+      case "texto-imagen-der":
+        nodo = renderTextoImagen(Object.assign({}, bloque, { orientacion: "derecha", plantilla: "texto-imagen-der" }));
+        break;
       case "textoimagen":
       case "texto-imagen":
+      case "texto-imagen-izq":
       case "texto_imagen":
-        return renderTextoImagen(bloque);
+        nodo = renderTextoImagen(Object.assign({}, bloque, { orientacion: "izquierda", plantilla: "texto-imagen-izq" }));
+        break;
       case "trescolumnas":
       case "tres-columnas":
       case "tres_columnas":
-        return renderTresColumnas(bloque);
+        nodo = renderTresColumnas(bloque);
+        break;
+      case "banner":
       default:
-        return renderBanner(bloque);
+        nodo = renderBanner(bloque);
+        break;
     }
+    if (nodo) {
+      const textos = getTextos(bloque);
+      nodo.dataset.id = textValue(bloque && bloque.id);
+      nodo.dataset.plantilla = plantilla === "texto-imagen-der" ? "texto-imagen-der"
+        : (plantilla === "texto-imagen-izq" || plantilla === "texto-imagen" || plantilla === "textoimagen" || plantilla === "texto_imagen")
+          ? "texto-imagen-izq"
+          : (plantilla === "tres-columnas" || plantilla === "trescolumnas" || plantilla === "tres_columnas")
+            ? "tres-columnas"
+            : "banner";
+      nodo.dataset.orden = String(Number(bloque && bloque.orden) || "");
+      nodo.dataset.color = textValue(bloque && bloque.color);
+      nodo.dataset.imagen = textValue(bloque && (bloque.imagen || textos.imagen));
+      nodo.dataset.animacion = textValue(bloque && bloque.animacion) || "ninguna";
+    }
+    return nodo;
   }
 
   function esAdminInicio() {
@@ -292,7 +326,7 @@
     }
 
     if (!contenido || typeof contenido !== "object") {
-      root.innerHTML = "";
+      root.replaceChildren();
       if (esAdminInicio()) {
         root.appendChild(renderBloqueVacioAdmin("banner"));
         root.appendChild(renderBotonAgregarBloque());
@@ -302,9 +336,9 @@
     }
 
     const bloques = Array.isArray(contenido.bloques) ? contenido.bloques : [];
-    root.innerHTML = "";
 
     if (!bloques.length) {
+      root.replaceChildren();
       if (esAdminInicio()) {
         root.appendChild(renderBloqueVacioAdmin("banner"));
         root.appendChild(renderBotonAgregarBloque());
@@ -313,6 +347,7 @@
       return;
     }
 
+    root.replaceChildren();
     bloques.forEach((bloque) => {
       try {
         const nodo = renderBloque(bloque);
