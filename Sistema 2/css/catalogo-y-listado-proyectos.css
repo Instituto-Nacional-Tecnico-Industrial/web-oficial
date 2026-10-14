@@ -12,7 +12,7 @@
   display: grid;
   gap: 0.45rem;
   margin: 0 0 1rem;
-  padding-right: 2.5rem;
+  padding-right: 3.25rem;
 }
 
 .intiwo-ciclo-fila label {
@@ -60,6 +60,7 @@ html[data-theme="light"] .intiwo-filtro-campos select {
 
 .intiwo-pildora-esp[data-rama="electricos"]:hover .intiwo-pildora-icono,
 .intiwo-pildora-esp[data-rama="electricos"].es-activa .intiwo-pildora-icono {
+  background: var(--negro);
   color: #E61010;
 }
 
@@ -117,9 +118,27 @@ html[data-theme="light"] .intiwo-filtro-campos select {
   color: var(--texto);
 }
 
+.intiwo-listado-codigo h1.es-asignatura,
+.intiwo-listado-codigo h1.es-etiqueta {
+  letter-spacing: 0;
+}
+
+.intiwo-caja-proyecto a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
 .intiwo-caja-proyecto strong {
   display: block;
   margin-bottom: 0.35rem;
+}
+
+.intiwo-caja-proyecto p {
+  margin: 0 0 0.35rem;
+  text-align: left;
+  color: var(--texto-suave);
+  font-size: 0.92rem;
 }
 
 .intiwo-listado-vacio {

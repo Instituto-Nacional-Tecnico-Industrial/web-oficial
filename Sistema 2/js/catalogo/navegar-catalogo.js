@@ -7,7 +7,8 @@
     function colapsar(abierto) {
       lista.classList.toggle("es-colapsada", !abierto);
       chevron.setAttribute("aria-expanded", String(abierto));
-      chevron.setAttribute("aria-label", abierto ? "Ocultar lista" : "Mostrar lista");
+      var listaNombre = chevron.getAttribute("data-lista") || "especialidades";
+      chevron.setAttribute("aria-label", abierto ? "Ocultar " + listaNombre : "Mostrar " + listaNombre);
     }
     colapsar(true);
     chevron.addEventListener("click", function () {

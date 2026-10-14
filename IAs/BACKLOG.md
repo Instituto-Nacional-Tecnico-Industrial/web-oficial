@@ -1,6 +1,6 @@
 # Backlog INTIWO
 
-**Ultima modificacion:** 2026-10-14 02:20 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-14 08:40 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Carpeta exclusiva de IAs: `IAs/` (solo este archivo y `RESOLUCIONES.md`). Al marcar o agregar: misma fecha, hora (UTC-6) e IA en ambos; indica el dispositivo. Apuntes en orden cronologico.
 
@@ -894,7 +894,7 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Ajuste 2026-10-14 02:05 (UTC-6):** pie soldado al recorte del sello (línea + cromo); sin hueco de la pista entre Inscribirme y el footer.
 
-81 [ ] S1-02c Seccion EDUCAME desde el mismo CONTENIDO.
+81 [x] S1-02c Seccion EDUCAME desde el mismo CONTENIDO.
 
   - **Extraer de:** F-C-MAT; F-MICRO P7; F-SITE-ED.
 
@@ -902,7 +902,9 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Dato faltante 2026-10-14 00:10 (UTC-6):** el Google Form de EDUCAME / modalidad flexible **no es** el de las seis técnicas. URL todavía desconocida. No reutilizar `...BcJjhw/viewform`. No inventar. Instituto debe entregar el enlace antes de un CTA de EDUCAME.
 
-82 [ ] S1-02d CTA Inscribete: enlazar al formulario oficial de Google Forms; el WhatsApp oficial queda como contacto alternativo, no como destino del boton.
+  - **Hecho 2026-10-14 07:55 (UTC-6):** Sección `paso-educame` tras el paso 5: Bachillerato General a distancia, 1.º y 2.º, sábados y domingo, mayor de 18, cinco materias. Contacto WhatsApp; Ver módulos → Oferta. Sin botón a Forms (URL ausente). Pie Inscribirme sigue siendo el de técnicas.
+
+82 [x] S1-02d CTA Inscribete: enlazar al formulario oficial de Google Forms; el WhatsApp oficial queda como contacto alternativo, no como destino del boton.
 
   - **Extraer de:** F-PNG-FOOT CTA; F-RES tabla vs F-SITE-MAT.
 
@@ -911,6 +913,8 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
   - **Destino oficial confirmado 2026-10-12 16:22 (UTC-6):** `https://docs.google.com/forms/d/e/1FAIpQLSchOv93fiyvoxF2z_mahlUcUhzbt5FyxfZTupLeODpdBcJjhw/viewform`. Los enlaces "Inscríbete ahora" en la página activa Inicio S1, hub S2 y ambos footers abren el formulario en nueva pestaña con `rel="noopener noreferrer"`.
 
   - **Alcance 2026-10-14 00:10 (UTC-6):** ese Forms es **solo** Nuevo ingreso de las seis especialidades técnicas. No sirve para modalidad flexible / EDUCAME. El Forms de EDUCAME no está en el repositorio.
+
+  - **Hecho 2026-10-14 07:40 (UTC-6):** Inscribirme / Inscríbete ahora → Forms de técnicas (`target=_blank`, `noopener`). WhatsApp canónico +503 7441-1075 solo en «Escribir al Instituto» y LLÁMANOS, no en el CTA. Plantilla banner CMS: mismo Forms. EDUCAME sin URL, no se reutilizó.
 
 83 [x] S1-03a Pagina oferta: dropdown/pildoras como PNG (fondo `#539507`, activo/hover).
 
@@ -936,23 +940,29 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Hecho 2026-10-13 23:00 (UTC-6):** fondo `--verde`; activo/hover con `--esp-*`. Electricos hover/activo `#E61010`. General sin color inventado (sigue verde).
 
-86 [ ] S1-03d Sin videos .mp4 del Site.
+86 [x] S1-03d Sin videos .mp4 del Site.
 
   - **Extraer de:** F-LEEME; F-SITE-OF.
 
   - **Escribir en:** No crear `Sistema 1/media/` para mp4 de oferta. Cero <video>.
 
-87 [ ] S1-04a Personal: "Proximamente" si no hay 0-16.
+  - **Hecho 2026-10-14 07:56 (UTC-6):** `rg <video>` = 0 en HTML. Cero `.mp4` en el repo. `Sistema 1/media/` solo tiene `inicio/.gitkeep` (CMS); no hay carpeta ni archivos de oferta. Oferta sigue en texto + píldoras (84). No se copió el Site.
+
+87 [x] S1-04a Personal: "Proximamente" si no hay 0-16.
 
   - **Extraer de:** F-C-PER.
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/paginas/personal/pagina-personal-instituto.html` con mensaje Proximamente.
 
-88 [ ] S1-04b Ficha: nombre, cargo, bio. Foto solo si 0-05 = si.
+  - **Hecho 2026-10-14 07:58 (UTC-6):** Página con cromo S1 y pie sello. Cuerpo: título Personal y «Próximamente.» `CONTENIDO.md` sigue sin nombres; 0-16 no entregó lista. Cero fichas inventadas (88).
+
+88 [x] S1-04b Ficha: nombre, cargo, bio. Foto solo si 0-05 = si.
 
   - **Extraer de:** F-C-PER.
 
   - **Escribir en:** Componente en esa misma pagina o `personal.js` en la carpeta. Fotos solo si 0-05.
+
+  - **Hecho 2026-10-14 08:04 (UTC-6):** Plantilla de ficha (nombre, cargo·área, bio, correo opcional, avatar Lucide B/N). JS `paginas/personal/personal.js` pinta talleres / básicas / administración. `FOTOS = false` (0-05). Listas vacías → sigue «Próximamente.» Cero nombres inventados. CSS `pagina-personal.css`.
 
 89 [ ] S1-05a Ubicaciones: Col. Roma, final Blvd. Venezuela, San Salvador.
 
@@ -1162,59 +1172,77 @@ Las casillas S2-01a..S2-09b describian pildoras **dentro del hub**, ficha sin es
 
 ---
 
-161 [ ] S2N-01a Hub solo dos cards; `Ver mas` enlaza a otro HTML (tecnicos / academicos). Quitar pildoras del hub.
+161 [x] S2N-01a Hub solo dos cards; `Ver mas` enlaza a otro HTML (tecnicos / academicos). Quitar pildoras del hub.
 
   - **Extraer de:** F-PNG-S2H; este capitulo C.
 
   - **Escribir en:** `Sistema 2/paginas/proyectos/pagina-hub-proyectos.html`. No copiar "Aca bla bla".
 
-162 [ ] S2N-01b Cromo S2: mismo hueco que `Editar` de S1; `Personalizar` (editor) / `Evaluar` (docente); oculto a visitante.
+  - **Hecho 2026-10-14 08:08 (UTC-6):** Hub = dos cards. Ver más → `pagina-catalogo-tecnicos.html` / `pagina-catalogo-academicos.html`. Cero píldoras ni dropdown de año en el hub. Copy académico ya no dice que es lo mismo que taller. SVG de especialidades fuera del hub. Píldoras quedan en 164/165.
+
+162 [x] S2N-01b Cromo S2: mismo hueco que `Editar` de S1; `Personalizar` (editor) / `Evaluar` (docente); oculto a visitante.
 
   - **Extraer de:** F-PNG-S2H boton verde derecha; pedido Instituto 2026-10-13.
 
   - **Escribir en:** `pagina-hub-proyectos.html` y demas paginas S2; `js/cromo/boton-personalizar-o-evaluar.js`; `js/auth/sesion-roles-auth.js`.
 
-163 [ ] S2N-01c Busqueda: titulos + etiquetas; debounce 200 ms; aviso + similares PNG; fuzzy (p. ej. zalud ? Salud); clic etiqueta filtra global.
+  - **Hecho 2026-10-14 08:12 (UTC-6):** Píldora verde a la derecha del tema (mismo hueco que Editar). Visitante: `hidden`. Editor: Personalizar → ficha. Docente y admin: Evaluar → códigos. Cuentas S2 sin botón (como Login). `intiwoObtenerRol` en sesion-roles. No se usa Editar CMS en S2.
+
+163 [x] S2N-01c Busqueda: titulos + etiquetas; debounce 200 ms; aviso + similares PNG; fuzzy (p. ej. zalud ? Salud); clic etiqueta filtra global.
 
   - **Extraer de:** F-PNG-S2B; este capitulo.
 
   - **Escribir en:** `js/busqueda/buscar-proyectos.js`, `js/busqueda/buscar-etiquetas-fuzzy.js`.
 
-164 [ ] S2N-02a Catalogo tecnicos: pildoras de 6 especialidades (PNG S2T), hover electricos `#E61010`, chevron colapsa.
+  - **Hecho 2026-10-14 08:16 (UTC-6):** Fuzzy Levenshtein por palabra (`zalud` → Salud). Debounce 200 ms. Cero match: aviso verde PNG + 4 similares. Clic etiqueta → listado `?etiqueta=` sin especialidad. Títulos PNG + etiquetas del capítulo C. Sin cajas inventadas (DB-PROY).
+
+164 [x] S2N-02a Catalogo tecnicos: pildoras de 6 especialidades (PNG S2T), hover electricos `#E61010`, chevron colapsa.
 
   - **Extraer de:** F-PNG-S2T (no el parrafo lorem).
 
   - **Escribir en:** `paginas/catalogo/pagina-catalogo-tecnicos.html`, `css/hub-y-pildoras-proyectos.css` / `css/catalogo-y-listado-proyectos.css`.
 
-165 [ ] S2N-02b Catalogo academicos: dropdown de anio (igual que tecnicos) + pildoras de 5 asignaturas. Clic abre el listado de esa asignatura/ciclo, no un filtro de codigo PC2B.
+  - **Hecho 2026-10-14 08:21 (UTC-6):** Seis píldoras `data-rama` en el catálogo (no en el hub). Eléctricos hover/activo `#E61010`. Chevron 44 px colapsa la lista. Nombres UTF-8; ITSI «Servicios Informáticos». Sin lorem del PNG.
+
+165 [x] S2N-02b Catalogo academicos: dropdown de anio (igual que tecnicos) + pildoras de 5 asignaturas. Clic abre el listado de esa asignatura/ciclo, no un filtro de codigo PC2B.
 
   - **Extraer de:** Instituto 2026-10-13 12:12; look de pildoras F-PNG-S2T.
 
   - **Escribir en:** `paginas/catalogo/pagina-catalogo-academicos.html`.
 
-166 [ ] S2N-02c Filtro **solo tecnico**: nivel 1|2|3 + seccion, ciclo ya elegido en catalogo, clave DS2B visible. No inventar anios 2020-2025.
+  - **Hecho 2026-10-14 08:26 (UTC-6):** Año 2026 + 5 píldoras PC/CV/CT/IN/LL. Clic → listado `?tipo=academico&rama=precalculo&anio=2026`. Sin filtro PC2B ni `GE`. Chevron colapsa asignaturas.
+
+166 [x] S2N-02c Filtro **solo tecnico**: nivel 1|2|3 + seccion, ciclo ya elegido en catalogo, clave DS2B visible. No inventar anios 2020-2025.
 
   - **Extraer de:** F-PDF-S2 fase 2; formula DS2B; Instituto 2026-10-13 12:12.
 
   - **Escribir en:** `paginas/filtro/pagina-filtro-anio-seccion.html`.
 
-167 [ ] S2N-02d Listado tecnico: cajas bajo el codigo. Listado academico: cajas de la asignatura en el ciclo (docentes + codigos mano de obra; vacio permitido).
+  - **Hecho 2026-10-14 08:28 (UTC-6):** Solo técnico. Año lectivo viene del catálogo (texto, no select 2020-2025; `<2026` → 2026). Nivel 1|2|3 + sección A-Z. Clave `prefijo+nivel+sección` visible (DS2B). Académico redirige al listado.
+
+167 [x] S2N-02d Listado tecnico: cajas bajo el codigo. Listado academico: cajas de la asignatura en el ciclo (docentes + codigos mano de obra; vacio permitido).
 
   - **Extraer de:** ASCII Instituto; pedido 2026-10-13 12:12.
 
   - **Escribir en:** `paginas/listado/pagina-listado-proyectos-codigo.html`.
 
-168 [ ] S2N-03a Ficha fase 3: URLs + iconos. Tecnico: equipo alumno y Editor Personalizar (DB-00f). Academico: docentes autores, codigos de mano de obra; sin Personalizar de alumno. Sin fotos de alumnos.
+  - **Hecho 2026-10-14 08:32 (UTC-6):** Técnico: h1 = clave (DS2B) + cajas apiladas (título + descripción). Académico: h1 = asignatura + ciclo; plantilla con docentes y códigos de mano de obra; vacío permitido. Sin cajas inventadas (DB-PROY). `?etiqueta=` sigue global.
+
+168 [x] S2N-03a Ficha fase 3: URLs + iconos. Tecnico: equipo alumno y Editor Personalizar (DB-00f). Academico: docentes autores, codigos de mano de obra; sin Personalizar de alumno. Sin fotos de alumnos.
 
   - **Extraer de:** F-PDF-S2 p.3; DB-00f.
 
   - **Escribir en:** `paginas/ficha/pagina-ficha-proyecto.html`, `css/ficha-proyecto.css`, `js/ficha/editar-ficha-propia.js`.
 
-169 [ ] S2N-03b Reconocer URL y pintar icono: GitHub, Drive, YouTube, planeta/network (web / Pages).
+  - **Hecho 2026-10-14 08:35 (UTC-6):** Ficha con cromo S2. Técnico: equipo + docente + descripción + URLs (iconos GitHub/Drive/YouTube/globo). Editor `?modo=personalizar` edita contenido, no archiva. Académico: autores y mano de obra 1.º/2.º; el Editor no Personaliza. Sin fotos ni nombres inventados.
+
+169 [x] S2N-03b Reconocer URL y pintar icono: GitHub, Drive, YouTube, planeta/network (web / Pages).
 
   - **Extraer de:** Instituto 2026-10-13.
 
   - **Escribir en:** `js/ficha/reconocer-plataforma-url.js` + markup de adjuntos en la ficha.
+
+  - **Hecho 2026-10-14 08:40 (UTC-6):** Host HTTP(S): GitHub/`github.io` (Pages) → gato; Drive/Docs → nube; YouTube/`youtu.be` → play; resto → globo. Al pegar en Personalizar se pinta la vista. Sin fotos.
 
 170 [ ] S2N-04a Panel flotante de etiquetas precreadas (catalogo amplio: oficios de las 6 especialidades, 5 asignaturas, salud, ambiente, software, terror/horror/halloween y demas tematicas). Editor las aplica; docente puede corregirlas.
 

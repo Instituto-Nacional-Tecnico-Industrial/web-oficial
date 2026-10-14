@@ -10,8 +10,8 @@
   <link rel="icon" href="../../iconos/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../../css/variables-tema-diurno-nocturno.css">
   <link rel="stylesheet" href="../../css/layout-hamburguesa-y-overlay.css">
-  <link rel="stylesheet" href="../../css/hub-y-pildoras-proyectos.css">
-  <link rel="stylesheet" href="../../css/catalogo-y-listado-proyectos.css">
+  <link rel="stylesheet" href="../../css/hub-y-pildoras-proyectos.css?v=164">
+  <link rel="stylesheet" href="../../css/catalogo-y-listado-proyectos.css?v=164">
 </head>
 <body data-seccion-actual="proyectos">
   <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute">
@@ -55,8 +55,8 @@
         <svg class="intiwo-tema-icon intiwo-tema-icon--sun" width="14" height="14"><use href="#i-sun"/></svg>
         <svg class="intiwo-tema-icon intiwo-tema-icon--moon" width="14" height="14"><use href="#i-moon"/></svg>
       </button>
-      <a class="intiwo-pildora" id="intiwo-accion-rol" hidden href="#">
-        <svg aria-hidden="true"><use href="#i-pencil"/></svg>
+      <a class="intiwo-pildora" id="intiwo-accion-rol" hidden>
+        <svg aria-hidden="true"><use data-intiwo-accion-rol-icono href="#i-pencil"/></svg>
         <span data-intiwo-accion-rol-texto></span>
       </a>
     </div>
@@ -79,7 +79,7 @@
       <li><a class="intiwo-menu-item" data-seccion="inicio" href="../../../Sistema 1/paginas/inicio/pagina-inicio-cms.html"><svg><use href="#i-house"/></svg> Inicio</a></li>
       <li><a class="intiwo-menu-item" data-seccion="matricula" href="../../../Sistema 1/paginas/matricula/pagina-matricula-nuevo-ingreso.html"><svg><use href="#i-clipboard"/></svg> Matrícula</a></li>
       <li><a class="intiwo-menu-item" data-seccion="oferta" href="../../../Sistema 1/paginas/oferta-academica/pagina-oferta-academica.html"><svg><use href="#i-book"/></svg> Oferta académica</a></li>
-      <li><!-- TODO-SPLIT-REPO --><a class="intiwo-menu-item" data-seccion="proyectos" href="../proyectos/pagina-hub-proyectos.html"><svg><use href="#i-folder"/></svg> Proyectos</a></li>
+      <li><!-- TODO-SPLIT-REPO --><a class="intiwo-menu-item es-activo" data-seccion="proyectos" href="../proyectos/pagina-hub-proyectos.html"><svg><use href="#i-folder"/></svg> Proyectos</a></li>
       <li><a class="intiwo-menu-item" data-seccion="personal" href="../../../Sistema 1/paginas/personal/pagina-personal-instituto.html"><svg><use href="#i-users"/></svg> Personal</a></li>
       <li><a class="intiwo-menu-item" data-seccion="ubicaciones" href="../../../Sistema 1/paginas/ubicaciones/pagina-ubicaciones.html"><svg><use href="#i-map"/></svg> Ubicaciones</a></li>
       <li><a class="intiwo-menu-item" data-seccion="historia" href="../../../Sistema 1/paginas/historia/pagina-historia-instituto.html"><svg><use href="#i-clock"/></svg> Historia</a></li>
@@ -101,14 +101,14 @@
       </div>
       <p class="intiwo-especialidades-etiqueta">Especialidades</p>
       <div class="intiwo-especialidades-caja">
-        <button class="intiwo-especialidades-chevron" type="button" data-cerrar-catalogo aria-label="Ocultar especialidades" aria-expanded="true" aria-controls="intiwo-lista-especialidades"><svg width="18" height="18"><use href="#i-chevron"/></svg></button>
+        <button class="intiwo-especialidades-chevron" type="button" data-cerrar-catalogo data-lista="especialidades" aria-label="Ocultar especialidades" aria-expanded="true" aria-controls="intiwo-lista-especialidades"><svg width="18" height="18"><use href="#i-chevron"/></svg></button>
         <div id="intiwo-lista-especialidades" class="intiwo-especialidades-lista">
-          <button class="intiwo-pildora-esp" type="button" data-rama="automotriz"><span class="intiwo-pildora-icono"><svg><use href="#i-car"/></svg></span> Mantenimiento Automotriz</button>
-          <button class="intiwo-pildora-esp" type="button" data-rama="mecanica"><span class="intiwo-pildora-icono"><svg><use href="#i-gear"/></svg></span> Mecanica Industrial</button>
-          <button class="intiwo-pildora-esp" type="button" data-rama="electricos"><span class="intiwo-pildora-icono"><svg><use href="#i-bolt"/></svg></span> Sistemas Electricos y Energia Renovable</button>
-          <button class="intiwo-pildora-esp" type="button" data-rama="electronica"><span class="intiwo-pildora-icono"><svg><use href="#i-chip"/></svg></span> Electronica</button>
-          <button class="intiwo-pildora-esp" type="button" data-rama="software"><span class="intiwo-pildora-icono"><svg><use href="#i-monitor"/></svg></span> Desarrollo de Software</button>
-          <button class="intiwo-pildora-esp" type="button" data-rama="itsi"><span class="intiwo-pildora-icono"><svg><use href="#i-settings"/></svg></span> Infraestructura Tecnologica y Sistemas Informaticos</button>
+          <button class="intiwo-pildora-esp" type="button" data-rama="automotriz"><span class="intiwo-pildora-icono"><svg><use href="#i-car"/></svg></span><span>Mantenimiento Automotriz</span></button>
+          <button class="intiwo-pildora-esp" type="button" data-rama="mecanica"><span class="intiwo-pildora-icono"><svg><use href="#i-gear"/></svg></span><span>Mecánica Industrial</span></button>
+          <button class="intiwo-pildora-esp" type="button" data-rama="electricos"><span class="intiwo-pildora-icono"><svg><use href="#i-bolt"/></svg></span><span>Sistemas Eléctricos y Energía Renovable</span></button>
+          <button class="intiwo-pildora-esp" type="button" data-rama="electronica"><span class="intiwo-pildora-icono"><svg><use href="#i-chip"/></svg></span><span>Electrónica</span></button>
+          <button class="intiwo-pildora-esp" type="button" data-rama="software"><span class="intiwo-pildora-icono"><svg><use href="#i-monitor"/></svg></span><span>Desarrollo de Software</span></button>
+          <button class="intiwo-pildora-esp" type="button" data-rama="itsi"><span class="intiwo-pildora-icono"><svg><use href="#i-settings"/></svg></span><span>Infraestructura Tecnológica y Servicios Informáticos</span></button>
         </div>
       </div>
     </section>
@@ -152,10 +152,11 @@
   <script src="../../js/cromo/cursor-intiwo.js"></script>
   <script src="../../js/cromo/menu-hamburguesa-overlay.js"></script>
   <script src="../../js/cromo/boton-personalizar-o-evaluar.js"></script>
-  <script src="../../js/busqueda/buscar-proyectos.js"></script>
+  <script src="../../js/busqueda/buscar-etiquetas-fuzzy.js?v=163"></script>
+  <script src="../../js/busqueda/buscar-proyectos.js?v=163"></script>
   <script src="../../js/catalogo/ramas-y-prefijos.js"></script>
   <script src="../../js/catalogo/ciclos-lectivos.js"></script>
-  <script src="../../js/catalogo/navegar-catalogo.js"></script>
+  <script src="../../js/catalogo/navegar-catalogo.js?v=164"></script>
 
   <script type="module" src="../../js/supabase/cliente-supabase.js"></script>
 </body>

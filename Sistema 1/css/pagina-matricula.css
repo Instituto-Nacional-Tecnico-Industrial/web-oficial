@@ -99,6 +99,17 @@ body[data-seccion-actual="matricula"] {
   line-height: 1.6;
 }
 
+.intiwo-paso-lista {
+  margin: 12px 0 0;
+  padding-left: 1.2rem;
+  color: var(--texto-suave);
+  line-height: 1.45;
+}
+
+.intiwo-paso-lista li {
+  margin: 0 0 4px;
+}
+
 .es-layout-portada h1,
 .es-layout-portada h2 {
   color: var(--texto);
@@ -409,6 +420,49 @@ body[data-seccion-actual="matricula"] {
   0%, 20% { opacity: 0.2; transform: scale(0.7); }
   40%, 80% { opacity: 1; transform: scale(1.15); }
   100% { opacity: 0.2; transform: scale(0.7); }
+}
+
+.edu-dia-txt,
+.edu-dia-num {
+  fill: currentColor;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.edu-dia-num {
+  font-size: 22px;
+}
+
+.edu-birrete,
+.edu-sab,
+.edu-dom,
+.edu-mat {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.es-fx-educame.es-en-vista .edu-birrete { animation: intiwo-birrete 3.6s ease-in-out infinite; }
+.es-fx-educame.es-en-vista .edu-sab { animation: intiwo-finde 3.2s ease-in-out infinite; }
+.es-fx-educame.es-en-vista .edu-dom { animation: intiwo-finde 3.2s ease-in-out 0.4s infinite; }
+.es-fx-educame.es-en-vista .edu-mat.m1 { animation: intiwo-materia 4.5s ease-in-out infinite; }
+.es-fx-educame.es-en-vista .edu-mat.m2 { animation: intiwo-materia 4.5s ease-in-out 0.18s infinite; }
+.es-fx-educame.es-en-vista .edu-mat.m3 { animation: intiwo-materia 4.5s ease-in-out 0.36s infinite; }
+.es-fx-educame.es-en-vista .edu-mat.m4 { animation: intiwo-materia 4.5s ease-in-out 0.54s infinite; }
+.es-fx-educame.es-en-vista .edu-mat.m5 { animation: intiwo-materia 4.5s ease-in-out 0.72s infinite; }
+
+@keyframes intiwo-birrete {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-8px) rotate(4deg); }
+}
+
+@keyframes intiwo-finde {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+@keyframes intiwo-materia {
+  0%, 100% { transform: translateY(8px); opacity: 0.35; }
+  40%, 70% { transform: translateY(0); opacity: 1; }
 }
 
 @media (max-width: 720px) {

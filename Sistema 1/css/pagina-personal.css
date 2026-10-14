@@ -1,0 +1,69 @@
+/* INTIWO S1 | fichas Personal | S1-04b 0-05 no foto */
+.intiwo-personal-aviso[hidden],
+.intiwo-personal-bloque[hidden] {
+  display: none;
+}
+
+.intiwo-personal-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.intiwo-ficha-personal {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px 12px;
+  padding: 14px;
+  border-radius: 20px;
+  background: var(--superficie);
+  box-shadow: 0 0 0 1px var(--superficie-2);
+}
+
+.intiwo-ficha-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--negro);
+  color: var(--texto-suave);
+  display: grid;
+  place-items: center;
+  filter: grayscale(1);
+}
+
+.intiwo-ficha-avatar svg {
+  width: 22px;
+  height: 22px;
+}
+
+.intiwo-ficha-cuerpo {
+  min-width: 0;
+}
+
+.intiwo-ficha-personal h3 {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+  color: var(--texto);
+}
+
+.intiwo-ficha-cargo {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  color: var(--texto);
+}
+
+.intiwo-ficha-bio,
+.intiwo-ficha-correo {
+  margin: 0;
+  color: var(--texto-suave);
+  line-height: 1.45;
+}
+
+.intiwo-ficha-correo {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--verde);
+}

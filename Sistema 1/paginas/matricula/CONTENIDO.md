@@ -6,7 +6,7 @@ Sin videos. WhatsApp principal del sitio: +503 7441-1075. El número +503 7754 5
 ## Dos formularios de inscripción (no mezclar)
 
 - **Seis especialidades técnicas (diurno / Nuevo ingreso 2027).** URL confirmada 2026-10-12: `https://docs.google.com/forms/d/e/1FAIpQLSchOv93fiyvoxF2z_mahlUcUhzbt5FyxfZTupLeODpdBcJjhw/viewform`. Ese es el destino de «Inscríbete ahora» del pie y del paso 1 de esta página.
-- **Modalidad flexible / EDUCAME (Bachillerato General).** Es **otro** Google Form, distinto al de las seis técnicas. **URL ausente:** Instituto aún no la entregó. No reutilizar el Forms de las técnicas. No inventar enlace. Hasta que exista, EDUCAME no tiene botón de inscripción a un formulario propio (tarea 81).
+- **Modalidad flexible / EDUCAME (Bachillerato General).** Es **otro** Google Form, distinto al de las seis técnicas. **URL ausente:** Instituto aún no la entregó. No reutilizar el Forms de las técnicas. No inventar enlace. La sección EDUCAME de la página no tiene botón de inscripción a un formulario propio (tarea 81 [x] 2026-10-14).
 
 WhatsApp no sustituye ninguno de los dos formularios: es contacto alternativo.
 

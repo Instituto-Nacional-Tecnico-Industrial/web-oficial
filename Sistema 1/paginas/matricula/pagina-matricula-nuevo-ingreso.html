@@ -41,6 +41,7 @@
     <symbol id="i-inbox" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
     <symbol id="i-at" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></symbol>
     <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+    <symbol id="i-cap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></symbol>
   </svg>
 
   <header class="intiwo-barra">
@@ -82,10 +83,10 @@
       <div class="intiwo-paso-interior">
         <h1>Matrícula</h1>
         <h2>Nuevo ingreso 2027</h2>
-        <p>Cinco pasos para entrar a una especialidad técnica.</p>
+        <p>Cinco pasos para entrar a una especialidad técnica. Más abajo, el Bachillerato General EDUCAME.</p>
         <div class="intiwo-paso-acciones">
           <button class="intiwo-pildora" type="button" data-siguiente="paso-1"><span class="intiwo-pildora-icono"><svg><use href="#i-arrow-down"/></svg></span> Ver el proceso</button>
-          <a class="intiwo-pildora es-linea" href="../oferta-academica/pagina-oferta-academica.html"><span class="intiwo-pildora-icono"><svg><use href="#i-book"/></svg></span> Ver especialidades</a>
+          <button class="intiwo-pildora es-linea" type="button" data-siguiente="paso-educame"><span class="intiwo-pildora-icono"><svg><use href="#i-cap"/></svg></span> Ver EDUCAME</button>
         </div>
       </div>
     </section>
@@ -252,7 +253,7 @@
           <h2>Prepara el inicio de clases</h2>
           <p>Una semana antes: aviso de arranque y correo institucional.</p>
           <div class="intiwo-paso-acciones">
-            <button class="intiwo-pildora" type="button" data-siguiente="paso-cierre"><span class="intiwo-pildora-icono"><svg><use href="#i-arrow-down"/></svg></span> Siguiente</button>
+            <button class="intiwo-pildora" type="button" data-siguiente="paso-educame"><span class="intiwo-pildora-icono"><svg><use href="#i-arrow-down"/></svg></span> Siguiente</button>
             <a class="intiwo-pildora es-linea" href="../oferta-academica/pagina-oferta-academica.html"><span class="intiwo-pildora-icono"><svg><use href="#i-book"/></svg></span> Ver especialidades</a>
           </div>
         </div>
@@ -275,6 +276,52 @@
               <circle class="dia d7" cx="288" cy="292" r="6"/>
             </g>
           </svg>
+        </div>
+      </article>
+    </section>
+
+    <section class="intiwo-paso es-layout-izq es-fx-educame" id="paso-educame">
+      <article class="intiwo-paso-tarjeta">
+        <div class="intiwo-paso-escena" aria-hidden="true">
+          <svg class="intiwo-escena-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+            <use class="edu-birrete" href="#i-cap" width="72" height="72" x="164" y="12"/>
+            <text class="edu-dia-num" x="200" y="102" text-anchor="middle">1.º y 2.º</text>
+            <g class="edu-finde" fill="none" stroke="currentColor" stroke-width="2.5">
+              <rect class="edu-sab" x="48" y="122" width="128" height="88" rx="16"/>
+              <rect class="edu-dom" x="224" y="122" width="128" height="88" rx="16"/>
+            </g>
+            <text class="edu-dia-txt" x="112" y="174" text-anchor="middle">SÁB</text>
+            <text class="edu-dia-txt" x="288" y="174" text-anchor="middle">DOM</text>
+            <g class="edu-materias" fill="none" stroke="currentColor" stroke-width="2.5">
+              <rect class="edu-mat m1" x="36" y="252" width="56" height="72" rx="6"/>
+              <rect class="edu-mat m2" x="104" y="252" width="56" height="72" rx="6"/>
+              <rect class="edu-mat m3" x="172" y="252" width="56" height="72" rx="6"/>
+              <rect class="edu-mat m4" x="240" y="252" width="56" height="72" rx="6"/>
+              <rect class="edu-mat m5" x="308" y="252" width="56" height="72" rx="6"/>
+              <line class="edu-mat m1" x1="46" y1="270" x2="82" y2="270"/>
+              <line class="edu-mat m2" x1="114" y1="270" x2="150" y2="270"/>
+              <line class="edu-mat m3" x1="182" y1="270" x2="218" y2="270"/>
+              <line class="edu-mat m4" x1="250" y1="270" x2="286" y2="270"/>
+              <line class="edu-mat m5" x1="318" y1="270" x2="354" y2="270"/>
+            </g>
+          </svg>
+        </div>
+        <div class="intiwo-paso-interior">
+          <span class="intiwo-paso-marca">ED</span>
+          <h2>EDUCAME</h2>
+          <p>Bachillerato General a distancia. Primero y segundo año, sábados y domingo. Para mayores de 18 años.</p>
+          <ul class="intiwo-paso-lista">
+            <li>Matemática</li>
+            <li>Ciencias Naturales</li>
+            <li>Lenguaje y Literatura</li>
+            <li>Ciencias Sociales</li>
+            <li>Inglés</li>
+          </ul>
+          <div class="intiwo-paso-acciones">
+            <a class="intiwo-pildora es-linea" href="https://wa.me/50374411075"><span class="intiwo-pildora-icono"><svg><use href="#i-whatsapp"/></svg></span> Escribir al Instituto</a>
+            <a class="intiwo-pildora es-linea" href="../oferta-academica/pagina-oferta-academica.html"><span class="intiwo-pildora-icono"><svg><use href="#i-book"/></svg></span> Ver módulos</a>
+            <button class="intiwo-pildora" type="button" data-siguiente="paso-cierre"><span class="intiwo-pildora-icono"><svg><use href="#i-arrow-down"/></svg></span> Siguiente</button>
+          </div>
         </div>
       </article>
     </section>
@@ -304,7 +351,7 @@
                 </div>
                 <h2>LLÁMANOS</h2>
                 <div class="intiwo-pie-llamanos">
-                  <a class="intiwo-wa" href="https://wa.me/50377545899"><span class="intiwo-wa-icono"><svg><use href="#i-whatsapp"/></svg></span> 7754-5899</a>
+                  <a class="intiwo-wa" href="https://wa.me/50374411075"><span class="intiwo-wa-icono"><svg><use href="#i-whatsapp"/></svg></span> 7441-1075</a>
                 </div>
               </div>
               <div>

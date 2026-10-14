@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Proyectos del codigo | INTIWO</title>
+  <title>Proyectos | INTIWO</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,400;0,8..144,700&display=swap" rel="stylesheet">
   <link rel="icon" href="../../iconos/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../../css/variables-tema-diurno-nocturno.css">
   <link rel="stylesheet" href="../../css/layout-hamburguesa-y-overlay.css">
-  <link rel="stylesheet" href="../../css/hub-y-pildoras-proyectos.css">
-  <link rel="stylesheet" href="../../css/catalogo-y-listado-proyectos.css">
+  <link rel="stylesheet" href="../../css/hub-y-pildoras-proyectos.css?v=164">
+  <link rel="stylesheet" href="../../css/catalogo-y-listado-proyectos.css?v=167">
 </head>
 <body data-seccion-actual="proyectos">
   <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute">
@@ -55,8 +55,8 @@
         <svg class="intiwo-tema-icon intiwo-tema-icon--sun" width="14" height="14"><use href="#i-sun"/></svg>
         <svg class="intiwo-tema-icon intiwo-tema-icon--moon" width="14" height="14"><use href="#i-moon"/></svg>
       </button>
-      <a class="intiwo-pildora" id="intiwo-accion-rol" hidden href="#">
-        <svg aria-hidden="true"><use href="#i-pencil"/></svg>
+      <a class="intiwo-pildora" id="intiwo-accion-rol" hidden>
+        <svg aria-hidden="true"><use data-intiwo-accion-rol-icono href="#i-pencil"/></svg>
         <span data-intiwo-accion-rol-texto></span>
       </a>
     </div>
@@ -79,7 +79,7 @@
       <li><a class="intiwo-menu-item" data-seccion="inicio" href="../../../Sistema 1/paginas/inicio/pagina-inicio-cms.html"><svg><use href="#i-house"/></svg> Inicio</a></li>
       <li><a class="intiwo-menu-item" data-seccion="matricula" href="../../../Sistema 1/paginas/matricula/pagina-matricula-nuevo-ingreso.html"><svg><use href="#i-clipboard"/></svg> Matrícula</a></li>
       <li><a class="intiwo-menu-item" data-seccion="oferta" href="../../../Sistema 1/paginas/oferta-academica/pagina-oferta-academica.html"><svg><use href="#i-book"/></svg> Oferta académica</a></li>
-      <li><!-- TODO-SPLIT-REPO --><a class="intiwo-menu-item" data-seccion="proyectos" href="../proyectos/pagina-hub-proyectos.html"><svg><use href="#i-folder"/></svg> Proyectos</a></li>
+      <li><!-- TODO-SPLIT-REPO --><a class="intiwo-menu-item es-activo" data-seccion="proyectos" href="../proyectos/pagina-hub-proyectos.html"><svg><use href="#i-folder"/></svg> Proyectos</a></li>
       <li><a class="intiwo-menu-item" data-seccion="personal" href="../../../Sistema 1/paginas/personal/pagina-personal-instituto.html"><svg><use href="#i-users"/></svg> Personal</a></li>
       <li><a class="intiwo-menu-item" data-seccion="ubicaciones" href="../../../Sistema 1/paginas/ubicaciones/pagina-ubicaciones.html"><svg><use href="#i-map"/></svg> Ubicaciones</a></li>
       <li><a class="intiwo-menu-item" data-seccion="historia" href="../../../Sistema 1/paginas/historia/pagina-historia-instituto.html"><svg><use href="#i-clock"/></svg> Historia</a></li>
@@ -94,11 +94,29 @@
 
   <main class="intiwo-main">
     <section class="intiwo-listado-codigo">
-      <h1 id="intiwo-listado-clave">Codigo</h1>
+      <h1 id="intiwo-listado-clave">Código</h1>
       <p id="intiwo-listado-contexto"></p>
       <div id="intiwo-listado-cajas"></div>
-      <p id="intiwo-listado-vacio" class="intiwo-listado-vacio" hidden>Aun no hay cajas publicadas para este codigo. El listado se llenara desde la base cuando exista proyectos.</p>
+      <p id="intiwo-listado-vacio" class="intiwo-listado-vacio" hidden>Aún no hay cajas publicadas.</p>
     </section>
+    <template id="intiwo-plantilla-caja-tecnica">
+      <article class="intiwo-caja-proyecto">
+        <a>
+          <strong></strong>
+          <p></p>
+        </a>
+      </article>
+    </template>
+    <template id="intiwo-plantilla-caja-academica">
+      <article class="intiwo-caja-proyecto">
+        <a>
+          <strong></strong>
+          <p data-desc></p>
+          <p data-docentes></p>
+          <p data-mano></p>
+        </a>
+      </article>
+    </template>
   </main>
 
   <footer class="intiwo-pie">
@@ -139,9 +157,10 @@
   <script src="../../js/cromo/cursor-intiwo.js"></script>
   <script src="../../js/cromo/menu-hamburguesa-overlay.js"></script>
   <script src="../../js/cromo/boton-personalizar-o-evaluar.js"></script>
-  <script src="../../js/busqueda/buscar-proyectos.js"></script>
-  <script src="../../js/catalogo/ramas-y-prefijos.js"></script>
-  <script src="../../js/catalogo/listado-cajas-codigo.js"></script>
+  <script src="../../js/busqueda/buscar-etiquetas-fuzzy.js?v=163"></script>
+  <script src="../../js/busqueda/buscar-proyectos.js?v=163"></script>
+  <script src="../../js/catalogo/ramas-y-prefijos.js?v=167"></script>
+  <script src="../../js/catalogo/listado-cajas-codigo.js?v=167"></script>
 
   <script type="module" src="../../js/supabase/cliente-supabase.js"></script>
 </body>

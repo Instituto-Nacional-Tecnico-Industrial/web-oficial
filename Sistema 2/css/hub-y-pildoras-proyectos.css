@@ -78,7 +78,8 @@
   position: relative;
   width: 100%;
   min-width: 0;
-  padding: 40px 0 0;
+  padding: 44px 0 0;
+  box-sizing: border-box;
 }
 
 .intiwo-especialidades-lista {
@@ -99,8 +100,8 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   border: 0;
   border-radius: 999px;
   background: var(--verde);
@@ -123,6 +124,7 @@
   align-items: center;
   gap: 10px;
   width: 100%;
+  min-width: 0;
   min-height: 44px;
   margin: 6px 0;
   padding: 6px 14px 6px 6px;
@@ -134,7 +136,13 @@
   font-size: 15px;
   cursor: pointer;
   text-align: left;
+  box-sizing: border-box;
   transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.intiwo-pildora-esp span:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .intiwo-pildora-esp .intiwo-pildora-icono {
@@ -155,63 +163,100 @@
   color: #7c7c7c;
 }
 
-.intiwo-pildora-esp[data-esp="automotriz"].es-activa {
+.intiwo-pildora-esp[data-rama="automotriz"].es-activa,
+.intiwo-pildora-esp[data-rama="automotriz"]:hover,
+.intiwo-pildora-esp[data-esp="automotriz"].es-activa,
+.intiwo-pildora-esp[data-esp="automotriz"]:hover {
   background: var(--esp-automotriz);
   color: #fff;
   filter: none;
 }
 
-.intiwo-pildora-esp[data-esp="mecanica"].es-activa {
+.intiwo-pildora-esp[data-rama="mecanica"].es-activa,
+.intiwo-pildora-esp[data-rama="mecanica"]:hover,
+.intiwo-pildora-esp[data-esp="mecanica"].es-activa,
+.intiwo-pildora-esp[data-esp="mecanica"]:hover {
   background: var(--esp-mecanica);
   color: var(--negro);
   filter: none;
 }
 
-.intiwo-pildora-esp[data-esp="electricos"].es-activa {
-  background: var(--esp-electricos);
+.intiwo-pildora-esp[data-rama="electricos"].es-activa,
+.intiwo-pildora-esp[data-rama="electricos"]:hover,
+.intiwo-pildora-esp[data-rama="electricos"]:focus-visible,
+.intiwo-pildora-esp[data-esp="electricos"].es-activa,
+.intiwo-pildora-esp[data-esp="electricos"]:hover {
+  background: #E61010;
   color: #fff;
   filter: none;
 }
 
-.intiwo-pildora-esp[data-esp="electronica"].es-activa {
+.intiwo-pildora-esp[data-rama="electronica"].es-activa,
+.intiwo-pildora-esp[data-rama="electronica"]:hover,
+.intiwo-pildora-esp[data-esp="electronica"].es-activa,
+.intiwo-pildora-esp[data-esp="electronica"]:hover {
   background: var(--esp-electronica);
   color: #fff;
   filter: none;
 }
 
-.intiwo-pildora-esp[data-esp="software"].es-activa {
+.intiwo-pildora-esp[data-rama="software"].es-activa,
+.intiwo-pildora-esp[data-rama="software"]:hover,
+.intiwo-pildora-esp[data-esp="software"].es-activa,
+.intiwo-pildora-esp[data-esp="software"]:hover {
   background: var(--esp-software);
   color: var(--negro);
   filter: none;
 }
 
-.intiwo-pildora-esp[data-esp="itsi"].es-activa {
+.intiwo-pildora-esp[data-rama="itsi"].es-activa,
+.intiwo-pildora-esp[data-rama="itsi"]:hover,
+.intiwo-pildora-esp[data-esp="itsi"].es-activa,
+.intiwo-pildora-esp[data-esp="itsi"]:hover {
   background: var(--esp-itsi);
   color: #fff;
   filter: none;
 }
 
-.intiwo-pildora-esp[data-esp="automotriz"].es-activa .intiwo-pildora-icono {
+.intiwo-pildora-esp[data-rama="automotriz"].es-activa .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-rama="automotriz"]:hover .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-esp="automotriz"].es-activa .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-esp="automotriz"]:hover .intiwo-pildora-icono {
   color: var(--esp-automotriz);
 }
 
-.intiwo-pildora-esp[data-esp="mecanica"].es-activa .intiwo-pildora-icono {
+.intiwo-pildora-esp[data-rama="mecanica"].es-activa .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-rama="mecanica"]:hover .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-esp="mecanica"].es-activa .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-esp="mecanica"]:hover .intiwo-pildora-icono {
   color: var(--esp-mecanica);
 }
 
-.intiwo-pildora-esp[data-esp="electricos"].es-activa .intiwo-pildora-icono {
-  color: var(--esp-electricos);
+.intiwo-pildora-esp[data-rama="electricos"].es-activa .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-rama="electricos"]:hover .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-esp="electricos"].es-activa .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-esp="electricos"]:hover .intiwo-pildora-icono {
+  color: #E61010;
 }
 
-.intiwo-pildora-esp[data-esp="electronica"].es-activa .intiwo-pildora-icono {
+.intiwo-pildora-esp[data-rama="electronica"].es-activa .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-rama="electronica"]:hover .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-esp="electronica"].es-activa .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-esp="electronica"]:hover .intiwo-pildora-icono {
   color: var(--esp-electronica);
 }
 
-.intiwo-pildora-esp[data-esp="software"].es-activa .intiwo-pildora-icono {
+.intiwo-pildora-esp[data-rama="software"].es-activa .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-rama="software"]:hover .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-esp="software"].es-activa .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-esp="software"]:hover .intiwo-pildora-icono {
   color: var(--esp-software);
 }
 
-.intiwo-pildora-esp[data-esp="itsi"].es-activa .intiwo-pildora-icono {
+.intiwo-pildora-esp[data-rama="itsi"].es-activa .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-rama="itsi"]:hover .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-esp="itsi"].es-activa .intiwo-pildora-icono,
+.intiwo-pildora-esp[data-esp="itsi"]:hover .intiwo-pildora-icono {
   color: var(--esp-itsi);
 }
 
@@ -221,19 +266,6 @@
   padding: 1.25rem 1.4rem 1.6rem;
   border-radius: 32px;
   background: var(--superficie);
-}
-
-.intiwo-pildora-esp[data-rama="electricos"]:hover,
-.intiwo-pildora-esp[data-rama="electricos"]:focus-visible,
-.intiwo-pildora-esp[data-rama="electricos"].es-activa {
-  background: #E61010;
-  color: #fff;
-  filter: none;
-}
-
-.intiwo-pildora-esp[data-rama="electricos"]:hover .intiwo-pildora-icono,
-.intiwo-pildora-esp[data-rama="electricos"].es-activa .intiwo-pildora-icono {
-  color: #E61010;
 }
 
 @media (max-width: 768px) {

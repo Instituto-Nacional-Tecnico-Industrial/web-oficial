@@ -1,6 +1,6 @@
 # Resoluciones (cómo lo hizo cada IA)
 
-**Ultima modificacion:** 2026-10-14 02:20 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-14 08:40 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Solo existen estos dos archivos de IAs, en `IAs/`: este y `BACKLOG.md`. Al cambiar uno: **última modificación** con fecha, hora **UTC-6**, nombre de la IA y dispositivo. Si cambia una tarea, la misma marca en ambos.
 
@@ -1250,3 +1250,123 @@ Bachillerato General a distancia, 1� y 2�, s�bados y domingo. Requisito: m
 **Como:** CSS en `layout-hamburguesa-y-overlay.css` (S1). JS `js/cromo/pie-sello-recorte.js`. Plantilla `compartido/pie-institucional.html`. Aplicado en Inicio, Oferta y Matrícula. S2 y Config no se tocaron. Cuentas/login siguen sin este pie.
 
 **Casilla:** SH-06a (ajuste visual).
+
+---
+
+### 2026-10-14 07:40 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 82 — CTA Inscríbete al Google Form oficial; WhatsApp solo como contacto.
+
+**Como:** Ya apuntaban al Forms de las seis técnicas: paso 1 Inscribirme, cierre Inscribirme, Inscríbete ahora del pie (Inicio, Oferta, Matrícula, `pie-institucional` S1/S2). `target="_blank"` + `rel="noopener noreferrer"`. WhatsApp no es el href del CTA: en Matrícula «Escribir al Instituto» = `wa.me/50374411075`. Se corrigió LLÁMANOS 7754-5899 → 7441-1075 en esos pies S1. Plantilla banner CMS: `Inscríbete ahora` ahora usa el mismo Forms. EDUCAME sigue sin URL; no se reutilizó el Forms técnico.
+
+**Casilla:** 82 [x].
+
+---
+
+### 2026-10-14 07:55 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 81 — sección EDUCAME en Matrícula, debajo de Nuevo ingreso 2027.
+
+**Como:** En `pagina-matricula-nuevo-ingreso.html` se añadió `paso-educame` (tarjeta izquierda, escena SÁB/DOM + cinco materias) con el copy de `CONTENIDO.md` / F-MICRO P7: Bachillerato General a distancia, primero y segundo año, sábados y domingo, mayores de 18, Matemática, Ciencias Naturales, Lenguaje y Literatura, Ciencias Sociales e Inglés. Portada tiene «Ver EDUCAME». Tras el paso 5 se llega a esta sección; de ahí al pie con sello. No hay Inscribirme ni enlace al Forms de técnicas. Contacto: WhatsApp canónico. «Ver módulos» abre Oferta. La URL de EDUCAME sigue pendiente de Instituto.
+
+**Casilla:** 81 [x].
+
+---
+
+### 2026-10-14 07:56 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 86 — Oferta sin videos `.mp4` del Google Site.
+
+**Como:** F-LEEME pide extraer texto, no videos. F-SITE-OF trae `.mp4` que no se usan. Comprobado: ningún HTML tiene `<video>`; no hay `.mp4`/`.webm` en el repo; no se creó `Sistema 1/media/` para oferta. La carpeta `Sistema 1/media/inicio/.gitkeep` es del CMS Inicio, no de Oferta. `pagina-oferta-academica.html` queda en píldoras + módulos. No se tocó Adobe ni se copió el Site.
+
+**Casilla:** 86 [x].
+
+---
+
+### 2026-10-14 07:58 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 87 — Personal con «Próximamente» si no hay lista 0-16.
+
+**Como:** `CONTENIDO.md` (F-C-PER) no tiene nombres ni bios; la 0-16 solo fijó estructura y prohibió inventar. Se rellenó `pagina-personal-instituto.html` (ya no stub): hamburguesa, distintivo Barra, tema, menú 8 secciones, Cuentas, `main.intiwo-cuerpo` con h1 Personal y párrafo «Próximamente.», pie sello circular soldado. Sin fichas, fotos ni correos. La 88 queda para cuando Instituto entregue personas.
+
+**Casilla:** 87 [x].
+
+---
+
+### 2026-10-14 08:04 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 88 — ficha Personal: nombre, cargo, bio; foto solo si 0-05 = sí.
+
+**Como:** `0-05` sigue en no: no hay `<img>` ni bucket `personal`. En `pagina-personal-instituto.html` hay `<template id="intiwo-plantilla-ficha">` (avatar Lucide `#i-user` en escala de grises, nombre, cargo, bio, correo). `paginas/personal/personal.js` rellena tres bloques (talleres, básicas, administración) desde `FICHAS`. Las tres listas están vacías porque F-C-PER no tiene personas; el visitante sigue viendo «Próximamente.» Estilos en `css/pagina-personal.css`. No se inventaron nombres.
+
+**Casilla:** 88 [x].
+
+---
+
+### 2026-10-14 08:08 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 161 — hub S2 solo dos cards; Ver más abre otro HTML; sin píldoras en el hub.
+
+**Como:** `pagina-hub-proyectos.html` ya no tenía lista de especialidades. Se confirmó: dos cards (Técnicos / Académicos); `Ver más` es `<a>` a `paginas/catalogo/pagina-catalogo-tecnicos.html` y `pagina-catalogo-academicos.html`. Se quitaron del hub los SVG de píldora (car, bolt, chip, gear, monitor, chevron). El párrafo académico anterior decía que no eran distintos del taller: se corrigió según el capítulo C (docentes de básicas, 1.º y 2.º; no son los de taller). No se copió «Aca bla bla». El CSS de píldoras sigue en `hub-y-pildoras-proyectos.css` porque lo usan los catálogos (164/165). No se tocó Personalizar/Evaluar (162) ni la búsqueda (163).
+
+**Casilla:** 161 [x].
+
+---
+
+### 2026-10-14 08:12 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 162 — cromo S2: mismo hueco que Editar; Personalizar / Evaluar; oculto al visitante.
+
+**Como:** `#intiwo-accion-rol` es `intiwo-pildora` a la derecha del interruptor de tema (mismo sitio que `#intiwo-editar` en Inicio S1). `boton-personalizar-o-evaluar.js` lee el rol vía `intiwoObtenerRol` (`sesion-roles-auth.js` + storage/Auth). Sin rol: hidden. Editor: Personalizar → ficha `?modo=personalizar`. Docente/admin: Evaluar → `pagina-evaluar-codigos-docente.html`. Hub, catálogos, filtro, listado, evaluar y el encabezado compartido lo llevan. Cuentas S2 no (equivalente a Login). La ficha sigue stub (168). Admin no ve Editar CMS en S2.
+
+**Casilla:** 162 [x].
+
+---
+
+### 2026-10-14 08:16 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 163 — búsqueda títulos + etiquetas, debounce 200 ms, aviso PNG, fuzzy zalud→Salud, clic etiqueta global.
+
+**Como:** `buscar-etiquetas-fuzzy.js` (normaliza tildes, Levenshtein por palabra; distancia ≤1 cuenta como acierto). `buscar-proyectos.js` une títulos del PNG (cuatro «Diseño…») y etiquetas del capítulo C (Salud, Ambiente, especialidades, 5 asignaturas, horror/terror/halloween). Input debounce 200 ms. Sin acierto: aviso verde y hasta 4 similares. Clic en etiqueta abre `pagina-listado-proyectos-codigo.html?etiqueta=slug` (todos los proyectos, sin especialidad). Aún no hay cajas en BD. Se enlazó el fuzzy antes de buscar-proyectos en las páginas S2 con barra.
+
+**Casilla:** 163 [x].
+
+---
+
+### 2026-10-14 08:21 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 164 — catálogo técnicos: 6 píldoras (PNG S2T), hover Eléctricos `#E61010`, chevron colapsa.
+
+**Como:** `pagina-catalogo-tecnicos.html` ya tenía las 6 ramas y el año. Se corrigieron nombres UTF-8 (Mecánica, Eléctricos, Electrónica) e ITSI a «Infraestructura Tecnológica y Servicios Informáticos». Hover/activo por `data-rama` en `hub-y-pildoras-proyectos.css`; Eléctricos `#E61010` también en `catalogo-y-listado-proyectos.css`. Chevron 44 px; clic oculta la lista (el año queda). No se copió el lorem del PNG. No se tocó el catálogo académico (165). Comprobado en navegador: 6 botones, chevron colapsa, activo Eléctricos `rgb(230, 16, 16)`.
+
+**Casilla:** 164 [x].
+
+---
+
+### 2026-10-14 08:26 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 165 — catálogo académicos: dropdown de año + 5 asignaturas; clic al listado, no filtro PC2B.
+
+**Como:** `pagina-catalogo-academicos.html`: mismo selector de año que técnicos (`ciclos-lectivos.js`, semilla 2026); píldoras Precálculo, Ciudadanía y valores, Ciencias y tecnología, Inglés, Lenguaje y Literatura. `navegar-catalogo.js` manda `tipo=academico` a `pagina-listado-proyectos-codigo.html` (no al filtro de código). Chevron `data-lista=asignaturas`. Comprobado: Precálculo abre `?tipo=academico&rama=precalculo&anio=2026`. Sin `GE`. El contenido de las cajas es 167.
+
+**Casilla:** 165 [x].
+
+---
+
+### 2026-10-14 08:28 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 166 — filtro solo técnico: nivel 1|2|3 + sección, ciclo ya elegido, clave DS2B, sin años 2020-2025.
+
+**Como:** `pagina-filtro-anio-seccion.html` no tiene dropdown de año lectivo: muestra «Año lectivo 2026» del query del catálogo. Selects: nivel 1|2|3 y sección A-Z. `filtro-anio-seccion.js` arma la clave (`DS`+`2`+`B` = DS2B) y «Ver proyectos» abre el listado con `tipo=tecnico&clave=DS2B`. Año `<2026` se corrige a 2026. Rama académica se manda al listado (no PC2B). Sin rama técnica, vuelve al catálogo. Comprobado: Software nivel 2 sección B → DS2B → listado.
+
+**Casilla:** 166 [x].
+
+---
+
+### 2026-10-14 08:32 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 167 — listado técnico (cajas bajo el código) y académico (asignatura/ciclo, docentes + mano de obra, vacío permitido).
+
+**Como:** `pagina-listado-proyectos-codigo.html` + `listado-cajas-codigo.js`. Técnico: encabezado DS2B, contexto especialidad y año, plantilla título+descripción; sin clave válida vuelve al filtro. Académico: encabezado Precálculo (UTF-8), texto 1.º/2.º, plantilla con docentes y códigos de mano de obra; el vacío es el estado correcto hasta DB-PROY. No se inventaron cajas. `?etiqueta=` lista sin especialidad. Comprobado: DS2B vacío, Precálculo vacío, Salud global vacío.
+
+**Casilla:** 167 [x].

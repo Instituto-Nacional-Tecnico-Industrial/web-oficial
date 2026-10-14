@@ -1,1 +1,142 @@
-/* INTIWO S2 | archivo: ficha-proyecto.css | para: ficha titulo cuerpo URLs sin foto alumno | VACIO | BACKLOG S2-04 */
+/* INTIWO S2 | ficha fase 3: equipo/docentes, URLs, sin foto alumno | BACKLOG S2N-03a */
+.intiwo-ficha {
+  width: min(720px, 100%);
+  margin: 2.5rem auto 4rem;
+  padding: 1.5rem 1.25rem 2rem;
+  border-radius: 28px;
+  background: var(--superficie);
+  color: var(--texto);
+  box-sizing: border-box;
+}
+
+.intiwo-ficha h1 {
+  margin: 0 0 0.35rem;
+  text-align: center;
+  font-size: 1.6rem;
+}
+
+.intiwo-ficha-meta,
+.intiwo-ficha-aviso {
+  margin: 0 0 1.25rem;
+  text-align: center;
+  color: var(--texto-suave);
+  line-height: 1.45;
+}
+
+.intiwo-ficha-bloque {
+  margin: 1.1rem 0 0;
+}
+
+.intiwo-ficha-bloque h2 {
+  margin: 0 0 0.45rem;
+  font-size: 1rem;
+}
+
+.intiwo-ficha-bloque p,
+.intiwo-ficha-bloque ul {
+  margin: 0;
+  color: var(--texto-suave);
+  line-height: 1.45;
+}
+
+.intiwo-ficha-equipo,
+.intiwo-ficha-urls {
+  list-style: none;
+  padding: 0;
+}
+
+.intiwo-ficha-urls {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.intiwo-ficha-url {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.intiwo-ficha-url-icono {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--verde);
+  color: var(--negro);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.intiwo-ficha-url-icono svg {
+  width: 18px;
+  height: 18px;
+}
+
+.intiwo-ficha-url a {
+  min-width: 0;
+  color: var(--texto);
+  overflow-wrap: anywhere;
+}
+
+.intiwo-ficha-previa-etiqueta {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+.intiwo-ficha-campos {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.intiwo-ficha-campos label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.intiwo-ficha-campos input,
+.intiwo-ficha-campos textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  background: var(--negro);
+  color: #f2f0eb;
+  font: inherit;
+}
+
+html[data-theme="light"] .intiwo-ficha-campos input,
+html[data-theme="light"] .intiwo-ficha-campos textarea {
+  background: var(--superficie-2);
+  color: var(--texto);
+}
+
+.intiwo-ficha-campos textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.intiwo-ficha-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.intiwo-ficha:not(.es-edicion) [data-ficha-edicion] {
+  display: none;
+}
+
+.intiwo-ficha.es-edicion [data-ficha-lectura] {
+  display: none;
+}
+
+@media (max-width: 320px) {
+  .intiwo-ficha {
+    width: calc(100% - 16px);
+    padding: 1rem 0.75rem 1.2rem;
+  }
+}

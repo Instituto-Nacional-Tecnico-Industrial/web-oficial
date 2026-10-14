@@ -41,7 +41,7 @@
         subtitulo: 'Formación técnica y vocacional para el desarrollo de El Salvador.',
         texto: '',
         cta: 'Inscríbete ahora',
-        enlace: '../matricula/pagina-matricula-nuevo-ingreso.html'
+        enlace: 'https://docs.google.com/forms/d/e/1FAIpQLSchOv93fiyvoxF2z_mahlUcUhzbt5FyxfZTupLeODpdBcJjhw/viewform'
       };
       base.color = '#f1f5eb';
     }

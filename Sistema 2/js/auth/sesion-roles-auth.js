@@ -17,6 +17,16 @@
     return valor ? String(valor).trim().toLowerCase() : '';
   }
 
+  window.intiwoObtenerRol = obtenerRolActual;
+
+  function hidratarRolEnCuerpo() {
+    const rol = obtenerRolActual();
+    if (document.body) {
+      if (rol) document.body.dataset.rol = rol;
+      else delete document.body.dataset.rol;
+    }
+  }
+
   function aplicarEstadoConfiguraciones() {
     const item = document.querySelector('a[data-seccion="configuraciones"]');
     if (!item) return;
@@ -66,10 +76,17 @@
   }
 
   function iniciar() {
+    hidratarRolEnCuerpo();
     prepararItem();
     aplicarEstadoConfiguraciones();
-    window.addEventListener('storage', aplicarEstadoConfiguraciones);
-    window.addEventListener('intiwo:auth-state-changed', aplicarEstadoConfiguraciones);
+    window.addEventListener('storage', function () {
+      hidratarRolEnCuerpo();
+      aplicarEstadoConfiguraciones();
+    });
+    window.addEventListener('intiwo:auth-state-changed', function () {
+      hidratarRolEnCuerpo();
+      aplicarEstadoConfiguraciones();
+    });
   }
 
   if (document.readyState === 'loading') {

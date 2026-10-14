@@ -61,6 +61,24 @@ html[data-theme="dark"] .intiwo-distintivo {
   text-decoration: none;
 }
 
+.intiwo-barra-derecha #intiwo-accion-rol {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  .intiwo-barra {
+    flex-wrap: wrap;
+  }
+
+  .intiwo-barra-derecha {
+    flex: 1 0 100%;
+    justify-content: flex-end;
+    margin-left: 0;
+  }
+}
+
+.intiwo-barra-derecha #intiwo-accion-rol[hidden],
 #intiwo-accion-rol[hidden] {
   display: none !important;
 }
