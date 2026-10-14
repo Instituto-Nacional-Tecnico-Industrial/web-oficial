@@ -1,6 +1,6 @@
 # Backlog INTIWO
 
-**Ultima modificacion:** 2026-10-14 08:40 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-14 14:10 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Carpeta exclusiva de IAs: `IAs/` (solo este archivo y `RESOLUCIONES.md`). Al marcar o agregar: misma fecha, hora (UTC-6) e IA en ambos; indica el dispositivo. Apuntes en orden cronologico.
 
@@ -129,6 +129,10 @@ Sistema 2/
   js/ficha/editar-ficha-propia.js
   js/ficha/reconocer-plataforma-url.js
   js/ficha/panel-etiquetas-flotante.js
+  js/ficha/catalogo-etiquetas.js
+  js/ficha/editor-ficha-texto.js
+  js/ficha/guia-tipografia.js
+  paginas/ficha/pagina-guia-tipografia.html
   paginas/proyectos/pagina-hub-proyectos.html
   paginas/catalogo/pagina-catalogo-tecnicos.html
   paginas/catalogo/pagina-catalogo-academicos.html
@@ -1080,9 +1084,10 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
 **Botones de rol (mismo hueco visual que `Editar` en Inicio S1):**
 - Visitante: ningun boton.
-- Editor: `Personalizar` abre su ficha / contenido permitido.
-- Docente: `Evaluar` abre la lista de **codigos a su cargo** y luego el listado de proyectos de ese codigo (puede archivar/eliminar logico el proyecto completo y modificar etiquetas).
-- Administrador: en S2 no usa `Editar` (eso es CMS de Inicio). Puede usar `Evaluar` con alcance de todos los codigos o Configuraciones (S1).
+- Editor (alumno lider): `Personalizar` abre su ficha tecnica / contenido permitido.
+- Academico (rol nuevo 2026-10-14): misma pildora `Personalizar` e misma interfaz que el Editor, pero solo proyectos academicos. Lo crea y da de baja **solo el administrador**. Es inferior al docente y al editor. Correo @clases|inti **con nombre, sin NIE**.
+- Docente: `Evaluar` abre la lista de **codigos a su cargo** y luego el listado de proyectos de ese codigo (puede archivar/eliminar logico el proyecto completo y modificar etiquetas). Crea la caja tecnica **vacia** y la adjunta a editores del codigo.
+- Administrador: en S2 no usa `Editar` (eso es CMS de Inicio). Puede usar `Evaluar` con alcance de todos los codigos o Configuraciones (S1). Alta/baja del rol Academico.
 
 ### Arbol de navegacion (no un solo HTML)
 
@@ -1100,6 +1105,7 @@ Hub (pagina-hub-proyectos.html)                    [PNG dos cards]
   |         --> ficha (fase 3, concebida por docentes)
   |-- Busqueda (titulo + etiquetas, fuzzy)
   |-- Editor: Personalizar --> solo fichas tecnicas propias
+  |-- Academico: Personalizar --> fichas academicas (formal: Roboto Serif, sin color)
   `-- Docente: Evaluar --> tecnicos: sus codigos; academicos: proyectos que concibio
 ```
 
@@ -1109,7 +1115,7 @@ El dropdown **no** vive en el hub. `Ver mas` abre otro documento. Los menus desp
 
 **Tecnicos (se conservan).** Un alumno o equipo piensa y desarrolla durante todo el ano en su taller. El docente fija requisitos; autoriza continuar, pide cambio o deniega. Al concluir, el equipo arma su mesa de exposicion para visitantes. Caja ligada a un `codigo` de especialidad (DS2B) con Editor lider (DB-00f). Niveles 1, 2 y 3.
 
-**Academicos (2026-10-13 12:20).** Son nuevos en la institucion. Las asignaturas basicas se imparten solo en **1.o y 2.o**, sin importar especialidad. En **3.o** no se cursan: ese hueco lo llenan extension de taller y practicas en empresas. El proyecto lo **conciben y dirigen docentes** en horas de clase; los alumnos de los codigos a los que ese docente imparte son la **mano de obra**, no los duenos de la caja. Cada docente es independiente y dispone de sus codigos. Por asignatura y ciclo el numero de proyectos **varia**: un ano los 4 de Ciudadania se juntan en uno; otro ano dos parejas; otro ninguno; otro cuatro individuales. No hay un proyecto obligatorio por asignatura ni por codigo de alumno. `proyectos.codigo_id` es **NULL** en academicos; FKs N:M `proyecto_docente` y `proyecto_codigo_mano_obra` (solo niveles 1-2). Quien crea/archiva: docente(s) autores o administrador. El Editor alumno **no** Personaliza academicos.
+**Academicos (2026-10-13 12:20; expansion 2026-10-14).** Son nuevos en la institucion. Las asignaturas basicas se imparten solo en **1.o y 2.o**, sin importar especialidad. En **3.o** no se cursan: ese hueco lo llenan extension de taller y practicas en empresas. El proyecto lo **conciben y dirigen docentes** en horas de clase; los alumnos de los codigos a los que ese docente imparte son la **mano de obra**, no los duenos de la caja. Cada docente es independiente y dispone de sus codigos. Por asignatura y ciclo el numero de proyectos **varia**. `proyectos.codigo_id` es **NULL** en academicos; FKs N:M `proyecto_docente` y `proyecto_codigo_mano_obra` (solo niveles 1-2). Quien crea/archiva: docente(s) autores o administrador. El Editor alumno **no** Personaliza academicos. Quien llena la ficha academica es el rol **Academico** (misma UX que Editor; formal: solo Roboto Serif y variantes, sin color de texto; URLs iguales a las tecnicas).
 
 ### Codigo (clave institucional)
 
@@ -1149,6 +1155,7 @@ Tabla `ciclos_lectivos` (anio PK >= 2026, un `es_actual`). Semilla 2026. Solo ro
 - **PK de persona:** siempre `perfiles.id` = `auth.users.id` (uuid). Nunca el NIE ni el correo como PK.
 - **Editor (alumno lider):** login solo `@clases.edu.sv` o `@inti.edu.sv`. La parte local **es el NIE** (`19795194@clases.edu.sv` ? NIE `19795194`). Extraer al alta/login, guardar `perfiles.nie` UNIQUE (solo editores). El NIE ya viaja en el correo; no se usa como contrasena. El padron oficial NIE-correo (DB-00b) sigue fuera de Git; el HMAC sigue para cotejar el padron, no sustituye la columna `nie` de editores.
 - **Docente:** mismos dominios, correo **con nombre** (no NIE en la parte local). **No tiene NIE.** Identificador interno = uuid Auth. Identificador humano = `email` UNIQUE + `nombre_visible`. Opcional `clave_docente` (slug del local-part) UNIQUE nullable; no es PK.
+- **Academico:** mismos dominios que docente/admin, correo **con nombre** (no NIE). `perfiles.nie` NULL. Alta y baja solo administrador. Alcance: llenar fichas academicas. Inferior a `docente` y a `editor`.
 - **Administrador:** `intiwo11543@gmail.com` (F-RES); RLS por `perfiles.rol`.
 - Visitante: anon, sin perfil.
 
@@ -1158,13 +1165,13 @@ Tabla `ciclos_lectivos` (anio PK >= 2026, un `es_actual`). Semilla 2026. Solo ro
 
 **Academico:** tras asignatura + ciclo, las cajas de ese anio (titulo, descripcion breve, docentes, codigos de mano de obra). Puede haber cero. No exigir haber elegido un codigo de alumno.
 
-### Ficha (fase 3: conservar)
+### Ficha (fase 3: expansion 2026-10-14)
 
-Equipo, docente, descripcion, adjuntos **solo URL**. Al pegar URL, detectar plataforma y pintar icono: GitHub, Google Drive, YouTube, planeta/network para web (incl. GitHub Pages). Sin fotos de alumnos. Editor no archiva la caja (DB-00f).
+Sin textos de "Aun no hay...". El docente crea la caja **vacia** y la asigna a editor(es) del codigo; el sistema rellena docente y codigo. El Editor escribe integrantes a mano (`+` / quitar, sin limite, no todos tienen cuenta), titulo **unico** (estilo GitHub), descripcion tipo Docs (listas, sangria, grosores; tecnico: menu de fuentes + guia SVG/CSS; academico: solo Roboto Serif, sin color). Etiquetas debajo de titulo y descripcion. Adjuntos: URL **o** texto; icono GitHub/Drive/YouTube/planeta; visto si hay URL; recuadros del alto del titulo; `+` para otra fila. Auto-guardado (Docs/Canva). Sin fotos de alumnos. Editor no archiva (DB-00f).
 
 ### Etiquetas
 
-Catalogo grande `etiquetas` (slug UNIQUE) + N:M `proyecto_etiqueta`. Ventana flotante con muchas etiquetas precreadas (especialidades, oficios, salud, ambiente, software, y tematicas: horror, terror, halloween, etc.). Busqueda fuzzy (`zalud` ? Salud). Clic en una etiqueta lista **todos** los proyectos con esa etiqueta, sin filtrar por especialidad. Docente puede corregir etiquetas desde Evaluar.
+Catalogo de **300** `etiquetas` (slug UNIQUE) + N:M `proyecto_etiqueta`. Semilla S1: oficios de las 6 especialidades, 5 asignaturas, salud, ambiente y tematicas. Ventana flotante, fuzzy (`zalud` ? Salud). Clic lista **todos** los proyectos con esa etiqueta. Docente puede corregir desde Evaluar. SQL no aplicar hasta autorizacion.
 
 ### Tareas 105-127 (IA anterior) SUPERSEDIDAS
 
@@ -1234,7 +1241,9 @@ Las casillas S2-01a..S2-09b describian pildoras **dentro del hub**, ficha sin es
 
   - **Escribir en:** `paginas/ficha/pagina-ficha-proyecto.html`, `css/ficha-proyecto.css`, `js/ficha/editar-ficha-propia.js`.
 
-  - **Hecho 2026-10-14 08:35 (UTC-6):** Ficha con cromo S2. Técnico: equipo + docente + descripción + URLs (iconos GitHub/Drive/YouTube/globo). Editor `?modo=personalizar` edita contenido, no archiva. Académico: autores y mano de obra 1.º/2.º; el Editor no Personaliza. Sin fotos ni nombres inventados.
+  - **Hecho 2026-10-14 08:35 (UTC-6):** Ficha con cromo S2. Técnico: equipo + docente + descripción + URLs. Editor `?modo=personalizar` edita contenido, no archiva. Académico: autores y mano de obra; el Editor alumno no Personaliza.
+
+  - **Sustituido 2026-10-14 12:55:** los "Aun no hay..." salen. UX de 190 (auto-guardado, integrantes +, URLs interactivas, rol Academico). No reabrir el stub de vacios.
 
 169 [x] S2N-03b Reconocer URL y pintar icono: GitHub, Drive, YouTube, planeta/network (web / Pages).
 
@@ -1244,11 +1253,15 @@ Las casillas S2-01a..S2-09b describian pildoras **dentro del hub**, ficha sin es
 
   - **Hecho 2026-10-14 08:40 (UTC-6):** Host HTTP(S): GitHub/`github.io` (Pages) → gato; Drive/Docs → nube; YouTube/`youtu.be` → play; resto → globo. Al pegar en Personalizar se pinta la vista. Sin fotos.
 
-170 [ ] S2N-04a Panel flotante de etiquetas precreadas (catalogo amplio: oficios de las 6 especialidades, 5 asignaturas, salud, ambiente, software, terror/horror/halloween y demas tematicas). Editor las aplica; docente puede corregirlas.
+170 [x] S2N-04a Panel flotante de etiquetas precreadas (catalogo amplio: oficios de las 6 especialidades, 5 asignaturas, salud, ambiente, software, terror/horror/halloween y demas tematicas). Editor las aplica; docente puede corregirlas.
 
   - **Extraer de:** Instituto 2026-10-13.
 
   - **Escribir en:** `js/ficha/panel-etiquetas-flotante.js`; semilla `Sistema 1/supabase/semilla-etiquetas.sql` (fuente canonica).
+
+  - **Hecho 2026-10-14 09:15 (UTC-6):** Panel flotante; Editor aplica; docente corrige; fuzzy `zalud` → Salud.
+
+  - **Ampliado 2026-10-14 12:55:** semilla **300** slugs en `semilla-etiquetas.sql` + `catalogo-etiquetas.js`. SQL no aplicado.
 
 171 [ ] S2N-05a Docente `Evaluar`: tecnicos = codigos a su cargo y sus cajas (autorizar/denegar/pedir cambio). Academicos = proyectos que concibio (solo o en grupo) en sus asignaturas.
 
@@ -1329,6 +1342,34 @@ Las casillas S2-01a..S2-09b describian pildoras **dentro del hub**, ficha sin es
 188 [x] SH-02e-GO Usuario logueado: `perfiles.tema` al cambiar sol/luna (mismo trabajo que 30, 2026-10-13 22:10).
 
 189 [ ] SH-PUB Publicar GitHub Pages tras UTF-8 + Cuentas partidas para que el artefacto no sirva HTML Windows-1252.
+
+190 [x] S2N-03c Ficha Editor: quitar vacios; ayudas; orden titulo / descripcion / etiquetas / URLs; integrantes +; auto-guardado; titulo unico; URLs interactivas (icono + tipo + visto + recuadro del alto del titulo).
+
+  - **Extraer de:** Instituto 2026-10-14 12:36.
+
+  - **Escribir en:** `paginas/ficha/pagina-ficha-proyecto.html`, `css/ficha-proyecto.css`, `js/ficha/editar-ficha-propia.js`, `js/ficha/reconocer-plataforma-url.js`.
+
+  - **Hecho 2026-10-14 12:55 (UTC-6):** Sin "Aun no hay integrantes/docente". Ayudas en cada campo. Etiquetas bajo titulo y descripcion. URLs reconocen enlace vs texto; check a la derecha; + agrega fila. Integrantes a mano, +/X, sin limite. Docente y codigo los pone el sistema. Auto-guardado en este equipo hasta DB-PROY.
+
+191 [x] S2N-03d Descripcion tipo Docs (negrita, tamano, listas, sangria). Tecnico: menu de fuentes + guia HTML. Academico: solo Roboto Serif, sin color.
+
+  - **Escribir en:** `js/ficha/editor-ficha-texto.js`; `paginas/ficha/pagina-guia-tipografia.html` + `css/guia-tipografia-ficha.css` + `js/ficha/guia-tipografia.js`.
+
+  - **Hecho 2026-10-14 12:55 (UTC-6):** Toolbar en titulo y descripcion. Pie del menu: Agregar tipografia → guia.
+
+  - **Ajuste 2026-10-14 14:10 (UTC-6):** Tildes en JS con \\u. Guia Google Fonts por pasos; validar codigo para desbloquear Volver; fuentes extra al menu + grosores. Titulo sin listas. Orden nombre/ayuda/botones/cuadro. Deshacer/rehacer. Paletas color. Sin bloque docente en edicion. Auto-guardado.
+
+192 [x] S2N-06c Rol `academico`: alta/baja solo admin; correo institucional sin NIE; misma interfaz Personalizar que el Editor; inferior a docente y a editor.
+
+  - **Escribir en:** `sesion-roles-auth.js` (S1 y S2); `boton-personalizar-o-evaluar.js`; `Sistema 1/supabase/rol-academico-y-ficha.sql` (NO APLICAR).
+
+  - **Hecho 2026-10-14 12:55 (UTC-6):** Instituto eligio el nombre **Academico** (`perfiles.rol='academico'`). Personalizar → ficha `tipo=academico`. `nie` NULL.
+
+193 [x] S2N-04b Semilla de **300** etiquetas relacionadas con oficios, asignaturas y temas escolares.
+
+  - **Escribir en:** `Sistema 1/supabase/semilla-etiquetas.sql` (canonica); `Sistema 2/js/ficha/catalogo-etiquetas.js`.
+
+  - **Hecho 2026-10-14 12:55 (UTC-6):** 300 slugs UTF-8. SQL no aplicado.
 
 ---
 
@@ -1739,7 +1780,7 @@ CONTEXTO DE SISTEMA
 
 - Visitante: anonimo, sin fila, solo lee. Tema en localStorage.
 
-- Roles en perfiles.rol: administrador | docente | editor
+- Roles en perfiles.rol: administrador | docente | editor | academico
 
 - Cuenta matriz para PRIMERA asignacion de admin: intiwo11543@gmail.com (el password NO va en SQL ni en git; Instituto se registra por Auth y un seed UPDATE pone el rol)
 

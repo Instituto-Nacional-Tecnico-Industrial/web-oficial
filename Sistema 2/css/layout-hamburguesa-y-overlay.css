@@ -61,7 +61,8 @@ html[data-theme="dark"] .intiwo-distintivo {
   text-decoration: none;
 }
 
-.intiwo-barra-derecha #intiwo-accion-rol {
+.intiwo-barra-derecha #intiwo-accion-rol,
+.intiwo-barra-derecha #intiwo-ficha-publicar {
   flex-shrink: 0;
   white-space: nowrap;
 }
@@ -79,7 +80,8 @@ html[data-theme="dark"] .intiwo-distintivo {
 }
 
 .intiwo-barra-derecha #intiwo-accion-rol[hidden],
-#intiwo-accion-rol[hidden] {
+#intiwo-accion-rol[hidden],
+#intiwo-ficha-publicar[hidden] {
   display: none !important;
 }
 

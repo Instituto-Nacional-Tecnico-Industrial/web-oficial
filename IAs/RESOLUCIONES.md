@@ -1,6 +1,6 @@
 # Resoluciones (cómo lo hizo cada IA)
 
-**Ultima modificacion:** 2026-10-14 08:40 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-14 14:10 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Solo existen estos dos archivos de IAs, en `IAs/`: este y `BACKLOG.md`. Al cambiar uno: **última modificación** con fecha, hora **UTC-6**, nombre de la IA y dispositivo. Si cambia una tarea, la misma marca en ambos.
 
@@ -1370,3 +1370,53 @@ Bachillerato General a distancia, 1� y 2�, s�bados y domingo. Requisito: m
 **Como:** `pagina-listado-proyectos-codigo.html` + `listado-cajas-codigo.js`. Técnico: encabezado DS2B, contexto especialidad y año, plantilla título+descripción; sin clave válida vuelve al filtro. Académico: encabezado Precálculo (UTF-8), texto 1.º/2.º, plantilla con docentes y códigos de mano de obra; el vacío es el estado correcto hasta DB-PROY. No se inventaron cajas. `?etiqueta=` lista sin especialidad. Comprobado: DS2B vacío, Precálculo vacío, Salud global vacío.
 
 **Casilla:** 167 [x].
+
+---
+
+### 2026-10-14 08:35 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 168 — ficha fase 3: URLs + iconos; técnico Personalizar; académico sin fotos de alumnos.
+
+**Como:** `pagina-ficha-proyecto.html` + `ficha-proyecto.css` + `editar-ficha-propia.js`. Técnico: Equipo/Docente/Descripción/Enlaces. Editor `?modo=personalizar` (contenido, no archivar). Académico: autores y mano de obra; el Editor no Personaliza. Sin fotos ni nombres inventados.
+
+**Casilla:** 168 [x].
+
+---
+
+### 2026-10-14 08:40 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 169 — reconocer URL y pintar icono GitHub, Drive, YouTube o globo.
+
+**Como:** `reconocer-plataforma-url.js`: github.com/gist/raw/`*.github.io` → gato; Drive/Docs/Sheets/Slides → nube; YouTube/`youtu.be` → play; otro http(s) → globo. Al pegar en Personalizar se actualiza `#intiwo-ficha-urls-previa`.
+
+**Casilla:** 169 [x].
+
+---
+
+### 2026-10-14 09:15 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 170 — panel flotante de etiquetas precreadas; Editor aplica, docente corrige.
+
+**Como:** Semilla canónica `Sistema 1/supabase/semilla-etiquetas.sql` (64 slugs: 6 especialidades, 5 asignaturas, oficios de Oferta INTI, salud/ambiente, horror/terror/halloween). `panel-etiquetas-flotante.js`: fuzzy 200 ms (`zalud` → Salud); Editor en Personalizar; docente/admin Corregir; visitante solo chips. Persistencia local hasta DB-PROY. SQL **no aplicado**. Comprobado: panel, filtro Salud, chip en ficha.
+
+**Casilla:** 170 [x].
+
+---
+
+### 2026-10-14 12:55 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Ficha final sin "Aun no hay..."; 300 etiquetas; ayudas al Editor; etiquetas bajo titulo/descripcion; URLs interactivas; integrantes +; auto-guardado; descripcion tipo Docs; rol Academico; SQL.
+
+**Como:** Semilla 300 en `semilla-etiquetas.sql` + `catalogo-etiquetas.js` (no aplicar). Ficha: orden titulo → descripcion → etiquetas → integrantes/docente → URLs. Recuadros de URL sin borde, icono + tipo Roboto Serif, input del alto del titulo, visto si hay URL, + para otra. Integrantes a mano ilimitados. Titulo unico entre borradores. Toolbar Docs; academico solo Roboto Serif. Guia `pagina-guia-tipografia.html` (Google Fonts, CSS o SVG). Rol `academico` (nombre acordado): misma Personalizar, correo sin NIE, inferior a docente y editor, alta solo admin. SQL `rol-academico-y-ficha.sql` no aplicado. Se sustituyeron los vacios de 168 y el tope de 64 etiquetas de 170.
+
+**Casilla:** 190 [x], 191 [x], 192 [x], 193 [x].
+
+---
+
+### 2026-10-14 14:10 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Arreglar tildes rotas; guia Google Fonts para alumnos; validar codigo antes de Volver; traer la fuente al menu; reordenar toolbar; quitar docente editable; deshacer; paletas.
+
+**Como:** Cadenas de JS con escapes Unicode. Guia por pasos (fonts.google.com → Get embed code). El boton Volver nace deshabilitado hasta que el parser reconoce familia. `fuentes-extra-ficha.js` guarda nombre y grosores. Titulo: Aa, color, tamano, fuente, &lt; &gt;; sin listas. Descripcion: alineacion, sangria, vinietas (1. a. I.). Sin edicion de docente. Visitante hereda letra del titulo en equipo/docente/codigo. Auto-guardado y aviso solo si el titulo choca.
+
+**Casilla:** 191 [x] (ajuste).

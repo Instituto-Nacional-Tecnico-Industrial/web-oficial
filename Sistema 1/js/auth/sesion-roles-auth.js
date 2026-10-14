@@ -1,7 +1,7 @@
 /* INTIWO S1 | archivo: sesion-roles-auth.js | para: login overlay, roles, Config disabled, Cuentas | BACKLOG SH-01d */
 
 (function () {
-  const ROLES_PERMITIDOS = new Set(['administrador', 'admin', 'docente', 'editor']);
+  const ROLES_PERMITIDOS = new Set(['administrador', 'admin', 'docente', 'editor', 'academico']);
   const CLAVE_ROL = 'intiwo-rol';
 
   function obtenerRolActual() {

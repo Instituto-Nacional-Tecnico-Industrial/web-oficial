@@ -1,7 +1,7 @@
 /* INTIWO S2 | archivo: sesion-roles-auth.js | para: misma sesion Auth | BACKLOG SH-01d */
 
 (function () {
-  const ROLES_PERMITIDOS = new Set(['administrador', 'admin', 'docente', 'editor']);
+  const ROLES_PERMITIDOS = new Set(['administrador', 'admin', 'docente', 'editor', 'academico']);
   const CLAVE_ROL = 'intiwo-rol';
 
   function obtenerRolActual() {

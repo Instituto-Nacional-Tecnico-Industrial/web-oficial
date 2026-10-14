@@ -36,10 +36,13 @@
       if (icono.href && icono.href.baseVal !== undefined) icono.href.baseVal = "#i-pencil";
     }
 
-    if (rol === "editor") {
+    if (rol === "editor" || rol === "academico") {
       boton.hidden = false;
       if (texto) texto.textContent = "Personalizar";
-      boton.setAttribute("href", urlRelativa("../ficha/pagina-ficha-proyecto.html?modo=personalizar"));
+      var dest = rol === "academico"
+        ? "../ficha/pagina-ficha-proyecto.html?tipo=academico&modo=personalizar"
+        : "../ficha/pagina-ficha-proyecto.html?modo=personalizar";
+      boton.setAttribute("href", urlRelativa(dest));
       boton.setAttribute("aria-label", "Personalizar proyecto");
       return;
     }

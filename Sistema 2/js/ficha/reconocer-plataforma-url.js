@@ -1,18 +1,34 @@
-/* INTIWO S2 | GitHub, Drive, YouTube, globo/red (web y Pages) | BACKLOG S2N-03b */
+/* INTIWO S2 | URL vs texto; GitHub, Drive, YouTube, globo | BACKLOG S2N-03b / 190 */
 (function () {
   var ICONOS = {
     github: "#i-github",
     drive: "#i-drive",
     youtube: "#i-youtube",
-    web: "#i-globe"
+    web: "#i-globe",
+    texto: "#i-globe"
   };
 
+  var ETIQUETAS = {
+    github: "GitHub",
+    drive: "Google Drive",
+    youtube: "YouTube",
+    web: "Sitio web",
+    texto: "Texto"
+  };
+
+  function brutoDe(url) {
+    return String(url || "").trim();
+  }
+
   function hostDe(url) {
-    var bruto = String(url || "").trim();
+    var bruto = brutoDe(url);
     if (!bruto) return "";
-    if (/^(javascript|data|file|blob):/i.test(bruto)) return "";
+    if (/^(javascript|data|file|blob|vbscript):/i.test(bruto)) return "";
     var texto = bruto;
-    if (!/^https?:\/\//i.test(texto)) texto = "https://" + texto;
+    if (!/^https?:\/\//i.test(texto)) {
+      if (!/^(www\.)|([a-z0-9-]+\.[a-z]{2,})/i.test(texto) && texto.indexOf("/") === -1) return "";
+      texto = "https://" + texto.replace(/^\/\//, "");
+    }
     try {
       var u = new URL(texto);
       if (u.protocol !== "http:" && u.protocol !== "https:") return "";
@@ -22,9 +38,13 @@
     }
   }
 
+  function esUrl(url) {
+    return !!hostDe(url);
+  }
+
   function plataforma(url) {
+    if (!esUrl(url)) return "texto";
     var h = hostDe(url);
-    if (!h) return "web";
     if (h === "github.com" || h === "gist.github.com" || h === "raw.githubusercontent.com" || h === "github.io" || h.slice(-10) === ".github.io") {
       return "github";
     }
@@ -37,18 +57,27 @@
     return "web";
   }
 
-  function lineasUrl(texto) {
-    return String(texto || "").split(/\r?\n/).map(function (l) { return l.trim(); }).filter(function (l) {
-      if (!l) return false;
-      if (/^(javascript|data|file|blob):/i.test(l)) return false;
-      return /^(https?:\/\/|www\.)/i.test(l) || l.indexOf(".") !== -1;
-    });
+  function hrefPublico(url) {
+    var bruto = brutoDe(url);
+    if (!esUrl(bruto)) return "";
+    if (/^https?:\/\//i.test(bruto)) return bruto;
+    return "https://" + bruto.replace(/^\/\//, "");
   }
 
+  function lineasUrl(texto) {
+    return String(texto || "").split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+  }
+
+  window.intiwoEsUrl = esUrl;
   window.intiwoPlataformaUrl = plataforma;
+  window.intiwoEtiquetaPlataforma = function (urlOPlat) {
+    var clave = ETIQUETAS[urlOPlat] ? urlOPlat : plataforma(urlOPlat);
+    return ETIQUETAS[clave] || ETIQUETAS.texto;
+  };
   window.intiwoIconoPlataforma = function (urlOPlat) {
     var clave = ICONOS[urlOPlat] ? urlOPlat : plataforma(urlOPlat);
     return ICONOS[clave] || ICONOS.web;
   };
+  window.intiwoHrefPublico = hrefPublico;
   window.intiwoLineasUrl = lineasUrl;
 })();

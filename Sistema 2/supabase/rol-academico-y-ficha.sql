@@ -1,0 +1,2 @@
+-- Copia de referencia. Fuente canonica: Sistema 1/supabase/rol-academico-y-ficha.sql. Misma base.
+-- NO APLICAR.
