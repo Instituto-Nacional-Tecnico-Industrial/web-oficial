@@ -1,0 +1,46 @@
+/* INTIWO S1 | timeline Historia S1-06a */
+
+.intiwo-his-intro {
+  max-width: 40rem;
+  margin: 0 0 24px;
+  color: var(--texto-suave);
+  line-height: 1.5;
+}
+
+.intiwo-linea {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-left: 2px solid var(--superficie-2);
+}
+
+.intiwo-linea li {
+  position: relative;
+  margin: 0 0 22px;
+  padding: 0 0 0 20px;
+}
+
+.intiwo-linea li::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 0.45em;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--verde);
+}
+
+.intiwo-linea time {
+  display: block;
+  margin: 0 0 4px;
+  color: var(--verde);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.intiwo-linea p {
+  margin: 0;
+  color: var(--texto-suave);
+  line-height: 1.5;
+}

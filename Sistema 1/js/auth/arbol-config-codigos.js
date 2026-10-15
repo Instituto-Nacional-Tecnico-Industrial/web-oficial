@@ -1,6 +1,8 @@
 /* INTIWO | arbol Academico|Tecnico, desactivar codigo o alumno | SH-04d S1-07c/h */
 import { supabase } from "../supabase/cliente-supabase.js";
 
+let cacheArbol = null;
+
 const ACADEMICAS = [
   { prefijo: "PC", nombre: "Precalculo" },
   { prefijo: "CV", nombre: "Ciudadania y valores" },
@@ -19,9 +21,18 @@ function nombrePerfil(perfil) {
   return compuesto || perfil.nombre || perfil.rol || "Sin nombre";
 }
 
-function correoDe(invitaciones, perfilId) {
-  const fila = (invitaciones || []).find((item) => item.usado_por === perfilId && item.email);
+function correoDe(invitaciones, perfilId, codigoId) {
+  const filas = (invitaciones || []).filter((item) => item.usado_por === perfilId && item.email);
+  const delCodigo = filas.find((item) => codigoId && item.codigo_id === codigoId);
+  const fila = delCodigo || filas[0];
   return fila ? fila.email : "";
+}
+
+function textoMiembro(persona, correo, nLista) {
+  const nombre = nombrePerfil(persona);
+  const mail = correo || "sin correo en invitaciones";
+  const lista = nLista ? String(nLista) : "-";
+  return "nombre " + nombre + " · correo " + mail + " · n_lista " + lista;
 }
 
 async function cargarDatos(rol, userId) {
@@ -54,15 +65,15 @@ async function cargarDatos(rol, userId) {
         .from("perfiles")
         .select("id, rol, nombre, nombres, apellidos")
         .in("id", perfilIds);
+      invitaciones = await supabase
+        .from("invitaciones_correo")
+        .select("email, usado_por, codigo_id")
+        .in("usado_por", perfilIds)
+        .not("usado_por", "is", null);
     }
-    invitaciones = await supabase
-      .from("invitaciones_correo")
-      .select("email, usado_por, codigo_id")
-      .in("codigo_id", ids)
-      .not("usado_por", "is", null);
   }
   return {
-    error: especialidades.error || codigos.error || miembros.error,
+    error: especialidades.error || codigos.error || miembros.error || perfiles.error || invitaciones.error,
     especialidades: especialidades.data || [],
     codigos: codigos.data || [],
     miembros: miembros.data || [],
@@ -90,51 +101,126 @@ function ramaEspecialidad(esp, datos, rol) {
   if (!delGrupo.length) {
     const vacio = document.createElement("p");
     vacio.className = "intiwo-config-estado";
-    vacio.textContent = "Sin codigos activos.";
+    vacio.textContent = "Sin docentes ni codigos activos.";
     details.appendChild(vacio);
     return details;
   }
+  const porDocente = new Map();
   delGrupo.forEach((codigo) => {
-    const bloque = document.createElement("div");
-    bloque.className = "intiwo-arbol-codigo";
-    const encabezado = document.createElement("p");
-    const docente = datos.perfiles.find((p) => p.id === codigo.docente_id);
-    encabezado.textContent = codigo.clave + " · " + codigo.anio_lectivo
-      + (rol === "administrador" ? " · " + nombrePerfil(docente) : "");
-    bloque.appendChild(encabezado);
-    if (rol === "administrador" || rol === "docente") {
-      bloque.appendChild(botonAccion("Desactivar codigo", { "data-desactivar-codigo": codigo.id }));
-    }
-    const alumnos = datos.miembros.filter((m) => m.codigo_id === codigo.id);
-    if (!alumnos.length) {
-      const vacio = document.createElement("p");
-      vacio.className = "intiwo-config-estado";
-      vacio.textContent = "Sin editores en este codigo.";
-      bloque.appendChild(vacio);
-    }
-    alumnos.forEach((m) => {
-      const fila = document.createElement("div");
-      fila.className = "intiwo-config-fila-cuenta";
-      const p = document.createElement("p");
-      const persona = datos.perfiles.find((x) => x.id === m.perfil_id);
-      const correo = correoDe(datos.invitaciones, m.perfil_id);
-      const lista = m.n_lista ? " · n. " + m.n_lista : "";
-      p.textContent = nombrePerfil(persona) + (correo ? " · " + correo : "") + lista;
-      fila.appendChild(p);
-      if (rol === "administrador" || rol === "docente") {
-        fila.appendChild(botonAccion("Quitar del codigo", {
-          "data-quitar-miembro": m.perfil_id,
-          "data-codigo-id": codigo.id,
-        }));
-      }
-      bloque.appendChild(fila);
+    const clave = codigo.docente_id || "sin-docente";
+    if (!porDocente.has(clave)) porDocente.set(clave, []);
+    porDocente.get(clave).push(codigo);
+  });
+  porDocente.forEach((codigosDocente, docenteId) => {
+    const ramaDoc = document.createElement("details");
+    ramaDoc.className = "intiwo-arbol-rama intiwo-arbol-docente";
+    const docente = datos.perfiles.find((p) => p.id === docenteId);
+    const correoDoc = correoDe(datos.invitaciones, docenteId);
+    const sumDoc = document.createElement("summary");
+    sumDoc.textContent = "Docente · " + nombrePerfil(docente)
+      + (correoDoc ? " · " + correoDoc : "")
+      + " · " + codigosDocente.length + " codigo" + (codigosDocente.length === 1 ? "" : "s");
+    ramaDoc.appendChild(sumDoc);
+    codigosDocente.forEach((codigo) => {
+      ramaDoc.appendChild(ramaCodigo(codigo, datos, rol));
     });
-    details.appendChild(bloque);
+    details.appendChild(ramaDoc);
   });
   return details;
 }
 
+function ramaCodigo(codigo, datos, rol) {
+  const bloque = document.createElement("details");
+  bloque.className = "intiwo-arbol-rama intiwo-arbol-codigo";
+  const alumnos = datos.miembros.filter((m) => m.codigo_id === codigo.id);
+  const sumario = document.createElement("summary");
+  sumario.textContent = codigo.clave + " · " + codigo.anio_lectivo
+    + " · niv. " + codigo.nivel + codigo.seccion
+    + " · " + alumnos.length + " editor" + (alumnos.length === 1 ? "" : "es");
+  bloque.appendChild(sumario);
+  if (rol === "administrador" || rol === "docente") {
+    bloque.appendChild(botonAccion("Desactivar codigo", { "data-desactivar-codigo": codigo.id }));
+  }
+  if (!alumnos.length) {
+    const vacio = document.createElement("p");
+    vacio.className = "intiwo-config-estado";
+    vacio.textContent = "Sin editores autorizados en este codigo.";
+    bloque.appendChild(vacio);
+    return bloque;
+  }
+  alumnos.forEach((m) => {
+    const fila = document.createElement("div");
+    fila.className = "intiwo-config-fila-cuenta";
+    const p = document.createElement("p");
+    const persona = datos.perfiles.find((x) => x.id === m.perfil_id);
+    const correo = correoDe(datos.invitaciones, m.perfil_id, codigo.id);
+    p.textContent = textoMiembro(persona, correo, m.n_lista);
+    fila.appendChild(p);
+    if (rol === "administrador" || rol === "docente") {
+      fila.appendChild(botonAccion("Quitar del codigo", {
+        "data-quitar-miembro": m.perfil_id,
+        "data-codigo-id": codigo.id,
+      }));
+    }
+    bloque.appendChild(fila);
+  });
+  return bloque;
+}
+
+function filtrosDe(raiz) {
+  const form = raiz.closest(".intiwo-config-tarjeta") && raiz.closest(".intiwo-config-tarjeta").querySelector("[data-arbol-filtros]");
+  if (!form) return { anio: "", seccion: "", clave: "" };
+  const datos = new FormData(form);
+  return {
+    anio: String(datos.get("anio") || ""),
+    seccion: String(datos.get("seccion") || "").toUpperCase(),
+    clave: String(datos.get("clave") || ""),
+  };
+}
+
+function rellenarFiltros(form, codigos) {
+  if (!form) return;
+  const actual = new FormData(form);
+  const anioSel = String(actual.get("anio") || "");
+  const seccionSel = String(actual.get("seccion") || "");
+  const claveSel = String(actual.get("clave") || "");
+  const anios = Array.from(new Set(codigos.map((c) => String(c.anio_lectivo)))).sort();
+  const secciones = Array.from(new Set(codigos.map((c) => String(c.seccion || "").toUpperCase()).filter(Boolean))).sort();
+  const claves = Array.from(new Set(codigos.map((c) => c.clave))).sort();
+  pintarOpciones(form.querySelector("[name=anio]"), anios, anioSel, "Todos");
+  pintarOpciones(form.querySelector("[name=seccion]"), secciones, seccionSel, "Todas");
+  pintarOpciones(form.querySelector("[name=clave]"), claves, claveSel, "Todos");
+}
+
+function pintarOpciones(select, valores, elegido, etiquetaTodos) {
+  if (!select) return;
+  select.replaceChildren();
+  const todos = document.createElement("option");
+  todos.value = "";
+  todos.textContent = etiquetaTodos;
+  select.appendChild(todos);
+  valores.forEach((valor) => {
+    const op = document.createElement("option");
+    op.value = valor;
+    op.textContent = valor;
+    if (valor === elegido) op.selected = true;
+    select.appendChild(op);
+  });
+}
+
+function aplicarFiltros(codigos, filtros) {
+  return codigos.filter((c) => {
+    if (filtros.anio && String(c.anio_lectivo) !== filtros.anio) return false;
+    if (filtros.seccion && String(c.seccion || "").toUpperCase() !== filtros.seccion) return false;
+    if (filtros.clave && c.clave !== filtros.clave) return false;
+    return true;
+  });
+}
+
 function pintarArbol(raiz, datos, rol) {
+  const filtros = filtrosDe(raiz);
+  rellenarFiltros(raiz.closest(".intiwo-config-tarjeta") && raiz.closest(".intiwo-config-tarjeta").querySelector("[data-arbol-filtros]"), datos.codigos);
+  const recorte = Object.assign({}, datos, { codigos: aplicarFiltros(datos.codigos, filtros) });
   raiz.replaceChildren();
   const tecnico = document.createElement("details");
   tecnico.className = "intiwo-arbol-rama";
@@ -149,7 +235,7 @@ function pintarArbol(raiz, datos, rol) {
     p.textContent = "Corre codigos-y-membresias.sql para ver las 6 especialidades.";
     tecnico.appendChild(p);
   }
-  tecnicas.forEach((esp) => tecnico.appendChild(ramaEspecialidad(esp, datos, rol)));
+  tecnicas.forEach((esp) => tecnico.appendChild(ramaEspecialidad(esp, recorte, rol)));
   raiz.appendChild(tecnico);
 
   const academico = document.createElement("details");
@@ -159,7 +245,7 @@ function pintarArbol(raiz, datos, rol) {
   academico.appendChild(sumA);
   const filasAcad = datos.especialidades.filter((e) => e.tipo === "academico");
   if (filasAcad.length) {
-    filasAcad.forEach((esp) => academico.appendChild(ramaEspecialidad(esp, datos, rol)));
+    filasAcad.forEach((esp) => academico.appendChild(ramaEspecialidad(esp, recorte, rol)));
   } else {
     ACADEMICAS.forEach((asig) => {
       const details = document.createElement("details");
@@ -181,6 +267,7 @@ async function refrescar(rol, userId) {
   const raices = document.querySelectorAll("[data-arbol-codigos]");
   if (!raices.length || !supabase) return;
   const datos = await cargarDatos(rol, userId);
+  cacheArbol = datos;
   raices.forEach((raiz) => {
     if (datos.error) {
       texto(raiz, "No se pudo leer el arbol: " + datos.error.message);
@@ -208,6 +295,15 @@ async function quitarMiembro(perfilId, codigoId) {
 }
 
 function iniciar() {
+  document.addEventListener("change", (evento) => {
+    const form = evento.target.closest("[data-arbol-filtros]");
+    if (!form || !cacheArbol || cacheArbol.error) return;
+    const tarjeta = form.closest(".intiwo-config-tarjeta");
+    const raiz = tarjeta && tarjeta.querySelector("[data-arbol-codigos]");
+    const rol = String(window.INTIWO_ROL || "").toLowerCase();
+    if (raiz) pintarArbol(raiz, cacheArbol, rol);
+  });
+
   document.addEventListener("click", async (evento) => {
     const bCodigo = evento.target.closest("[data-desactivar-codigo]");
     const bAlumno = evento.target.closest("[data-quitar-miembro]");

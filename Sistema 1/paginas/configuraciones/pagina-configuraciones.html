@@ -135,7 +135,18 @@
         </article>
         <article class="intiwo-config-tarjeta intiwo-config-panel" data-config-panel="grupos" hidden>
           <h3>Docentes y codigos</h3>
-          <p>Tecnico: 6 especialidades (sin GE). Academico: las 5 asignaturas. Al expandir ves docentes, codigos y editores. Desactivar no borra proyectos.</p>
+          <p>Elige especialidad: ves docentes y sus codigos. Expandir codigo: editores autorizados (correo de invitaciones, nombre, n_lista). Sin NIE. Desactivar no borra proyectos.</p>
+          <form class="intiwo-arbol-filtros" data-arbol-filtros>
+            <label>Anio
+              <select name="anio"><option value="">Todos</option></select>
+            </label>
+            <label>Seccion
+              <select name="seccion"><option value="">Todas</option></select>
+            </label>
+            <label>Codigo
+              <select name="clave"><option value="">Todos</option></select>
+            </label>
+          </form>
           <div data-arbol-codigos class="intiwo-arbol"></div>
         </article>
         <article class="intiwo-config-tarjeta">
@@ -230,7 +241,18 @@
         </article>
         <article class="intiwo-config-tarjeta intiwo-config-panel" data-config-panel="grupos" hidden>
           <h3>Mis grupos</h3>
-          <p>Solo tus codigos. Puedes desactivar un codigo o quitar un alumno. No ves a otros docentes.</p>
+          <p>Solo tus docentes/codigos. Expandir: editores (correo, nombre, n_lista). Puedes desactivar un codigo o quitar un alumno. No ves a otros docentes.</p>
+          <form class="intiwo-arbol-filtros" data-arbol-filtros>
+            <label>Anio
+              <select name="anio"><option value="">Todos</option></select>
+            </label>
+            <label>Seccion
+              <select name="seccion"><option value="">Todas</option></select>
+            </label>
+            <label>Codigo
+              <select name="clave"><option value="">Todos</option></select>
+            </label>
+          </form>
           <div data-arbol-codigos class="intiwo-arbol"></div>
         </article>
         <article class="intiwo-config-tarjeta">

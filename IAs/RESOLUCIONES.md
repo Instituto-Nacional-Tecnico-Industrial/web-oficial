@@ -1,6 +1,6 @@
 # Resoluciones (cómo lo hizo cada IA)
 
-**Ultima modificacion:** 2026-10-14 14:10 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-14 20:45 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Solo existen estos dos archivos de IAs, en `IAs/`: este y `BACKLOG.md`. Al cambiar uno: **última modificación** con fecha, hora **UTC-6**, nombre de la IA y dispositivo. Si cambia una tarea, la misma marca en ambos.
 
@@ -1420,3 +1420,83 @@ Bachillerato General a distancia, 1� y 2�, s�bados y domingo. Requisito: m
 **Como:** Cadenas de JS con escapes Unicode. Guia por pasos (fonts.google.com → Get embed code). El boton Volver nace deshabilitado hasta que el parser reconoce familia. `fuentes-extra-ficha.js` guarda nombre y grosores. Titulo: Aa, color, tamano, fuente, &lt; &gt;; sin listas. Descripcion: alineacion, sangria, vinietas (1. a. I.). Sin edicion de docente. Visitante hereda letra del titulo en equipo/docente/codigo. Auto-guardado y aviso solo si el titulo choca.
 
 **Casilla:** 191 [x] (ajuste).
+
+---
+
+### 2026-10-14 18:52 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** EDUCAME no es un formulario. Contacto solo WhatsApp 7441-1075. Cinco asignaturas vigentes. Boton «Más información» a HTML+CSS+JS propio. Combinar Site antiguo con datos actuales (horario tríptico: sábados 7:00–16:00 virtual).
+
+**Como:** `pagina-educame-modalidad-flexible.html` en pasos animados (como Matrícula). Site https://sites.google.com/inti.edu.sv/nuevoingreso/educame aporta Bachillerato General a distancia, 1.º y 2.º y ≥18; se descartan teléfono y materias viejas y el sábado+domingo. Teaser en Matrícula y ficha General en Oferta: número, oferta y Más información. Sin Forms de EDUCAME. Pie Inscribirme sigue siendo el de las seis técnicas.
+
+**Casilla:** 81 [x] (ajuste), 194 [x].
+
+---
+
+### 2026-10-14 19:16 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Reescribir copy de pasos 2–5 en EDUCAME (horario, Asignaturas, Especificaciones, Contacto). Corregir faltas del dictado.
+
+**Como:** `pagina-educame-modalidad-flexible.html`. Tildes: sábados, mayoría, requisitos, número, inscripción, escríbenos, personalización.
+
+**Casilla:** 194 [x] (ajuste).
+
+---
+
+### 2026-10-14 19:50 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Paso 1: «Ver más» (no WhatsApp) a pagina de nuevo ingreso y traslados. Paso 4: «Ver más» a pagina de documentos. Ambas animadas como Matrícula.
+
+**Como:** `pagina-inscripcion-y-traslados.html` + CSS/JS. Traslado solo misma especialidad. 2.º y 3.º: entrevista con subdirectores y encargado, lun–vie 8:00–11:30 y 13:30–17:00. `pagina-entrega-documentos.html`: calendarización por correo; lista SIGES/partida/DUI 150 %/fotos granulado 3,5×2,5/exámenes/antitetánica; entrega en instalaciones cuando se pida. Icono Lucide info. Ortografía del dictado corregida.
+
+**Casilla:** 195 [x].
+
+---
+
+### 2026-10-14 20:20 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tareas 89 y 90 — Ubicaciones con dirección Col. Roma / Blvd. Venezuela y contacto de la tabla; buses y plano en placeholder.
+
+**Como:** Se relleno `pagina-ubicaciones.html` (ya no stub) + `css/pagina-ubicaciones.css`. Dirección de F-C-UBI. Contacto: correo, WhatsApp canonico y respaldo, Instagram, Facebook, TikTok. Sin mapa JS ni paradas inventadas (0-06). Horario omitido: no hay dato confirmado en CONTENIDO. UTF-8. No se toco Sistema 2.
+
+**Casilla:** 89 [x], 90 [x].
+
+---
+
+### 2026-10-14 20:25 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 91 — timeline Historia 1954, 1955, 1962, 1964 Expotecnia, 2015 Open House, 2024 70 años.
+
+**Como:** `pagina-historia-instituto.html` deja de ser stub. Hechos de F-C-HIS + linea RESOLUCIONES (P21-P28): fundacion 26 oct 1954 (Óscar Osorio, ITI luego INTI), IVU 1955, mision Japon julio 1962 y Bachillerato Tecnico Industrial de tres años, primera Expotecnia oct 1964 y feria oct-nov con stands, Open House desde oct 2015 para 9.º, 70 años el 26 oct 2024. Sin cifras 20.000/1.000 (casilla 93). Sin violencia ni destitucion (92). Tono sobrio 0-09. CSS `pagina-historia.css`.
+
+**Casilla:** 91 [x].
+
+---
+
+### 2026-10-14 20:28 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 92 — no renderizar violencia/destitucion; comentario HTML RETENIDO.
+
+**Como:** En `pagina-historia-instituto.html` se dejo `<!-- RETENIDO -->` con inventario de F-HIST P2-P3 y P7-P20 y F-RES Retener (pandillas, FGR, destitucion 25 ago 2025, 2015, 2021-2026). El visitante solo ve la linea 1954-2024. No se creo pagina retenido. 0-09: omitir, no narrativa de superacion.
+
+**Casilla:** 92 [x].
+
+---
+
+### 2026-10-14 20:32 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 93 — cifras 20.000 / 1.000 solo si 0-10 y 0-11 estan hechas; no en Inicio ni footer.
+
+**Como:** 0-10 y 0-11 ya [x]. En `pagina-historia-instituto.html` se anadieron las lineas aprobadas: 2024 70 años, cifra aproximada mas de 20.000 egresados 1964-2023; 2025 matricula aproximada alrededor de 1.000. Comentario HTML de la condicion. No se copiaron a Inicio ni al pie.
+
+**Casilla:** 93 [x].
+
+---
+
+### 2026-10-14 20:45 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 97 — al elegir especialidad: docentes + codigos; expandir editores (correo, nombre, n_lista).
+
+**Como:** Listas en `arbol-config-codigos.js` (el destino `panel-configuraciones-cuentas.js` de la casilla es el login de Cuentas; 96 ya dejo el arbol aqui). Agrupa `codigos.docente_id` y `miembro_codigo`. Correo solo de `invitaciones_correo` por `usado_por`. Filtros anio/seccion/codigo (logica). Sin NIE ni `auth.users`. SQL `invitaciones_select_usado_por_arbol` en `arbol-config-codigos.sql` (Instituto debe volver a correr ese archivo). HTML de Config: textos y filtros junto a `[data-arbol-codigos]`.
+
+**Casilla:** 97 [x]. 98 no se toco.

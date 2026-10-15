@@ -1,0 +1,100 @@
+/* INTIWO S1 | Ubicaciones S1-05 | sin mapa JS */
+
+.intiwo-ubi-intro {
+  max-width: 40rem;
+  margin: 0 0 20px;
+  color: var(--texto-suave);
+  line-height: 1.5;
+}
+
+.intiwo-ubi-rejilla {
+  display: grid;
+  gap: 14px;
+  margin: 0 0 24px;
+}
+
+@media (min-width: 720px) {
+  .intiwo-ubi-rejilla {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.intiwo-ubi-tarjeta {
+  margin: 0;
+  padding: 16px;
+  border-radius: 20px;
+  background: var(--superficie);
+  box-shadow: 0 0 0 1px var(--superficie-2);
+}
+
+.intiwo-ubi-tarjeta h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+}
+
+.intiwo-ubi-tarjeta h2 svg {
+  width: 20px;
+  height: 20px;
+  color: var(--verde);
+}
+
+.intiwo-ubi-tarjeta address {
+  font-style: normal;
+  margin: 0;
+  color: var(--texto);
+  line-height: 1.5;
+}
+
+.intiwo-ubi-lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.intiwo-ubi-lista a {
+  color: var(--verde);
+  text-decoration: none;
+}
+
+.intiwo-ubi-lista a:hover,
+.intiwo-ubi-lista a:focus-visible {
+  text-decoration: underline;
+}
+
+.intiwo-ubi-marca {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+.intiwo-ubi-plano {
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  min-height: 160px;
+  margin: 0;
+  padding: 24px 16px;
+  border-radius: 20px;
+  background: var(--superficie);
+  box-shadow: 0 0 0 1px var(--superficie-2);
+  color: var(--texto-suave);
+  text-align: center;
+}
+
+.intiwo-ubi-plano svg {
+  width: 48px;
+  height: 48px;
+  color: var(--texto-suave);
+}
+
+.intiwo-ubi-plano p {
+  margin: 0;
+  max-width: 28rem;
+  line-height: 1.45;
+}

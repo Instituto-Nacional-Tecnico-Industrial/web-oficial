@@ -444,6 +444,8 @@ body[data-seccion-actual="matricula"] {
 .es-fx-educame.es-en-vista .edu-birrete { animation: intiwo-birrete 3.6s ease-in-out infinite; }
 .es-fx-educame.es-en-vista .edu-sab { animation: intiwo-finde 3.2s ease-in-out infinite; }
 .es-fx-educame.es-en-vista .edu-dom { animation: intiwo-finde 3.2s ease-in-out 0.4s infinite; }
+.es-fx-educame.es-en-vista .edu-virtual { animation: intiwo-finde 3.2s ease-in-out infinite; }
+.es-fx-educame.es-en-vista .edu-reloj { animation: intiwo-birrete 3.8s ease-in-out infinite; }
 .es-fx-educame.es-en-vista .edu-mat.m1 { animation: intiwo-materia 4.5s ease-in-out infinite; }
 .es-fx-educame.es-en-vista .edu-mat.m2 { animation: intiwo-materia 4.5s ease-in-out 0.18s infinite; }
 .es-fx-educame.es-en-vista .edu-mat.m3 { animation: intiwo-materia 4.5s ease-in-out 0.36s infinite; }

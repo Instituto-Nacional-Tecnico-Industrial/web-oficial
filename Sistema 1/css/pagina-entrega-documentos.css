@@ -1,0 +1,29 @@
+/* INTIWO S1 | escenas entrega de documentos */
+
+.doc-txt {
+  fill: currentColor;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.doc-hoja,
+.doc-sello,
+.doc-foto,
+.doc-duo {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.es-fx-correo.es-en-vista .doc-hoja { animation: intiwo-materia 4.5s ease-in-out infinite; }
+.es-fx-lista.es-en-vista .doc-hoja.h1 { animation: intiwo-materia 4.5s ease-in-out infinite; }
+.es-fx-lista.es-en-vista .doc-hoja.h2 { animation: intiwo-materia 4.5s ease-in-out 0.15s infinite; }
+.es-fx-lista.es-en-vista .doc-hoja.h3 { animation: intiwo-materia 4.5s ease-in-out 0.3s infinite; }
+.es-fx-lista.es-en-vista .doc-hoja.h4 { animation: intiwo-materia 4.5s ease-in-out 0.45s infinite; }
+.es-fx-lista.es-en-vista .doc-hoja.h5 { animation: intiwo-materia 4.5s ease-in-out 0.6s infinite; }
+.es-fx-lista.es-en-vista .doc-hoja.h6 { animation: intiwo-materia 4.5s ease-in-out 0.75s infinite; }
+.es-fx-entrega.es-en-vista .doc-duo { animation: intiwo-birrete 3.6s ease-in-out infinite; }
+.es-fx-entrega.es-en-vista .doc-sello { animation: intiwo-finde 3.2s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .intiwo-paso-escena * { animation: none !important; }
+}

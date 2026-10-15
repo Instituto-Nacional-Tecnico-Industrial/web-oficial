@@ -1,6 +1,6 @@
 # Backlog INTIWO
 
-**Ultima modificacion:** 2026-10-14 14:10 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-14 20:45 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Carpeta exclusiva de IAs: `IAs/` (solo este archivo y `RESOLUCIONES.md`). Al marcar o agregar: misma fecha, hora (UTC-6) e IA en ambos; indica el dispositivo. Apuntes en orden cronologico.
 
@@ -70,6 +70,12 @@ Sistema 1/
   css/pagina-inicio-visitante.css
   css/editor-cms-inicio.css
   css/pildoras-oferta-academica.css
+  css/pagina-matricula.css
+  css/pagina-educame.css
+  css/pagina-inscripcion-traslados.css
+  css/pagina-entrega-documentos.css
+  css/pagina-ubicaciones.css
+  css/pagina-historia.css
   js/supabase/cliente-supabase.js
   js/tema/persistir-tema-diurno-nocturno.js
   js/auth/sesion-roles-auth.js
@@ -83,8 +89,15 @@ Sistema 1/
   js/cms/guardar-contenido-inicio.js
   js/cms/sanitizar-texto-cms.js
   js/cms/cargar-footer-cms.js
+  js/matricula/pasos-matricula.js
+  js/matricula/escenas-educame.js
+  js/matricula/escenas-inscripcion-traslados.js
+  js/matricula/escenas-entrega-documentos.js
   paginas/inicio/pagina-inicio-cms.html
   paginas/matricula/pagina-matricula-nuevo-ingreso.html
+  paginas/matricula/pagina-educame-modalidad-flexible.html
+  paginas/matricula/pagina-inscripcion-y-traslados.html
+  paginas/matricula/pagina-entrega-documentos.html
   paginas/oferta-academica/pagina-oferta-academica.html
   paginas/personal/pagina-personal-instituto.html
   paginas/ubicaciones/pagina-ubicaciones.html
@@ -908,6 +921,8 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Hecho 2026-10-14 07:55 (UTC-6):** Sección `paso-educame` tras el paso 5: Bachillerato General a distancia, 1.º y 2.º, sábados y domingo, mayor de 18, cinco materias. Contacto WhatsApp; Ver módulos → Oferta. Sin botón a Forms (URL ausente). Pie Inscribirme sigue siendo el de técnicas.
 
+  - **Ajuste 2026-10-14 18:52 (UTC-6):** Instituto anula Forms de EDUCAME. Canal público único WhatsApp 7441-1075. Materias vigentes PC/CT/LL/CV/IN. Sábados 7:00–16:00 virtual (tríptico). Página `pagina-educame-modalidad-flexible.html` + «Más información». Site antiguo (sáb+dom, Matemática/Ciencias Naturales/Sociales, teléfono viejo) no vigente. Ver 194.
+
 82 [x] S1-02d CTA Inscribete: enlazar al formulario oficial de Google Forms; el WhatsApp oficial queda como contacto alternativo, no como destino del boton.
 
   - **Extraer de:** F-PNG-FOOT CTA; F-RES tabla vs F-SITE-MAT.
@@ -935,6 +950,8 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
   - **Escribir en:** Copy en oferta-academica/pagina-oferta-academica.html (modulos). Fuente de texto: CONTENIDO.md de esa carpeta + F-MICRO P2-P7.
 
   - **Hecho 2026-10-13 23:12 (UTC-6):** fichas con intro y listas de modulos desde RESOLUCIONES (Oferta academica + EDUCAME). General no es septima tecnica. Cero video.
+
+  - **Ajuste 2026-10-14 18:52 (UTC-6):** ficha General = asignaturas vigentes + WhatsApp + Más información (194).
 
 85 [x] S1-03c Color de pildora = SH-02b. Hover Sistemas Electricos puede ir `#E61010` como PNG.
 
@@ -968,35 +985,45 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Hecho 2026-10-14 08:04 (UTC-6):** Plantilla de ficha (nombre, cargo·área, bio, correo opcional, avatar Lucide B/N). JS `paginas/personal/personal.js` pinta talleres / básicas / administración. `FOTOS = false` (0-05). Listas vacías → sigue «Próximamente.» Cero nombres inventados. CSS `pagina-personal.css`.
 
-89 [ ] S1-05a Ubicaciones: Col. Roma, final Blvd. Venezuela, San Salvador.
+89 [x] S1-05a Ubicaciones: Col. Roma, final Blvd. Venezuela, San Salvador.
 
   - **Extraer de:** F-C-UBI; F-HIST P1; F-RES tabla.
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/paginas/ubicaciones/pagina-ubicaciones.html`.
 
-90 [ ] S1-05b Contacto tabla RESOLUCIONES. Buses/plano placeholder hasta 0-06.
+  - **Hecho 2026-10-14 20:20 (UTC-6):** `pagina-ubicaciones.html` deja de ser stub. Dirección: Col. Roma, final Boulevard Venezuela, San Salvador, El Salvador. Cromo S1 + pie.
+
+90 [x] S1-05b Contacto tabla RESOLUCIONES. Buses/plano placeholder hasta 0-06.
 
   - **Extraer de:** F-C-UBI.
 
   - **Escribir en:** Misma pagina. No inventar mapa JS hasta 0-06.
 
-91 [ ] S1-06a Historia: 1954, 1955, 1962, 1964 Expotecnia, 2015 Open House, 2024 70 anios.
+  - **Hecho 2026-10-14 20:20 (UTC-6):** Correo direccion@inti.edu.sv; WA 7441-1075 y respaldo 6674-3159; IG, FB, TikTok de la tabla. Buses y plano: placeholder (0-06: sin mapa JS ni paradas inventadas). CSS `pagina-ubicaciones.css`. Sin 7754.
+
+91 [x] S1-06a Historia: 1954, 1955, 1962, 1964 Expotecnia, 2015 Open House, 2024 70 anios.
 
   - **Extraer de:** F-C-HIS (lista corta publicable); F-HIST **P21** (Expotecnia inicia 1964, mision Japon 1962); **P22-P25** (feria oct-nov, especialidades en stands); **P27-P28** (Open House desde oct 2015, captacion 9 grado). URLs de apoyo en F-HIST P22 (elsalvador.com 70 anios, Scribd/UES 1954). Transcribir solo hechos, no el tono de IA del PDF.
 
   - **Escribir en:** Rellenar (ya existe vacio) `Sistema 1/paginas/historia/pagina-historia-instituto.html` con timeline. Texto de `Sistema 1/paginas/historia/CONTENIDO.md` + F-HIST P21-P28.
 
-92 [ ] S1-06b No renderizar violencia/destitucion. Comentario HTML `<!-- RETENIDO -->`.
+  - **Hecho 2026-10-14 20:25 (UTC-6):** Timeline `ol.intiwo-linea` (1954 Óscar Osorio/ITI, 1955 IVU, 1962 Japón/bachillerato 3 años, 1964 Expotecnia oct-nov, 2015 Open House 9.º, 2024 70 años). Tono factual 0-09. Sin 20.000/1.000 (93). Sin violencia (92). CSS `pagina-historia.css`.
+
+92 [x] S1-06b No renderizar violencia/destitucion. Comentario HTML `<!-- RETENIDO -->`.
 
   - **Extraer de:** F-HIST **P2-P3, P7-P20** (pandillas, FGR, destitucion 25 ago 2025, 2015, 2021-2026). F-RES "Retener". Hasta 0-09.
 
   - **Escribir en:** Comentario HTML en historia/pagina-historia-instituto.html. No hay pagina 'retenido'.
 
-93 [ ] S1-06c Cifras 20.000 / 1.000 solo si 0-10 y 0-11 estan `[x]`.
+  - **Hecho 2026-10-14 20:28 (UTC-6):** Comentario `<!-- RETENIDO -->` en `pagina-historia-instituto.html`. Timeline publica sin esos temas. Cero archivo retenido.html.
+
+93 [x] S1-06c Cifras 20.000 / 1.000 solo si 0-10 y 0-11 estan `[x]`.
 
   - **Extraer de:** F-HIST P2 y P22 (el PDF avisa "la IA puede cometer errores").
 
   - **Escribir en:** Condicional en historia/pagina-historia-instituto.html. Cifras no van a Inicio ni footer.
+
+  - **Hecho 2026-10-14 20:32 (UTC-6):** 0-10 y 0-11 ya [x]. Lineas aprobadas en el timeline (2024 ~20.000 egresados; 2025 ~1.000 alumnos). Comentario de condicion. Cero cifra en Inicio ni pie.
 
 ### B2. Configuraciones y cuentas (S1)
 
@@ -1022,11 +1049,13 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Hecho 2026-10-13 22:35 (UTC-6):** boton Grupos y codigos. Tecnico lee `especialidades` (6, sin GE). Academico muestra PC/CV/CT/IN/LL (vacio hasta 183). JS `arbol-config-codigos.js`.
 
-97 [ ] S1-07d Al elegir especialidad: lista docentes + codigos. Expandir: editores/alumnos (correo, nombre, n_lista) autorizados.
+97 [x] S1-07d Al elegir especialidad: lista docentes + codigos. Expandir: editores/alumnos (correo, nombre, n_lista) autorizados.
 
   - **Extraer de:** F-RES 14:10; F-PDF-S2 filtros anio/seccion/codigo (logica, no look).
 
   - **Escribir en:** `Sistema 1/js/auth/panel-configuraciones-cuentas.js` listas desde `codigos.docente_id` y `miembro_codigo`; usar correo de invitaciones consumidas (`usado_por`) mediante RLS/RPC autorizada, no leer `auth.users` desde el navegador ni exponer NIE. No HTML de proyectos.
+
+  - **Hecho 2026-10-14 20:45 (UTC-6):** el arbol ya vive en `arbol-config-codigos.js` (96); `panel-configuraciones-cuentas.js` es login/registro de Cuentas, no se mezclo. Especialidad > docente > codigo > editores (nombre, correo de `invitaciones_correo.usado_por`, `n_lista`). Filtros anio/seccion/clave. SQL extra `invitaciones_select_usado_por_arbol`. No `auth.users` ni NIE.
 
 98 [~] S1-07e Admin invita/activa/desactiva Admin, Docente, Editor (correo+nombre; NIE segun DB-00b).
 
@@ -1371,6 +1400,20 @@ Las casillas S2-01a..S2-09b describian pildoras **dentro del hub**, ficha sin es
 
   - **Hecho 2026-10-14 12:55 (UTC-6):** 300 slugs UTF-8. SQL no aplicado.
 
+194 [x] S1-02c EDUCAME: WhatsApp unico; asignaturas vigentes; pagina «Más información».
+
+  - **Escribir en:** `pagina-matricula-nuevo-ingreso.html`; `pagina-educame-modalidad-flexible.html`; `css/pagina-educame.css`; `js/matricula/escenas-educame.js`; ficha General en Oferta; `CONTENIDO.md` de Matrícula.
+
+  - **Hecho 2026-10-14 18:52 (UTC-6):** Sin Google Form. wa.me/50374411075. Precálculo, Ciencias y Tecnología, Lenguaje y Literatura, Ciudadanía y valores, Inglés. Sábados 7:00 a.m.–4:00 p.m. virtual. ≥18. 1.º y 2.º a distancia. Instituto filtra por WhatsApp.
+
+  - **Ajuste 2026-10-14 19:16 (UTC-6):** Copy pasos 2–5 (Asignaturas, Especificaciones, Contacto). Ortografía corregida respecto al dictado.
+
+195 [x] S1-02b Paginas detalle: inscripcion/traslados y entrega de documentos.
+
+  - **Escribir en:** `pagina-inscripcion-y-traslados.html`; `pagina-entrega-documentos.html`; CSS/JS propios; botones «Ver más» en pasos 1 y 4 de Matrícula.
+
+  - **Hecho 2026-10-14 19:50 (UTC-6):** Paso 1 sustituye WhatsApp por Ver más (icono info). Paso 4 añade Ver más. Traslado = misma especialidad. 2.º/3.º entrevista subdirectores lun–vie 8:00–11:30 y 13:30–17:00. Documentos: SIGES, partida original, DUI 150 %, fotos 3,5×2,5 granulado B/N, examenes, antitetanica; entrega in situ cuando se solicite.
+
 ---
 
 ## D. Supabase (un proyecto, dos fronts)
@@ -1419,7 +1462,7 @@ Proyecto unico: `bd_inti_web_oficial` (`https://akvprrwjfstncadkybeh.supabase.co
 - `Sistema 1/supabase/invitaciones-admin-matriz.sql`
 - `Sistema 1/supabase/cuentas-nombres-y-bajas.sql`
 - `Sistema 1/supabase/codigos-y-membresias.sql` (184/33; aun no demostrado en remoto)
-- `Sistema 1/supabase/arbol-config-codigos.sql` (96/101; RLS desactivar codigo/miembro)
+- `Sistema 1/supabase/arbol-config-codigos.sql` (96/97/101; RLS desactivar + correo usado_por)
 - `Sistema 1/supabase/contenido-inicio-cms.sql` (55/77/186/134/142; tabla + bucket `inicio`)
 
 **No volver a ejecutar:** `politicas-rls.sql` completo, `tabla-perfiles.sql` / `trigger-nuevo-perfil.sql` / `login-invitaciones-minimo.sql` si ya crearon objetos, `semilla-admin-sin-password.sql` (duplicaria matriz).

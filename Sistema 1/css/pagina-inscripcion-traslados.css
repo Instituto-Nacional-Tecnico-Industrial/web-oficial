@@ -1,0 +1,32 @@
+/* INTIWO S1 | escenas inscripción y traslados */
+
+.esc-txt {
+  fill: currentColor;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.esc-a,
+.esc-b,
+.esc-flecha,
+.esc-reloj,
+.esc-edo {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.es-fx-primero.es-en-vista .esc-a { animation: edu-virtual 3.4s ease-in-out infinite; }
+.es-fx-traslado.es-en-vista .esc-a { animation: edu-virtual 3.2s ease-in-out infinite; }
+.es-fx-traslado.es-en-vista .esc-b { animation: edu-virtual 3.2s ease-in-out 0.4s infinite; }
+.es-fx-traslado.es-en-vista .esc-flecha { animation: esc-slide 2.8s ease-in-out infinite; }
+.es-fx-entrevista.es-en-vista .esc-reloj { animation: edu-reloj-vaiven 3.8s ease-in-out infinite; }
+.es-fx-entrevista.es-en-vista .esc-edo { animation: intiwo-finde 3.2s ease-in-out infinite; }
+
+@keyframes esc-slide {
+  0%, 100% { transform: translateX(0); opacity: 0.45; }
+  50% { transform: translateX(10px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intiwo-paso-escena * { animation: none !important; }
+}

@@ -229,6 +229,13 @@
   margin: 0 0 4px;
 }
 
+.intiwo-oferta-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
 @media (max-width: 320px) {
   .intiwo-oferta-main {
     width: calc(100% - 16px);
