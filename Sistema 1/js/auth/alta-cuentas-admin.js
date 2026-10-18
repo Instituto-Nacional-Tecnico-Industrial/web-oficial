@@ -4,6 +4,37 @@ import { supabase } from "../supabase/cliente-supabase.js";
 const DOMINIOS = /@(inti|clases)\.edu\.sv$/i;
 const ROLES_QUE_INVITAN = new Set(["administrador", "docente"]);
 const ADMIN_MATRIZ = "intiwo11543@gmail.com";
+const PREFIJOS_CODIGO = new Set(["DS", "EL", "MI", "MA", "SE", "IT"]);
+
+function construirClaveCodigo(prefijo, nivel, seccion) {
+  const pre = String(prefijo || "").trim().toUpperCase();
+  const niv = Number(nivel);
+  const sec = String(seccion || "").trim().toUpperCase();
+  if (!PREFIJOS_CODIGO.has(pre) || pre === "GE") return "";
+  if (niv < 1 || niv > 3) return "";
+  if (!/^[A-Z]$/.test(sec)) return "";
+  const clave = pre + String(niv) + sec;
+  return /^[A-Z]{2}[123][A-Z]$/.test(clave) ? clave : "";
+}
+
+function mensajeErrorCodigo(error) {
+  const texto = String(error && error.message ? error.message : "");
+  const codigo = String(error && error.code ? error.code : "");
+  if (codigo === "23505" || /duplicate|unique/i.test(texto)) {
+    return "Ese codigo ya existe en ese anio (misma clave o misma especialidad + nivel + seccion).";
+  }
+  return "No se creo el codigo: " + texto;
+}
+
+function pintarVistaClave(form) {
+  if (!form) return;
+  const vista = form.parentElement && form.parentElement.querySelector("[data-codigo-clave-vista]");
+  if (!vista) return;
+  const opcion = form.especialidad_id && form.especialidad_id.selectedOptions[0];
+  const prefijo = opcion && opcion.dataset.prefijo ? opcion.dataset.prefijo : "";
+  const clave = construirClaveCodigo(prefijo, form.nivel && form.nivel.value, form.seccion && form.seccion.value);
+  vista.textContent = clave ? "Clave: " + clave : "Clave: especialidad + nivel + seccion (ejemplo DS2B). Sin GE.";
+}
 
 function avisoEn(form, texto) {
   const nodo = form.querySelector("[data-alta-mensaje]") || form.parentElement.querySelector("[data-alta-mensaje]");
@@ -23,12 +54,19 @@ function claveDe(fila) {
   return "";
 }
 
-function puedeBorrarFila(fila, rolVista, userId) {
+function puedeActuarFila(fila, rolVista, userId) {
   if (fila.email === ADMIN_MATRIZ) return false;
   if (fila.usado_por === userId) return false;
-  if (fila.revocado_en) return false;
   if (rolVista === "administrador") return true;
   return rolVista === "docente" && fila.rol_destino === "editor" && fila.invitado_por === userId;
+}
+
+function puedeDesactivarFila(fila, rolVista, userId) {
+  return puedeActuarFila(fila, rolVista, userId) && !fila.revocado_en;
+}
+
+function puedeActivarFila(fila, rolVista, userId) {
+  return puedeActuarFila(fila, rolVista, userId) && Boolean(fila.revocado_en);
 }
 
 async function invocar(cuerpo) {
@@ -57,6 +95,10 @@ function mostrarCampoCodigoAdmin() {
     campo.hidden = !esEditor;
     const selectCod = form.querySelector("[data-codigos-select]");
     if (selectCod) selectCod.required = esEditor;
+    const campoLista = form.querySelector("[data-campo-n-lista]");
+    if (campoLista) campoLista.hidden = !esEditor;
+    const inputLista = form.querySelector("[name=n_lista]");
+    if (inputLista) inputLista.required = esEditor;
   });
 }
 
@@ -67,6 +109,7 @@ async function llenarEspecialidades() {
     .from("especialidades")
     .select("id, nombre_corto, prefijo, tipo")
     .eq("tipo", "tecnica")
+    .neq("prefijo", "GE")
     .order("orden");
   selects.forEach((select) => {
     const actual = select.value;
@@ -76,6 +119,7 @@ async function llenarEspecialidades() {
     vacio.textContent = error ? "No se leyeron especialidades (corre codigos-y-membresias.sql)" : "Elige especialidad";
     select.appendChild(vacio);
     (data || []).forEach((esp) => {
+      if (!PREFIJOS_CODIGO.has(String(esp.prefijo || "").toUpperCase())) return;
       const op = document.createElement("option");
       op.value = esp.id;
       op.textContent = esp.prefijo + " · " + esp.nombre_corto;
@@ -135,7 +179,7 @@ async function listarMisCodigos(userId) {
   }
   data.forEach((codigo) => {
     const p = document.createElement("p");
-    p.textContent = codigo.clave + " · " + codigo.anio_lectivo;
+    p.textContent = codigo.clave + " · niv. " + codigo.nivel + codigo.seccion + " · " + codigo.anio_lectivo;
     caja.appendChild(p);
   });
 }
@@ -181,12 +225,20 @@ async function listarPendientes(rolVista, userId) {
       texto.textContent = persona + " · " + fila.email + " · " + fila.rol_destino
         + (grupo ? " · " + grupo : "") + " · " + estadoFila(fila);
       articulo.appendChild(texto);
-      if (puedeBorrarFila(fila, rolVista, userId)) {
+      if (puedeDesactivarFila(fila, rolVista, userId)) {
         const boton = document.createElement("button");
         boton.type = "button";
         boton.className = "intiwo-config-baja";
-        boton.textContent = "Eliminar";
+        boton.textContent = "Desactivar";
         boton.setAttribute("data-baja-id", fila.id);
+        articulo.appendChild(boton);
+      }
+      if (puedeActivarFila(fila, rolVista, userId)) {
+        const boton = document.createElement("button");
+        boton.type = "button";
+        boton.className = "intiwo-pildora";
+        boton.textContent = "Activar";
+        boton.setAttribute("data-activar-id", fila.id);
         articulo.appendChild(boton);
       }
       lista.appendChild(articulo);
@@ -257,11 +309,19 @@ function iniciar() {
           avisoEn(form, "Elige el codigo del grupo. Si no hay, crealo primero.");
           return;
         }
+        const nLista = Number(form.n_lista && form.n_lista.value);
+        if (!Number.isInteger(nLista) || nLista < 1) {
+          avisoEn(form, "Escribe el numero de lista (n_lista) del alumno.");
+          return;
+        }
       }
       avisoEn(form, "Enviando invitacion por correo…");
       try {
         const cuerpo = { accion: "invitar", email, rol, nombres, apellidos };
-        if (rol === "editor") cuerpo.codigo_id = codigo_id;
+        if (rol === "editor") {
+          cuerpo.codigo_id = codigo_id;
+          cuerpo.n_lista = Number(form.n_lista && form.n_lista.value);
+        }
         await invocar(cuerpo);
       } catch (falla) {
         avisoEn(form, "No se pudo enviar el correo: " + (falla && falla.message ? falla.message : ""));
@@ -278,6 +338,9 @@ function iniciar() {
 
   const formCodigo = document.querySelector("[data-form-codigo]");
   if (formCodigo) {
+    formCodigo.addEventListener("input", () => pintarVistaClave(formCodigo));
+    formCodigo.addEventListener("change", () => pintarVistaClave(formCodigo));
+    pintarVistaClave(formCodigo);
     formCodigo.addEventListener("submit", async (evento) => {
       evento.preventDefault();
       const aviso = document.querySelector("[data-codigo-mensaje]");
@@ -291,17 +354,24 @@ function iniciar() {
         if (aviso) aviso.textContent = "Inicia sesion.";
         return;
       }
+      const rolVista = String(window.INTIWO_ROL || "").toLowerCase();
+      if (rolVista !== "docente") {
+        if (aviso) aviso.textContent = "Solo el docente crea codigos de su grupo.";
+        return;
+      }
       const especialidadId = String(formCodigo.especialidad_id.value || "");
       const opcion = formCodigo.especialidad_id.selectedOptions[0];
       const prefijo = opcion && opcion.dataset.prefijo ? opcion.dataset.prefijo : "";
       const nivel = Number(formCodigo.nivel.value);
       const seccion = String(formCodigo.seccion.value || "").trim().toUpperCase();
+      if (formCodigo.seccion) formCodigo.seccion.value = seccion;
       const anio = Number(formCodigo.anio_lectivo.value);
-      if (!especialidadId || !prefijo || !/^[A-Z]$/.test(seccion) || nivel < 1 || nivel > 3 || anio < 2026) {
-        if (aviso) aviso.textContent = "Completa especialidad, nivel 1-3, seccion A-Z y anio desde 2026.";
+      const clave = construirClaveCodigo(prefijo, nivel, seccion);
+      if (!especialidadId || !clave || anio < 2026) {
+        if (aviso) aviso.textContent = "Completa especialidad (DS EL MI MA SE IT, sin GE), nivel 1-3, seccion A-Z y anio desde 2026.";
+        pintarVistaClave(formCodigo);
         return;
       }
-      const clave = prefijo + String(nivel) + seccion;
       if (aviso) aviso.textContent = "Creando " + clave + "…";
       const { error } = await supabase.from("codigos").insert({
         clave,
@@ -312,13 +382,13 @@ function iniciar() {
         anio_lectivo: anio,
       });
       if (error) {
-        if (aviso) aviso.textContent = "No se creo el codigo: " + error.message;
+        if (aviso) aviso.textContent = mensajeErrorCodigo(error);
         return;
       }
       formCodigo.reset();
       formCodigo.anio_lectivo.value = "2026";
+      pintarVistaClave(formCodigo);
       if (aviso) aviso.textContent = "Codigo " + clave + " creado. Ya puedes invitar alumnos a ese grupo.";
-      const rolVista = (window.INTIWO_ROL || "").toLowerCase();
       await llenarSelectCodigos(rolVista, user.id);
       await listarMisCodigos(user.id);
     });
@@ -326,16 +396,21 @@ function iniciar() {
 
   document.querySelectorAll("[data-altas-lista]").forEach((lista) => {
     lista.addEventListener("click", async (evento) => {
-      const boton = evento.target.closest("[data-baja-id]");
-      if (!boton || !supabase) return;
-      const id = boton.getAttribute("data-baja-id");
+      const bBaja = evento.target.closest("[data-baja-id]");
+      const bActiva = evento.target.closest("[data-activar-id]");
+      if ((!bBaja && !bActiva) || !supabase) return;
+      const id = bBaja ? bBaja.getAttribute("data-baja-id") : bActiva.getAttribute("data-activar-id");
       if (!id) return;
-      if (!window.confirm("Se desactiva el acceso. No se borra el historial ni los proyectos. Continuar?")) return;
+      const confirmar = bBaja
+        ? "Se desactiva el acceso. No se borra el historial ni los proyectos. Continuar?"
+        : "Se reactiva el acceso. La persona entra con su correo y contrasena. Continuar?";
+      if (!window.confirm(confirmar)) return;
+      const boton = bBaja || bActiva;
       boton.disabled = true;
       try {
-        await invocar({ accion: "baja", id });
+        await invocar({ accion: bBaja ? "baja" : "activar", id });
       } catch (falla) {
-        window.alert(falla && falla.message ? falla.message : "No se pudo dar de baja.");
+        window.alert(falla && falla.message ? falla.message : "No se pudo completar.");
         boton.disabled = false;
         return;
       }
@@ -357,6 +432,7 @@ function iniciar() {
     await llenarSelectCodigos(rol, user.id);
     await listarMisCodigos(user.id);
     listarPendientes(rol, user.id);
+    pintarVistaClave(document.querySelector("[data-form-codigo]"));
   });
 }
 

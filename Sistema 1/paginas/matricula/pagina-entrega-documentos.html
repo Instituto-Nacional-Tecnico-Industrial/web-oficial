@@ -1,222 +1,445 @@
 <!DOCTYPE html>
+
 <html lang="es" data-theme="dark">
+
 <head>
+
   <meta charset="utf-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Entrega de documentos | INTIWO</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,400;0,8..144,700&display=swap" rel="stylesheet">
+
   <link rel="icon" href="../../iconos/favicon.svg" type="image/svg+xml">
+
   <link rel="stylesheet" href="../../css/variables-tema-diurno-nocturno.css">
+
   <link rel="stylesheet" href="../../css/layout-hamburguesa-y-overlay.css">
+
   <link rel="stylesheet" href="../../css/pagina-matricula.css">
+
   <link rel="stylesheet" href="../../css/pagina-educame.css">
+
   <link rel="stylesheet" href="../../css/pagina-entrega-documentos.css">
+
 </head>
+
 <body data-seccion-actual="matricula">
+
   <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute">
+
     <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></symbol>
+
     <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
+
     <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+
     <symbol id="i-house" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+
     <symbol id="i-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></symbol>
+
     <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/><path d="M8 7h6"/><path d="M8 11h8"/></symbol>
+
     <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
+
     <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+
     <symbol id="i-map" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+
     <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+
     <symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></symbol>
+
     <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+
     <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+
     <symbol id="i-facebook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
+
     <symbol id="i-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></symbol>
+
     <symbol id="i-whatsapp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 21 4.5 16A9 9 0 1 1 8 19.5L3 21z"/><path d="M8.5 9.5c.5 2.5 2.5 4.5 5 5"/></symbol>
+
     <symbol id="i-arrow-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
+
     <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></symbol>
+
     <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+
     <symbol id="i-school" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m2 10 10-5 10 5-10 5Z"/><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M12 22v-7"/></symbol>
+
     <symbol id="i-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></symbol>
+
   </svg>
 
+
+
   <header class="intiwo-barra">
+
     <button class="intiwo-btn-icono" type="button" data-intiwo-menu aria-expanded="false" aria-controls="intiwo-menu" aria-label="Abrir menu">
+
       <svg width="24" height="24"><use href="#i-menu"/></svg>
+
     </button>
+
     <a href="../inicio/pagina-inicio-cms.html" aria-label="INTI">
+
       <img class="intiwo-distintivo" src="../../iconos/marca-inti/Logotipo%20Barra-01.svg" alt="I.N.T.I.">
+
     </a>
+
     <div class="intiwo-barra-derecha">
+
       <button class="intiwo-interruptor-tema" type="button" data-intiwo-tema aria-label="Cambiar tema">
+
         <svg class="intiwo-tema-icon intiwo-tema-icon--sun" width="14" height="14"><use href="#i-sun"/></svg>
+
         <svg class="intiwo-tema-icon intiwo-tema-icon--moon" width="14" height="14"><use href="#i-moon"/></svg>
+
       </button>
+
     </div>
+
   </header>
 
+
+
   <div id="intiwo-velo" class="intiwo-velo"></div>
+
   <nav id="intiwo-menu" class="intiwo-menu" aria-label="Secciones INTIWO">
+
     <ul class="intiwo-menu-lista">
+
       <li><a class="intiwo-menu-item" data-seccion="inicio" href="../inicio/pagina-inicio-cms.html"><svg><use href="#i-house"/></svg> Inicio</a></li>
+
       <li><a class="intiwo-menu-item es-activo" data-seccion="matricula" href="pagina-matricula-nuevo-ingreso.html"><svg><use href="#i-clipboard"/></svg> Matrícula</a></li>
+
       <li><a class="intiwo-menu-item" data-seccion="oferta" href="../oferta-academica/pagina-oferta-academica.html"><svg><use href="#i-book"/></svg> Oferta académica</a></li>
+
       <li><!-- TODO-SPLIT-REPO --><a class="intiwo-menu-item" data-seccion="proyectos" href="../../../Sistema 2/paginas/proyectos/pagina-hub-proyectos.html"><svg><use href="#i-folder"/></svg> Proyectos</a></li>
+
       <li><a class="intiwo-menu-item" data-seccion="personal" href="../personal/pagina-personal-instituto.html"><svg><use href="#i-users"/></svg> Personal</a></li>
+
       <li><a class="intiwo-menu-item" data-seccion="ubicaciones" href="../ubicaciones/pagina-ubicaciones.html"><svg><use href="#i-map"/></svg> Ubicaciones</a></li>
+
       <li><a class="intiwo-menu-item" data-seccion="historia" href="../historia/pagina-historia-instituto.html"><svg><use href="#i-clock"/></svg> Historia</a></li>
+
       <li><a class="intiwo-menu-item es-desactivado" data-seccion="configuraciones" data-config-href="../configuraciones/pagina-configuraciones.html" aria-disabled="true"><svg><use href="#i-settings"/></svg> Configuraciones</a></li>
+
     </ul>
+
     <div class="intiwo-menu-pie">
+
       <a class="intiwo-menu-item intiwo-menu-cuentas" href="../cuentas/pagina-cuentas.html">
+
         <svg aria-hidden="true"><use href="#i-user"/></svg> Cuentas
+
       </a>
+
     </div>
+
   </nav>
 
+
+
   <main class="intiwo-matricula">
+
     <section class="intiwo-paso es-layout-portada" id="paso-inicio">
+
       <div class="intiwo-paso-interior">
+
         <h1>Documentos</h1>
+
         <h2>Entrega en el Instituto</h2>
+
         <p>El joven y su encargado asisten a la institución cuando el correo indique la fecha. Toda la papelería se entrega dentro de las instalaciones, no antes.</p>
+
         <div class="intiwo-paso-acciones">
+
           <button class="intiwo-pildora" type="button" data-siguiente="paso-cita"><span class="intiwo-pildora-icono"><svg><use href="#i-arrow-down"/></svg></span> Qué llevar</button>
+
         </div>
+
       </div>
+
     </section>
+
+
 
     <section class="intiwo-paso es-layout-izq es-fx-correo" id="paso-cita">
+
       <article class="intiwo-paso-tarjeta">
+
         <div class="intiwo-paso-escena" aria-hidden="true">
+
           <svg class="intiwo-escena-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+
             <use class="doc-hoja" href="#i-mail" width="96" height="96" x="152" y="88"/>
+
             <use class="doc-duo" href="#i-users" width="72" height="72" x="164" y="220"/>
+
             <text class="doc-txt" x="200" y="330" text-anchor="middle">Correo + encargado</text>
+
           </svg>
+
         </div>
+
         <div class="intiwo-paso-interior">
+
           <span class="intiwo-paso-marca">1</span>
+
           <h2>Según el correo</h2>
+
           <p>Junto con tu encargado deberás asistir a la institución a entregar los documentos según la calendarización que se enviará por correo. No adelantes la entrega: espera esa fecha.</p>
+
           <div class="intiwo-paso-acciones">
+
             <button class="intiwo-pildora" type="button" data-siguiente="paso-lista"><span class="intiwo-pildora-icono"><svg><use href="#i-arrow-down"/></svg></span> Siguiente</button>
+
           </div>
+
         </div>
+
       </article>
+
     </section>
+
+
 
     <section class="intiwo-paso es-layout-der es-fx-lista" id="paso-lista">
+
       <article class="intiwo-paso-tarjeta">
+
         <div class="intiwo-paso-interior">
+
           <span class="intiwo-paso-marca">2</span>
+
           <h2>Papelería indispensable</h2>
+
           <p>Prepara estos documentos para el proceso de matrícula:</p>
+
           <ul class="intiwo-paso-lista">
+
             <li>Boleta de notas de noveno grado original, impresa desde SIGES, sellada y firmada por el director del centro educativo y el docente tutor de grado.</li>
+
             <li>Partida de nacimiento reciente, en buen estado. No se acepta fotocopia.</li>
+
             <li>Fotocopia a color del DUI del encargado, ampliada al 150 %.</li>
+
             <li>Dos fotografías blanco y negro, formales, tomadas recientemente en papel granulado, de 3,5 cm de alto por 2,5 cm de ancho.</li>
+
             <li>Resultados de exámenes generales.</li>
+
             <li>Comprobante de vacuna antitetánica.</li>
+
           </ul>
+
           <div class="intiwo-paso-acciones">
+
             <button class="intiwo-pildora" type="button" data-siguiente="paso-entrega"><span class="intiwo-pildora-icono"><svg><use href="#i-arrow-down"/></svg></span> Siguiente</button>
+
           </div>
+
         </div>
+
         <div class="intiwo-paso-escena" aria-hidden="true">
+
           <svg class="intiwo-escena-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+
             <g fill="none" stroke="currentColor" stroke-width="2.5">
+
               <rect class="doc-hoja h1" x="48" y="36" width="304" height="44" rx="10"/>
+
               <rect class="doc-hoja h2" x="48" y="92" width="304" height="44" rx="10"/>
+
               <rect class="doc-hoja h3" x="48" y="148" width="304" height="44" rx="10"/>
+
               <rect class="doc-hoja h4" x="48" y="204" width="304" height="44" rx="10"/>
+
               <rect class="doc-hoja h5" x="48" y="260" width="304" height="44" rx="10"/>
+
               <rect class="doc-hoja h6" x="48" y="316" width="304" height="44" rx="10"/>
+
             </g>
+
             <text class="doc-txt" x="200" y="64" text-anchor="middle">SIGES</text>
+
             <text class="doc-txt" x="200" y="120" text-anchor="middle">Partida</text>
+
             <text class="doc-txt" x="200" y="176" text-anchor="middle">DUI 150 %</text>
+
             <text class="doc-txt" x="200" y="232" text-anchor="middle">Fotos 3,5 × 2,5</text>
+
             <text class="doc-txt" x="200" y="288" text-anchor="middle">Exámenes</text>
+
             <text class="doc-txt" x="200" y="344" text-anchor="middle">Antitetánica</text>
+
           </svg>
+
         </div>
+
       </article>
+
     </section>
+
+
 
     <section class="intiwo-paso es-layout-izq es-fx-entrega" id="paso-entrega">
+
       <article class="intiwo-paso-tarjeta">
+
         <div class="intiwo-paso-escena" aria-hidden="true">
+
           <svg class="intiwo-escena-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+
             <use class="doc-sello" href="#i-school" width="88" height="88" x="156" y="64"/>
+
             <use class="doc-duo" href="#i-clipboard" width="72" height="72" x="164" y="188"/>
+
             <text class="doc-txt" x="200" y="300" text-anchor="middle">En las instalaciones</text>
+
           </svg>
+
         </div>
+
         <div class="intiwo-paso-interior">
+
           <span class="intiwo-paso-marca">3</span>
+
           <h2>Dentro del Instituto</h2>
+
           <p>Todos los documentos se entregan dentro de las instalaciones, cuando el Instituto los solicite. Llévalos completos el día que indique el correo.</p>
+
           <div class="intiwo-paso-acciones">
+
             <a class="intiwo-pildora es-linea" href="pagina-matricula-nuevo-ingreso.html"><span class="intiwo-pildora-icono"><svg><use href="#i-clipboard"/></svg></span> Volver a Matrícula</a>
+
           </div>
+
         </div>
+
       </article>
+
     </section>
+
+
 
     <section class="intiwo-paso es-layout-cierre intiwo-pie-sello" id="paso-cierre">
+
       <div class="intiwo-cierre-pista">
+
         <div class="intiwo-cierre">
+
           <div class="intiwo-cierre-recorte">
+
             <div class="intiwo-cierre-sello-caja" aria-hidden="true">
+
               <img class="intiwo-cierre-sello" src="../../iconos/marca-inti/Logotipo%20Circular-01.svg" alt="">
+
               <div class="intiwo-cierre-velo"></div>
+
             </div>
+
             <a class="intiwo-pildora intiwo-cierre-cta" href="pagina-matricula-nuevo-ingreso.html"><span class="intiwo-pildora-icono"><svg><use href="#i-clipboard"/></svg></span> Volver a Matrícula</a>
+
           </div>
+
           <footer class="intiwo-pie">
+
             <div class="intiwo-pie-grid">
+
               <div class="intiwo-pie-marca">
+
                 <img class="intiwo-sello-pie" src="../../iconos/marca-inti/Logotipo%20Barra-01.svg" alt="I.N.T.I.">
+
                 <p class="intiwo-eslogan"><em>Líder</em> técnico<br>a nivel<em>nacional</em></p>
-                <a class="intiwo-pildora" href="https://docs.google.com/forms/d/e/1FAIpQLSchOv93fiyvoxF2z_mahlUcUhzbt5FyxfZTupLeODpdBcJjhw/viewform" target="_blank" rel="noopener noreferrer"><span class="intiwo-pildora-icono"><svg><use href="#i-mail"/></svg></span> Inscríbete ahora</a>
+
+                <a class="intiwo-pildora" data-matricula-formulario href="https://docs.google.com/forms/d/e/1FAIpQLSchOv93fiyvoxF2z_mahlUcUhzbt5FyxfZTupLeODpdBcJjhw/viewform" target="_blank" rel="noopener noreferrer"><span class="intiwo-pildora-icono"><svg><use href="#i-mail"/></svg></span> Inscríbete ahora</a>
+
               </div>
+
               <div>
+
                 <h2>SÍGUENOS</h2>
+
                 <div class="intiwo-pie-redes">
+
                   <a class="intiwo-red" href="https://www.facebook.com/tecnicosinti/?locale=es_LA" aria-label="Facebook"><svg><use href="#i-facebook"/></svg></a>
+
                   <a class="intiwo-red" href="https://www.instagram.com/inti.edu.sv/" aria-label="Instagram"><svg><use href="#i-instagram"/></svg></a>
+
                 </div>
+
                 <h2>LLÁMANOS</h2>
+
                 <div class="intiwo-pie-llamanos">
+
                   <a class="intiwo-wa" href="https://wa.me/50374411075"><span class="intiwo-wa-icono"><svg><use href="#i-whatsapp"/></svg></span> 7441-1075</a>
+
                 </div>
+
               </div>
+
               <div>
+
                 <h2>ENLACES</h2>
+
                 <div class="intiwo-pie-enlaces">
+
                   <a href="../inicio/pagina-inicio-cms.html">Inicio</a>
+
                   <a href="pagina-matricula-nuevo-ingreso.html">Matrícula</a>
+
                   <a href="../oferta-academica/pagina-oferta-academica.html">Oferta académica</a>
+
                   <a href="../../../Sistema 2/paginas/proyectos/pagina-hub-proyectos.html">Proyectos</a>
+
                   <a href="../historia/pagina-historia-instituto.html">Historia</a>
+
                 </div>
+
               </div>
+
             </div>
+
             <p class="intiwo-copy">©2026 Instituto Nacional Técnico Industrial. Todos los derechos reservados</p>
+
           </footer>
+
         </div>
+
       </div>
+
     </section>
+
   </main>
 
+
+
   <script src="../../js/tema/persistir-tema-diurno-nocturno.js"></script>
+
   <script src="../../js/cromo/menu-hamburguesa-overlay.js"></script>
+
   <script src="../../js/auth/sesion-roles-auth.js"></script>
+
   <script type="module" src="../../js/auth/sesion-supabase.js"></script>
+
   <script src="../../js/cromo/cursor-intiwo.js"></script>
+
   <script src="../../js/cromo/pie-sello-recorte.js"></script>
+
   <script src="../../js/matricula/pasos-matricula.js"></script>
+
   <script src="../../js/matricula/escenas-entrega-documentos.js"></script>
+
+  <script type="module" src="../../js/cms/cargar-footer-cms.js"></script>
+  <script type="module" src="../../js/cms/cargar-contactos-programas-cms.js"></script>
 </body>
+
 </html>

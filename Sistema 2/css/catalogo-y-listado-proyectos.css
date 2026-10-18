@@ -50,6 +50,14 @@ html[data-theme="light"] .intiwo-filtro-campos select {
   cursor: pointer;
 }
 
+.intiwo-ciclo-actual,
+.intiwo-ciclo-estado {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
 .intiwo-pildora-esp[data-rama="electricos"]:hover,
 .intiwo-pildora-esp[data-rama="electricos"]:focus-visible,
 .intiwo-pildora-esp[data-rama="electricos"].es-activa {
@@ -144,4 +152,92 @@ html[data-theme="light"] .intiwo-filtro-campos select {
 .intiwo-listado-vacio {
   text-align: center;
   color: var(--texto-suave);
+}
+
+.intiwo-editor-volver {
+  display: flex;
+  width: fit-content;
+  margin: 1.5rem auto 0;
+}
+
+.intiwo-editor-lista-acciones {
+  display: grid;
+  justify-items: center;
+  gap: 0.25rem;
+  margin: 0 auto 1rem;
+}
+
+.intiwo-editor-lista-acciones p {
+  margin: 0;
+}
+
+.intiwo-evaluar-ciclo {
+  display: grid;
+  gap: 0.35rem;
+  max-width: 240px;
+  margin: 0 auto 1.25rem;
+  color: var(--texto);
+}
+
+.intiwo-evaluar-ciclo select {
+  border: 0;
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  background: var(--superficie-2);
+  color: var(--texto);
+  font: inherit;
+}
+
+.intiwo-filtro > h2 {
+  margin: 2rem 0 0.75rem;
+  text-align: center;
+}
+
+.intiwo-evaluar-academico-asignatura {
+  margin: 1.25rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(128, 128, 128, 0.28);
+}
+
+.intiwo-evaluar-academico-asignatura h3 {
+  margin: 0 0 0.75rem;
+  text-align: center;
+}
+
+.intiwo-evaluar-codigo {
+  margin: 1.25rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(128, 128, 128, 0.28);
+}
+
+.intiwo-evaluar-codigo h2 {
+  margin: 0 0 0.75rem;
+  text-align: center;
+}
+
+.intiwo-evaluar-editores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  margin: 0 0 0.8rem;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 12px;
+  padding: 0.75rem;
+}
+
+.intiwo-evaluar-editores label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.intiwo-proyecto-evaluacion > p {
+  text-align: left;
+}
+
+.intiwo-evaluar-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
 }

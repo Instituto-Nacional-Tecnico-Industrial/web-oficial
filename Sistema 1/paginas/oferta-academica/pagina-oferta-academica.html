@@ -78,6 +78,8 @@
   <main class="intiwo-oferta-main">
     <h1>Oferta académica</h1>
     <p>Seis especialidades técnicas y el Bachillerato General. Elige una para ver de qué se trata y qué se estudia.</p>
+    <p id="intiwo-oferta-ciclo-actual" role="status" aria-live="polite">Cargando ciclo de oferta vigente…</p>
+    <p id="intiwo-oferta-ciclo-estado" role="status" aria-live="polite" hidden></p>
     <section id="intiwo-especialidades" class="intiwo-especialidades es-abierto">
       <p class="intiwo-especialidades-etiqueta">Especialidades</p>
       <div class="intiwo-especialidades-caja">
@@ -242,7 +244,7 @@
       </article>
       <article class="intiwo-oferta-ficha" data-oferta-ficha="general" hidden>
         <h2>Bachillerato General (EDUCAME)</h2>
-        <p>Bachillerato General a distancia para mayores de 18 años. Primero y segundo año, sábados de 7:00 a.m. a 4:00 p.m. en modalidad virtual. La única vía pública es WhatsApp <strong>7441-1075</strong>; el Instituto evalúa internamente si aplicas.</p>
+        <p>Bachillerato General a distancia para personas mayores de 18 años. Primero y segundo año; asistencia presencial únicamente los sábados, de 7:00 a.m. a 4:00 p.m., dentro del Instituto. Para consultas de EDUCAME, comunícate al <strong data-educame-telefono>7754-5899</strong>.</p>
         <h3>Módulos</h3>
         <ul>
           <li>Precálculo</li>
@@ -252,7 +254,7 @@
           <li>Inglés</li>
         </ul>
         <div class="intiwo-oferta-acciones">
-          <a class="intiwo-pildora" href="https://wa.me/50374411075"><span class="intiwo-pildora-icono"><svg><use href="#i-whatsapp"/></svg></span> 7441-1075</a>
+          <a class="intiwo-pildora" data-educame-whatsapp href="https://wa.me/50377545899"><span class="intiwo-pildora-icono"><svg><use href="#i-whatsapp"/></svg></span> <span data-educame-telefono>7754-5899</span></a>
           <a class="intiwo-pildora es-linea" href="../matricula/pagina-educame-modalidad-flexible.html"><span class="intiwo-pildora-icono"><svg><use href="#i-info"/></svg></span> Más información</a>
         </div>
       </article>
@@ -267,14 +269,14 @@
             <img class="intiwo-cierre-sello" src="../../iconos/marca-inti/Logotipo%20Circular-01.svg" alt="">
             <div class="intiwo-cierre-velo"></div>
           </div>
-          <a class="intiwo-pildora intiwo-cierre-cta" href="https://docs.google.com/forms/d/e/1FAIpQLSchOv93fiyvoxF2z_mahlUcUhzbt5FyxfZTupLeODpdBcJjhw/viewform" target="_blank" rel="noopener noreferrer"><span class="intiwo-pildora-icono"><svg><use href="#i-file"/></svg></span> Inscribirme</a>
+          <a class="intiwo-pildora intiwo-cierre-cta" data-matricula-formulario href="https://docs.google.com/forms/d/e/1FAIpQLSchOv93fiyvoxF2z_mahlUcUhzbt5FyxfZTupLeODpdBcJjhw/viewform" target="_blank" rel="noopener noreferrer"><span class="intiwo-pildora-icono"><svg><use href="#i-file"/></svg></span> Inscribirme</a>
         </div>
         <footer class="intiwo-pie">
           <div class="intiwo-pie-grid">
             <div class="intiwo-pie-marca">
               <img class="intiwo-sello-pie" src="../../iconos/marca-inti/Logotipo%20Barra-01.svg" alt="I.N.T.I.">
               <p class="intiwo-eslogan"><em>Líder</em> técnico<br>a nivel<em>nacional</em></p>
-              <a class="intiwo-pildora" href="https://docs.google.com/forms/d/e/1FAIpQLSchOv93fiyvoxF2z_mahlUcUhzbt5FyxfZTupLeODpdBcJjhw/viewform" target="_blank" rel="noopener noreferrer"><span class="intiwo-pildora-icono"><svg><use href="#i-mail"/></svg></span> Inscríbete ahora</a>
+              <a class="intiwo-pildora" data-matricula-formulario href="https://docs.google.com/forms/d/e/1FAIpQLSchOv93fiyvoxF2z_mahlUcUhzbt5FyxfZTupLeODpdBcJjhw/viewform" target="_blank" rel="noopener noreferrer"><span class="intiwo-pildora-icono"><svg><use href="#i-mail"/></svg></span> Inscríbete ahora</a>
             </div>
             <div>
               <h2>SÍGUENOS</h2>
@@ -310,6 +312,9 @@
   <script type="module" src="../../js/auth/sesion-supabase.js"></script>
   <script src="../../js/cromo/cursor-intiwo.js"></script>
   <script src="../../js/oferta/pildoras-oferta-academica.js"></script>
+  <script type="module" src="../../js/oferta/ciclo-especialidades-oferta.js?v=201"></script>
   <script src="../../js/cromo/pie-sello-recorte.js"></script>
+  <script type="module" src="../../js/cms/cargar-footer-cms.js"></script>
+  <script type="module" src="../../js/cms/cargar-contactos-programas-cms.js"></script>
 </body>
 </html>

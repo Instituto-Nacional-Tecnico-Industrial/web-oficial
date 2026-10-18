@@ -132,6 +132,20 @@ html[data-theme="light"] .intiwo-ficha-campos textarea {
   margin-top: 0.5rem;
 }
 
+.intiwo-ficha-acciones--guardar {
+  justify-content: center;
+  padding-top: 0.9rem;
+}
+
+.intiwo-ficha-retorno-preview {
+  margin: 0 0 1rem;
+  text-align: center;
+}
+
+.intiwo-ficha-retorno-preview[hidden] {
+  display: none;
+}
+
 .intiwo-ficha:not(.es-edicion) [data-ficha-edicion] {
   display: none;
 }

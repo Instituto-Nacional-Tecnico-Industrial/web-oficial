@@ -37,6 +37,9 @@
     document.querySelectorAll('[data-config-staff]').forEach((boton) => {
       boton.hidden = !esStaff;
     });
+    document.querySelectorAll('[data-config-admin]').forEach((boton) => {
+      boton.hidden = vista !== 'administrador';
+    });
 
     if (descripcion) {
       descripcion.textContent = vista === 'sin-acceso'
@@ -44,10 +47,10 @@
         : vista === 'rol-desconocido'
           ? 'No se pudo determinar que opciones corresponden a esta cuenta.'
           : vista === 'editor'
-            ? 'Opciones reducidas: tema, restablecer clave y salir. No creas cuentas ni ves otros grupos.'
+            ? 'Vista minima: ficha en Proyectos, tema (barra) y restablecer contrasena. No creas cuentas.'
             : vista === 'docente'
-              ? 'Puedes dar de alta editores, crear tus codigos y desactivar los tuyos. No ves a otros docentes.'
-              : 'Opciones de administrador: cuentas, grupos Tecnico/Academico y bajas logicas.';
+              ? 'Puedes dar de alta editores, buscar alumnos ya dados de alta e incorporarlos a tu codigo, y desactivar los tuyos. No ves a otros docentes.'
+              : 'Opciones de administrador: cuentas, buscar alumnos y docentes, grupos Tecnico/Academico y bajas logicas.';
     }
   }
 

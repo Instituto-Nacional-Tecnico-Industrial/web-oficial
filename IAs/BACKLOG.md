@@ -1,8 +1,8 @@
 # Backlog INTIWO
 
-**Ultima modificacion:** 2026-10-14 20:45 (UTC-6) | **IA:** Cursor Grok 4.6 | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-18 15:46 (UTC-6) | **IA:** GitHub Copilot | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
-Carpeta exclusiva de IAs: `IAs/` (solo este archivo y `RESOLUCIONES.md`). Al marcar o agregar: misma fecha, hora (UTC-6) e IA en ambos; indica el dispositivo. Apuntes en orden cronologico.
+Carpeta de trabajo entre IAs: `IAs/` contiene este backlog general, `RESOLUCIONES.md` y documentos especializados de traspaso/backlog cuando se soliciten expresamente. No asumir que un documento nuevo sustituye estos dos archivos canonicos. Al actualizar estos dos: misma fecha, hora (UTC-6) e IA; indica el dispositivo. Apuntes en orden cronologico.
 
 **Antes de tocar codigo:** leer este archivo y `RESOLUCIONES.md` de inicio a fin. **No borrar** texto de la otra IA. Corregir codigo ajeno si, dejando escrito en que se equivoco.
 
@@ -345,6 +345,8 @@ Tabla institucional (telefonos/redes): `RESOLUCIONES.md` seccion "Datos instituc
 
   - **Decision 2026-10-11 21:00 (UTC-6):** los números 7441-1075 y 6674-3159 son números válidos de WhatsApp y se reconocen como contactos reales. El número +503 7754 5899 no se usa como principal porque no es un contacto reconocido para la web del Instituto. Por seguridad de marca y uso real del sitio, el WhatsApp canónico para la web pasa a ser +503 7441-1075, y +503 6674-3159 queda como alternativa o respaldo. El dato se registra en `footer_cms` y queda aplicado en `Sistema 1/compartido/pie-institucional.html` y su copia en `Sistema 2/compartido/pie-institucional.html`, con enlace `wa.me/50374411075`.
 
+  - **Aclaracion del Instituto 2026-10-16 23:00 (UTC-6):** `+503 7754-5899` y `oficina.educame@inti.edu.sv` son contactos especificos de la modalidad flexible EDUCAME. Esta excepcion no cambia el WhatsApp institucional general (7441-1075) de los pies compartidos.
+
 13 [x] 0-13 Dominio de correo alumnos/docentes.
 
   - **Extraer de:** F-CTX P1 menciona nie@inti.edu.sv (historico Odoo, no copiar flujo Odoo).
@@ -591,7 +593,7 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Escribir en:** `Sistema 1/js/cms/cargar-footer-cms.js` (puede copiarse a S2). Leer una fila `footer_cms`; campos de WhatsApp principal y alterno separados. Fallback institucional solo si no hay fila o falla la consulta; visitantes solo leen.
 
-42 [~] SH-06c Admin edita telefonos/redes del footer (Guardar CMS o Config).
+42 [x] SH-06c Admin edita telefonos/redes del footer (Guardar CMS o Config).
 
   - **Extraer de:** F-OLD P2 (secretarias sin codigo); F-CMS.
 
@@ -599,6 +601,8 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Avance 2026-10-12 21:10 (UTC-6):** agregada en Configuraciones la estructura del editor para WhatsApp principal/alternativo y redes Facebook, Instagram y TikTok, usando los contactos/URLs institucionales conocidos. Campos y guardado quedan deshabilitados y se informa el motivo: `cargar-footer-cms.js` y `tabla-footer-cms.sql` siguen vacios, y faltan cliente Auth, tabla `footer_cms` y RLS admin (`SH-07a`, `DB-02e`, `DB-03a`). La vista admin basada en almacenamiento local no se acepta como control de autorizacion.
   - **Pendiente para cerrar:** implementar la carga/guardado real en `cargar-footer-cms.js`, completar el contrato DB y probar que un admin autenticado guarda mientras roles no-admin y anonimo reciben denegacion RLS. Sin estas dependencias, mantener los controles bloqueados; no simular persistencia local.
+
+  - **Hecho 2026-10-16 14:40 (UTC-6):** SQL `tabla-footer-cms.sql` (fila unica, SELECT publico, INSERT/UPDATE solo `intiwo_es_admin`). JS `cargar-footer-cms.js` lee el pie; Config guarda WhatsApp principal/alterno y redes. Sin localStorage. Fallback 7441-1075 / 6674-3159. Instituto: Run SQL.
 
 43 [x] SH-07a `cliente-supabase.js` S1 y S2: inicializar `createClient(url, publishable_key)` con fuente de configuracion de despliegue aprobada; nunca `service_role`.
 
@@ -1057,7 +1061,7 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Hecho 2026-10-14 20:45 (UTC-6):** el arbol ya vive en `arbol-config-codigos.js` (96); `panel-configuraciones-cuentas.js` es login/registro de Cuentas, no se mezclo. Especialidad > docente > codigo > editores (nombre, correo de `invitaciones_correo.usado_por`, `n_lista`). Filtros anio/seccion/clave. SQL extra `invitaciones_select_usado_por_arbol`. No `auth.users` ni NIE.
 
-98 [~] S1-07e Admin invita/activa/desactiva Admin, Docente, Editor (correo+nombre; NIE segun DB-00b).
+98 [x] S1-07e Admin invita/activa/desactiva Admin, Docente, Editor (correo+nombre; NIE segun DB-00b).
 
   - **Extraer de:** F-RES 14:10; F-OLD P9 (invitacion por correo).
 
@@ -1065,17 +1069,31 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Avance 2026-10-13 21:48 (UTC-6):** alta por Edge Function + nombres/apellidos; lista de correos; baja logica. HMAC NIE y lista oficial siguen pendientes. Confirmar en remoto `invitaciones-docente-editor.sql`, `invitaciones-admin-matriz.sql`, `cuentas-nombres-y-bajas.sql`.
 
-99 [~] S1-07f Docente: codigo = Especialidad + Nivel 1/2/3 + Seccion = `DS2B`. Prefijos DS, EL, MI, MA, SE, IT. **Sin GE.** Alta minima + arbol 96/101 (22:35); n_lista/HMAC (100) pendiente.
+  - **Hecho 2026-10-16 08:18 (UTC-6):** Pages solo `functions.invoke` (invitar | baja | activar). Sin `service_role` ni Admin API en el navegador. Contrasena la define el invitado en `pagina-definir-contrasena.html`. Desactivar: `desactivado_en` + ban + signOut, no DELETE. Activar: quita ban y reactiva perfil/membresia. Editor: NIE solo como parte local del correo. HMAC y padron oficial siguen en 100/185. Instituto: volver a pegar `invitar-cuenta/index.ts` y Deploy.
+
+99 [x] S1-07f Docente: codigo = Especialidad + Nivel 1/2/3 + Seccion = `DS2B`. Prefijos DS, EL, MI, MA, SE, IT. **Sin GE.** Alta minima + arbol 96/101 (22:35); n_lista/HMAC (100) pendiente.
 
   - **Extraer de:** F-RES 14:10; F-PDF-S2 "Codigo DSXX".
 
   - **Escribir en:** `Sistema 1/js/auth/panel-configuraciones-cuentas.js` genera y valida clave; guardar `codigos` con unicidad por especialidad/nivel/seccion/anio_lectivo y docente propietario.
 
-100 [ ] S1-07g Docente: dentro del codigo, correo/n_lista de editores; verificar el NIE del alumno contra la lista oficial DB-00b.
+  - **Hecho 2026-10-16 08:25 (UTC-6):** `construirClaveCodigo` en `alta-cuentas-admin.js` (el panel de Cuentas es login, no se mezclo). Prefijos DS EL MI MA SE IT; rechaza GE. Insert `codigos` con `docente_id` = sesion. Unicidad en SQL (`clave+anio` y `especialidad+nivel+seccion+anio`). Vista previa de clave. n_lista/HMAC siguen en 100.
+
+196 [x] S1-07j Buscar cuenta existente (look F-PNG-S2B). Docente: solo editores; incorporar al codigo del anio sin nueva cuenta. Admin: alumnos y docentes; desactivar/activar. Editor y Academico no buscan.
+
+  - **Extraer de:** Instituto 2026-10-16 13:34; F-PNG-S2B barra Proyectos (aviso verde + sugerencias aunque se equivoque).
+
+  - **Escribir en:** Configuraciones (docente y administrador). Correo de `invitaciones_correo`; membresia `miembro_codigo` del codigo actual. No DELETE. No `auth.users`. SQL `buscar-cuentas-config.sql`.
+
+  - **Hecho 2026-10-16 13:45 (UTC-6):** boton Buscar en el sistema. Fuzzy como S2. Docente incorpora al codigo; admin ademas desactiva/activa. Instituto: Run SQL `buscar-cuentas-config.sql`.
+
+100 [x] S1-07g Docente: dentro del codigo, correo/n_lista de editores; verificar el NIE del alumno contra la lista oficial DB-00b.
 
   - **Extraer de:** F-RES 14:10.
 
   - **Escribir en:** Mismo panel de Config. Invitar por correo normalizado y codigo; el flujo confiable coteja el NIE contra la lista oficial privada antes del alta y conserva solo HMAC/estado de verificacion, no NIE plano. Al aceptar, crear perfil + membresia persistente. Permitir otra invitacion para otro codigo sin mas de una invitacion pendiente por email/codigo.
+
+  - **Hecho 2026-10-16 13:55 (UTC-6):** Formulario Config con `n_lista`. Edge `invitar-cuenta` HMAC-SHA256 (secreto `NIE_HMAC_SECRET`) y RPC `intiwo_cotejar_nie` contra `padron_nie_correo` (vacio en Git). Perfil nuevo: `nie` null, `nie_hmac` + `nie_verificado`. Membresia al aceptar. Unica pendiente por email+codigo. Instituto: Run `nie-hmac-n-lista.sql`, secreto, cargar padron en SQL Editor, redesplegar funcion. 185 sigue [ ] hasta que el padron este en remoto.
 
 101 [x] S1-07h Docente: eliminar codigo o alumno de su codigo; no ve otros docentes.
 
@@ -1085,11 +1103,13 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 
   - **Hecho 2026-10-13 22:35 (UTC-6):** `desactivado_en` en `codigos` y `miembro_codigo` (no DELETE). Consulta filtrada por `docente_id`. SQL `arbol-config-codigos.sql` (RLS update + select de perfiles miembros).
 
-102 [ ] S1-07i Editor: Config minima (ficha S2 / password / tema). No crea cuentas.
+102 [x] S1-07i Editor: Config minima (ficha S2 / password / tema). No crea cuentas.
 
   - **Extraer de:** F-RES 14:10.
 
   - **Escribir en:** Vista reducida en configuraciones/pagina-configuraciones.html si rol=editor. Link a `Sistema 2/paginas/ficha/`; tema lee/escribe `perfiles.tema` solo tras Auth y DB-02a/DB-03c (SH-02e). Cambio de password se delega a Supabase Auth, nunca a SQL propio.
+
+  - **Hecho 2026-10-16 14:15 (UTC-6):** Vista editor: ficha + hub S2, restablecer (Auth), tema en la barra (`perfiles.tema`). Sin botones de alta/baja/grupos (`data-config-staff`). 103 no se toco.
 
 103 [x] S1-09a Nadie se auto-asigna Admin excepto la matriz via DB-09. Registro no ofrece rol admin; solo la matriz invita administradores.
 
@@ -1368,6 +1388,8 @@ Las casillas S2-01a..S2-09b describian pildoras **dentro del hub**, ficha sin es
 
 187 [ ] DB-PROY SQL canonico `tabla-proyectos.sql` + RLS + CRUD S2. No migrar hasta Instituto.
 
+  - **Avance Megatarea 1:** se reviso el contrato candidato `Sistema 1/supabase/proyectos-core-v2.sql`; falta parser/validacion PostgreSQL y cotejo remoto al solicitar instrucciones. No ejecutar aun.
+
 188 [x] SH-02e-GO Usuario logueado: `perfiles.tema` al cambiar sol/luna (mismo trabajo que 30, 2026-10-13 22:10).
 
 189 [ ] SH-PUB Publicar GitHub Pages tras UTF-8 + Cuentas partidas para que el artefacto no sirva HTML Windows-1252.
@@ -1408,11 +1430,78 @@ Las casillas S2-01a..S2-09b describian pildoras **dentro del hub**, ficha sin es
 
   - **Ajuste 2026-10-14 19:16 (UTC-6):** Copy pasos 2–5 (Asignaturas, Especificaciones, Contacto). Ortografía corregida respecto al dictado.
 
+  - **Actualizacion confirmada por Instituto 2026-10-16 23:00 (UTC-6):** sustituir el dato historico “virtual”: EDUCAME es modalidad a distancia, con asistencia presencial dentro del Instituto unicamente los sabados de 7:00 a.m. a 4:00 p.m. Anadir paso 3 Materiales academicos: paquete escolar (cuadernos, borrador, lapiz, lapiceros, sacapuntas, tijera), libros para las cinco asignaturas y laptop gratuita sin limite de edad. Paso 4: asignaturas con enlaces oficiales MINEDUCYT subrayados en verde. Paso 5: cualquier persona mayor de 18; presentar certificado de noveno grado y DUI. Paso 6: Contactos con WhatsApp EDUCAME +503 7754-5899 y oficina.educame@inti.edu.sv. El CTA «Escribir al Instituto» usa `wa.me/50377545899`; el contacto general del pie permanece 7441-1075. Aplicado en pagina EDUCAME, resumen de Matricula, oferta General, CSS y CONTENIDO.md; el contenido previo que decia virtual queda supersedido.
+
 195 [x] S1-02b Paginas detalle: inscripcion/traslados y entrega de documentos.
 
   - **Escribir en:** `pagina-inscripcion-y-traslados.html`; `pagina-entrega-documentos.html`; CSS/JS propios; botones «Ver más» en pasos 1 y 4 de Matrícula.
 
   - **Hecho 2026-10-14 19:50 (UTC-6):** Paso 1 sustituye WhatsApp por Ver más (icono info). Paso 4 añade Ver más. Traslado = misma especialidad. 2.º/3.º entrevista subdirectores lun–vie 8:00–11:30 y 13:30–17:00. Documentos: SIGES, partida original, DUI 150 %, fotos 3,5×2,5 granulado B/N, examenes, antitetanica; entrega in situ cuando se solicite.
+
+197 [~] S2N-EDITOR-LISTA Editor entra al hub en vista visitante; CTA superior «Agregar» conserva el icono de lapiz y abre su listado de proyectos asignados. Las tarjetas tienen el mismo aspecto que las publicas, pero aparecen tambien los proyectos privados/inactivos asignados. Una nueva asignacion del docente debe aparecer sin que el Editor la cree. Si no tiene asignaciones, mostrar que solicite un proyecto a su docente.
+
+  - **Megatarea 2 implementada localmente:** CTA superior existente conserva icono/etiqueta y dirige a la lista para Editor; la lista consulta asignaciones activas, conserva las privadas e inactivas asignadas, distingue publicado/privado de archivo y bloqueo de edicion, informa cuando no hay asignaciones y muestra errores de sesion/perfil/consulta. Incluye recarga manual, al volver a la pestaña y por Realtime cuando Supabase lo permita; si la suscripcion no esta disponible, explica el fallback manual.
+  - **Validacion pendiente:** no se ejecuto contra Supabase ni navegador. Confirmar con RLS real que las asignaciones y los proyectos privados/inactivos sean legibles para su Editor; la sincronizacion instantanea requiere que la tabla este disponible en Realtime. No se cambio RLS ni se requiere SQL/Edge Function para esta megatarea.
+
+  - **Extraer de:** solicitud del Instituto 2026-10-17; DB-00f.
+
+  - **Escribir en:** `Sistema 2/paginas/proyectos/`, nueva pagina/lista Editor, `js/catalogo/` y estilos del catalogo. Proyectos privados solo por membresia/RLS, nunca por ocultamiento visual.
+
+198 [~] DB-PROY-V2 Persistencia Supabase de proyectos tecnicos/académicos y asignaciones N:M a Editores; ficha vacia al asignar; titulo, descripcion, integrantes, etiquetas y URLs editables con auto-guardado remoto. Separar `publicado` de `edicion_bloqueada`; publicar no bloquea y cada control se revoca por separado. Archivar no es desasignar ni borrar fisicamente.
+
+  - **Avance parcial:** `proyectos-core-v2.sql` propone el contrato central de tablas, RLS y RPCs; la ficha guarda titulo, descripcion, integrantes y URLs. La persistencia de etiquetas se implemento localmente en Megatarea 5; falta validacion SQL/instancia y el SQL no se ha aplicado en Supabase.
+  - **Megatarea 4 (parte academica) implementada localmente:** se agrego al SQL candidato el alta academica por asignatura/ciclo, validacion de Docentes activos como autores, mantenimiento atomico de autorias y una RPC de lectura limitada a los nombres asociados a proyectos visibles. Evaluar y la ficha ya usan esos contratos; la edicion remota de contenido academico queda limitada a Docentes autorizados por el proyecto y Administradores. No se introdujo un rol Auth nuevo.
+  - **Validacion pendiente:** el SQL sigue siendo candidato sin parser PostgreSQL ni cotejo de esquema remoto; no se ejecutaron SQL, RLS ni pruebas en navegador/Supabase. La lista/catalogo publico academico sigue en sus tareas/megatareas correspondientes.
+  - **Megatarea 5 implementada localmente:** catalogo/seleccion persistentes desde Supabase, guardado atomico de etiquetas por RPC y filtro publico por etiqueta. El acceso de escritura se limita a Admin, Docente gestor y Editor tecnico activo; se retiro la escritura directa a la tabla puente en el contrato candidato. Pendiente validar SQL/RLS y datos reales en Supabase.
+
+  - **Extraer de:** DB-00a..DB-00f, S2N-03c/03d y solicitud del Instituto 2026-10-17.
+
+  - **Escribir en:** `Sistema 1/supabase/tabla-proyectos.sql` (fuente canonica), RLS/grants, nuevas tablas puente e interfaces S2. Ejecutar una inspeccion de esquema primero; no asumir que scripts anteriores se aplicaron. No usar `localStorage` como persistencia final.
+
+199 [~] S2N-DOCENTE-PROY Docente y Administrador gestionan Proyectos > Evaluar por año lectivo y codigos a cargo (admin: alcance institucional). La lista muestra proyectos en vista de visitante e incluye privados/inactivos para usuarios autorizados. Docente/admin pueden publicar, volver privado, bloquear o habilitar edicion de forma independiente; Editor solo modifica contenido si la asignacion sigue activa y la edicion no esta bloqueada.
+
+  - **Megatarea 3 implementada localmente (alcance tecnico):** la vista Evaluar conserva el filtro anual y el alcance de codigos por docente o institucional para Admin; permite crear proyectos tecnicos vacios con asignaciones, ver fichas y gestionar reasignaciones y estados independientes (publicado, edicion y archivo). Las acciones bloquean controles durante el guardado, diferencian error de escritura de error al refrescar y evitan repintados obsoletos al cambiar de año.
+  - **Megatarea 4 implementada localmente (alcance academico):** en el mismo filtro anual se listan proyectos visibles por asignatura y se permite crear fichas vacias, elegir Docentes autores activos, cambiar la autoria y administrar publicacion, bloqueo e inactividad. El alta de un Docente lo incluye como autor; Admin puede escoger los autores. El acceso definitivo queda protegido por RPC/RLS.
+  - **Validacion pendiente:** el diagnostico adjunto es solo lectura y no incluye un resultado remoto; no se ejecutaron SQL ni pruebas contra Supabase. Confirmar con el esquema real la disponibilidad de ciclos/proyectos/RPC, los roles admitidos y las politicas RLS para Docente/Admin. La parte academica queda en Megatarea 4.
+
+  - **Extraer de:** solicitud del Instituto 2026-10-17; S2N-05a/05b; DB-00f.
+
+  - **Escribir en:** `Sistema 2/paginas/evaluar/`, JS de evaluacion, ficha/preview y politicas RLS de proyectos.
+
+200 [~] S1-S2-ESPECIALIDADES-POR-CICLO Administrador puede mantener el nombre visible de cada especialidad por año sin cambiar `slug`/prefijo ni su identidad; al crear un ciclo, el nombre anterior se hereda hasta que el admin lo cambie. Mostrar en Oferta el ciclo actual y en Proyectos el nombre correspondiente al año del proyecto, conservando nombres historicos.
+
+  - **Avance parcial:** el borrador SQL incluye ciclo 2026/2027 y tabla historica de nombres. No existe aun interfaz Admin ni propagacion a Oferta/catalogos; no aplicar la migracion hasta revisarla y validarla.
+
+  - **Avance Megatarea 7 (2026-10-18):** la interfaz Admin y la propagacion historica ya estan implementadas localmente; la nota de avance parcial anterior queda superada en esos puntos. Incluye alta del siguiente ciclo con herencia, seleccion del ciclo nuevo, nombres independientes por año, ciclo vigente en Oferta, selector historico en catalogos y nombres por ciclo en Proyectos. Falta validar navegador/esquema/permisos con la instancia real; el SQL sigue siendo candidato y no se ha ejecutado.
+
+  - **Extraer de:** solicitud del Instituto 2026-10-17. Ejemplos 2027: «Desarrollo de Software y Servicios Digitales» (DS) y «Autotrónica» (MA); otras especialidades conservan el nombre vigente hasta nueva decision.
+
+  - **Escribir en:** `Sistema 1/supabase/tabla-especialidades.sql` y migracion de nombres por ciclo; UI Configuraciones Admin; hidratacion de Oferta y catalogos/listados de Sistema 2. Nunca renombrar el identificador estable ni reescribir años pasados.
+
+201 [~] S1-CMS-CONTACTOS Configuraciones Admin agrupa formularios independientes para Footer, EDUCAME y Matrícula, con telefonos/WhatsApp, correos, URLs de redes u otros enlaces y textos pertinentes. Guardado en Supabase y lectura publica; el contacto especifico de EDUCAME no sustituye el general del Footer. Configuracion tambien incluye ciclos/nombres de especialidad por año.
+
+  - **Avance parcial:** Footer ya tiene formulario/carga CMS; la migracion candidata contempla contactos EDUCAME/Matricula, pero sus formularios Admin y su consumo en las paginas publicas siguen pendientes.
+
+  - **Avance Megatarea 8 (2026-10-18):** se agregaron formularios Admin independientes para Footer, EDUCAME y Matricula; EDUCAME mantiene su WhatsApp/correo separado del Footer y Matricula administra sus WhatsApp, correo opcional y formulario de inscripcion tecnica. La lectura publica actualiza los enlaces de EDUCAME en su pagina, Oferta y Matrícula, y las llamadas de nuevo ingreso en las paginas tecnicas; el CTA de EDUCAME conserva la consulta por WhatsApp y no reutiliza el formulario tecnico. SQL candidato: `Sistema 1/supabase/cms-contactos-programas.sql` (dependiente de `tabla-footer-cms.sql`); no se ha ejecutado. Falta validacion real de Supabase/RLS y prueba de navegador.
+
+  - **Extraer de:** solicitud del Instituto 2026-10-17; `footer_cms` existente como contrato parcial.
+
+  - **Escribir en:** `Sistema 1/paginas/configuraciones/`, JS CMS compartido S1/S2, SQL canonico en `Sistema 1/supabase/`; validar HTTPS, correo y telefonos; RLS solo Admin escribe.
+
+202 [~] S2N-PREVIEW-GUARDAR En la interfaz de edicion, auto-guardar cada cambio en Supabase, ofrecer «Previsualizar» en vista de visitante con retorno al editor, y dejar «Guardar cambios» centrado al final. Guardar cambios espera la escritura pendiente, informa errores y regresa a la ficha del proyecto; no aparentar guardado exitoso offline.
+
+  - **Avance Megatarea 6 implementado localmente:** la ficha guarda por Supabase y el boton espera todas las escrituras/cambios encolados antes de navegar. La previsualizacion abre la presentacion de lectura con enlace «Volver al editor»; «Guardar cambios» vuelve a la ficha normal y permanece centrado al final del formulario. Los controles de edicion solo se muestran despues de que Supabase confirma el permiso; los errores de red/RLS se anuncian y no se presentan como guardado exitoso.
+  - **Validacion pendiente:** comprobar guardado, preview, retorno y permisos con cuentas/filas reales y el esquema aplicado en Supabase. La tarea queda parcial hasta esa prueba.
+
+  - **Extraer de:** solicitud del Instituto 2026-10-17; auto-guardado local de S2N-03c.
+
+  - **Escribir en:** `Sistema 2/paginas/ficha/pagina-ficha-proyecto.html`, `js/ficha/editar-ficha-propia.js`, CSS de ficha y API Supabase del proyecto.
+
+203 [~] S2N-ACEPTACION-ROLES Pruebas integrales: visitante no ve borradores; Editor solo ve/edita proyectos asignados y no cambia publicacion/bloqueo; Docente solo gestiona codigos propios; Admin alcance institucional; publicar no cambia permiso de edicion; cambio de nombre por ciclo no modifica ciclos anteriores; los formularios institucionales se reflejan en S1/S2.
+
+  - **Depende de:** DB-PROY-V2, S2N-EDITOR-LISTA, S2N-DOCENTE-PROY, S1-S2-ESPECIALIDADES-POR-CICLO, S1-CMS-CONTACTOS y S2N-PREVIEW-GUARDAR.
+
+  - **Escribir en:** tests del contrato SQL/RLS y pruebas funcionales de S1/S2; registrar resultados en `IAs/RESOLUCIONES.md`.
 
 ---
 
@@ -1463,6 +1552,9 @@ Proyecto unico: `bd_inti_web_oficial` (`https://akvprrwjfstncadkybeh.supabase.co
 - `Sistema 1/supabase/cuentas-nombres-y-bajas.sql`
 - `Sistema 1/supabase/codigos-y-membresias.sql` (184/33; aun no demostrado en remoto)
 - `Sistema 1/supabase/arbol-config-codigos.sql` (96/97/101; RLS desactivar + correo usado_por)
+- `Sistema 1/supabase/buscar-cuentas-config.sql` (196; docente busca editores e incorpora; Instituto debe correrlo)
+- `Sistema 1/supabase/nie-hmac-n-lista.sql` (100; HMAC + n_lista; padron vacio, Instituto carga fuera de Git)
+- `Sistema 1/supabase/tabla-footer-cms.sql` (42; pie editable; Instituto debe correrlo)
 - `Sistema 1/supabase/contenido-inicio-cms.sql` (55/77/186/134/142; tabla + bucket `inicio`)
 
 **No volver a ejecutar:** `politicas-rls.sql` completo, `tabla-perfiles.sql` / `trigger-nuevo-perfil.sql` / `login-invitaciones-minimo.sql` si ya crearon objetos, `semilla-admin-sin-password.sql` (duplicaria matriz).
@@ -1499,7 +1591,11 @@ DB-00b [x] Instituto confirma que el NIE es unico y se verifica durante el alta 
 
 DB-00c [x] Decision del Instituto: cuando un alumno egrese, su cuenta queda inactiva (sin importar el rol); se conserva el registro de la cuenta y no se elimina ningun proyecto ni su autoria. La cuenta no se borra por dejar de existir su Gmail institucional; un administrador debe desactivarla y revocar sus sesiones mediante un flujo confiable. La visibilidad/estado aprobado de proyectos no cambia por desactivar la cuenta. No usar borrado en cascada. Proteger siempre al ultimo administrador activo.
 
-DB-00d [ ] Confirmar URL publica de cada sitio ya publicado (GitHub Pages, normalmente termina en `github.io/...`, o dominio propio), NO la URL del repositorio GitHub. Anotar Sistema 1 y Sistema 2; determinar origenes y callbacks Auth. Si aun no estan publicados, dejar pendiente hasta habilitar Pages. La URL de repo sirve para codigo, no para configurar callbacks del sitio.
+DB-00d [~] Confirmar URL publica de cada sitio ya publicado (GitHub Pages, normalmente termina en `github.io/...`, o dominio propio), NO la URL del repositorio GitHub. Anotar Sistema 1 y Sistema 2; determinar origenes y callbacks Auth. Si aun no estan publicados, dejar pendiente hasta habilitar Pages. La URL de repo sirve para codigo, no para configurar callbacks del sitio.
+
+  - **Confirmado 2026-10-18 09:04 (UTC-6):** comprobacion publica y del workflow `.github/workflows/deploy-pages.yml` + `.github/scripts/build-pages.mjs`: ambos sistemas se despliegan juntos en `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/`, bajo el mismo origen `https://instituto-nacional-tecnico-industrial.github.io`. Sistema 1: `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/inicio/pagina-inicio-cms.html`; Sistema 2: `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%202/paginas/proyectos/pagina-hub-proyectos.html`. La raiz Pages redirige a Inicio S1. `web-oficial-proyectos` es una separacion futura, no una URL publicada actual.
+  - **Callbacks que el codigo usa hoy:** configurar Site URL como `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/`. Redirect URLs minimas justificadas: `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/cuentas/pagina-definir-contrasena.html` (registro, recuperacion e invitaciones de S1 y callback fijo de `invitar-cuenta`); `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/inicio/pagina-inicio-cms.html` y `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/configuraciones/pagina-configuraciones.html` (formularios de cuenta en esas paginas usan la URL actual); y `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%202/**` (la UI de cuenta de S2 se carga en varias paginas y usa `window.location.href` como callback). El patron queda limitado al subdirectorio publicado de S2; no usar comodin para todo el dominio ni para `/web-oficial/**`.
+  - **Pendiente remoto:** no se inspecciono Authentication > URL Configuration. Instituto debe comparar Site URL/Redirect URLs reales con la lista anterior y confirmar resultado. Hasta entonces DB-00d permanece `[~]`; no se modificaron ajustes de Supabase ni codigo/despliegue.
 
 DB-00e [x] Decision tecnica de v1: usar como contrato canonico el JSON de S1-14a `{ bloques: [{ id, plantilla, orden, textos, color, imagen, animacion, capas }] }`; las plantillas JS se adaptan a ese formato (incluidos tipo/orientacion/alineacion/CTA/enlace) antes de conectar la tabla. Versionar el contrato si cambia; no guardar el contenido real hasta probar lectura/escritura.
 
@@ -2102,3 +2198,28 @@ Si dudas, elige la opcion mas restrictiva y etiquetala DECISION.
 - [x] Hamburguesa, sin Visitante-cuenta, Lucide 2.5, Roboto Serif, paleta `.ase`, texto Site, PDF historia retenida, Adobe = referencia final
 
 - [x] Incidente Copilot / `IAs/` documentado
+
+## Megatareas del alcance Proyectos y Configuraciones
+
+Usar esta agrupacion para solicitar trabajo por fases (por ejemplo, «realiza la megatarea 1»). Cada megatarea entrega codigo y pruebas locales cuando corresponda; ninguna autoriza ejecutar SQL, desplegar Edge Functions ni publicar cambios en GitHub. Los rangos indican las tareas del backlog que cubre el alcance, incluidas las partes especificadas cuando una tarea grande se reparte entre fases.
+
+1. **Megatarea 1 — Contrato de datos y seguridad de Proyectos.** Inicia en **187 DB-PROY**; cubre la parte de base de datos de **198 DB-PROY-V2** (tablas, relaciones, constraints, grants, RLS y RPCs centrales). Termina cuando el esquema candidato tenga revision tecnica, referencias de despliegue anotadas y validacion local posible; no incluye aplicarlo en Supabase ni completar la UI de etiquetas/ciclos.
+2. **Megatarea 2 — Lista y acceso del Editor.** Abarca **197 S2N-EDITOR-LISTA** de principio a fin: CTA, lista asignada, estados publicos/privados/inactivos, acceso autorizado y estado sin proyectos.
+3. **Megatarea 3 — Gestion tecnica Docente/Admin.** Abarca la parte tecnica de **199 S2N-DOCENTE-PROY**: ciclos/codigos a cargo, creacion y gestion de proyectos tecnicos, asignaciones/reasignaciones, publicacion, bloqueo y archivo independientes.
+4. **Megatarea 4 — Proyectos academicos.** Abarca la parte academica de **198 DB-PROY-V2** y **199 S2N-DOCENTE-PROY**: alta, relaciones con asignaturas, autorias, permisos y gestion. No agrega un rol Auth nuevo sin requisito aprobado.
+5. **Megatarea 5 — Etiquetas persistentes.** Abarca el alcance de etiquetas de **198 DB-PROY-V2**: catalogo permitido, lectura, edicion, alta/remocion segura y vinculacion persistente por proyecto.
+6. **Megatarea 6 — Ficha, autoguardado y previsualizacion.** Abarca **202 S2N-PREVIEW-GUARDAR** de principio a fin: guardado remoto, espera de cambios pendientes, mensajes de error, preview de visitante y retorno a ficha.
+7. **Megatarea 7 — Ciclos y nombres historicos.** Abarca **200 S1-S2-ESPECIALIDADES-POR-CICLO** de principio a fin: ciclo, herencia de nombres, interfaz Admin y reflejo historico en Oferta y Proyectos.
+8. **Megatarea 8 — CMS de contactos institucionales.** Abarca el alcance de Footer, EDUCAME y Matricula de **201 S1-CMS-CONTACTOS**. La administracion de ciclos/nombres se atiende en Megatarea 7, no se duplica aqui.
+9. **Megatarea 9 — Aceptacion integral por roles.** Abarca **203 S2N-ACEPTACION-ROLES** de principio a fin: pruebas autenticadas/RLS y flujos de visitante, Editor, Docente y Admin; incluye verificar interacciones entre las megatareas 1–8.
+10. **Megatarea 10 — URLs publicas y callbacks Auth.** Abarca **DB-00d** de principio a fin: confirmar URL publica de ambos sistemas, origenes y Redirect URLs/callbacks de Auth. No requiere compartir secretos.
+
+**Orden recomendado:** 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9; la 10 puede realizarse en paralelo cuando el Instituto confirme las URLs publicas. Las megatareas 4 y 5 usan partes ya contenidas en la tarea 198, pero no repiten el trabajo de esquema central de la 1.
+
+**Estado Megatarea 1 (2026-10-18):** revision y endurecimiento local inicial completados en `Sistema 1/supabase/proyectos-core-v2.sql`; falta validacion en PostgreSQL/Supabase y cotejo final inmediatamente antes de preparar pasos de ejecucion. No subir ni ejecutar aun.
+
+**Estado Megatarea 8 (2026-10-18):** implementacion local de CMS lista para revisar; tarea 201 permanece `[~]` hasta validar esquema, permisos Admin/RLS y consumo publico con la instancia real. No ejecutar SQL ni desplegar cambios remotos hasta recibir instruccion expresa.
+
+**Estado Megatarea 9 (2026-10-18 09:00 UTC-6):** avance local parcial de la tarea 203. Se corrigio la inicializacion de permisos Admin en los formularios CMS frente al evento de autenticacion que puede llegar mientras cargan datos; dos pruebas Node reproducen esa carrera. El diagnostico de solo lectura incluye ahora `educame_cms` y `matricula_cms`. La tarea sigue `[~]`: faltan el resultado de inspeccion remota y las pruebas autenticadas de RLS/roles; no ejecutar SQL ni modificar Supabase sin instruccion expresa.
+
+**Estado Megatarea 10 (2026-10-18 09:04 UTC-6):** se verificaron publicamente las dos rutas actuales, el origen compartido y los callbacks observables en el codigo, incluyendo el patron acotado que exige el callback dinamico de S2. DB-00d sigue `[~]` hasta que el Instituto confirme la configuracion real del panel Auth de Supabase. No se modifico remoto ni se preparo SQL/Edge para ejecutar.

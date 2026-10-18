@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../../css/variables-tema-diurno-nocturno.css">
   <link rel="stylesheet" href="../../css/layout-hamburguesa-y-overlay.css">
   <link rel="stylesheet" href="../../css/hub-y-pildoras-proyectos.css?v=164">
-  <link rel="stylesheet" href="../../css/catalogo-y-listado-proyectos.css?v=164">
+  <link rel="stylesheet" href="../../css/catalogo-y-listado-proyectos.css?v=165">
 </head>
 <body data-seccion-actual="proyectos">
   <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute">
@@ -97,17 +97,20 @@
       <div class="intiwo-ciclo-fila">
         <label for="intiwo-ciclo">Año</label>
         <select id="intiwo-ciclo" class="intiwo-ciclo-select" aria-label="Año lectivo"></select>
+        <p id="intiwo-ciclo-actual" class="intiwo-ciclo-actual" aria-live="polite"></p>
         <button type="button" id="intiwo-ciclo-incorporar" class="intiwo-ciclo-admin" hidden>Incorporar siguiente año</button>
+        <button type="button" id="intiwo-ciclo-establecer-actual" class="intiwo-ciclo-admin" hidden>Establecer año seleccionado como actual</button>
       </div>
+      <p id="intiwo-ciclo-estado" class="intiwo-ciclo-estado" role="status" aria-live="polite" hidden></p>
       <p class="intiwo-especialidades-etiqueta">Asignaturas</p>
       <div class="intiwo-especialidades-caja">
         <button class="intiwo-especialidades-chevron" type="button" data-cerrar-catalogo data-lista="asignaturas" aria-label="Ocultar asignaturas" aria-expanded="true" aria-controls="intiwo-lista-especialidades"><svg width="18" height="18"><use href="#i-chevron"/></svg></button>
         <div id="intiwo-lista-especialidades" class="intiwo-especialidades-lista">
-          <button class="intiwo-pildora-esp" type="button" data-rama="precalculo"><span class="intiwo-pildora-icono"><svg><use href="#i-book"/></svg></span><span>Precálculo</span></button>
-          <button class="intiwo-pildora-esp" type="button" data-rama="ciudadania"><span class="intiwo-pildora-icono"><svg><use href="#i-users"/></svg></span><span>Ciudadanía y valores</span></button>
-          <button class="intiwo-pildora-esp" type="button" data-rama="ciencias"><span class="intiwo-pildora-icono"><svg><use href="#i-gear"/></svg></span><span>Ciencias y tecnología</span></button>
-          <button class="intiwo-pildora-esp" type="button" data-rama="ingles"><span class="intiwo-pildora-icono"><svg><use href="#i-book"/></svg></span><span>Inglés</span></button>
-          <button class="intiwo-pildora-esp" type="button" data-rama="literatura"><span class="intiwo-pildora-icono"><svg><use href="#i-book"/></svg></span><span>Lenguaje y Literatura</span></button>
+          <button class="intiwo-pildora-esp" type="button" data-rama="precalculo" disabled><span class="intiwo-pildora-icono"><svg><use href="#i-book"/></svg></span><span>Precálculo</span></button>
+          <button class="intiwo-pildora-esp" type="button" data-rama="ciudadania" disabled><span class="intiwo-pildora-icono"><svg><use href="#i-users"/></svg></span><span>Ciudadanía y valores</span></button>
+          <button class="intiwo-pildora-esp" type="button" data-rama="ciencias" disabled><span class="intiwo-pildora-icono"><svg><use href="#i-gear"/></svg></span><span>Ciencias y tecnología</span></button>
+          <button class="intiwo-pildora-esp" type="button" data-rama="ingles" disabled><span class="intiwo-pildora-icono"><svg><use href="#i-book"/></svg></span><span>Inglés</span></button>
+          <button class="intiwo-pildora-esp" type="button" data-rama="literatura" disabled><span class="intiwo-pildora-icono"><svg><use href="#i-book"/></svg></span><span>Lenguaje y Literatura</span></button>
         </div>
       </div>
     </section>
@@ -154,9 +157,10 @@
   <script src="../../js/busqueda/buscar-etiquetas-fuzzy.js?v=163"></script>
   <script src="../../js/busqueda/buscar-proyectos.js?v=163"></script>
   <script src="../../js/catalogo/ramas-y-prefijos.js"></script>
-  <script src="../../js/catalogo/ciclos-lectivos.js"></script>
   <script src="../../js/catalogo/navegar-catalogo.js?v=165"></script>
 
   <script type="module" src="../../js/supabase/cliente-supabase.js"></script>
+  <script type="module" src="../../js/catalogo/ciclos-especialidades.js?v=201"></script>
+  <script type="module" src="../../js/cms/cargar-footer-cms.js"></script>
 </body>
 </html>

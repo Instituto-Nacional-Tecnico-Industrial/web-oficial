@@ -184,6 +184,40 @@ html[data-theme="dark"] .intiwo-distintivo {
   font-size: 15px;
   padding: 0 16px;
   outline: none;
+  caret-color: var(--verde);
+}
+
+.intiwo-busqueda input:focus {
+  position: relative;
+  z-index: 1;
+  outline: 3px solid var(--verde);
+  outline-offset: 2px;
+}
+
+.intiwo-busqueda input:focus::placeholder {
+  opacity: 0;
+}
+
+.intiwo-config-tarjeta .intiwo-busqueda {
+  width: 100%;
+  max-width: 560px;
+  margin: 8px 0 12px;
+}
+
+.intiwo-config-buscar-detalle {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.intiwo-config-buscar-detalle label {
+  display: grid;
+  gap: 4px;
+}
+
+html[data-theme="dark"] .intiwo-busqueda-lupa {
+  color: #0f0f0f;
 }
 
 .intiwo-sugerencias {
@@ -855,6 +889,13 @@ html[data-theme="light"] .intiwo-cuentas-form select {
   margin: 0 0 16px;
   color: var(--texto-suave);
   line-height: 1.5;
+}
+
+.intiwo-config-tarjeta p:has(> .intiwo-pildora) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
 }
 
 .intiwo-config-estado {

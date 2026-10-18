@@ -19,8 +19,7 @@
   function anioElegido() {
     var select = document.getElementById("intiwo-ciclo");
     if (select && select.value) return select.value;
-    if (window.INTIWO_CICLOS) return String(window.INTIWO_CICLOS.leer().actual);
-    return "2026";
+    return new URLSearchParams(window.location.search).get("anio") || "";
   }
 
   document.querySelectorAll("[data-rama]").forEach(function (p) {

@@ -96,7 +96,17 @@
   <main class="intiwo-main">
     <section class="intiwo-filtro">
       <h1>Evaluar</h1>
-      <p>Aquí aparecerán los grupos a tu cargo cuando inicies sesión.</p>
+      <p>Proyectos de tus códigos. La publicación, el acceso del público y el permiso de edición se administran por separado.</p>
+      <label class="intiwo-evaluar-ciclo" for="intiwo-evaluar-anio">Año lectivo
+        <select id="intiwo-evaluar-anio"></select>
+      </label>
+      <h2>Proyectos técnicos</h2>
+      <p id="intiwo-evaluar-mensaje" class="intiwo-listado-vacio" role="status" aria-live="polite">Cargando códigos…</p>
+      <div id="intiwo-evaluar-codigos"></div>
+      <h2>Proyectos académicos</h2>
+      <p>Organizados por asignatura y año lectivo; los docentes autores pueden colaborar en la ficha.</p>
+      <p id="intiwo-evaluar-academicos-mensaje" class="intiwo-listado-vacio" role="status" aria-live="polite">Cargando asignaturas…</p>
+      <div id="intiwo-evaluar-academicos"></div>
     </section>
   </main>
 
@@ -141,8 +151,8 @@
   <script src="../../js/busqueda/buscar-etiquetas-fuzzy.js?v=163"></script>
   <script src="../../js/busqueda/buscar-proyectos.js?v=163"></script>
   <script src="../../js/ficha/catalogo-etiquetas.js?v=190"></script>
-  <script src="../../js/ficha/panel-etiquetas-flotante.js?v=190"></script>
-
   <script type="module" src="../../js/supabase/cliente-supabase.js"></script>
+  <script type="module" src="../../js/proyectos/evaluar-proyectos-docente.js?v=201"></script>
+  <script type="module" src="../../js/cms/cargar-footer-cms.js"></script>
 </body>
 </html>

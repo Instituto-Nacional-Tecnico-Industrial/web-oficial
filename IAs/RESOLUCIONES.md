@@ -1,8 +1,8 @@
 # Resoluciones (cómo lo hizo cada IA)
 
-**Ultima modificacion:** 2026-10-14 20:45 (UTC-6) - **IA:** Cursor Grok 4.6 - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-18 15:46 (UTC-6) - **IA:** GitHub Copilot - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
-Solo existen estos dos archivos de IAs, en `IAs/`: este y `BACKLOG.md`. Al cambiar uno: **última modificación** con fecha, hora **UTC-6**, nombre de la IA y dispositivo. Si cambia una tarea, la misma marca en ambos.
+Los documentos canonicos de seguimiento en `IAs/` son este y `BACKLOG.md`; puede haber documentos especializados de traspaso/backlog cuando Instituto los solicite. Al cambiar una tarea en los documentos canonicos: **ultima modificacion** con fecha, hora **UTC-6**, nombre de la IA y dispositivo; ambas entradas deben permanecer coherentes.
 
 Formato de entrada:
 
@@ -1500,3 +1500,213 @@ Bachillerato General a distancia, 1� y 2�, s�bados y domingo. Requisito: m
 **Como:** Listas en `arbol-config-codigos.js` (el destino `panel-configuraciones-cuentas.js` de la casilla es el login de Cuentas; 96 ya dejo el arbol aqui). Agrupa `codigos.docente_id` y `miembro_codigo`. Correo solo de `invitaciones_correo` por `usado_por`. Filtros anio/seccion/codigo (logica). Sin NIE ni `auth.users`. SQL `invitaciones_select_usado_por_arbol` en `arbol-config-codigos.sql` (Instituto debe volver a correr ese archivo). HTML de Config: textos y filtros junto a `[data-arbol-codigos]`.
 
 **Casilla:** 97 [x]. 98 no se toco.
+
+---
+
+### 2026-10-16 08:18 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 98 — Admin invita/activa/desactiva Admin, Docente, Editor.
+
+**Como:** Config (`pagina-configuraciones.html` + `alta-cuentas-admin.js`): Dar de alta llama Edge `invitar-cuenta`; lista con Desactivar / Activar. La funcion (Auth admin solo en servidor) invita sin contrasena, baja logica DB-00c (ban + `desactivado_en`, no DELETE, protege matriz/ultimo admin/uno mismo) y activa (unban + limpia `desactivado_en`). NIE del editor solo en el correo; HMAC/padron = 185. No se toco 99.
+
+**Instituto:** Edge Functions → `invitar-cuenta` → pegar `supabase/functions/invitar-cuenta/index.ts` → Deploy. Publicar Pages.
+
+**Casilla:** 98 [x].
+
+---
+
+### 2026-10-16 08:25 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 99 — docente crea codigo DS2B (especialidad + nivel + seccion), sin GE.
+
+**Como:** Formulario Mis codigos en Config. JS `alta-cuentas-admin.js` arma y valida la clave (prefijos DS, EL, MI, MA, SE, IT). Guarda `codigos` con `docente_id` del docente. SQL ya unico por anio (`codigos-y-membresias.sql`). Vista previa de la clave. n_lista/HMAC no se toco (100).
+
+**Casilla:** 99 [x].
+
+---
+
+### 2026-10-16 13:45 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Instituto — si el alumno ya esta en el sistema (docente A un anio, docente B al siguiente), buscar correo e incorporar al codigo nuevo; no eliminar cuentas. Look de la barra de Proyectos (F-PNG-S2B). Admin busca alumnos y docentes. Editor y Academico no.
+
+**Como:** Config boton "Buscar en el sistema". JS `buscar-cuentas-config.js` (fuzzy + aviso "quizas te refieres a"). Correos de `invitaciones_correo` (no `auth.users`). Incorporar = `miembro_codigo` del codigo de este anio. Admin: Desactivar/Activar via `invitar-cuenta`. SQL `buscar-cuentas-config.sql` (Instituto debe Run).
+
+**Casilla:** 196 [x]. 100 no se toco.
+
+---
+
+### 2026-10-16 13:55 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 100 — n_lista en el codigo; cotejar NIE con padron DB-00b (HMAC, no plano); membresia al aceptar; otra invitacion a otro codigo sin dos pendientes iguales.
+
+**Como:** Config pide `n_lista`. `invitar-cuenta` normaliza correo, HMAC-SHA256 del NIE (secreto de dashboard), RPC `intiwo_cotejar_nie`. SQL `nie-hmac-n-lista.sql`: tabla `padron_nie_correo` sin filas en Git; trigger ya no escribe `perfiles.nie`; copia `nie_hmac`/`nie_verificado` y `n_lista` a `miembro_codigo`. Indice unico pendiente email+codigo. 185 queda abierta (cargar padron real). 102 no se toco.
+
+**Instituto:** Run SQL; Secrets `NIE_HMAC_SECRET`; insertar HMAC+correo solo en SQL Editor; pegar `index.ts` y Deploy.
+
+**Casilla:** 100 [x].
+
+---
+
+### 2026-10-16 14:15 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Inventario casillas 1-100; luego Tarea 102 (Config minima Editor).
+
+**Como:** En 1-100, 99 estan [x] y **42 [~]** (editar footer CMS, campos deshabilitados). 102: vista editor en `pagina-configuraciones.html` con enlace a ficha y hub S2, restablecer via Auth, tema en barra (`perfiles.tema`). Sin altas. 103 no se toco.
+
+**Casilla:** 102 [x].
+
+---
+
+### 2026-10-16 14:40 (UTC-6) - IA: Cursor Grok 4.6 - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Tarea 42 — admin edita telefonos/redes del footer.
+
+**Como:** Tabla `footer_cms` + RLS en `Sistema 1/supabase/tabla-footer-cms.sql`. Lectura publica y pintado del pie en `cargar-footer-cms.js` (copia S2). Formulario de Config habilitado solo con rol administrador; upsert real, sin simular en el navegador. Canonico WA 7441-1075 y respaldo 6674-3159.
+
+**Instituto:** SQL Editor → correr `tabla-footer-cms.sql` una vez. Publicar Pages. Entrar como admin → Configuraciones → Guardar cambios.
+
+**Casilla:** 42 [x].
+
+---
+
+### 2026-10-16 23:00 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Actualizar la informacion de EDUCAME antes de dar por concluida Matrícula: modalidad a distancia con asistencia presencial los sábados, apoyos académicos, asignaturas oficiales, requisitos y contactos específicos.
+
+**Decisiones confirmadas por Instituto:** la sesión de estudio es únicamente los sábados de 7:00 a.m. a 4:00 p.m. dentro del Instituto; no es virtual. Puede solicitar ingreso cualquier persona mayor de 18 años. Se entrega paquete escolar (cuadernos, borrador, lápiz, lapiceros, sacapuntas y tijera), libros educativos de las cinco asignaturas y una laptop gratuita sin límite de edad. Requisitos: certificado de noveno grado y DUI. Contacto EDUCAME: WhatsApp +503 7754-5899 y oficina.educame@inti.edu.sv. El WhatsApp general del Instituto en pies compartidos continúa siendo +503 7441-1075.
+
+**Como:** Se ajustó `pagina-educame-modalidad-flexible.html`: paso 2 aclara modalidad a distancia con asistencia presencial únicamente los sábados; paso 3 enumera los materiales/libros/laptop; paso 4 contiene enlaces a las cinco páginas indicadas del MINEDUCYT; paso 5 muestra mayoría de edad y los dos requisitos; paso 6 presenta el número y correo. Los enlaces de asignaturas y el correo tienen estilo verde subrayado y foco visible. El CTA “Escribir al Instituto” conserva destino `https://wa.me/50377545899`. Se armonizaron el resumen EDUCAME en la página Matrícula y la ficha General de Oferta; sus pies institucionales permanecen con el WhatsApp general. Se actualizó `paginas/matricula/CONTENIDO.md` y la aclaración de contacto en el BACKLOG.
+
+**Verificación:** se revisó que los enlaces de asignaturas coinciden con las cinco URLs proporcionadas; que los contactos usan `wa.me/50377545899` y `mailto:oficina.educame@inti.edu.sv`; y que el contenido de EDUCAME ya no afirma virtualidad. No se modificó `Adobe Ilustrador/` ni se incorporaron datos personales de alumnos.
+
+---
+
+### 2026-10-17 22:52 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Reorganizar la experiencia de Proyectos para Editor, Docente y Administrador; permitir asignaciones con fichas vacias, autoguardado remoto, previsualizacion, publicacion/privacidad y bloqueo de edicion independientes; historico de nombres de especialidades por ciclo; y CMS visual de contactos del Footer, EDUCAME y Matricula.
+
+**Decisiones funcionales registradas:**
+- El Editor entra al hub como visitante. El boton de lapiz del encabezado dice «Agregar» y abre su listado personal. La asignacion del docente crea la presencia de la caja en esa lista; la caja puede estar vacia y no necesita titulo o descripcion iniciales. Sin asignaciones, se indica solicitar una al docente. En el listado se distinguen privado/publico y editable/bloqueado; solo el Editor asignado ve las privadas.
+- «publicado» controla la visibilidad anonima y «edicion_bloqueada» controla si el Editor puede modificar. Publicar/despublicar no altera el permiso de edicion. Solo Docente responsable o Administrador cambian esos controles; Editor no puede archivarlos ni reasignar personas.
+- El boton «Agregar» lleva a la ficha del proyecto en modo edicion; «Previsualizar» muestra el mismo contenido como visitante y permite regresar a edicion. El guardado automatico es remoto, con error visible si falla; «Guardar cambios», al final y centrado, espera el guardado y vuelve a la ficha.
+- Proyectos > «Evaluar» sera la superficie de gestion del Docente: filtro por ciclo y proyectos de sus codigos, con vista de visitante. Administrador usa la misma superficie con alcance institucional. Configuraciones no duplicara herramientas de proyectos; se reserva para cuentas y parametros institucionales.
+- La clave estable de cada especialidad (slug/prefijo) no cambia. Los nombres visibles se registran por año; al abrir un ciclo nuevo se heredan del año anterior y pueden editarse cuando sea necesario. Oferta muestra el nombre vigente; Proyectos usa el nombre historico de su ciclo.
+- Configuraciones de Administrador separara Footer, EDUCAME, Matricula y ciclos/nombres de especialidades. Los contactos de EDUCAME permanecen independientes del Footer general y toda lectura publica requiere RLS.
+
+**Hallazgo y limite:** en el repositorio, la ficha S2 aun guarda borradores en `localStorage`; `tabla-proyectos.sql` y `tabla-ciclos-lectivos.sql` son stubs, y no se conoce con certeza qué migraciones/objetos existen en el proyecto remoto. El Instituto indicó que no esta seguro si las tablas de proyectos, ciclos o nombres de especialidad ya fueron creadas. No se ejecuto SQL ni se afirmo que la persistencia actual sea remota.
+
+**Siguiente paso seguro:** se preparó `Sistema 1/supabase/diagnostico-proyectos-configuracion.sql`, una consulta de solo lectura que inventaría columnas, restricciones, RLS y políticas de las tablas relevantes sin leer datos institucionales. Con sus resultados se redactará la migración incremental exacta y se implementarán las tareas 197–203 del BACKLOG; no aplicar DDL hasta identificar el estado remoto para evitar colisiones o permisos inconsistentes.
+
+**Continuacion tras recibir el diagnostico remoto:**
+- El resultado confirma que el esquema inspeccionado contiene `perfiles`, `codigos`, `miembro_codigo`, `especialidades` y `contenido_inicio`, pero no reporta tablas de proyectos, ciclos lectivos, nombres historicos ni Footer CMS. El constraint remoto de `perfiles.rol` aun no admite `academico`; `especialidades.tipo` si admite `academico`.
+- Se preparo inicialmente un borrador SQL combinado. En la Megatarea 1 se separo como candidato central `Sistema 1/supabase/proyectos-core-v2.sql`; se retiro de este alcance la configuracion de contactos y el historico de nombres para tratarlos en megatareas posteriores. No fue ejecutado ni validado contra PostgreSQL/Supabase.
+- Avance parcial en S2: lista remota de proyectos asignados al Editor; ficha con guardado remoto, vista previa y estados vacios; gestion tecnica por ciclo para Docente/Admin, incluyendo creacion vacia, estado independiente y actualizacion de asignaciones mediante RPC. No se conectaron aun etiquetas, proyectos academicos ni catálogos publicos.
+- Se corrigio el guardado de ficha para leer el rol ya hidratado desde el perfil de Auth, habilitar solo Editor activo asignado con proyecto tecnico editable, y permitir reintentar tras un fallo previo. El metadato de docente se propone como snapshot del proyecto; requiere aplicar y validar la columna del borrador SQL.
+- Footer conserva su formulario de configuracion existente. Siguen pendientes los formularios de EDUCAME/Matricula, editor Admin de ciclos/nombres por año, propagacion historica a Oferta/catalogos y pruebas integrales con Supabase.
+- Validacion local hasta este punto: `node --check` de los JS del primer avance y `git diff --check` no reportaron errores; SQL no validado por falta de `psql`/Supabase CLI, y no hubo prueba de navegador ni ejecucion SQL remota.
+
+**Plan de cierre e inventario de despliegue (actualizado 2026-10-18):**
+- El Instituto aclara que casi todos los SQL preparados por IAs anteriores ya fueron ejecutados en Supabase. No volver a recomendar ni ejecutar esos scripts por rutina; antes de cada entrega de SQL se cotejara con el diagnostico vigente y se listaran solo cambios que falten. No se recibieron credenciales de base de datos ni se deben solicitar claves secretas.
+- Diagnostico de invitaciones recibido 2026-10-18: existen `invitaciones_correo`, `padron_nie_correo`, columnas NIE/HMAC, trigger de `auth.users`, y funciones `intiwo_rol_actual`, `intiwo_es_admin`, `intiwo_cotejar_nie`; RLS esta habilitado en tablas mostradas. Para ese subsistema no hay un SQL pendiente confirmado. La Edge Function `invitar-cuenta` ya esta desplegada segun el Instituto/captura; no reemplazarla ni crear otra hasta que un cambio requerido lo justifique.
+- Discrepancia de despliegue por resolver antes de un redeploy CLI: el panel muestra JWT legacy apagado para `invitar-cuenta`, mientras `supabase/config.toml` tiene `verify_jwt = true`. Mantener la funcion desplegada tal como esta y confirmar la intencion de configuracion antes de cambiar/reemplazarla. El secreto `NIE_HMAC_SECRET` nunca se solicita ni se registra aqui.
+- Para proyectos/configuracion, el diagnostico estructural compartido anteriormente no encontro tablas `proyectos`, ciclos lectivos, nombres de especialidad por ciclo ni `footer_cms`. `proyectos-core-v2.sql` esta en estado de candidato revisado localmente, pero no listo para ejecutar hasta validar sintaxis/semantica en PostgreSQL y cotejar cualquier cambio remoto posterior. Contactos y nombres por ciclo se difieren a sus megatareas.
+- Inventario cuando el Instituto solicite pasos de Supabase: **SQL Editor**: por ahora ningun nuevo SQL confirmado como listo; `diagnostico-proyectos-configuracion.sql` ya se ejecuto como solo lectura; `proyectos-core-v2.sql` queda en espera de validacion y cotejo, no aplicar. **Edge Functions**: `invitar-cuenta/index.ts` ya esta desplegada; no reemplazarla ni crear otra por el trabajo de Proyectos salvo necesidad demostrada. **GitHub Actions Variables**: confirmar que `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY` esten configuradas; son publicas, no son secretos de servidor. Este inventario se actualizara con los archivos exactos y el orden seguro antes de cada solicitud explicita de publicacion.
+- Tareas funcionales abiertas del alcance: DB-00d (confirmar las URLs publicas/callbacks Auth de ambos sistemas); DB-PROY (tarea 187) y tareas 197-203 del BACKLOG. En detalle: cerrar contrato y persistencia/RLS de proyectos tecnico y academico; terminar lista Editor y probar acceso a privados/inactivos; completar gestion docente/admin y reasignaciones; persistir etiquetas; terminar vista previa/autoguardado; ciclos y nombres historicos con interfaz Admin y propagacion a Oferta/catalogos; CMS independiente para Footer, EDUCAME y Matricula; y pruebas de aceptacion integrales por rol. Las partes ya implementadas siguen parciales hasta ser validadas contra el esquema real y en navegador.
+- Megatarea 1: el candidato de base se limito al contrato central de proyectos/ciclos/etiquetas. Se retiro el cambio al constraint de roles Auth `perfiles` (proyectos academicos no requiere crear un rol de usuario nuevo), los contactos y nombres historicos. Se anadio validacion de coherencia entre tipo de proyecto, especialidad/codigo y ciclo; la asignacion de Editores conserva filas revocadas como historial y evita grants generales para mutar asignaciones; el acceso de lectura anonima se redujo a columnas publicables y la politica de Editor limita escritura a proyectos tecnicos.
+- Limites de verificacion Megatarea 1: se reviso el SQL contra `politicas-rls.sql`, `codigos-y-membresias.sql`, los stubs de ciclos/etiquetas y las consultas S2 actuales. No hay PostgreSQL/psql disponible para parser/ejecucion local; no se ejecutaron pruebas RLS ni SQL remoto. El archivo sigue en espera, no es una instruccion para pegar en SQL Editor.
+- Megatarea 2 (lista y acceso Editor): la lista carga asignaciones activas con su proyecto relacionado, sin filtrar `publicado` ni `archivado_en`, conserva la diferencia entre visibilidad publica, bloqueo de edicion y archivo, y presenta estados explícitos de sesión/perfil/consulta/sin asignaciones. El CTA del hub ya apuntaba a esta lista para Editor; se conserva su etiqueta «Agregar» e icono lapiz. La lista ofrece recarga manual, recarga al volver a la pestaña y suscripcion Realtime a cambios de asignacion; cuando Realtime no esta disponible se informa el fallback. No se hizo cambio de SQL, RLS ni Edge Function.
+- Validacion Megatarea 2: `node --check` y `git diff --check` completados sin errores en los cambios locales. No se probo navegador ni sesion autenticada contra Supabase. La prueba de aceptacion aun debe confirmar acceso RLS a proyectos asignados privados/inactivos y disponibilidad de Realtime en la tabla; por eso la tarea 197 permanece parcial hasta esa comprobacion.
+- Inventario de despliegue Megatarea 2: no hay archivos que pegar en SQL Editor ni codigo que reemplazar/desplegar en Edge Functions. La suscripcion usa Supabase Realtime ya existente; no se modifico configuracion del proyecto.
+- Megatarea 3 (Gestion tecnica Docente/Admin): se reforzo `evaluar-proyectos-docente.js` manteniendo el flujo de seleccion anual y codigos asignados al Docente frente al alcance institucional de Admin. Las operaciones deshabilitan controles mientras guardan; tras cambios de estado/asignacion se distingue un fallo de persistencia de un fallo posterior al refresco. El listado evita que respuestas tardias de otro año sobrescriban el año seleccionado y muestra texto adecuado cuando Admin no tiene codigos en ese ciclo. La creación técnica sigue usando la RPC existente y navega a la ficha vacia tras recibir el ID.
+- Validacion Megatarea 3: `node --check` y `git diff --check` pasan. No se hizo prueba de navegador ni de roles/RLS en Supabase. El archivo adjunto `diagnostico-proyectos-configuracion.sql` es solo un script de inspeccion; no se proporciono salida de su ejecucion, por lo que no demuestra que las tablas/RPC candidatas existan en el proyecto remoto.
+- Inventario de despliegue Megatarea 3: no se genero SQL nuevo ni cambios de Edge Function. `Sistema 1/supabase/proyectos-core-v2.sql` sigue siendo candidato no aplicado/validado; no pegarlo ni modificar el esquema remoto por esta megatarea. Para cerrar la parte tecnica de la tarea 199 hace falta cotejar el resultado actualizado del diagnostico y probar una cuenta Docente y una Admin; luego la parte academica sigue en Megatarea 4.
+- Megatarea 4 (Proyectos academicos): se amplio localmente `proyectos-core-v2.sql` con RPCs para listar solo nombres/UUID de Docentes activos a usuarios Docente/Admin, crear proyectos ligados a una asignatura academica y ciclo existentes, gestionar la lista de Docentes autores en una transaccion, y leer autores solo si el proyecto es visible para la sesion (incluido anonimo si esta publicado). El alta requiere al menos un autor; al crear como Docente se agrega automáticamente la cuenta creadora. Se retiraron del candidato el grant y la politica que permitian INSERT directo de proyectos: los altas tecnicas/académicas pasan por sus RPCs validadores. No se agrego rol Auth nuevo.
+- La vista Evaluar integra una seccion academica por año/asignatura, creacion vacia, autorias, enlaces a ficha y estados independientes. La ficha muestra asignatura y autores desde Supabase; su edicion de contenido academico se habilita solo para Admin o Docente que pasa `intiwo_proyecto_puede_gestionar`, conforme a RLS. No se edita autoría como texto libre/local.
+- Validacion Megatarea 4: falta validacion SQL con PostgreSQL y ejecucion frente al esquema real; el archivo adjunto era la consulta diagnostica, sin resultado incluido. No se probaron roles, RLS ni Realtime en navegador/Supabase. Ademas, las asignaturas academicas deben existir en `especialidades` con `tipo='academico'`; el catalogo local de etiquetas/asignaturas no demuestra que esas filas esten presentes en la base.
+- Inventario de despliegue Megatarea 4: el unico archivo SQL actualizado es el candidato `Sistema 1/supabase/proyectos-core-v2.sql`; no esta confirmado como listo para pegar, no se ejecuto remotamente y no debe aplicarse hasta recibir solicitud expresa y comparar el resultado actual del diagnostico. No se modificaron ni requieren Edge Functions.
+
+### 2026-10-18 08:18 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Megatarea 5 — etiquetas persistentes.
+
+**Como:** el panel de la ficha ahora carga el catalogo y las etiquetas asociadas desde Supabase; la seleccion se guarda mediante `intiwo_gestionar_etiquetas_proyecto` y ya no usa `localStorage` como persistencia. El contrato SQL candidato valida que todos los UUID pertenezcan al catalogo, limita la escritura a Admin, Docente gestor o Editor tecnico activo, sincroniza altas/remociones en una transaccion y quita el grant/politica de escritura directa de `proyecto_etiqueta`. El listado `?etiqueta=` consulta proyectos visibles y publicados con esa etiqueta. Los errores de carga/guardado se muestran al usuario.
+
+**Validacion:** `node --input-type=module --check` sobre los dos modulos JS; diagnosticos de VS Code en los archivos editados; `git diff --check`: sin errores. No se ejecuto PostgreSQL, SQL Editor, Supabase remoto, Edge Function ni prueba de navegador. No se proporciono la salida reciente de `diagnostico-proyectos-configuracion.sql`; por tanto, el contrato candidato no esta validado contra el esquema real.
+
+**Inventario Supabase para revisar cuando el Instituto solicite instrucciones:** `Sistema 1/supabase/proyectos-core-v2.sql` (candidato modificado; contiene tabla/RLS y las RPC de etiquetas) y `Sistema 1/supabase/semilla-etiquetas.sql` (semilla existente; comprobar primero cuantas filas ya estan cargadas, no ejecutarla a ciegas). Ningun cambio de Edge Function. No se aplico SQL ni se genero un script de ejecucion separado.
+
+**Estado:** Megatarea 5 implementada localmente; validacion remota y de roles pendiente.
+
+### 2026-10-18 08:25 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Megatarea 6 — ficha, autoguardado y previsualizacion (tarea 202).
+
+**Como:** `persistir-ficha-supabase.js` ahora drena las escrituras pendientes antes de guardar o navegar, incluyendo cambios que llegan mientras una escritura previa esta en curso. La previsualizacion conserva la representacion de solo lectura y ofrece «Volver al editor» solo cuando Supabase confirma el permiso. «Guardar cambios» y «Previsualizar» se mantienen ocultos hasta confirmar permiso; guardar regresa a la ficha normal. `editar-ficha-propia.js` ya no anuncia exito antes de la confirmacion remota ni habilita visualmente la edicion de un proyecto remoto antes de la comprobacion de permiso. El boton Guardar queda centrado al final del formulario.
+
+**Archivos:** `Sistema 2/js/ficha/persistir-ficha-supabase.js`, `Sistema 2/js/ficha/editar-ficha-propia.js`, `Sistema 2/paginas/ficha/pagina-ficha-proyecto.html`, `Sistema 2/css/ficha-proyecto.css`.
+
+**Validacion:** `node --input-type=module --check` para el modulo Supabase, `node --check` para el script clasico, diagnosticos VS Code y `git diff --check` sin errores. No se probo navegador ni se validaron guardado, vista previa, retorno o RLS contra la instancia Supabase.
+
+**Inventario de despliegue:** no se genero SQL ni se modifico Edge Function para esta megatarea. `proyectos-core-v2.sql` sigue candidato no aplicado; el flujo requiere que su contrato y politicas esten desplegados y verificados antes de prueba integral.
+
+**Estado:** Megatarea 6 implementada localmente; tarea 202 parcial hasta validar el flujo contra Supabase.
+
+### 2026-10-18 08:38 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Megatarea 7 — ciclos lectivos y nombres historicos por especialidad (tarea 200).
+
+**Como:** Se amplio el SQL candidato de proyectos con `especialidad_nombres`, semilla historica del ciclo 2026, herencia al crear el siguiente ciclo y RPCs de Admin para guardar nombres por ciclo, incorporar el siguiente año y cambiar el ciclo actual. Se retiraron grants directos de escritura a ciclos para que las operaciones pasen por RPCs con verificacion de rol. La UI de Configuraciones permite al Admin editar nombres visibles/cortos sin alterar `slug` ni prefijo; el alta selecciona el ciclo creado. En Sistema 2 los catalogos cargan ciclos y nombres desde Supabase, ofrecen seleccion historica y habilitan controles solo despues de cargar; Oferta muestra el ciclo vigente y los nombres aplicables. La ficha, Evaluar y los listados reflejan nombres historicos, con proteccion frente a respuestas obsoletas al cambiar de ciclo. Se elimino el antiguo selector basado en `localStorage`.
+
+**Archivos:** `Sistema 1/supabase/proyectos-core-v2.sql`; `Sistema 1/js/auth/configurar-ciclos-especialidades.js`; `Sistema 1/js/oferta/ciclo-especialidades-oferta.js`; `Sistema 1/js/auth/pagina-configuraciones-roles.js`; `Sistema 1/paginas/configuraciones/pagina-configuraciones.html`; `Sistema 1/paginas/oferta-academica/pagina-oferta-academica.html`; `Sistema 2/js/catalogo/especialidades-ciclo.js`; `Sistema 2/js/catalogo/ciclos-especialidades.js`; `Sistema 2/js/catalogo/nombres-especialidades-proyectos.js`; `Sistema 2/js/catalogo/navegar-catalogo.js`; `Sistema 2/js/proyectos/evaluar-proyectos-docente.js`; `Sistema 2/js/ficha/persistir-ficha-supabase.js`; paginas de catalogo, listado, evaluacion y ficha; `Sistema 2/css/catalogo-y-listado-proyectos.css`. Se elimino `Sistema 2/js/catalogo/ciclos-lectivos.js`, sustituido por la lectura remota.
+
+**Validacion:** `node --check` en los siete modulos JavaScript implicados paso. Falta prueba visual en navegador y validacion funcional con el esquema, cuentas/roles y politicas RLS de Supabase; no se puede confirmar que la instancia remota tenga los objetos de este candidato porque no se recibio el resultado del diagnostico estructural.
+
+**Inventario Supabase/Edge:** `Sistema 1/supabase/proyectos-core-v2.sql` queda como candidato local pendiente de revision y futura instruccion expresa; no ejecutar ahora. No se genero SQL separado, no se modifico ni desplego Edge Function.
+
+**Estado:** Megatarea 7 implementada localmente; tarea 200 sigue parcial hasta validar esquema, RLS, permisos y flujos reales en Supabase.
+
+### 2026-10-18 08:53 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Megatarea 8 — CMS de contactos institucionales (tarea 201).
+
+**Como:** Se agregaron controles independientes de Footer, EDUCAME y Matricula en Configuraciones Admin. Footer conserva sus WhatsApp y redes, con correo opcional; EDUCAME persiste su WhatsApp y correo especificos sin alterar el contacto general; Matricula persiste WhatsApp principal/alternativo, correo opcional y URL HTTPS del formulario de inscripcion tecnica. La carga publica hidrata contactos de EDUCAME en su pagina, Oferta y Matrícula, y sustituye los enlaces de nuevo ingreso de las paginas tecnicas. El CTA de la pagina EDUCAME consulta por WhatsApp, sin reutilizar el formulario tecnico. Las paginas S1/S2 que ya consumian `footer_cms` incorporan la lectura independiente del correo del Footer.
+
+**Archivos:** `Sistema 1/supabase/tabla-footer-cms.sql`; `Sistema 1/supabase/cms-contactos-programas.sql`; `Sistema 1/js/cms/cargar-footer-cms.js`; `Sistema 2/js/cms/cargar-footer-cms.js`; `Sistema 1/js/cms/cargar-contactos-programas-cms.js`; `Sistema 1/paginas/configuraciones/pagina-configuraciones.html`; `Sistema 1/paginas/matricula/CONTENIDO.md`; `Sistema 1/paginas/matricula/pagina-matricula-nuevo-ingreso.html`; `Sistema 1/paginas/matricula/pagina-educame-modalidad-flexible.html`; `Sistema 1/paginas/matricula/pagina-inscripcion-y-traslados.html`; `Sistema 1/paginas/matricula/pagina-entrega-documentos.html`; `Sistema 1/paginas/oferta-academica/pagina-oferta-academica.html`; `IAs/BACKLOG.md`.
+
+**Validacion:** `node --check` paso para los modulos CMS de S1 y S2; `git diff --check` paso en las rutas modificadas de esta tarea. No se encontro `psql` local y no se valido el SQL candidato contra PostgreSQL/Supabase; tampoco se hicieron pruebas autenticadas, RLS ni visuales en navegador.
+
+**Inventario Supabase/Edge:** `Sistema 1/supabase/cms-contactos-programas.sql` queda como migracion candidata, dependiente de `tabla-footer-cms.sql`; ambos siguen locales y no ejecutados. No se accedio ni modifico el proyecto Supabase, no se desplego Edge Function y no se cambio `invitar-cuenta`.
+
+**Estado:** Megatarea 8 implementada localmente; tarea 201 permanece parcial hasta que el Instituto solicite los pasos de ejecucion y se validen las tablas, RLS, permisos Admin y lectura publica contra Supabase.
+
+### 2026-10-18 09:00 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Megatarea 9 — aceptacion integral por roles (tarea 203).
+
+**Como:** Se revisaron los flujos locales de visitante, Editor, Docente/Admin, ficha, ciclos y contactos CMS, junto con las politicas candidatas de `proyectos-core-v2.sql`. En el CMS se detecto una carrera: los listeners de cambio de rol se registraban despues de esperar las lecturas de Supabase, por lo que una sesion Admin podia emitir el evento antes de que existiera el listener. Footer y EDUCAME/Matricula ahora registran el listener antes de esperar y vuelven a aplicar el rol vigente al terminar la carga. Se amplio `diagnostico-proyectos-configuracion.sql` para incluir `educame_cms` y `matricula_cms` en columnas, RLS, restricciones, indices, triggers y politicas; sigue siendo solo lectura y no devuelve filas institucionales.
+
+**Archivos:** `Sistema 1/js/cms/cargar-footer-cms.js`; `Sistema 1/js/cms/cargar-contactos-programas-cms.js`; `Sistema 1/supabase/diagnostico-proyectos-configuracion.sql`; `tests/cms-auth-state.test.mjs`; `IAs/BACKLOG.md`.
+
+**Validacion:** `node --test tests/cms-auth-state.test.mjs` paso (2 pruebas); `node --check` de ambos modulos CMS y del test, y `git diff --check` pasaron. Las pruebas simulan el evento Admin mientras la lectura de Supabase esta pendiente. No hay `psql` local ni resultado de ejecucion del diagnostico remoto. No se validaron credenciales/roles reales, RLS, guardado de proyectos, privacidad de borradores, limites de codigos, cambios de ciclo o reflejo en ambas webs contra la instancia.
+
+**Inventario Supabase/Edge:** solo se ajusto localmente el diagnostico de lectura; no se ejecuto SQL, no se altero el proyecto Supabase y no se modifico ni desplego Edge Function. No compartir claves ni contrasenas; la validacion remota requiere que el Instituto ejecute su flujo autorizado y pruebe las cuentas de cada rol.
+
+**Estado:** Megatarea 9 queda parcial; tarea 203 cambia a `[~]`. La cobertura local demuestra unicamente que los controles CMS no pierden el evento de rol durante la carga. La aceptacion integral requiere esquema aplicado/confirmado, salida estructural del diagnostico y pruebas autenticadas con las cuentas de Visitante, Editor, Docente y Administrador.
+
+### 2026-10-18 09:04 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Megatarea 10 — confirmar URLs publicas de Sistema 1 y Sistema 2 y las rutas de retorno de Supabase Auth.
+
+**Como:** Se cotejaron el workflow y el script de build de GitHub Pages con las paginas publicas, las rutas locales y los puntos del codigo que construyen `emailRedirectTo`/`redirectTo`. El despliegue actual empaqueta ambos sistemas en un unico sitio Pages: raiz `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/`, origen compartido `https://instituto-nacional-tecnico-industrial.github.io`; Inicio S1 en `/web-oficial/Sistema%201/paginas/inicio/pagina-inicio-cms.html` y hub S2 en `/web-oficial/Sistema%202/paginas/proyectos/pagina-hub-proyectos.html`. La raiz redirige a Inicio S1. La futura separacion a `web-oficial-proyectos` no esta publicada ni se trato como URL vigente.
+
+**Callbacks recomendados para Authentication > URL Configuration:** Site URL `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/`. Redirect URLs: pagina S1 `Sistema%201/paginas/cuentas/pagina-definir-contrasena.html` (registro, restablecimiento e invitaciones); Inicio S1 y Configuraciones S1 (formularios embebidos usan `window.location.href`); y patron acotado `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%202/**`, porque la UI Auth de S2 se carga desde varias paginas y tambien usa la URL actual como callback. No se recomienda un comodin en todo el dominio ni `/web-oficial/**`.
+
+**Pendiente y limites:** no se accedio a Authentication > URL Configuration; por tanto no se afirma que los valores remotos ya coincidan. Se actualizo DB-00d a `[~]` y se documento la evidencia/rutas en `IAs/BACKLOG.md`. Instituto debe verificar y confirmar la allowlist. No se cambio ninguna configuracion remota, no se genero SQL, no se modifico ni desplego Edge Function y no se publico Pages. No se modifico codigo.
+
+### 2026-10-18 15:46 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Preparar el traspaso de Sistema 2 a un repositorio propio para que otra IA pueda continuar.
+
+**Como:** Se agregaron `IAs/HANDOFF-SISTEMA-2.md`, con el contexto de arquitectura, roles, DER, enlaces entre sistemas, Auth/tema, integracion Supabase y pendientes; `IAs/BACKLOG-TRASLADO-SISTEMA-2.md`, con 23 tareas y criterios de aceptacion; y plantillas vacias `NO-EJECUTAR-*` en `IAs/plantillas-sistema-2/`. Se aclara que son plantillas de trabajo, no scripts para ejecutar, que el SQL canonico sigue en Sistema 1 y que el inventario de callbacks no es codigo de produccion. Se actualizaron las descripciones de documentos especializados en este archivo y `IAs/BACKLOG.md`.
+
+**Validacion y limites:** se comprobo que las plantillas no contienen codigo ni instrucciones ejecutables y que `git diff --check` no reporta errores de whitespace. No se ejecutaron pruebas de aplicacion, no se altero codigo de los sistemas, Supabase, GitHub Pages ni Edge Functions; tampoco se hizo commit/push. Se preservaron los demas cambios preexistentes del worktree.

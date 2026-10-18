@@ -134,19 +134,26 @@
 
   function guardarAuto() {
     var datos = recolectar();
-    try {
+    var proyectoRemoto = params.get("id");
+    if (proyectoRemoto) {
+      if (autoEl) {
+        autoEl.hidden = false;
+        autoEl.textContent = "Cambios pendientes de guardar en Supabase…";
+      }
+      window.dispatchEvent(new CustomEvent("intiwo:ficha-datos-cambiados", { detail: datos }));
+    } else try {
       var todos = leerTodos();
       todos[claveFicha()] = datos;
       localStorage.setItem(CLAVE_BORRADOR, JSON.stringify(todos));
     } catch (e) { /* cuota */ }
-    if (autoEl) {
+    if (autoEl && !proyectoRemoto) {
       autoEl.hidden = false;
       autoEl.textContent = tituloChoca(datos.titulo)
-        ? "Guardado. Ese título ya lo usa otro proyecto; cámbialo (como en GitHub)."
+        ? "Ese título ya lo usa otro proyecto; cámbialo (como en GitHub)."
         : "Guardado automáticamente. Puedes continuar después aunque falten campos.";
     }
     if (tituloAviso) {
-      var choca = tituloChoca(datos.titulo);
+      var choca = !proyectoRemoto && tituloChoca(datos.titulo);
       tituloAviso.hidden = !choca;
       if (choca) tituloAviso.textContent = "Ese título ya existe. Debe ser único y original.";
     }
@@ -367,9 +374,9 @@
   }
 
   var r = rol();
-  var puedeEditar = modo === "personalizar" && (
+  var puedeEditar = modo === "personalizar" && params.get("previsualizar") !== "1" && !!params.get("id") && (
     (!academico && r === "editor") ||
-    (academico && (r === "academico" || r === "academico".toLowerCase()))
+    (academico && (r === "docente" || r === "administrador" || r === "admin"))
   );
 
   if (ficha) ficha.setAttribute("data-tipo", academico ? "academico" : "tecnico");
@@ -417,14 +424,16 @@
     if (bu) bu.hidden = true;
   }
 
-  if (academico && modo === "personalizar" && r === "editor") {
+  if (academico && modo === "personalizar" && r !== "docente" && r !== "administrador" && r !== "admin") {
     if (avisoEl) {
       avisoEl.hidden = false;
-      avisoEl.textContent = "El Editor alumno no Personaliza proyectos académicos. Eso corresponde al rol Académico.";
+      avisoEl.textContent = "Solo el Docente autor o un Administrador puede editar proyectos académicos.";
     }
   } else if (puedeEditar && ficha) {
-    ficha.classList.add("es-edicion");
-    if (academico) ficha.classList.add("es-formal");
+    if (!params.get("id")) {
+      ficha.classList.add("es-edicion");
+      if (academico) ficha.classList.add("es-formal");
+    }
     var ayudaDesc = document.querySelector("[data-ayuda-desc]");
     if (ayudaDesc && academico) {
       ayudaDesc.textContent = "Describe el proyecto con tono institucional. Listas y sangria si; color de texto no; solo Roboto Serif. Las URLs se comportan igual que en tecnico.";
@@ -451,20 +460,7 @@
     if (masInt) masInt.addEventListener("click", function () { agregarIntegrante(""); });
     var pub = document.getElementById("intiwo-ficha-publicar");
     if (pub) {
-      pub.hidden = false;
-      pub.addEventListener("click", function () {
-        var datos = recolectar();
-        datos.publicado = true;
-        try {
-          var todos = leerTodos();
-          todos[claveFicha()] = datos;
-          localStorage.setItem(CLAVE_BORRADOR, JSON.stringify(todos));
-        } catch (e) { /* cuota */ }
-        var q = new URLSearchParams(window.location.search);
-        q.delete("modo");
-        var dest = window.location.pathname + "?" + q.toString();
-        window.location.href = dest;
-      });
+      pub.hidden = true;
     }
     programarGuardado();
   }

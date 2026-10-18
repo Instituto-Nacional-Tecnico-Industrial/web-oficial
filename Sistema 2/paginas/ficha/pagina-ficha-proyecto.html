@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="../../css/layout-hamburguesa-y-overlay.css">
   <link rel="stylesheet" href="../../css/hub-y-pildoras-proyectos.css?v=164">
   <link rel="stylesheet" href="../../css/catalogo-y-listado-proyectos.css?v=167">
-  <link rel="stylesheet" href="../../css/ficha-proyecto.css?v=196">
+  <link rel="stylesheet" href="../../css/ficha-proyecto.css?v=202">
 </head>
 <body data-seccion-actual="proyectos">
   <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute">
@@ -127,6 +127,9 @@
       <p id="intiwo-ficha-meta" class="intiwo-ficha-meta"></p>
       <p id="intiwo-ficha-aviso" class="intiwo-ficha-aviso" hidden></p>
       <p id="intiwo-ficha-auto" class="intiwo-ficha-auto" hidden>Guardado automático</p>
+      <p class="intiwo-ficha-retorno-preview" hidden>
+        <a class="intiwo-pildora es-linea" id="intiwo-ficha-volver-editor" href="#" hidden>Volver al editor</a>
+      </p>
 
       <form id="intiwo-ficha-form" class="intiwo-ficha-campos" data-ficha-edicion>
         <div class="intiwo-ficha-bloque" data-tb-wrap data-tb-modo="titulo">
@@ -146,6 +149,7 @@
           <h2>Etiquetas</h2>
           <p class="intiwo-ficha-ayuda">Elige del catálogo (oficios, asignaturas, salud, ambiente y temas). No inventes etiquetas. Un clic público abre todos los proyectos con esa etiqueta. El docente puede corregirlas; esto no archiva el proyecto.</p>
           <ul id="intiwo-ficha-etiquetas" class="intiwo-ficha-chips"></ul>
+          <p id="intiwo-ficha-etiquetas-estado" role="status" aria-live="polite" hidden></p>
           <p><button type="button" class="intiwo-pildora" id="intiwo-abrir-etiquetas" hidden>Elegir etiquetas</button></p>
         </section>
 
@@ -163,8 +167,8 @@
         <div id="intiwo-ficha-academico-edicion" hidden>
           <section class="intiwo-ficha-bloque" data-tb-wrap data-tb-modo="titulo">
             <h2>Docentes autores</h2>
-            <p class="intiwo-ficha-ayuda">Los pone el sistema. En proyectos académicos no hay color de texto ni fuentes distintas de Roboto Serif y sus variantes.</p>
-            <div id="intiwo-ficha-autores-edicion" class="intiwo-ficha-rico intiwo-ficha-rico--linea" contenteditable="true"></div>
+            <p class="intiwo-ficha-ayuda">La autoría se administra desde Evaluar y se guarda vinculada a las cuentas institucionales. En proyectos académicos no hay color de texto ni fuentes distintas de Roboto Serif y sus variantes.</p>
+            <p id="intiwo-ficha-autores-edicion" class="intiwo-ficha-rico intiwo-ficha-rico--linea"></p>
           </section>
           <section class="intiwo-ficha-bloque">
             <h2>Códigos de mano de obra</h2>
@@ -180,10 +184,15 @@
             <svg width="20" height="20" aria-hidden="true"><use href="#i-plus"/></svg>
           </button>
         </section>
+        <div class="intiwo-ficha-acciones intiwo-ficha-acciones--guardar">
+          <a class="intiwo-pildora es-linea" id="intiwo-ficha-previsualizar" href="#">Previsualizar</a>
+          <button class="intiwo-pildora" type="button" id="intiwo-ficha-guardar">Guardar cambios</button>
+        </div>
       </form>
 
       <div data-ficha-lectura>
         <section class="intiwo-ficha-bloque">
+          <h2>Descripción</h2>
           <div id="intiwo-ficha-cuerpo" class="intiwo-ficha-cuerpo"></div>
         </section>
         <section class="intiwo-ficha-bloque">
@@ -293,9 +302,11 @@
   <script src="../../js/ficha/reconocer-plataforma-url.js?v=190"></script>
   <script src="../../js/ficha/fuentes-extra-ficha.js?v=194"></script>
   <script src="../../js/ficha/editor-ficha-texto.js?v=196"></script>
-  <script src="../../js/ficha/editar-ficha-propia.js?v=196"></script>
-  <script src="../../js/ficha/panel-etiquetas-flotante.js?v=190"></script>
+  <script src="../../js/ficha/editar-ficha-propia.js?v=202"></script>
 
   <script type="module" src="../../js/supabase/cliente-supabase.js"></script>
+  <script type="module" src="../../js/ficha/panel-etiquetas-flotante.js?v=191"></script>
+  <script type="module" src="../../js/ficha/persistir-ficha-supabase.js?v=203"></script>
+  <script type="module" src="../../js/cms/cargar-footer-cms.js"></script>
 </body>
 </html>

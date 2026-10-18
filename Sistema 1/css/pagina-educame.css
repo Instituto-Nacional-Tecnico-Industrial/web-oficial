@@ -3,7 +3,7 @@
 .edu-vida-reloj,
 .edu-vida-birrete,
 .edu-vida-eje,
-.edu-virtual,
+.edu-presencial,
 .edu-reloj,
 .edu-edad-user,
 .edu-edad-num,
@@ -42,6 +42,18 @@
   text-decoration: none;
 }
 
+.intiwo-edu-mined {
+  color: var(--verde);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+}
+
+.intiwo-edu-mined:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
 .es-fx-vida.es-en-vista .edu-vida-reloj {
   animation: edu-reloj-vaiven 4s ease-in-out infinite;
 }
@@ -54,8 +66,8 @@
   animation: edu-eje 2.8s ease-in-out infinite;
 }
 
-.es-fx-educame.es-en-vista .edu-virtual {
-  animation: edu-virtual 3.4s ease-in-out infinite;
+.es-fx-educame.es-en-vista .edu-presencial {
+  animation: edu-presencial 3.4s ease-in-out infinite;
 }
 
 .es-fx-educame.es-en-vista .edu-reloj {
@@ -107,7 +119,7 @@
   50% { stroke-dasharray: 12 4; opacity: 1; }
 }
 
-@keyframes edu-virtual {
+@keyframes edu-presencial {
   0%, 100% { transform: translateY(0); opacity: 0.55; }
   50% { transform: translateY(-6px); opacity: 1; }
 }

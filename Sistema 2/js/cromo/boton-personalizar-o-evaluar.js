@@ -38,12 +38,31 @@
 
     if (rol === "editor" || rol === "academico") {
       boton.hidden = false;
-      if (texto) texto.textContent = "Personalizar";
-      var dest = rol === "academico"
-        ? "../ficha/pagina-ficha-proyecto.html?tipo=academico&modo=personalizar"
-        : "../ficha/pagina-ficha-proyecto.html?modo=personalizar";
+      var params = new URLSearchParams(window.location.search);
+      var enFicha = window.location.pathname.endsWith("/pagina-ficha-proyecto.html");
+      var dest;
+      if (rol === "editor" && enFicha && params.get("previsualizar") === "1") {
+        if (texto) texto.textContent = "Volver al editor";
+        params.delete("previsualizar");
+        params.set("modo", "personalizar");
+        dest = window.location.pathname + "?" + params.toString();
+      } else if (rol === "editor" && enFicha && params.get("modo") === "personalizar") {
+        if (texto) texto.textContent = "Previsualizar";
+        params.set("previsualizar", "1");
+        dest = window.location.pathname + "?" + params.toString();
+      } else if (rol === "editor" && enFicha) {
+        if (texto) texto.textContent = "Agregar";
+        params.set("modo", "personalizar");
+        dest = window.location.pathname + "?" + params.toString();
+      } else if (rol === "editor") {
+        if (texto) texto.textContent = "Agregar";
+        dest = "../proyectos/pagina-proyectos-editor.html";
+      } else {
+        if (texto) texto.textContent = "Personalizar";
+        dest = "../ficha/pagina-ficha-proyecto.html?tipo=academico&modo=personalizar";
+      }
       boton.setAttribute("href", urlRelativa(dest));
-      boton.setAttribute("aria-label", "Personalizar proyecto");
+      boton.setAttribute("aria-label", texto ? texto.textContent : "Agregar");
       return;
     }
 

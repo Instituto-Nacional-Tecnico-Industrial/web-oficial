@@ -26,6 +26,7 @@
     <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
     <symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></symbol>
     <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
   </svg>
 
   <header class="intiwo-barra">
@@ -74,8 +75,10 @@
       <button type="button" data-config-abrir="sesion">Cuentas en este navegador</button>
       <button type="button" data-config-abrir="salir">Salir de esta cuenta</button>
       <button type="button" data-config-abrir="alta" data-config-staff>Agregar al sistema</button>
+      <button type="button" data-config-abrir="buscar" data-config-staff>Buscar en el sistema</button>
       <button type="button" data-config-abrir="baja" data-config-staff>Eliminar en el sistema</button>
       <button type="button" data-config-abrir="grupos" data-config-staff>Grupos y codigos</button>
+      <button type="button" data-config-abrir="ciclos" data-config-admin hidden>Ciclos y nombres históricos</button>
     </nav>
 
     <section class="intiwo-config-panel intiwo-config-tarjeta" data-config-panel="sesion" hidden>
@@ -102,7 +105,7 @@
       <div class="intiwo-config-tarjetas">
         <article class="intiwo-config-tarjeta intiwo-config-tarjeta--destacada intiwo-config-panel" data-config-panel="alta" hidden>
           <h3>Agregar al sistema</h3>
-          <p>Alta con correo, nombres, apellidos y rol. La lista muestra a quién invitaste. Puedes desactivar a otro administrador, docente o editor. La cuenta matriz no se elimina. Solo la matriz da de alta administradores.</p>
+          <p>Invitas con correo, nombres y apellidos. Ellos eligen la contraseña en el enlace. En Eliminar puedes desactivar o volver a activar Admin, Docente o Editor. No se borra historial. Editor: NIE solo en la parte local del correo (19795194@…). La cuenta matriz no se elimina. Solo la matriz da de alta administradores.</p>
           <form class="intiwo-cuentas-form" data-form-alta>
             <label>Nombres <input type="text" name="nombres" required minlength="2" autocomplete="given-name"></label>
             <label>Apellidos <input type="text" name="apellidos" required minlength="2" autocomplete="family-name"></label>
@@ -119,13 +122,30 @@
                 <option value="">Elige un codigo</option>
               </select>
             </label>
+            <label data-campo-n-lista hidden>n_lista
+              <input type="number" name="n_lista" min="1" step="1" placeholder="1">
+            </label>
             <button class="intiwo-pildora" type="submit">Dar de alta</button>
           </form>
           <p data-alta-mensaje class="intiwo-config-estado" aria-live="polite"></p>
         </article>
+        <article class="intiwo-config-tarjeta intiwo-config-tarjeta--destacada intiwo-config-panel" data-config-panel="buscar" hidden>
+          <h3>Buscar en el sistema</h3>
+          <p>Alumnos y docentes que ya tienen cuenta. Si te equivocas al escribir, aparecen correos parecidos. Puedes desactivar, activar o incorporar un editor a un codigo. No se borra la cuenta.</p>
+          <div class="intiwo-busqueda" data-buscar-cuentas>
+            <span class="intiwo-busqueda-lupa" aria-hidden="true"><svg width="20" height="20"><use href="#i-search"/></svg></span>
+            <input type="search" placeholder="Busca correo de alumno o docente...." autocomplete="off" data-buscar-q>
+            <div class="intiwo-sugerencias" data-buscar-sugerencias>
+              <p class="intiwo-sugerencias-aviso" data-buscar-aviso hidden>No se encontro ningun resultado bajo ese termino, pero quizas te refieres a</p>
+              <div data-buscar-lista></div>
+            </div>
+          </div>
+          <div class="intiwo-config-buscar-detalle" data-buscar-detalle hidden></div>
+          <p data-buscar-mensaje class="intiwo-config-estado" aria-live="polite"></p>
+        </article>
         <article class="intiwo-config-tarjeta intiwo-config-panel" data-config-panel="baja" hidden>
           <h3>Eliminar en el sistema</h3>
-          <p>Desactiva el acceso. No borra proyectos ni el historial. La cuenta matriz no se elimina.</p>
+          <p>Desactiva o activa el acceso. No borra proyectos ni el historial. La cuenta matriz no se elimina.</p>
           <div class="intiwo-config-lista-altas" data-altas-lista></div>
         </article>
         <article class="intiwo-config-tarjeta">
@@ -155,10 +175,25 @@
           <span class="intiwo-config-estado">Herramientas pendientes de conexión</span>
         </article>
       </div>
+      <article class="intiwo-config-tarjeta intiwo-config-panel" data-config-panel="ciclos" hidden>
+        <h3>Ciclos y nombres históricos</h3>
+        <p>Incorpora ciclos en orden. El nuevo ciclo hereda los nombres anteriores; al editarlos aquí no se cambian los nombres de otros años ni las claves o prefijos.</p>
+        <form class="intiwo-cuentas-form" data-form-nombres-ciclo>
+          <label>Ciclo lectivo
+            <select id="intiwo-config-ciclo-nombres" required></select>
+          </label>
+          <label>Establecer este ciclo como actual
+            <button type="button" class="intiwo-pildora" id="intiwo-config-ciclo-actual">Establecer ciclo actual</button>
+          </label>
+          <button type="button" class="intiwo-pildora es-linea" id="intiwo-config-ciclo-incorporar">Incorporar siguiente ciclo</button>
+          <div id="intiwo-config-nombres-lista"></div>
+        </form>
+        <p id="intiwo-config-ciclos-estado" class="intiwo-config-estado" role="status" aria-live="polite"></p>
+      </article>
       <section class="intiwo-config-editor-footer" aria-labelledby="config-footer-titulo">
         <h3 id="config-footer-titulo">Contacto y redes del footer</h3>
-        <p>Estos datos aparecen en el pie de ambas webs. Podrás editarlos cuando inicies sesión como administrador.</p>
-        <form>
+        <p>Estos datos aparecen en el pie de Sistema 1 y Sistema 2. Solo el administrador guarda. Visitantes solo leen.</p>
+        <form data-form-footer>
           <fieldset disabled>
             <legend>Datos institucionales</legend>
             <div class="intiwo-config-campos">
@@ -171,6 +206,10 @@
                 <input type="tel" name="whatsapp_alterno" value="+503 6674-3159" autocomplete="tel">
               </label>
               <label>
+                Correo del Footer (opcional)
+                <input type="email" name="email" autocomplete="email">
+              </label>
+              <label>
                 Facebook
                 <input type="url" name="facebook_url" value="https://www.facebook.com/tecnicosinti/?locale=es_LA">
               </label>
@@ -180,23 +219,55 @@
               </label>
               <label>
                 TikTok
-                <input type="url" name="tiktok_url" value="https://www.tiktok.com/@intitecnicos">
+                <input type="url" name="tiktok_url" value="https://www.tiktok.com/@inti.edu.sv">
               </label>
             </div>
           </fieldset>
-          <p class="intiwo-config-estado">Edición y guardado deshabilitados: falta integrar SH-07a, DB-02e y DB-03a.</p>
-          <button type="button" disabled>Guardar cambios</button>
+          <p class="intiwo-config-estado" data-footer-mensaje aria-live="polite">Inicia sesion como administrador para guardar. Si falla, revisa tabla-footer-cms.sql y cms-contactos-programas.sql.</p>
+          <button type="submit" data-footer-guardar disabled>Guardar cambios</button>
+        </form>
+      </section>
+      <section class="intiwo-config-editor-footer" aria-labelledby="config-educame-titulo">
+        <h3 id="config-educame-titulo">Contactos de EDUCAME</h3>
+        <p>Estos datos solo aparecen en las consultas de EDUCAME; no sustituyen los contactos generales del Footer.</p>
+        <form data-form-contactos="educame">
+          <fieldset disabled>
+            <legend>Canales de EDUCAME</legend>
+            <div class="intiwo-config-campos">
+              <label>WhatsApp <input type="tel" name="whatsapp" required autocomplete="tel"></label>
+              <label>Correo <input type="email" name="email" required autocomplete="email"></label>
+            </div>
+          </fieldset>
+          <p class="intiwo-config-estado" data-contactos-mensaje="educame" aria-live="polite">Inicia sesión como administrador para editar.</p>
+          <button type="submit" data-contactos-guardar disabled>Guardar contactos EDUCAME</button>
+        </form>
+      </section>
+      <section class="intiwo-config-editor-footer" aria-labelledby="config-matricula-titulo">
+        <h3 id="config-matricula-titulo">Contactos de Matrícula</h3>
+        <p>Canales de consulta y enlace para nuevo ingreso. Se administran aparte del Footer y EDUCAME.</p>
+        <form data-form-contactos="matricula">
+          <fieldset disabled>
+            <legend>Canales y enlace de Matrícula</legend>
+            <div class="intiwo-config-campos">
+              <label>WhatsApp principal <input type="tel" name="whatsapp_principal" required autocomplete="tel"></label>
+              <label>WhatsApp alternativo <input type="tel" name="whatsapp_alterno" required autocomplete="tel"></label>
+              <label>Correo (opcional) <input type="email" name="email" autocomplete="email"></label>
+              <label>Formulario de inscripción <input type="url" name="formulario_url" required></label>
+            </div>
+          </fieldset>
+          <p class="intiwo-config-estado" data-contactos-mensaje="matricula" aria-live="polite">Inicia sesión como administrador para editar.</p>
+          <button type="submit" data-contactos-guardar disabled>Guardar contactos Matrícula</button>
         </form>
       </section>
     </section>
 
     <section class="intiwo-config-vista" data-config-vista="docente" hidden aria-labelledby="config-docente">
       <h2 id="config-docente">Espacio docente</h2>
-      <p class="intiwo-config-resumen">Desde aquí das de alta a tus alumnos como Editores. Cada uno recibe un correo para elegir su contraseña. No ves las cuentas de otros docentes ni puedes crear administradores.</p>
+      <p class="intiwo-config-resumen">Das de alta alumnos nuevos o, si ya tienen cuenta, los buscas e incorporas a tu código de este año. No ves a otros docentes ni creas administradores.</p>
       <div class="intiwo-config-tarjetas">
         <article class="intiwo-config-tarjeta intiwo-config-tarjeta--destacada intiwo-config-panel" data-config-panel="alta" hidden>
           <h3>Agregar al sistema</h3>
-          <p>El correo del alumno debe llevar el NIE en la parte local, por ejemplo <strong>19795194@clases.edu.sv</strong>. Elige el codigo del grupo. En la lista puedes desactivar a los editores de tus codigos.</p>
+          <p>Correo con NIE en la parte local (19795194@…). Codigo del grupo y n_lista. El servidor coteja el NIE con el padron (HMAC); no se guarda el NIE plano. Si ya tiene cuenta, usa Buscar en el sistema. Otra invitacion a otro codigo si no hay una pendiente igual.</p>
           <form class="intiwo-cuentas-form" data-form-alta data-alta-rol-fijo="editor">
             <label>Nombres <input type="text" name="nombres" required minlength="2" autocomplete="given-name"></label>
             <label>Apellidos <input type="text" name="apellidos" required minlength="2" autocomplete="family-name"></label>
@@ -206,19 +277,36 @@
                 <option value="">Crea o elige un codigo</option>
               </select>
             </label>
+            <label>n_lista
+              <input type="number" name="n_lista" required min="1" step="1" placeholder="1">
+            </label>
             <input type="hidden" name="rol" value="editor">
             <button class="intiwo-pildora" type="submit">Invitar alumno</button>
           </form>
           <p data-alta-mensaje class="intiwo-config-estado" aria-live="polite"></p>
         </article>
+        <article class="intiwo-config-tarjeta intiwo-config-tarjeta--destacada intiwo-config-panel" data-config-panel="buscar" hidden>
+          <h3>Buscar alumno ya dado de alta</h3>
+          <p>Si el alumno ya esta en el sistema (otro anio u otro docente), buscalo por correo e incorporalo a tu codigo de este anio. No se crea otra cuenta ni se elimina la anterior. Si te equivocas, aparecen correos parecidos.</p>
+          <div class="intiwo-busqueda" data-buscar-cuentas>
+            <span class="intiwo-busqueda-lupa" aria-hidden="true"><svg width="20" height="20"><use href="#i-search"/></svg></span>
+            <input type="search" placeholder="Busca el correo del alumno...." autocomplete="off" data-buscar-q>
+            <div class="intiwo-sugerencias" data-buscar-sugerencias>
+              <p class="intiwo-sugerencias-aviso" data-buscar-aviso hidden>No se encontro ningun resultado bajo ese termino, pero quizas te refieres a</p>
+              <div data-buscar-lista></div>
+            </div>
+          </div>
+          <div class="intiwo-config-buscar-detalle" data-buscar-detalle hidden></div>
+          <p data-buscar-mensaje class="intiwo-config-estado" aria-live="polite"></p>
+        </article>
         <article class="intiwo-config-tarjeta intiwo-config-panel" data-config-panel="baja" hidden>
           <h3>Eliminar en el sistema</h3>
-          <p>Solo puedes desactivar editores que invitaste. No se borra la base ni los proyectos.</p>
+          <p>Puedes desactivar o volver a activar editores que invitaste. No se borra la base ni los proyectos.</p>
           <div class="intiwo-config-lista-altas" data-altas-lista></div>
         </article>
         <article class="intiwo-config-tarjeta">
           <h3>Mis codigos</h3>
-          <p>Codigo = especialidad + nivel 1|2|3 + seccion, por ejemplo DS2B. Solo ves y administras los tuyos.</p>
+          <p>Clave = prefijo + nivel 1|2|3 + seccion. Ejemplo DS2B. Prefijos DS, EL, MI, MA, SE, IT. Sin GE. Unico por anio lectivo. Solo tuyos: docente_id eres tu.</p>
           <form class="intiwo-cuentas-form" data-form-codigo>
             <label>Especialidad
               <select name="especialidad_id" required data-especialidad-select>
@@ -234,6 +322,7 @@
             </label>
             <label>Seccion <input type="text" name="seccion" required maxlength="1" pattern="[A-Za-z]" placeholder="B"></label>
             <label>Anio lectivo <input type="number" name="anio_lectivo" required min="2026" value="2026"></label>
+            <p class="intiwo-config-estado" data-codigo-clave-vista aria-live="polite">Clave: especialidad + nivel + seccion (ejemplo DS2B). Sin GE.</p>
             <button class="intiwo-pildora" type="submit">Crear codigo</button>
           </form>
           <p data-codigo-mensaje class="intiwo-config-estado" aria-live="polite"></p>
@@ -266,17 +355,24 @@
 
     <section class="intiwo-config-vista" data-config-vista="editor" hidden aria-labelledby="config-editor">
       <h2 id="config-editor">Espacio de Editor</h2>
-      <p class="intiwo-config-resumen">Vista reducida: solo corresponde a las cajas de proyectos que te asignen. No puedes eliminarlas ni reasignarlas.</p>
+      <p class="intiwo-config-resumen">Vista minima: tu ficha en Proyectos, el tema y restablecer contrasena. No creas cuentas, no ves docentes ni das de alta a nadie.</p>
       <div class="intiwo-config-tarjetas">
-        <article class="intiwo-config-tarjeta">
-          <h3>Proyectos asignados</h3>
-          <p>La edición debe limitarse al contenido permitido dentro de cada caja asignada.</p>
-          <span class="intiwo-config-estado">Pendiente de asignaciones y permisos del servidor</span>
+        <article class="intiwo-config-tarjeta intiwo-config-tarjeta--destacada">
+          <h3>Mi ficha</h3>
+          <p>Personaliza solo la caja que te asignaron. No puedes borrar el proyecto ni reasignar el lider. El boton Personalizar de Proyectos abre la misma ficha.</p>
+          <p>
+            <a class="intiwo-pildora" href="../../../Sistema 2/paginas/ficha/pagina-ficha-proyecto.html">Abrir ficha</a>
+            <a class="intiwo-pildora" href="../../../Sistema 2/paginas/proyectos/pagina-hub-proyectos.html">Ir a Proyectos</a>
+          </p>
         </article>
         <article class="intiwo-config-tarjeta">
-          <h3>Cuenta</h3>
-          <p>El tema se cambia en la barra superior. Para la clave usa restablecer; no puedes crear cuentas ni ver otros docentes.</p>
+          <h3>Contrasena</h3>
+          <p>Supabase Auth envia el correo de restablecer. No se guarda ni se cambia la clave en SQL nuestro.</p>
           <p><a class="intiwo-pildora" href="../cuentas/pagina-restablecer-contrasena.html">Restablecer contrasena</a></p>
+        </article>
+        <article class="intiwo-config-tarjeta">
+          <h3>Tema</h3>
+          <p>Usa el sol/luna de la barra. Con sesion se guarda en perfiles.tema (el mismo interruptor de todo el sitio).</p>
         </article>
       </div>
     </section>
@@ -294,7 +390,11 @@
   <script type="module" src="../../js/auth/sesion-supabase.js"></script>
   <script src="../../js/auth/pagina-configuraciones-paneles.js"></script>
   <script type="module" src="../../js/auth/alta-cuentas-admin.js"></script>
+  <script type="module" src="../../js/auth/buscar-cuentas-config.js"></script>
   <script type="module" src="../../js/auth/arbol-config-codigos.js"></script>
   <script type="module" src="../../js/auth/panel-config-cuentas-multiples.js"></script>
+  <script type="module" src="../../js/auth/configurar-ciclos-especialidades.js"></script>
+  <script type="module" src="../../js/cms/cargar-footer-cms.js"></script>
+  <script type="module" src="../../js/cms/cargar-contactos-programas-cms.js"></script>
 </body>
 </html>
