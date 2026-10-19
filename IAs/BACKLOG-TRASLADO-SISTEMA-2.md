@@ -35,7 +35,7 @@ Usar estos destinos exactos para enlaces S2→S1; todos deben ser anchors `<a hr
 | Cuentas | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/cuentas/pagina-cuentas.html |
 | Proyectos (Sistema 2) | https://instituto-nacional-tecnico-industrial.github.io/web-oficial-proyectos/paginas/proyectos/pagina-hub-proyectos.html |
 
-Configuraciones es una página común que adapta sus opciones a la sesión/rol; no pedir direcciones diferentes por rol. Instituto confirmó la URL pública de S2 y se verificó que el hub y las páginas enlazadas de ficha/gestión docente responden. La copia local de `web-oficial` ya apunta los enlaces intersistema a los sitios publicados; falta sincronizar y publicar los cambios para que surtan efecto.
+Configuraciones es una página común que adapta sus opciones a la sesión/rol; no pedir direcciones diferentes por rol. Instituto confirmó la URL pública de S2 y se verificó que el hub y las páginas enlazadas de ficha/gestión docente responden. La copia local de `web-oficial` ya apunta los enlaces intersistema a los sitios publicados; en S2 se han fijado también los enlaces de páginas y rutas generadas por JavaScript al dominio independiente. Falta sincronizar/publicar esos cambios en ambos repositorios para que surtan efecto.
 
 ## Etapa A — Preparar la copia
 
@@ -50,11 +50,11 @@ Configuraciones es una página común que adapta sus opciones a la sesión/rol; 
 
 4. [ ] **Eliminar referencias relativas a S1.** Buscar en todos los HTML/CSS/JS `Sistema 1`, `../../../Sistema 1`, `../../Sistema 1`, `../Sistema 1` y `TODO-SPLIT-REPO`.
    - **Criterio:** cada uso esta convertido a URL HTTPS de S1 confirmada o a un recurso que se copia correctamente a S2; no hay enlaces que escapen la raiz de Pages.
-5. [ ] **Header/menu hamburguesa.** Logo, Inicio, Matricula, Oferta, Personal, Ubicaciones, Historia, Configuraciones y Cuentas deben redirigir a sus destinos S1 correctos; Proyectos y menu interno permanecen en S2.
+5. [ ] **Header/menu hamburguesa.** Logo, Inicio, Matricula, Oferta, Personal, Ubicaciones, Historia, Configuraciones y Cuentas deben redirigir a sus destinos S1 correctos; Proyectos y todas las páginas internas deben usar URLs absolutas del sitio independiente S2 (no rutas relativas a la copia integrada).
    - **Criterio:** enlaces HTML `<a href="...">`; mismo tab (sin `target="_blank"` ni `window.open`) para todas las rutas S1/S2; verificar cada destino.
 6. [ ] **Footer y enlace de Cuentas.** Enlazar menu/footer/Cuentas a S1 por URLs absolutas. El portal/formularios de acceso viven solo en S1; S2 no debe cargar una hoja de estilos ni scripts locales para login. Resolver cualquier icono/imagen/css remoto para que no dependa de una ruta hermana inexistente.
    - **Criterio:** cargar directo cada pagina publicada y no encontrar 404 de CSS, imagen o enlace institucional; el enlace Cuentas abre S1 en la misma pestaña.
-7. [ ] **Enlace Proyectos desde S1.** El anchor de Proyectos ya apunta, en la copia local de `web-oficial`, al URL confirmado del hub independiente de S2. Sincronizar/publicar el cambio en `web-oficial`.
+7. [ ] **Enlaces de navegación entre sistemas.** Los anchors de Proyectos en S1 y los destinos a S1/S2 en la copia local ya apuntan a sus URLs públicas absolutas. Sincronizar/publicar los cambios en ambos repositorios y verificar que desde el menú de S1 se llega a `web-oficial-proyectos` (no a `web-oficial/Sistema%202`).
    - **Criterio:** verificar tras publicar que la navegación cambia de sistema en la misma pestaña; mantener la copia actual S2 del despliegue viejo hasta completar validación.
 
 ## Etapa C — GitHub Pages independiente

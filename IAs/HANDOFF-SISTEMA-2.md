@@ -70,7 +70,9 @@ Despues del split, no sirven rutas relativas como `../../../Sistema 1/...`, `../
 
 **Para navegar entre los dos sistemas:** usar enlaces HTML reales `<a href="URL">...</a>`; no reemplazarlos por `window.open`, handlers de navegacion ni `target="_blank"`. La navegacion institucional S1/S2 debe continuar en la misma pestana, preservando la experiencia de sitio integrado. Esto **no** significa borrar la decision existente de abrir el formulario externo de Google Forms en una pestana nueva: esa es una accion externa separada y ya tiene `rel="noopener noreferrer"`.
 
-Los enlaces de S1 a S2 ya apuntan, en la copia local de `web-oficial`, a URLs HTTPS absolutas bajo `web-oficial-proyectos/`, incluida la URL confirmada del hub y los destinos específicos de ficha/gestión. El hub integrado bajo `web-oficial/Sistema%202/` se conserva como copia, pero no es el destino de navegación solicitado. Publicar el cambio en `web-oficial` para que surta efecto en el sitio.
+Los enlaces de S1 a S2 ya apuntan, en la copia local de `web-oficial`, a URLs HTTPS absolutas bajo `web-oficial-proyectos/`, incluida la URL confirmada del hub y los destinos específicos de ficha/gestión. En S2 también se cambiaron los anchors entre páginas y las rutas creadas por JavaScript para que apunten al mismo dominio independiente; esto hace que incluso la copia integrada antigua continúe la navegación en el sitio separado. El hub integrado bajo `web-oficial/Sistema%202/` se conserva como archivo, pero no debe ser destino de navegación. Publicar S1 en `web-oficial` y sincronizar/publicar todos los cambios de `Sistema 2/` en el repo `web-oficial-proyectos`.
+
+**Nota de diagnóstico (2026-10-18):** el menú de Inicio S1 publicado ya muestra el destino independiente, mientras que la copia publicada de S2 aún mostraba links relativos `../../../Sistema 1/...`. Si se ve esa ruta integrada en la barra, es una página vieja ya abierta o un despliegue S2 sin sincronizar; los cambios locales no actualizan automáticamente la copia del otro repositorio ni cambian la URL de una pestaña abierta.
 
 ## Identidad, roles y permisos funcionales
 
