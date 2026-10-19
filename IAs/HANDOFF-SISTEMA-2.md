@@ -57,7 +57,11 @@ Usar estas URL exactas en los anchors del menu hamburguesa y footer de Sistema 2
 | Configuraciones | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/configuraciones/pagina-configuraciones.html |
 | Cuentas | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/cuentas/pagina-cuentas.html |
 
-Estas URL corresponden a páginas, no a vistas por rol. Configuraciones usa una página común y adapta las opciones a la sesión/rol. El URL futuro de Sistema 2 aún debe confirmarse después de publicarlo; entonces se actualiza el anchor Proyectos de S1.
+Estas URL corresponden a páginas, no a vistas por rol. Configuraciones usa una página común y adapta las opciones a la sesión/rol. Para los enlaces de navegación desde Sistema 1, el Instituto confirmó como destino el hub de Sistema 2 integrado:
+
+https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%202/paginas/proyectos/pagina-hub-proyectos.html
+
+Los accesos a otras páginas de S2 deben conservar el path de destino bajo ese mismo prefijo, por ejemplo `Sistema%202/paginas/ficha/pagina-ficha-proyecto.html`. El despliegue independiente en `web-oficial-proyectos`, si se usa para pruebas o como destino separado, no sustituye el enlace integrado que pidió el Instituto para la navegación desde S1.
 
 Los botones institucionales del header/menu hamburguesa y del footer de S2 deben llevar a las paginas correspondientes de **Sistema 1** (Inicio, Matricula, Oferta, Personal, Ubicaciones, Historia, Configuraciones/Cuentas, segun el elemento). El link `Proyectos` y los destinos internos de S2 deben quedarse en el nuevo S2. Configuraciones y los formularios institucionales de cuenta viven en S1; no construir otro sistema de autenticacion o de administracion en S2.
 
@@ -65,7 +69,7 @@ Despues del split, no sirven rutas relativas como `../../../Sistema 1/...`, `../
 
 **Para navegar entre los dos sistemas:** usar enlaces HTML reales `<a href="URL">...</a>`; no reemplazarlos por `window.open`, handlers de navegacion ni `target="_blank"`. La navegacion institucional S1/S2 debe continuar en la misma pestana, preservando la experiencia de sitio integrado. Esto **no** significa borrar la decision existente de abrir el formulario externo de Google Forms en una pestana nueva: esa es una accion externa separada y ya tiene `rel="noopener noreferrer"`.
 
-Despues de publicar y verificar el URL definitivo de S2, actualizar tambien el enlace `Proyectos` en el header/menu de S1. Esa modificacion se hace en el repositorio `web-oficial`; no alcanza con cambiar los enlaces de S2.
+Los enlaces de S1 a S2 ya apuntan, en la copia local de `web-oficial`, a URLs HTTPS absolutas bajo `web-oficial/Sistema%202/`, incluida la URL integrada confirmada por el Instituto. También se cambiaron las referencias relativas entre ambos sistemas. Publicar el cambio en `web-oficial` para que surta efecto en el sitio.
 
 ## Identidad, roles y permisos funcionales
 
@@ -157,7 +161,7 @@ Consultar `IAs/BACKLOG-TRASLADO-SISTEMA-2.md`; el orden minimo es:
 1. Inventariar el paquete copiado, conservar version/fuentes y confirmar destino/URL del repo nuevo.
 2. Eliminar dependencias de rutas relativas al vecino `Sistema 1`; convertir navegacion S1/S2 a anchors HTTPS absolutos same-tab y conservar los recursos locales de S2.
 3. Preparar build y GitHub Pages independientes; configurar URL y publishable key como Actions Variables y probar rutas directas/recarga.
-4. En S1, actualizar el destino del enlace Proyectos al URL nuevo. Mantener temporalmente el S2 integrado en la publicacion antigua.
+4. El enlace Proyectos de S1 ya apunta en la copia local al URL confirmado de S2; sincronizar/publicar los cambios y mantener temporalmente el S2 integrado en la publicacion antigua hasta validar ambos despliegues.
 5. Revisar callbacks Auth de S2 y configurar la allowlist minima con el URL real publicado; comprobar inicio de sesion/cierre y retorno. No cambiar Site URL del proyecto sin una necesidad probada y aprobacion.
 6. Revalidar las consultas/RPCs de S2 contra el esquema remoto con diagnostico reciente; producir instrucciones de SQL solo cuando el Instituto lo pida.
 7. Completar listados publicos/busqueda remotos y pruebas autenticadas RLS por rol; comprobar navegacion S1↔S2 y tema.
@@ -166,7 +170,7 @@ Consultar `IAs/BACKLOG-TRASLADO-SISTEMA-2.md`; el orden minimo es:
 ## Criterios de cierre del traspaso
 
 - El repo nuevo publica en Pages y recarga directamente todas las rutas HTML activas sin 404 de assets/rutas.
-- Links internos entre S1 y S2 son anchors HTML, se abren en la misma pestaña y apuntan a URLs oficiales verificados; no queda una ruta a `../../../Sistema 1`.
+- Links entre S1 y S2 son anchors HTML, se abren en la misma pestaña y apuntan a URLs oficiales verificados. La copia local ya usa URLs absolutos para esos cruces; falta sincronizar/publicar los cambios para que surtan efecto en ambos sitios.
 - Footer y menu hamburguesa de S2 conservan todos los destinos de S1 y los destinos internos de S2; el enlace Proyectos de S1 llega al URL nuevo.
 - El cliente de S2 usa la misma URL Supabase y `sb_publishable_` que S1, inyectadas en build; no hay service key ni runtime generado versionado.
 - Auth retorna a destinos allowlisted del nuevo S2; se documenta que la sesion no cruza origenes automaticamente.

@@ -33,8 +33,9 @@ Usar estos destinos exactos para enlaces S2→S1; todos deben ser anchors `<a hr
 | Historia | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/historia/pagina-historia-instituto.html |
 | Configuraciones | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/configuraciones/pagina-configuraciones.html |
 | Cuentas | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/cuentas/pagina-cuentas.html |
+| Proyectos (Sistema 2) | https://instituto-nacional-tecnico-industrial.github.io/web-oficial-proyectos/paginas/proyectos/pagina-hub-proyectos.html |
 
-Configuraciones es una página común que adapta sus opciones a la sesión/rol; no pedir direcciones diferentes por rol. El URL independiente de S2 se añadirá cuando Instituto lo comparta después de publicar.
+Configuraciones es una página común que adapta sus opciones a la sesión/rol; no pedir direcciones diferentes por rol. Instituto confirmó la URL pública de S2 y se verificó que el hub y las páginas enlazadas de ficha/gestión docente responden. La copia local de `web-oficial` ya apunta los enlaces intersistema a los sitios publicados; falta sincronizar y publicar los cambios para que surtan efecto.
 
 ## Etapa A — Preparar la copia
 
@@ -42,8 +43,8 @@ Configuraciones es una página común que adapta sus opciones a la sesión/rol; 
    - **Criterio:** inventario del arbol y origen versionado documentados, sin secretos/datos personales.
 2. [ ] **Leer handoff y reglas del proyecto.** Leer de inicio a fin `IAs/BACKLOG.md`, `IAs/RESOLUCIONES.md`, `IAs/HANDOFF-SISTEMA-2.md`, este backlog y `Sistema 2/LEEME.md`.
    - **Criterio:** no se adopta ningun SQL por copiarlo; discrepancias apuntadas antes de editar.
-3. [ ] **Confirmar URL publica destino.** Crear/configurar el repo nuevo y obtener el URL real de Settings > Pages antes de fijar callback o links en S1.
-   - **Criterio:** URL oficial confirmada por Pages; no asumir path ni URL de repositorio.
+3. [x] **Confirmar URL publica destino.** Instituto proporcionó la URL publicada y se verificó que abre el hub de Proyectos.
+   - **URL confirmada:** `https://instituto-nacional-tecnico-industrial.github.io/web-oficial-proyectos/paginas/proyectos/pagina-hub-proyectos.html`.
 
 ## Etapa B — Enlaces y recursos intersistema
 
@@ -53,8 +54,8 @@ Configuraciones es una página común que adapta sus opciones a la sesión/rol; 
    - **Criterio:** enlaces HTML `<a href="...">`; mismo tab (sin `target="_blank"` ni `window.open`) para todas las rutas S1/S2; verificar cada destino.
 6. [ ] **Footer y enlace de Cuentas.** Enlazar menu/footer/Cuentas a S1 por URLs absolutas. El portal/formularios de acceso viven solo en S1; S2 no debe cargar una hoja de estilos ni scripts locales para login. Resolver cualquier icono/imagen/css remoto para que no dependa de una ruta hermana inexistente.
    - **Criterio:** cargar directo cada pagina publicada y no encontrar 404 de CSS, imagen o enlace institucional; el enlace Cuentas abre S1 en la misma pestaña.
-7. [ ] **Enlace Proyectos desde S1.** En el repo `web-oficial`, actualizar el anchor de Proyectos al URL nuevo confirmado solo despues de que el hub S2 funcione.
-   - **Criterio:** la navegacion cambia de sistema en la misma pestaña; mantener la copia actual S2 del despliegue viejo hasta completar validacion.
+7. [ ] **Enlace Proyectos desde S1.** El anchor de Proyectos ya apunta, en la copia local de `web-oficial`, al URL confirmado del hub independiente de S2. Sincronizar/publicar el cambio en `web-oficial`.
+   - **Criterio:** verificar tras publicar que la navegación cambia de sistema en la misma pestaña; mantener la copia actual S2 del despliegue viejo hasta completar validación.
 
 ## Etapa C — GitHub Pages independiente
 
