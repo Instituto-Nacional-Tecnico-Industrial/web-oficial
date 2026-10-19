@@ -37,8 +37,9 @@ En el repositorio origen, el workflow actual publica ambos sistemas juntos:
 - Origen compartido actual: `https://instituto-nacional-tecnico-industrial.github.io`
 - Inicio publicado S1: `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/inicio/pagina-inicio-cms.html`
 - Hub publicado S2: `https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%202/paginas/proyectos/pagina-hub-proyectos.html`
+- Hub publicado del repositorio independiente S2: `https://instituto-nacional-tecnico-industrial.github.io/web-oficial-proyectos/paginas/proyectos/pagina-hub-proyectos.html`
 
-El URL del futuro despliegue independiente no esta confirmado hasta crear/configurar Pages y verificarlo. En GitHub Pages de proyecto, es razonable esperar el path `/web-oficial-proyectos/`, pero la IA debe usar el valor real de Settings > Pages y no inventar el dominio o path.
+El despliegue independiente de S2 ya esta publicado y su URL fue confirmada por el Instituto. El despliegue integrado bajo `/web-oficial/Sistema%202/` sigue existiendo como copia dentro del repositorio original; para navegar desde S1 a S2 se debe usar el sitio independiente `web-oficial-proyectos`.
 
 ## Navegacion S1 <-> S2: requisito obligatorio
 
@@ -57,11 +58,11 @@ Usar estas URL exactas en los anchors del menu hamburguesa y footer de Sistema 2
 | Configuraciones | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/configuraciones/pagina-configuraciones.html |
 | Cuentas | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/cuentas/pagina-cuentas.html |
 
-Estas URL corresponden a páginas, no a vistas por rol. Configuraciones usa una página común y adapta las opciones a la sesión/rol. Para los enlaces de navegación desde Sistema 1, el Instituto confirmó como destino el hub de Sistema 2 integrado:
+Estas URL corresponden a páginas, no a vistas por rol. Configuraciones usa una página común y adapta las opciones a la sesión/rol. Para los enlaces de navegación desde Sistema 1, el Instituto confirmó como destino el sitio independiente de Sistema 2:
 
-https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%202/paginas/proyectos/pagina-hub-proyectos.html
+https://instituto-nacional-tecnico-industrial.github.io/web-oficial-proyectos/paginas/proyectos/pagina-hub-proyectos.html
 
-Los accesos a otras páginas de S2 deben conservar el path de destino bajo ese mismo prefijo, por ejemplo `Sistema%202/paginas/ficha/pagina-ficha-proyecto.html`. El despliegue independiente en `web-oficial-proyectos`, si se usa para pruebas o como destino separado, no sustituye el enlace integrado que pidió el Instituto para la navegación desde S1.
+Los accesos a otras páginas de S2 deben conservar el path de destino bajo ese mismo prefijo, por ejemplo `https://instituto-nacional-tecnico-industrial.github.io/web-oficial-proyectos/paginas/ficha/pagina-ficha-proyecto.html`.
 
 Los botones institucionales del header/menu hamburguesa y del footer de S2 deben llevar a las paginas correspondientes de **Sistema 1** (Inicio, Matricula, Oferta, Personal, Ubicaciones, Historia, Configuraciones/Cuentas, segun el elemento). El link `Proyectos` y los destinos internos de S2 deben quedarse en el nuevo S2. Configuraciones y los formularios institucionales de cuenta viven en S1; no construir otro sistema de autenticacion o de administracion en S2.
 
@@ -69,7 +70,7 @@ Despues del split, no sirven rutas relativas como `../../../Sistema 1/...`, `../
 
 **Para navegar entre los dos sistemas:** usar enlaces HTML reales `<a href="URL">...</a>`; no reemplazarlos por `window.open`, handlers de navegacion ni `target="_blank"`. La navegacion institucional S1/S2 debe continuar en la misma pestana, preservando la experiencia de sitio integrado. Esto **no** significa borrar la decision existente de abrir el formulario externo de Google Forms en una pestana nueva: esa es una accion externa separada y ya tiene `rel="noopener noreferrer"`.
 
-Los enlaces de S1 a S2 ya apuntan, en la copia local de `web-oficial`, a URLs HTTPS absolutas bajo `web-oficial/Sistema%202/`, incluida la URL integrada confirmada por el Instituto. También se cambiaron las referencias relativas entre ambos sistemas. Publicar el cambio en `web-oficial` para que surta efecto en el sitio.
+Los enlaces de S1 a S2 ya apuntan, en la copia local de `web-oficial`, a URLs HTTPS absolutas bajo `web-oficial-proyectos/`, incluida la URL confirmada del hub y los destinos específicos de ficha/gestión. El hub integrado bajo `web-oficial/Sistema%202/` se conserva como copia, pero no es el destino de navegación solicitado. Publicar el cambio en `web-oficial` para que surta efecto en el sitio.
 
 ## Identidad, roles y permisos funcionales
 
