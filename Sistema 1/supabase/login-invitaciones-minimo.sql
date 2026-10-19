@@ -12,7 +12,7 @@ create unique index if not exists perfiles_nie_uq
 create table if not exists public.invitaciones_correo (
 	id uuid primary key default gen_random_uuid(),
 	email text not null check (email = lower(btrim(email))),
-	rol_destino text not null check (rol_destino in ('administrador', 'docente', 'editor')),
+	rol_destino text not null check (rol_destino in ('administrador', 'docente', 'editor', 'academico')),
 	codigo_id uuid,
 	nombre text,
 	n_lista integer check (n_lista is null or n_lista > 0),
@@ -182,7 +182,7 @@ create policy invitaciones_insert_admin
 		public.intiwo_es_admin()
 		and invitado_por = (select auth.uid())
 		and (
-			rol_destino in ('docente', 'editor')
+			rol_destino in ('docente', 'editor', 'academico')
 			or (rol_destino = 'administrador' and lower(coalesce((select auth.jwt() ->> 'email'), '')) = 'intiwo11543@gmail.com')
 		)
 	);

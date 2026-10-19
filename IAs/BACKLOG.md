@@ -1,6 +1,6 @@
 # Backlog INTIWO
 
-**Ultima modificacion:** 2026-10-18 15:46 (UTC-6) | **IA:** GitHub Copilot | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-18 17:49 (UTC-6) | **IA:** GitHub Copilot | **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Carpeta de trabajo entre IAs: `IAs/` contiene este backlog general, `RESOLUCIONES.md` y documentos especializados de traspaso/backlog cuando se soliciten expresamente. No asumir que un documento nuevo sustituye estos dos archivos canonicos. Al actualizar estos dos: misma fecha, hora (UTC-6) e IA; indica el dispositivo. Apuntes en orden cronologico.
 
@@ -46,7 +46,7 @@ Desglose:
 
 - **CMS headless:** Inicio y footer se guardan como JSON/filas; el visitante solo lee.
 
-- **RBAC en datos:** roles `administrador | docente | editor`. Visitante = anonimo, sin fila.
+- **RBAC en datos:** roles `administrador | docente | editor | academico`. Visitante = anonimo, sin fila.
 
 - **No:** event-driven, SOA, 3 bases Supabase, Odoo, ni editor de coordenadas absolutas tipo Illustrator.
 
@@ -1134,7 +1134,7 @@ Copiar la misma pieza en `Sistema 1/compartido/` y `Sistema 2/compartido/` (hast
 **Botones de rol (mismo hueco visual que `Editar` en Inicio S1):**
 - Visitante: ningun boton.
 - Editor (alumno lider): `Personalizar` abre su ficha tecnica / contenido permitido.
-- Academico (rol nuevo 2026-10-14): misma pildora `Personalizar` e misma interfaz que el Editor, pero solo proyectos academicos. Lo crea y da de baja **solo el administrador**. Es inferior al docente y al editor. Correo @clases|inti **con nombre, sin NIE**.
+- Academico (rol docente responsable, decision confirmada 2026-10-18): boton `Mis proyectos` abre su gestion academica. Puede crear proyectos de cualquiera de las cinco asignaturas, editar fichas donde figure como autor, gestionar coautores, asignar codigos tecnicos activos de 1.o/2.o como mano de obra, publicar/volver privado y archivar/reactivar sus proyectos. No edita proyectos ajenos ni tecnicos, no bloquea edicion, no gestiona cuentas/invitaciones, codigos tecnicos propios, ciclos ni CMS. Solo Admin crea/desactiva su cuenta. Correo institucional con nombre, sin NIE.
 - Docente: `Evaluar` abre la lista de **codigos a su cargo** y luego el listado de proyectos de ese codigo (puede archivar/eliminar logico el proyecto completo y modificar etiquetas). Crea la caja tecnica **vacia** y la adjunta a editores del codigo.
 - Administrador: en S2 no usa `Editar` (eso es CMS de Inicio). Puede usar `Evaluar` con alcance de todos los codigos o Configuraciones (S1). Alta/baja del rol Academico.
 
@@ -1154,7 +1154,7 @@ Hub (pagina-hub-proyectos.html)                    [PNG dos cards]
   |         --> ficha (fase 3, concebida por docentes)
   |-- Busqueda (titulo + etiquetas, fuzzy)
   |-- Editor: Personalizar --> solo fichas tecnicas propias
-  |-- Academico: Personalizar --> fichas academicas (formal: Roboto Serif, sin color)
+  |-- Academico: Mis proyectos --> proyectos academicos propios/compartidos y alta por asignatura/ciclo
   `-- Docente: Evaluar --> tecnicos: sus codigos; academicos: proyectos que concibio
 ```
 
@@ -1164,7 +1164,7 @@ El dropdown **no** vive en el hub. `Ver mas` abre otro documento. Los menus desp
 
 **Tecnicos (se conservan).** Un alumno o equipo piensa y desarrolla durante todo el ano en su taller. El docente fija requisitos; autoriza continuar, pide cambio o deniega. Al concluir, el equipo arma su mesa de exposicion para visitantes. Caja ligada a un `codigo` de especialidad (DS2B) con Editor lider (DB-00f). Niveles 1, 2 y 3.
 
-**Academicos (2026-10-13 12:20; expansion 2026-10-14).** Son nuevos en la institucion. Las asignaturas basicas se imparten solo en **1.o y 2.o**, sin importar especialidad. En **3.o** no se cursan: ese hueco lo llenan extension de taller y practicas en empresas. El proyecto lo **conciben y dirigen docentes** en horas de clase; los alumnos de los codigos a los que ese docente imparte son la **mano de obra**, no los duenos de la caja. Cada docente es independiente y dispone de sus codigos. Por asignatura y ciclo el numero de proyectos **varia**. `proyectos.codigo_id` es **NULL** en academicos; FKs N:M `proyecto_docente` y `proyecto_codigo_mano_obra` (solo niveles 1-2). Quien crea/archiva: docente(s) autores o administrador. El Editor alumno **no** Personaliza academicos. Quien llena la ficha academica es el rol **Academico** (misma UX que Editor; formal: solo Roboto Serif y variantes, sin color de texto; URLs iguales a las tecnicas).
+**Academicos (2026-10-13 12:20; expansion 2026-10-14; permisos afinados 2026-10-18).** Son proyectos de las asignaturas basicas impartidas solo en **1.o y 2.o**, sin importar especialidad. En **3.o** no se cursan: ese hueco lo llenan extension de taller y practicas en empresas. El proyecto lo conciben y dirigen docentes; alumnos de codigos tecnicos activos de nivel 1/2 pueden figurar como mano de obra, no como duenos de la ficha. Por asignatura y ciclo el numero de proyectos varia. `proyectos.codigo_id` es **NULL** en academicos; FKs N:M `proyecto_docente` y `proyecto_codigo_mano_obra`. El rol `academico` representa a un docente responsable y puede crear proyectos en cualquiera de las cinco asignaturas. El creador se incorpora como autor y no puede ser quitado de la autoria; coautores Docente/Academico tambien pueden gestionar el proyecto mientras sean autores. El Académico puede editar la ficha formal (Roboto Serif, sin color), gestionar autorias y grupos de mano de obra, publicar/volver privado y archivar/reactivar solo proyectos donde es autor. `edicion_bloqueada` solo controla al Editor tecnico; no bloquea la ficha de los autores. No edita proyectos ajenos, no administra cuentas/ciclos/CMS, no crea codigos tecnicos ni controla bloqueos de edicion. El Editor alumno **no** Personaliza academicos.
 
 ### Codigo (clave institucional)
 
@@ -1204,7 +1204,7 @@ Tabla `ciclos_lectivos` (anio PK >= 2026, un `es_actual`). Semilla 2026. Solo ro
 - **PK de persona:** siempre `perfiles.id` = `auth.users.id` (uuid). Nunca el NIE ni el correo como PK.
 - **Editor (alumno lider):** login solo `@clases.edu.sv` o `@inti.edu.sv`. La parte local **es el NIE** (`19795194@clases.edu.sv` ? NIE `19795194`). Extraer al alta/login, guardar `perfiles.nie` UNIQUE (solo editores). El NIE ya viaja en el correo; no se usa como contrasena. El padron oficial NIE-correo (DB-00b) sigue fuera de Git; el HMAC sigue para cotejar el padron, no sustituye la columna `nie` de editores.
 - **Docente:** mismos dominios, correo **con nombre** (no NIE en la parte local). **No tiene NIE.** Identificador interno = uuid Auth. Identificador humano = `email` UNIQUE + `nombre_visible`. Opcional `clave_docente` (slug del local-part) UNIQUE nullable; no es PK.
-- **Academico:** mismos dominios que docente/admin, correo **con nombre** (no NIE). `perfiles.nie` NULL. Alta y baja solo administrador. Alcance: llenar fichas academicas. Inferior a `docente` y a `editor`.
+- **Academico:** mismos dominios institucionales que docente, correo **con nombre** (no NIE); `perfiles.nie` queda NULL. Admin crea/desactiva su cuenta. Es docente autor de proyectos academicos, no de proyectos tecnicos; puede elegir cualquiera de las cinco asignaturas y el año lectivo disponible. Los permisos se limitan a proyectos academicos donde figura como autor y siguen validados por RPC/RLS. Sin invitaciones, gestion de cuentas, codigos tecnicos, ciclos ni CMS.
 - **Administrador:** `intiwo11543@gmail.com` (F-RES); RLS por `perfiles.rol`.
 - Visitante: anon, sin perfil.
 
@@ -1416,6 +1416,8 @@ Las casillas S2-01a..S2-09b describian pildoras **dentro del hub**, ficha sin es
 
   - **Hecho 2026-10-14 12:55 (UTC-6):** Instituto eligio el nombre **Academico** (`perfiles.rol='academico'`). Personalizar → ficha `tipo=academico`. `nie` NULL.
 
+  - **Definicion de permisos reemplazada 2026-10-18:** la frase «inferior a docente y a editor» y la descripcion de Académico como solo completador de fichas son historicas y ya no aplican. Instituto confirmo que Académico crea proyectos de cualquiera de las cinco asignaturas, gestiona como autor sus proyectos (ficha, coautores, mano de obra, publicacion/privacidad y archivo/reactivacion) y no administra proyectos ajenos, cuentas, invitaciones, codigos tecnicos, ciclos ni CMS. Ver contrato actualizado en la seccion «Dos naturalezas de proyecto» y `IAs/HANDOFF-SISTEMA-2.md`.
+
 193 [x] S2N-04b Semilla de **300** etiquetas relacionadas con oficios, asignaturas y temas escolares.
 
   - **Escribir en:** `Sistema 1/supabase/semilla-etiquetas.sql` (canonica); `Sistema 2/js/ficha/catalogo-etiquetas.js`.
@@ -1450,7 +1452,7 @@ Las casillas S2-01a..S2-09b describian pildoras **dentro del hub**, ficha sin es
 198 [~] DB-PROY-V2 Persistencia Supabase de proyectos tecnicos/académicos y asignaciones N:M a Editores; ficha vacia al asignar; titulo, descripcion, integrantes, etiquetas y URLs editables con auto-guardado remoto. Separar `publicado` de `edicion_bloqueada`; publicar no bloquea y cada control se revoca por separado. Archivar no es desasignar ni borrar fisicamente.
 
   - **Avance parcial:** `proyectos-core-v2.sql` propone el contrato central de tablas, RLS y RPCs; la ficha guarda titulo, descripcion, integrantes y URLs. La persistencia de etiquetas se implemento localmente en Megatarea 5; falta validacion SQL/instancia y el SQL no se ha aplicado en Supabase.
-  - **Megatarea 4 (parte academica) implementada localmente:** se agrego al SQL candidato el alta academica por asignatura/ciclo, validacion de Docentes activos como autores, mantenimiento atomico de autorias y una RPC de lectura limitada a los nombres asociados a proyectos visibles. Evaluar y la ficha ya usan esos contratos; la edicion remota de contenido academico queda limitada a Docentes autorizados por el proyecto y Administradores. No se introdujo un rol Auth nuevo.
+  - **Megatarea 4 (parte academica) implementada localmente:** se agrego al SQL candidato el alta academica por asignatura/ciclo, validacion de Docentes/Academicos activos como autores, mantenimiento atomico de autorias y RPCs de lectura/gestion de proyectos y grupos participantes. Evaluar y la ficha usan esos contratos; Docente/Academico solo gestionan proyectos donde son autores, Admin tiene alcance institucional, y Editor no Personaliza proyectos academicos. No se creo un rol Auth adicional: se completo el rol `academico` ya aprobado.
   - **Validacion pendiente:** el SQL sigue siendo candidato sin parser PostgreSQL ni cotejo de esquema remoto; no se ejecutaron SQL, RLS ni pruebas en navegador/Supabase. La lista/catalogo publico academico sigue en sus tareas/megatareas correspondientes.
   - **Megatarea 5 implementada localmente:** catalogo/seleccion persistentes desde Supabase, guardado atomico de etiquetas por RPC y filtro publico por etiqueta. El acceso de escritura se limita a Admin, Docente gestor y Editor tecnico activo; se retiro la escritura directa a la tabla puente en el contrato candidato. Pendiente validar SQL/RLS y datos reales en Supabase.
 
@@ -1497,7 +1499,7 @@ Las casillas S2-01a..S2-09b describian pildoras **dentro del hub**, ficha sin es
 
   - **Escribir en:** `Sistema 2/paginas/ficha/pagina-ficha-proyecto.html`, `js/ficha/editar-ficha-propia.js`, CSS de ficha y API Supabase del proyecto.
 
-203 [~] S2N-ACEPTACION-ROLES Pruebas integrales: visitante no ve borradores; Editor solo ve/edita proyectos asignados y no cambia publicacion/bloqueo; Docente solo gestiona codigos propios; Admin alcance institucional; publicar no cambia permiso de edicion; cambio de nombre por ciclo no modifica ciclos anteriores; los formularios institucionales se reflejan en S1/S2.
+203 [~] S2N-ACEPTACION-ROLES Pruebas integrales: visitante no ve borradores; Editor solo ve/edita proyectos tecnicos asignados y no cambia publicacion/bloqueo; Docente solo gestiona codigos y proyectos de su alcance; Academico crea en cualquiera de las cinco asignaturas y gestiona solo proyectos de los que es autor, sin permisos institucionales; Admin tiene alcance institucional; publicar no cambia permiso de edicion; cambio de nombre por ciclo no modifica ciclos anteriores; formularios institucionales se reflejan en S1/S2.
 
   - **Depende de:** DB-PROY-V2, S2N-EDITOR-LISTA, S2N-DOCENTE-PROY, S1-S2-ESPECIALIDADES-POR-CICLO, S1-CMS-CONTACTOS y S2N-PREVIEW-GUARDAR.
 
@@ -2221,5 +2223,7 @@ Usar esta agrupacion para solicitar trabajo por fases (por ejemplo, «realiza la
 **Estado Megatarea 8 (2026-10-18):** implementacion local de CMS lista para revisar; tarea 201 permanece `[~]` hasta validar esquema, permisos Admin/RLS y consumo publico con la instancia real. No ejecutar SQL ni desplegar cambios remotos hasta recibir instruccion expresa.
 
 **Estado Megatarea 9 (2026-10-18 09:00 UTC-6):** avance local parcial de la tarea 203. Se corrigio la inicializacion de permisos Admin en los formularios CMS frente al evento de autenticacion que puede llegar mientras cargan datos; dos pruebas Node reproducen esa carrera. El diagnostico de solo lectura incluye ahora `educame_cms` y `matricula_cms`. La tarea sigue `[~]`: faltan el resultado de inspeccion remota y las pruebas autenticadas de RLS/roles; no ejecutar SQL ni modificar Supabase sin instruccion expresa.
+
+**Actualizacion Megatarea 9 (2026-10-18 17:49 UTC-6):** se actualizaron la definicion, Configuraciones/invitaciones, Evaluar, ficha, validaciones candidatas y handoff para el alcance confirmado de Académico. La ficha academica de un autor no queda bloqueada por `edicion_bloqueada` (esa marca solo limita a Editores tecnicos); el RPC candidato tambien protege la autoria del creador frente a que otro gestor la quite. `node --check`, diagnosticos de editor, 2 pruebas Node existentes y `git diff --check` pasan. Sin `psql`, prueba navegador o validacion Supabase remota; 203 sigue `[~]` y el SQL candidato no se ejecuto.
 
 **Estado Megatarea 10 (2026-10-18 09:04 UTC-6):** se verificaron publicamente las dos rutas actuales, el origen compartido y los callbacks observables en el codigo, incluyendo el patron acotado que exige el callback dinamico de S2. DB-00d sigue `[~]` hasta que el Instituto confirme la configuracion real del panel Auth de Supabase. No se modifico remoto ni se preparo SQL/Edge para ejecutar.

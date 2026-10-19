@@ -1,6 +1,6 @@
 # Resoluciones (cómo lo hizo cada IA)
 
-**Ultima modificacion:** 2026-10-18 15:46 (UTC-6) - **IA:** GitHub Copilot - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
+**Ultima modificacion:** 2026-10-18 17:49 (UTC-6) - **IA:** GitHub Copilot - **Dispositivo:** laptop Windows (MINEDUCYT), `C:\Proyectos\web-oficial`
 
 Los documentos canonicos de seguimiento en `IAs/` son este y `BACKLOG.md`; puede haber documentos especializados de traspaso/backlog cuando Instituto los solicite. Al cambiar una tarea en los documentos canonicos: **ultima modificacion** con fecha, hora **UTC-6**, nombre de la IA y dispositivo; ambas entradas deben permanecer coherentes.
 
@@ -1409,6 +1409,8 @@ Bachillerato General a distancia, 1� y 2�, s�bados y domingo. Requisito: m
 
 **Como:** Semilla 300 en `semilla-etiquetas.sql` + `catalogo-etiquetas.js` (no aplicar). Ficha: orden titulo → descripcion → etiquetas → integrantes/docente → URLs. Recuadros de URL sin borde, icono + tipo Roboto Serif, input del alto del titulo, visto si hay URL, + para otra. Integrantes a mano ilimitados. Titulo unico entre borradores. Toolbar Docs; academico solo Roboto Serif. Guia `pagina-guia-tipografia.html` (Google Fonts, CSS o SVG). Rol `academico` (nombre acordado): misma Personalizar, correo sin NIE, inferior a docente y editor, alta solo admin. SQL `rol-academico-y-ficha.sql` no aplicado. Se sustituyeron los vacios de 168 y el tope de 64 etiquetas de 170.
 
+**Aclaracion agregada 2026-10-18:** el rango «inferior a docente y editor» es una definicion historica reemplazada por el alcance confirmado en la entrada de 2026-10-18 17:49 (UTC-6) al final de este documento y en `IAs/HANDOFF-SISTEMA-2.md`. No usar esta frase para implementar permisos actuales.
+
 **Casilla:** 190 [x], 191 [x], 192 [x], 193 [x].
 
 ---
@@ -1710,3 +1712,15 @@ Bachillerato General a distancia, 1� y 2�, s�bados y domingo. Requisito: m
 **Como:** Se agregaron `IAs/HANDOFF-SISTEMA-2.md`, con el contexto de arquitectura, roles, DER, enlaces entre sistemas, Auth/tema, integracion Supabase y pendientes; `IAs/BACKLOG-TRASLADO-SISTEMA-2.md`, con 23 tareas y criterios de aceptacion; y plantillas vacias `NO-EJECUTAR-*` en `IAs/plantillas-sistema-2/`. Se aclara que son plantillas de trabajo, no scripts para ejecutar, que el SQL canonico sigue en Sistema 1 y que el inventario de callbacks no es codigo de produccion. Se actualizaron las descripciones de documentos especializados en este archivo y `IAs/BACKLOG.md`.
 
 **Validacion y limites:** se comprobo que las plantillas no contienen codigo ni instrucciones ejecutables y que `git diff --check` no reporta errores de whitespace. No se ejecutaron pruebas de aplicacion, no se altero codigo de los sistemas, Supabase, GitHub Pages ni Edge Functions; tampoco se hizo commit/push. Se preservaron los demas cambios preexistentes del worktree.
+
+### 2026-10-18 17:49 (UTC-6) - IA: GitHub Copilot - Dispositivo: laptop Windows (MINEDUCYT)
+
+**Pedido:** Completar y hacer consistente el rol Académico en interfaz, autorizacion candidata, SQL y documentos de continuidad.
+
+**Como:** Se aplico el alcance confirmado por Instituto: Académico puede crear proyectos para cualquiera de las cinco asignaturas, editar fichas propias como autor, administrar coautorias, grupos de mano de obra de codigos activos de 1.º/2.º, publicar/volver privados y archivar/reactivar; no gestiona proyectos ajenos, cuentas, invitaciones, codigos tecnicos, ciclos ni CMS, ni controla el bloqueo de edicion. La marca `edicion_bloqueada` afecta solo al Editor tecnico y no bloquea a los autores; el RPC impide cambiar ese flag por Académico. Solo Admin invita/desactiva cuentas. La UI de Evaluar presenta Mis proyectos, filtra proyectos de los que Docente/Académico son autores, ofrece edicion de ficha a los roles autorizados y limita sus controles a los alcances respectivos. En SQL candidato, la creacion incluye al autor y la RPC impide que un Docente/Académico creador sea quitado de la autoria incluso por otro gestor. La definicion historica de tarea 192 que lo hacia «inferior» fue marcada como sustituida; el handoff y la aceptacion 203 describen las nuevas pruebas.
+
+**Archivos:** `Sistema 1/js/auth/pagina-configuraciones-roles.js`; `Sistema 1/paginas/configuraciones/pagina-configuraciones.html`; `Sistema 1/js/auth/buscar-cuentas-config.js`; `Sistema 1/js/auth/alta-cuentas-admin.js`; `supabase/functions/invitar-cuenta/index.ts`; `supabase/functions/invitar-cuenta/LEEME.md`; `Sistema 1/supabase/proyectos-core-v2.sql`; `Sistema 1/supabase/tabla-perfiles.sql`; `Sistema 1/supabase/tabla-invitaciones-correo.sql`; `Sistema 1/supabase/invitaciones-admin-matriz.sql`; `Sistema 1/supabase/login-invitaciones-minimo.sql`; `Sistema 1/supabase/rol-academico-y-ficha.sql`; `Sistema 2/js/cromo/boton-personalizar-o-evaluar.js`; `Sistema 2/js/proyectos/evaluar-proyectos-docente.js`; `Sistema 2/js/ficha/editar-ficha-propia.js`; `Sistema 2/js/ficha/persistir-ficha-supabase.js`; paginas de Configuraciones, Evaluar y ficha en S1/S2; `Sistema 2/supabase/rol-academico-y-ficha.sql`; `IAs/BACKLOG.md`; `IAs/HANDOFF-SISTEMA-2.md`.
+
+**Validacion y limites:** `node --check` paso para los siete modulos JS implicados; `node --test tests/cms-auth-state.test.mjs` paso (2 pruebas existentes); diagnosticos de VS Code y `git diff --check` no reportaron errores. No se encontro `psql`, por lo que no se valido el SQL con PostgreSQL. Tampoco se hizo prueba de navegador ni de Supabase remoto. No se ejecuto SQL ni se modifico Supabase remoto, no se desplego Edge Function ni Pages y no se hizo commit. Las restricciones visuales no sustituyen RPC/RLS; validar el candidato contra el diagnostico remoto antes de proponer ejecucion.
+
+**Estado:** definicion funcional y cambios locales completados; la tarea 203 sigue parcial hasta pasar las pruebas locales y validar cuentas, RLS/RPC y datos reales con Supabase. El SQL candidato no esta aplicado.

@@ -183,17 +183,22 @@ as $$
 			left join public.codigos c on c.id = p.codigo_id
 			where p.id = p_proyecto_id
 				and (
-					(c.docente_id = (select auth.uid()) and public.intiwo_rol_actual() = 'docente')
-					or exists (
-						select 1 from public.proyecto_docente pd
-						where pd.proyecto_id = p.id
-							and pd.docente_id = (select auth.uid())
-							and public.intiwo_rol_actual() = 'docente'
+					(
+						p.tipo = 'tecnico'
+						and c.docente_id = (select auth.uid())
+						and public.intiwo_rol_actual() = 'docente'
 					)
 					or (
 						p.tipo = 'academico'
-						and p.creado_por = (select auth.uid())
-						and public.intiwo_rol_actual() = 'docente'
+						and public.intiwo_rol_actual() in ('docente', 'academico')
+						and (
+							p.creado_por = (select auth.uid())
+							or exists (
+								select 1 from public.proyecto_docente pd
+								where pd.proyecto_id = p.id
+									and pd.docente_id = (select auth.uid())
+							)
+						)
 					)
 				)
 		)
@@ -260,10 +265,24 @@ language plpgsql
 security definer
 set search_path = pg_catalog, public, auth
 as $$
+	v_rol text := public.intiwo_rol_actual();
+	v_edicion_bloqueada boolean;
 begin
 	if not (public.intiwo_es_admin() or public.intiwo_proyecto_puede_gestionar(p_proyecto_id)) then
 	raise exception 'No tienes permiso para cambiar el estado de este proyecto.'
 		using errcode = '42501';
+	end if;
+
+	select edicion_bloqueada into v_edicion_bloqueada
+	from public.proyectos
+	where id = p_proyecto_id
+	for update;
+	if not found then
+		raise exception 'El proyecto no existe.' using errcode = 'P0002';
+	end if;
+	if v_rol = 'academico' and p_edicion_bloqueada is distinct from v_edicion_bloqueada then
+		raise exception 'El rol Académico no puede bloquear ni habilitar la edición.'
+			using errcode = '42501';
 	end if;
 
 	update public.proyectos
@@ -271,10 +290,6 @@ begin
 	edicion_bloqueada = p_edicion_bloqueada,
 	archivado_en = case when p_archivado then coalesce(archivado_en, now()) else null end
 	where id = p_proyecto_id;
-
-	if not found then
-	raise exception 'El proyecto no existe.' using errcode = 'P0002';
-	end if;
 end;
 $$;
 
@@ -423,8 +438,8 @@ security definer
 set search_path = pg_catalog, public, auth
 as $$
 begin
-	if coalesce(public.intiwo_rol_actual(), '') not in ('docente', 'administrador') then
-		raise exception 'Solo Docentes y Administradores pueden consultar autores académicos.'
+	if coalesce(public.intiwo_rol_actual(), '') not in ('docente', 'academico', 'administrador') then
+		raise exception 'Solo Docentes, Académicos y Administradores pueden consultar autores académicos.'
 			using errcode = '42501';
 	end if;
 
@@ -432,7 +447,7 @@ begin
 	select p.id,
 		coalesce(nullif(btrim(concat_ws(' ', p.nombres, p.apellidos)), ''), p.nombre, 'Docente')
 	from public.perfiles p
-	where p.rol = 'docente'
+	where p.rol in ('docente', 'academico')
 		and p.desactivado_en is null
 	order by 2;
 end;
@@ -453,8 +468,8 @@ declare
 	v_rol text := public.intiwo_rol_actual();
 	v_docente_ids uuid[];
 begin
-	if coalesce(v_rol, '') not in ('docente', 'administrador') then
-		raise exception 'Solo Docentes y Administradores pueden crear proyectos académicos.'
+	if coalesce(v_rol, '') not in ('docente', 'academico', 'administrador') then
+		raise exception 'Solo Docentes, Académicos y Administradores pueden crear proyectos académicos.'
 			using errcode = '42501';
 	end if;
 
@@ -478,7 +493,7 @@ begin
 	from unnest(coalesce(p_docente_ids, '{}'::uuid[])) ids(docente_id)
 	where ids.docente_id is not null;
 
-	if v_rol = 'docente'
+	if v_rol in ('docente', 'academico')
 		and not ((select auth.uid()) = any(v_docente_ids)) then
 		v_docente_ids := array_append(v_docente_ids, (select auth.uid()));
 	end if;
@@ -492,9 +507,9 @@ begin
 		select 1
 		from unnest(v_docente_ids) ids(docente_id)
 		left join public.perfiles p on p.id = ids.docente_id
-		where p.id is null or p.rol <> 'docente' or p.desactivado_en is not null
+		where p.id is null or p.rol not in ('docente', 'academico') or p.desactivado_en is not null
 	) then
-		raise exception 'Cada autor debe ser un Docente activo.'
+		raise exception 'Cada autor debe ser un Docente o Académico activo.'
 			using errcode = '23514';
 	end if;
 
@@ -524,9 +539,11 @@ set search_path = pg_catalog, public, auth
 as $$
 declare
 	v_tipo text;
+	v_creado_por uuid;
+	v_rol text := public.intiwo_rol_actual();
 	v_docente_ids uuid[];
 begin
-	select tipo into v_tipo
+	select tipo, creado_por into v_tipo, v_creado_por
 	from public.proyectos
 	where id = p_proyecto_id
 	for update;
@@ -548,16 +565,25 @@ begin
 	where ids.docente_id is not null;
 
 	if cardinality(v_docente_ids) = 0 then
-		raise exception 'Asigna al menos un Docente autor al proyecto académico.'
+		raise exception 'Asigna al menos un Docente o Académico autor al proyecto académico.'
 			using errcode = '23514';
+	end if;
+	if exists (
+		select 1 from public.perfiles creador
+		where creador.id = v_creado_por
+			and creador.rol in ('docente', 'academico')
+	)
+		and not (v_creado_por = any(v_docente_ids)) then
+		raise exception 'El Docente o Académico que creó el proyecto debe conservar su autoría.'
+			using errcode = '42501';
 	end if;
 	if exists (
 		select 1
 		from unnest(v_docente_ids) ids(docente_id)
 		left join public.perfiles p on p.id = ids.docente_id
-		where p.id is null or p.rol <> 'docente' or p.desactivado_en is not null
+		where p.id is null or p.rol not in ('docente', 'academico') or p.desactivado_en is not null
 	) then
-		raise exception 'Cada autor debe ser un Docente activo.'
+		raise exception 'Cada autor debe ser un Docente o Académico activo.'
 			using errcode = '23514';
 	end if;
 
@@ -566,6 +592,109 @@ begin
 	select p_proyecto_id, ids.docente_id, (select auth.uid())
 	from unnest(v_docente_ids) ids(docente_id);
 end;
+$$;
+
+create or replace function public.intiwo_listar_codigos_mano_obra(p_anio_lectivo smallint)
+returns table (codigo_id uuid, clave text, nivel smallint, especialidad text)
+language plpgsql
+stable
+security definer
+set search_path = pg_catalog, public, auth
+as $$
+begin
+	if coalesce(public.intiwo_rol_actual(), '') not in ('academico', 'docente', 'administrador') then
+		raise exception 'Solo Académicos, Docentes y Administradores pueden consultar códigos de mano de obra.'
+			using errcode = '42501';
+	end if;
+
+	return query
+	select c.id, c.clave, c.nivel, e.nombre_corto
+	from public.codigos c
+	join public.especialidades e on e.id = c.especialidad_id
+	where c.anio_lectivo = p_anio_lectivo
+		and c.nivel in (1, 2)
+		and c.desactivado_en is null
+		and e.tipo = 'tecnica'
+	order by c.clave;
+end;
+$$;
+
+create or replace function public.intiwo_gestionar_codigos_mano_obra(
+	p_proyecto_id uuid,
+	p_codigo_ids uuid[] default '{}'
+)
+returns void
+language plpgsql
+security definer
+set search_path = pg_catalog, public, auth
+as $$
+declare
+	v_anio smallint;
+	v_tipo text;
+	v_codigo_ids uuid[];
+begin
+	select tipo, anio_lectivo into v_tipo, v_anio
+	from public.proyectos
+	where id = p_proyecto_id
+	for update;
+	if not found then
+		raise exception 'El proyecto no existe.' using errcode = 'P0002';
+	end if;
+	if v_tipo <> 'academico' then
+		raise exception 'Los códigos de mano de obra solo se asignan a proyectos académicos.'
+			using errcode = '23514';
+	end if;
+	if not (public.intiwo_es_admin() or public.intiwo_proyecto_puede_gestionar(p_proyecto_id)) then
+		raise exception 'No tienes permiso para gestionar este proyecto.'
+			using errcode = '42501';
+	end if;
+
+	select coalesce(array_agg(distinct ids.codigo_id), '{}'::uuid[])
+	into v_codigo_ids
+	from unnest(coalesce(p_codigo_ids, '{}'::uuid[])) ids(codigo_id)
+	where ids.codigo_id is not null;
+
+	if exists (
+		select 1
+		from unnest(v_codigo_ids) ids(codigo_id)
+		left join public.codigos c on c.id = ids.codigo_id
+		left join public.especialidades e on e.id = c.especialidad_id
+		where c.id is null
+			or c.anio_lectivo <> v_anio
+			or c.nivel not in (1, 2)
+			or c.desactivado_en is not null
+			or e.tipo <> 'tecnica'
+	) then
+		raise exception 'Cada código debe ser técnico, activo y de nivel 1 o 2 en el mismo ciclo del proyecto.'
+			using errcode = '23514';
+	end if;
+
+	delete from public.proyecto_codigo_mano_obra
+	where proyecto_id = p_proyecto_id
+		and not (codigo_id = any(v_codigo_ids));
+
+	insert into public.proyecto_codigo_mano_obra (proyecto_id, codigo_id)
+	select p_proyecto_id, ids.codigo_id
+	from unnest(v_codigo_ids) ids(codigo_id)
+	on conflict (proyecto_id, codigo_id) do nothing;
+end;
+$$;
+
+create or replace function public.intiwo_proyecto_codigos_mano_obra(p_proyecto_id uuid)
+returns table (clave text)
+language sql
+stable
+security definer
+set search_path = pg_catalog, public, auth
+as $$
+	select c.clave
+	from public.proyecto_codigo_mano_obra pcm
+	join public.codigos c on c.id = pcm.codigo_id
+	join public.proyectos p on p.id = pcm.proyecto_id
+	where pcm.proyecto_id = p_proyecto_id
+		and p.tipo = 'academico'
+		and public.intiwo_proyecto_visible(p.id)
+	order by c.clave
 $$;
 
 create or replace function public.intiwo_proyecto_autores_publicos(p_proyecto_id uuid)
@@ -594,7 +723,18 @@ set search_path = pg_catalog, public, auth
 as $$
 	select coalesce(
 		public.intiwo_es_admin()
-		or public.intiwo_proyecto_puede_gestionar(p_proyecto_id)
+		or (
+			public.intiwo_proyecto_puede_gestionar(p_proyecto_id)
+			and (
+				public.intiwo_rol_actual() <> 'academico'
+				or exists (
+					select 1 from public.proyectos p
+					where p.id = p_proyecto_id
+						and p.archivado_en is null
+						and not p.edicion_bloqueada
+				)
+			)
+		)
 		or public.intiwo_editor_proyecto_activo(p_proyecto_id),
 		false
 	)
@@ -760,6 +900,9 @@ revoke all on function public.intiwo_crear_proyecto_tecnico(uuid, uuid[]) from p
 revoke all on function public.intiwo_listar_docentes_academicos() from public, anon;
 revoke all on function public.intiwo_crear_proyecto_academico(uuid, smallint, uuid[]) from public, anon;
 revoke all on function public.intiwo_gestionar_docentes_proyecto(uuid, uuid[]) from public, anon;
+revoke all on function public.intiwo_listar_codigos_mano_obra(smallint) from public, anon;
+revoke all on function public.intiwo_gestionar_codigos_mano_obra(uuid, uuid[]) from public, anon;
+revoke all on function public.intiwo_proyecto_codigos_mano_obra(uuid) from public;
 revoke all on function public.intiwo_proyecto_autores_publicos(uuid) from public, anon;
 revoke all on function public.intiwo_puede_gestionar_etiquetas(uuid) from public, anon;
 revoke all on function public.intiwo_gestionar_etiquetas_proyecto(uuid, uuid[]) from public, anon;
@@ -775,6 +918,9 @@ grant execute on function public.intiwo_crear_proyecto_tecnico(uuid, uuid[]) to 
 grant execute on function public.intiwo_listar_docentes_academicos() to authenticated;
 grant execute on function public.intiwo_crear_proyecto_academico(uuid, smallint, uuid[]) to authenticated;
 grant execute on function public.intiwo_gestionar_docentes_proyecto(uuid, uuid[]) to authenticated;
+grant execute on function public.intiwo_listar_codigos_mano_obra(smallint) to authenticated;
+grant execute on function public.intiwo_gestionar_codigos_mano_obra(uuid, uuid[]) to authenticated;
+grant execute on function public.intiwo_proyecto_codigos_mano_obra(uuid) to anon, authenticated;
 grant execute on function public.intiwo_proyecto_autores_publicos(uuid) to anon, authenticated;
 grant execute on function public.intiwo_puede_gestionar_etiquetas(uuid) to authenticated;
 grant execute on function public.intiwo_gestionar_etiquetas_proyecto(uuid, uuid[]) to authenticated;
@@ -833,8 +979,26 @@ create policy proyectos_editor_contenido_update on public.proyectos
 drop policy if exists proyectos_docente_admin_update on public.proyectos;
 create policy proyectos_docente_admin_update on public.proyectos
 	for update to authenticated
-	using (public.intiwo_es_admin() or public.intiwo_proyecto_puede_gestionar(id))
-	with check (public.intiwo_es_admin() or public.intiwo_proyecto_puede_gestionar(id));
+	using (
+		public.intiwo_es_admin()
+		or (
+			public.intiwo_proyecto_puede_gestionar(id)
+			and (
+				public.intiwo_rol_actual() <> 'academico'
+				or (archivado_en is null and not edicion_bloqueada)
+			)
+		)
+	)
+	with check (
+		public.intiwo_es_admin()
+		or (
+			public.intiwo_proyecto_puede_gestionar(id)
+			and (
+				public.intiwo_rol_actual() <> 'academico'
+				or (archivado_en is null and not edicion_bloqueada)
+			)
+		)
+	);
 
 drop policy if exists proyecto_editores_participantes_select on public.proyecto_editores;
 create policy proyecto_editores_participantes_select on public.proyecto_editores

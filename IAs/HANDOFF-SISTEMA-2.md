@@ -42,9 +42,26 @@ El URL del futuro despliegue independiente no esta confirmado hasta crear/config
 
 ## Navegacion S1 <-> S2: requisito obligatorio
 
+### Destinos oficiales de Sistema 1 confirmados por Instituto (2026-10-18)
+
+Usar estas URL exactas en los anchors del menu hamburguesa y footer de Sistema 2. Mantener `<a href="...">` sin `target="_blank"` para navegar en la misma pestaña:
+
+| Etiqueta | Destino |
+|---|---|
+| Inicio | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/inicio/pagina-inicio-cms.html |
+| Matrícula | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/matricula/pagina-matricula-nuevo-ingreso.html |
+| Oferta Académica | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/oferta-academica/pagina-oferta-academica.html |
+| Personal | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/personal/pagina-personal-instituto.html |
+| Ubicaciones | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/ubicaciones/pagina-ubicaciones.html |
+| Historia | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/historia/pagina-historia-instituto.html |
+| Configuraciones | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/configuraciones/pagina-configuraciones.html |
+| Cuentas | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/cuentas/pagina-cuentas.html |
+
+Estas URL corresponden a páginas, no a vistas por rol. Configuraciones usa una página común y adapta las opciones a la sesión/rol. El URL futuro de Sistema 2 aún debe confirmarse después de publicarlo; entonces se actualiza el anchor Proyectos de S1.
+
 Los botones institucionales del header/menu hamburguesa y del footer de S2 deben llevar a las paginas correspondientes de **Sistema 1** (Inicio, Matricula, Oferta, Personal, Ubicaciones, Historia, Configuraciones/Cuentas, segun el elemento). El link `Proyectos` y los destinos internos de S2 deben quedarse en el nuevo S2. Configuraciones y los formularios institucionales de cuenta viven en S1; no construir otro sistema de autenticacion o de administracion en S2.
 
-Despues del split, no sirven rutas relativas como `../../../Sistema 1/...`, `../Sistema 1/...` ni `../../Sistema 1/...`. Cambiarlas por URL HTTPS absoluta y confirmada de S1 en los archivos de S2 que las usan: encabezado compartido, footer compartido, paginas que contienen copias del cromo y hub de Cuentas. Revisar tambien enlaces a CSS/imagenes de S1. Todo recurso que S2 necesite para dibujarse debe quedar en su propio despliegue o usar un URL absoluto publico confirmado.
+Despues del split, no sirven rutas relativas como `../../../Sistema 1/...`, `../Sistema 1/...` ni `../../Sistema 1/...`. Cambiarlas por URL HTTPS absoluta y confirmada de S1 en los archivos de S2 que las usan: encabezado compartido, footer compartido y paginas que contienen copias del cromo. No hay un hub local de Cuentas en S2; su enlace «Cuentas» lleva al portal de Sistema 1. Revisar tambien enlaces a CSS/imagenes de S1. Todo recurso que S2 necesite para dibujarse debe quedar en su propio despliegue o usar un URL absoluto publico confirmado.
 
 **Para navegar entre los dos sistemas:** usar enlaces HTML reales `<a href="URL">...</a>`; no reemplazarlos por `window.open`, handlers de navegacion ni `target="_blank"`. La navegacion institucional S1/S2 debe continuar en la misma pestana, preservando la experiencia de sitio integrado. Esto **no** significa borrar la decision existente de abrir el formulario externo de Google Forms en una pestana nueva: esa es una accion externa separada y ya tiene `rel="noopener noreferrer"`.
 
@@ -56,7 +73,7 @@ Despues de publicar y verificar el URL definitivo de S2, actualizar tambien el e
 - **Administrador:** administra usuarios, configura contenido institucional y ciclos/nombres; alcance institucional en Evaluar. El primer administrador es el usuario matriz definido en las resoluciones. El email matriz solo aplica al bootstrap; permisos normales deben depender de rol y politicas, no de comparar email en el frontend.
 - **Docente:** ve/gestiona sus codigos y proyectos de su alcance, puede invitar/gestionar Editores permitidos y revisar/evaluar proyectos. No puede operar fuera de su propiedad/alcance.
 - **Editor:** alumno lider asignado a proyecto tecnico y miembro activo del codigo correspondiente. Puede editar campos de contenido permitidos si su asignacion sigue vigente y la edicion no esta bloqueada. No puede publicar, archivar, cambiar permisos ni reasignar lideres.
-- **Academico:** rol existente en los requisitos/UI para completar fichas academicas con Roboto Serif. No es sinonimo de Docente; el Docente concibe/autoriza proyectos academicos y es autor, mientras el rol Academico completa la ficha segun el flujo institucional. El alta/baja de esta cuenta la administra el Administrador. Confirmar el contrato y el estado remoto antes de habilitar permisos. No agregar otro rol ni ampliar accesos a partir de una etiqueta UI.
+- **Académico (rol `academico`):** docente de una de las cinco asignaturas académicas (Precalculo, Ciudadanía y valores, Ciencias y tecnología, Inglés, Lenguaje y Literatura). Puede crear proyectos en cualquiera de las cinco asignaturas, editar fichas de proyectos donde es autor, gestionar coautores, asignar grupos activos de 1.º/2.º como mano de obra, publicar/volver privados y archivar/reactivar esos proyectos. El creador se agrega como autor y no puede ser quitado. `edicion_bloqueada` solo afecta a Editores técnicos, no bloquea a los autores de la ficha académica. No gestiona proyectos ajenos, cuentas/invitaciones, codigos tecnicos, ciclos ni CMS; tampoco bloquea/habilita edicion. No se asignan materias por cuenta. Mantiene la ficha académica formal (Roboto Serif, sin color de texto). Solo Admin crea/desactiva cuentas Académico. Estas reglas deben estar aplicadas coherentemente en UI, RPC/RLS y SQL candidato de S1; no afirmar que se aplicaron remotamente.
 - `perfil.id` debe ser el mismo UUID que `auth.users.id`. El email/clave pertenecen a Auth, no se duplican como credenciales en tablas.
 - Un Editor puede pertenecer a mas de un codigo. `miembro_codigo` es una membresia persistente, distinta de la invitacion y distinta de la asignacion a una ficha.
 - Una ficha/proyecto persiste si se desactiva o reemplaza a su Editor. Asignaciones y revocaciones deben conservar historial. La baja de usuario es logica; no borra proyectos, autoria ni visibilidad.
@@ -155,7 +172,7 @@ Consultar `IAs/BACKLOG-TRASLADO-SISTEMA-2.md`; el orden minimo es:
 - Auth retorna a destinos allowlisted del nuevo S2; se documenta que la sesion no cruza origenes automaticamente.
 - Tema: preferencia Auth `perfiles.tema` compartida cuando el usuario se autentica en cada origen; visitantes pueden tener preferencias locales separadas, salvo decision segura aprobada.
 - Listados y busqueda muestran proyectos reales publicados; filas privadas/archivadas solo son visibles a actores autorizados conforme a RLS.
-- Pruebas verifican que Editor no cambia flags/archivo/asignacion, Docente no sale de sus codigos/proyectos, Administrador tiene alcance institucional, Academico solo completa el flujo academico autorizado y anonimo no ve borradores.
+- Pruebas verifican que Editor no cambia flags/archivo/asignacion, Docente no sale de sus codigos/proyectos, Academico crea en cualquiera de las cinco asignaturas y gestiona solo proyectos propios como autor sin permisos administrativos, Administrador tiene alcance institucional y anonimo no ve borradores.
 - SQL/Edge solo se cambia y se declara aplicado con evidencia/permiso del Instituto; un build exitoso no equivale a una prueba de Supabase.
 
 ## Reglas finales

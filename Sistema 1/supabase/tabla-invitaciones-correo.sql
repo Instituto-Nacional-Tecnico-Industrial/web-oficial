@@ -3,7 +3,7 @@
 create table if not exists public.invitaciones_correo (
 	id uuid primary key default gen_random_uuid(),
 	email text not null check (email = lower(btrim(email))),
-	rol_destino text not null check (rol_destino in ('administrador', 'docente', 'editor')),
+	rol_destino text not null check (rol_destino in ('administrador', 'docente', 'editor', 'academico')),
 	codigo_id uuid references public.codigos (id) on delete restrict,
 	nombre text,
 	n_lista integer check (n_lista is null or n_lista > 0),

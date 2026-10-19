@@ -376,7 +376,7 @@
   var r = rol();
   var puedeEditar = modo === "personalizar" && params.get("previsualizar") !== "1" && !!params.get("id") && (
     (!academico && r === "editor") ||
-    (academico && (r === "docente" || r === "administrador" || r === "admin"))
+    (academico && (r === "academico" || r === "docente" || r === "administrador" || r === "admin"))
   );
 
   if (ficha) ficha.setAttribute("data-tipo", academico ? "academico" : "tecnico");
@@ -424,10 +424,10 @@
     if (bu) bu.hidden = true;
   }
 
-  if (academico && modo === "personalizar" && r !== "docente" && r !== "administrador" && r !== "admin") {
+  if (academico && modo === "personalizar" && r !== "academico" && r !== "docente" && r !== "administrador" && r !== "admin") {
     if (avisoEl) {
       avisoEl.hidden = false;
-      avisoEl.textContent = "Solo el Docente autor o un Administrador puede editar proyectos académicos.";
+      avisoEl.textContent = "Solo un Académico o Docente autor, o un Administrador, puede editar proyectos académicos.";
     }
   } else if (puedeEditar && ficha) {
     if (!params.get("id")) {

@@ -105,7 +105,7 @@
       <div class="intiwo-config-tarjetas">
         <article class="intiwo-config-tarjeta intiwo-config-tarjeta--destacada intiwo-config-panel" data-config-panel="alta" hidden>
           <h3>Agregar al sistema</h3>
-          <p>Invitas con correo, nombres y apellidos. Ellos eligen la contraseña en el enlace. En Eliminar puedes desactivar o volver a activar Admin, Docente o Editor. No se borra historial. Editor: NIE solo en la parte local del correo (19795194@…). La cuenta matriz no se elimina. Solo la matriz da de alta administradores.</p>
+          <p>Invitas con correo, nombres y apellidos. Ellos eligen la contraseña en el enlace. En Eliminar puedes desactivar o volver a activar Admin, Docente, Académico o Editor. No se borra historial. Editor: NIE solo en la parte local del correo (19795194@…). Académico: correo con nombre, sin NIE ni código técnico. La cuenta matriz no se elimina. Solo la matriz da de alta administradores.</p>
           <form class="intiwo-cuentas-form" data-form-alta>
             <label>Nombres <input type="text" name="nombres" required minlength="2" autocomplete="given-name"></label>
             <label>Apellidos <input type="text" name="apellidos" required minlength="2" autocomplete="family-name"></label>
@@ -113,6 +113,7 @@
             <label>Rol
               <select name="rol" required>
                 <option value="docente">Docente</option>
+                <option value="academico">Académico</option>
                 <option value="editor">Editor</option>
                 <option value="administrador" data-opcion-matriz hidden>Administrador</option>
               </select>
@@ -131,7 +132,7 @@
         </article>
         <article class="intiwo-config-tarjeta intiwo-config-tarjeta--destacada intiwo-config-panel" data-config-panel="buscar" hidden>
           <h3>Buscar en el sistema</h3>
-          <p>Alumnos y docentes que ya tienen cuenta. Si te equivocas al escribir, aparecen correos parecidos. Puedes desactivar, activar o incorporar un editor a un codigo. No se borra la cuenta.</p>
+          <p>Alumnos, docentes y académicos que ya tienen cuenta. Si te equivocas al escribir, aparecen correos parecidos. Puedes desactivar, activar o incorporar un editor a un código. No se borra la cuenta.</p>
           <div class="intiwo-busqueda" data-buscar-cuentas>
             <span class="intiwo-busqueda-lupa" aria-hidden="true"><svg width="20" height="20"><use href="#i-search"/></svg></span>
             <input type="search" placeholder="Busca correo de alumno o docente...." autocomplete="off" data-buscar-q>
@@ -375,6 +376,27 @@
           <p>Usa el sol/luna de la barra. Con sesion se guarda en perfiles.tema (el mismo interruptor de todo el sitio).</p>
         </article>
       </div>
+    </section>
+
+    <section class="intiwo-config-vista" data-config-vista="academico" hidden aria-labelledby="config-academico">
+      <h2 id="config-academico">Espacio Académico</h2>
+      <p class="intiwo-config-resumen">Creas y diriges proyectos de cualquiera de las cinco asignaturas académicas. Puedes editar las fichas donde figures como docente autor, colaborar con otros autores, asignar códigos de 1.º y 2.º como mano de obra, y publicar, volver privado o archivar tus proyectos. No administras proyectos ajenos, cuentas, códigos técnicos, ciclos ni el CMS institucional.</p>
+      <div class="intiwo-config-tarjetas">
+        <article class="intiwo-config-tarjeta intiwo-config-tarjeta--destacada">
+          <h3>Mis proyectos académicos</h3>
+          <p>Abre el espacio de Proyectos para crear fichas por asignatura y ciclo, continuar editando tus proyectos y colaborar en los que compartas autoría.</p>
+          <p>
+            <a class="intiwo-pildora" href="../../../Sistema 2/paginas/evaluar/pagina-evaluar-codigos-docente.html">Gestionar mis proyectos</a>
+            <a class="intiwo-pildora es-linea" href="../../../Sistema 2/paginas/proyectos/pagina-hub-proyectos.html">Ir a Proyectos</a>
+          </p>
+        </article>
+        <article class="intiwo-config-tarjeta">
+          <h3>Contrasena</h3>
+          <p>Supabase Auth envia el correo de restablecer. No se guarda ni se cambia la clave desde esta pantalla.</p>
+          <a class="intiwo-pildora" href="../cuentas/pagina-restablecer-contrasena.html">Restablecer contrasena</a>
+        </article>
+      </div>
+      <p class="intiwo-config-comun">El tema se cambia en el boton de la barra superior. La cuenta Académico la administra el Administrador institucional.</p>
     </section>
 
     <section class="intiwo-config-vista" data-config-vista="rol-desconocido" hidden aria-labelledby="config-rol-desconocido">

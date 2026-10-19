@@ -67,7 +67,7 @@ function esCercano(q, nombre) {
 
 function etiquetaPersona(fila) {
   const persona = [fila.nombres, fila.apellidos].filter(Boolean).join(" ") || fila.nombre || "";
-  return (persona ? persona + " · " : "") + fila.email + " · " + fila.rol_destino;
+  return (persona ? persona + " ï¿½ " : "") + fila.email + " ï¿½ " + fila.rol_destino;
 }
 
 let catalogo = [];
@@ -82,7 +82,7 @@ async function cargarCatalogo(rol) {
     .order("created_at", { ascending: false })
     .limit(400);
   if (rol === "docente") consulta = consulta.eq("rol_destino", "editor");
-  else consulta = consulta.in("rol_destino", ["editor", "docente"]);
+  else consulta = consulta.in("rol_destino", ["editor", "docente", "academico"]);
   const { data, error } = await consulta;
   if (error || !data) return;
   const vistos = {};
@@ -173,7 +173,7 @@ function mostrarDetalle(raiz, item) {
   detalle.replaceChildren();
   if (aviso) aviso.textContent = "";
   const p = document.createElement("p");
-  p.textContent = item.nombre + (item.revocado_en ? " · desactivado" : " · en el sistema");
+  p.textContent = item.nombre + (item.revocado_en ? " ï¿½ desactivado" : " ï¿½ en el sistema");
   detalle.appendChild(p);
   const rolVista = String(window.INTIWO_ROL || "").toLowerCase();
   if (item.rol === "editor") {

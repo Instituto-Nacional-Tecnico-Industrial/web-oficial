@@ -6,7 +6,7 @@ alter table public.invitaciones_correo
 
 alter table public.invitaciones_correo
 	add constraint invitaciones_correo_rol_destino_check
-	check (rol_destino in ('administrador', 'docente', 'editor'));
+	check (rol_destino in ('administrador', 'docente', 'editor', 'academico'));
 
 create or replace function public.intiwo_es_admin_matriz()
 returns boolean
@@ -28,7 +28,7 @@ create policy invitaciones_insert_admin
 		public.intiwo_es_admin()
 		and invitado_por = (select auth.uid())
 		and (
-			rol_destino in ('docente', 'editor')
+			rol_destino in ('docente', 'editor', 'academico')
 			or (rol_destino = 'administrador' and public.intiwo_es_admin_matriz())
 		)
 	);

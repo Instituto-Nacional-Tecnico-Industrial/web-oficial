@@ -3,7 +3,7 @@
 
 create table if not exists public.perfiles (
 	id uuid primary key references auth.users (id) on delete restrict,
-	rol text not null check (rol in ('administrador', 'docente', 'editor')),
+	rol text not null check (rol in ('administrador', 'docente', 'editor', 'academico')),
 	nombre text,
 	tema text not null default 'dark' check (tema in ('light', 'dark')),
 	desactivado_en timestamptz,

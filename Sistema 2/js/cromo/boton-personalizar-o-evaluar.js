@@ -36,7 +36,7 @@
       if (icono.href && icono.href.baseVal !== undefined) icono.href.baseVal = "#i-pencil";
     }
 
-    if (rol === "editor" || rol === "academico") {
+    if (rol === "editor") {
       boton.hidden = false;
       var params = new URLSearchParams(window.location.search);
       var enFicha = window.location.pathname.endsWith("/pagina-ficha-proyecto.html");
@@ -57,12 +57,21 @@
       } else if (rol === "editor") {
         if (texto) texto.textContent = "Agregar";
         dest = "../proyectos/pagina-proyectos-editor.html";
-      } else {
-        if (texto) texto.textContent = "Personalizar";
-        dest = "../ficha/pagina-ficha-proyecto.html?tipo=academico&modo=personalizar";
       }
       boton.setAttribute("href", urlRelativa(dest));
       boton.setAttribute("aria-label", texto ? texto.textContent : "Agregar");
+      return;
+    }
+
+    if (rol === "academico") {
+      boton.hidden = false;
+      if (texto) texto.textContent = "Mis proyectos";
+      if (icono) {
+        icono.setAttribute("href", "#i-folder");
+        if (icono.href && icono.href.baseVal !== undefined) icono.href.baseVal = "#i-folder";
+      }
+      boton.setAttribute("href", urlRelativa("../evaluar/pagina-evaluar-codigos-docente.html"));
+      boton.setAttribute("aria-label", "Gestionar mis proyectos académicos");
       return;
     }
 

@@ -232,7 +232,7 @@ async function loadProject() {
   }
 
   let canManageAcademic = false;
-  if (auth.user && project.tipo === "academico" && ["docente", "administrador"].includes(role)) {
+  if (auth.user && project.tipo === "academico" && ["academico", "docente", "administrador"].includes(role)) {
     const { data: permission, error: permissionError } = await supabase.rpc(
       "intiwo_proyecto_puede_gestionar",
       { p_proyecto_id: projectId }
@@ -241,10 +241,12 @@ async function loadProject() {
     canManageAcademic = permission === true;
   }
   canEdit = (role === "editor" && project.tipo === "tecnico" && assigned && !project.edicion_bloqueada && !project.archivado_en)
-    || (project.tipo === "academico" && canManageAcademic);
+    || (project.tipo === "academico" && canManageAcademic && !project.archivado_en);
   if (editingMode && !previewMode && !canEdit) {
     if (card) card.classList.remove("es-edicion");
-    setNotice("No puedes editar este proyecto. Puede que tu docente haya bloqueado la edición o retirado la asignación.");
+    setNotice(role === "editor"
+      ? "No puedes editar este proyecto. Puede que tu docente haya bloqueado la edición o retirado la asignación."
+      : "No tienes permiso para editar este proyecto o está inactivo.");
   }
 
   if (title) title.textContent = project.titulo || "Proyecto";
@@ -273,6 +275,17 @@ async function loadProject() {
     const authorsText = (authors || []).map((author) => author.nombre_visible).join(", ");
     if (authorsEl) authorsEl.textContent = authorsText || "Aún sin docentes autores.";
     if (autoresEd) autoresEd.textContent = authorsText || "Aún sin docentes autores.";
+
+    const { data: handWorkCodes, error: handWorkCodesError } = await supabase.rpc(
+      "intiwo_proyecto_codigos_mano_obra",
+      { p_proyecto_id: projectId }
+    );
+    if (handWorkCodesError) throw handWorkCodesError;
+    const handWorkText = (handWorkCodes || []).map((item) => item.clave).join(", ");
+    const handWorkView = document.getElementById("intiwo-ficha-mano");
+    const handWorkEditor = document.getElementById("intiwo-ficha-mano-edicion");
+    if (handWorkView) handWorkView.textContent = handWorkText || "Sin grupos asignados.";
+    if (handWorkEditor) handWorkEditor.textContent = handWorkText || "Asigna los grupos desde «Mis proyectos».";
   }
 
   const body = htmlSeguro(project.cuerpo || "");
@@ -300,7 +313,7 @@ async function loadProject() {
   if (academicEditor) academicEditor.hidden = project.tipo !== "academico";
 
   if (project.archivado_en) setNotice("Este proyecto está inactivo. Consulta a tu docente si debe reactivarse.");
-  else if (!project.publicado && !canEdit && role !== "docente" && role !== "administrador" && role !== "admin") {
+  else if (!project.publicado && !canEdit && role !== "academico" && role !== "docente" && role !== "administrador" && role !== "admin") {
     setNotice("Este proyecto todavía no está publicado.");
   }
 

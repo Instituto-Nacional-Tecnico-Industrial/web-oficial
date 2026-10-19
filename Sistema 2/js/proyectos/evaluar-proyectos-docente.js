@@ -5,6 +5,7 @@ const message = document.getElementById("intiwo-evaluar-mensaje");
 const container = document.getElementById("intiwo-evaluar-codigos");
 const academicMessage = document.getElementById("intiwo-evaluar-academicos-mensaje");
 const academicContainer = document.getElementById("intiwo-evaluar-academicos");
+const technicalSection = document.getElementById("intiwo-evaluar-tecnicos");
 let currentRole = "";
 let currentUserId = "";
 let loadRequest = 0;
@@ -199,10 +200,13 @@ async function createProject(code, checkboxes, button) {
   }
 }
 
-function academicProjectCard(project, subject, teachers, namesById) {
+function academicProjectCard(project, subject, teachers, namesById, handWorkCodes, handWorkCodesError) {
   const card = element("article", null, "intiwo-caja-proyecto intiwo-proyecto-evaluacion");
   const currentAuthors = new Set((project.proyecto_docente || []).map((author) => author.docente_id));
+  const currentCodeIds = new Set((project.proyecto_codigo_mano_obra || []).map((item) => item.codigo_id));
   const authorNames = [...currentAuthors].map((id) => namesById.get(id)).filter(Boolean);
+  const codeNames = new Map(handWorkCodes.map((code) => [code.codigo_id, code.clave]));
+  const assignedCodes = [...currentCodeIds].map((id) => codeNames.get(id) || id);
   card.append(
     element("strong", project.titulo || "Proyecto"),
     element("p", project.descripcion || "Aún sin descripción."),
@@ -211,7 +215,8 @@ function academicProjectCard(project, subject, teachers, namesById) {
       project.edicion_bloqueada ? "Edición bloqueada" : "Edición habilitada",
       project.archivado_en ? "Inactivo" : ""
     ].filter(Boolean).join(" · ")),
-    element("p", `Docentes autores: ${authorNames.join(", ") || "Sin autores asignados"}`)
+    element("p", `Docentes autores: ${authorNames.join(", ") || "Sin autores asignados"}`),
+    element("p", `Códigos de mano de obra: ${assignedCodes.join(", ") || "Sin grupos asignados"}`)
   );
 
   const query = new URLSearchParams({
@@ -224,20 +229,68 @@ function academicProjectCard(project, subject, teachers, namesById) {
   const view = element("a", "Ver ficha");
   view.href = `../ficha/pagina-ficha-proyecto.html?${query.toString()}`;
   card.appendChild(view);
+  if (!project.archivado_en) {
+    const editQuery = new URLSearchParams(query);
+    editQuery.set("modo", "personalizar");
+    const edit = element("a", "Editar ficha", "intiwo-pildora es-linea");
+    edit.href = `../ficha/pagina-ficha-proyecto.html?${editQuery.toString()}`;
+    card.appendChild(edit);
+  }
+
+  const codesFieldset = element("fieldset", null, "intiwo-evaluar-editores");
+  codesFieldset.appendChild(element("legend", "Códigos de mano de obra (1.º y 2.º)"));
+  if (handWorkCodesError) {
+    codesFieldset.appendChild(element("p", `No se pudieron cargar los códigos: ${handWorkCodesError}`));
+  } else if (!handWorkCodes.length) {
+    codesFieldset.appendChild(element("p", "No hay códigos activos de 1.º o 2.º en este ciclo lectivo."));
+  } else {
+    const codeCheckboxes = handWorkCodes.map((code) => {
+      const label = document.createElement("label");
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.value = code.codigo_id;
+      input.checked = currentCodeIds.has(code.codigo_id);
+      label.append(input, document.createTextNode(`${code.clave} · ${code.especialidad}`));
+      codesFieldset.appendChild(label);
+      return input;
+    });
+    const saveCodes = element("button", "Guardar grupos", "intiwo-pildora es-linea");
+    saveCodes.type = "button";
+    saveCodes.addEventListener("click", async () => {
+      codesFieldset.disabled = true;
+      saveCodes.disabled = true;
+      try {
+        const { error } = await supabase.rpc("intiwo_gestionar_codigos_mano_obra", {
+          p_proyecto_id: project.id,
+          p_codigo_ids: codeCheckboxes.filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value)
+        });
+        if (error) throw error;
+        if (await loadAcademicProjects()) setAcademicMessage("Grupos de mano de obra actualizados.");
+      } catch (error) {
+        setAcademicMessage(`No se pudieron actualizar los grupos de mano de obra: ${errorText(error)}`);
+      } finally {
+        codesFieldset.disabled = false;
+        saveCodes.disabled = false;
+      }
+    });
+    codesFieldset.appendChild(saveCodes);
+  }
+  card.appendChild(codesFieldset);
 
   const fieldset = element("fieldset", null, "intiwo-evaluar-editores");
-  fieldset.appendChild(element("legend", "Docentes autores"));
+  fieldset.appendChild(element("legend", "Docentes y Académicos autores"));
   const checkboxes = teachers.map((teacher) => {
     const label = document.createElement("label");
     const input = document.createElement("input");
     input.type = "checkbox";
     input.value = teacher.perfil_id;
     input.checked = currentAuthors.has(teacher.perfil_id);
+    input.disabled = ["docente", "academico"].includes(currentRole) && teacher.perfil_id === currentUserId;
     label.append(input, document.createTextNode(teacher.nombre_visible));
     fieldset.appendChild(label);
     return input;
   });
-  if (!checkboxes.length) fieldset.appendChild(element("p", "No hay Docentes activos para asignar."));
+  if (!checkboxes.length) fieldset.appendChild(element("p", "No hay Docentes ni Académicos activos para asignar."));
   const saveAuthors = element("button", "Guardar autoría", "intiwo-pildora es-linea");
   saveAuthors.type = "button";
   saveAuthors.disabled = !checkboxes.some((checkbox) => checkbox.checked);
@@ -268,7 +321,7 @@ function academicProjectCard(project, subject, teachers, namesById) {
       setAcademicMessage(`No se pudo actualizar la autoría: ${errorText(error)}`);
     } finally {
       fieldset.disabled = false;
-      saveAuthors.disabled = !checkboxes.length;
+      saveAuthors.disabled = !checkboxes.some((checkbox) => checkbox.checked);
     }
   });
   fieldset.appendChild(saveAuthors);
@@ -277,9 +330,14 @@ function academicProjectCard(project, subject, teachers, namesById) {
   const actions = element("div", null, "intiwo-evaluar-acciones");
   const controls = [
     [project.publicado ? "Volver privado" : "Publicar", { publicado: !project.publicado }],
-    [project.edicion_bloqueada ? "Permitir edición" : "Bloquear edición", { edicion_bloqueada: !project.edicion_bloqueada }],
     [project.archivado_en ? "Reactivar" : "Marcar inactivo", { archivado: !project.archivado_en }]
   ];
+  if (currentRole !== "academico") {
+    controls.splice(1, 0, [
+      project.edicion_bloqueada ? "Permitir edición" : "Bloquear edición",
+      { edicion_bloqueada: !project.edicion_bloqueada }
+    ]);
+  }
   controls.forEach(([label, changed], index) => {
     const button = element("button", label, index === 0 ? "intiwo-pildora" : "intiwo-pildora es-linea");
     button.type = "button";
@@ -310,6 +368,7 @@ async function createAcademicProject(subject, checkboxes, button) {
     url.searchParams.set("tipo", "academico");
     url.searchParams.set("anio", selectedYear);
     url.searchParams.set("rama", subject.slug);
+    url.searchParams.set("modo", "personalizar");
     window.location.assign(url.href);
   } catch (error) {
     setAcademicMessage(`No se pudo crear el proyecto académico: ${errorText(error)}`);
@@ -350,17 +409,18 @@ async function loadAcademicProjects() {
   setAcademicMessage("Cargando proyectos académicos…");
 
   try {
-    const [subjectResult, teacherResult, projectResult] = await Promise.all([
+    const [subjectResult, teacherResult, projectResult, codeResult] = await Promise.all([
       supabase.from("especialidades")
         .select("id,nombre,slug,prefijo,orden")
         .eq("tipo", "academico")
         .order("orden"),
       supabase.rpc("intiwo_listar_docentes_academicos"),
       supabase.from("proyectos")
-        .select("id,asignatura_id,anio_lectivo,titulo,descripcion,publicado,edicion_bloqueada,archivado_en,proyecto_docente(docente_id)")
+        .select("id,asignatura_id,anio_lectivo,titulo,descripcion,publicado,edicion_bloqueada,archivado_en,proyecto_docente(docente_id),proyecto_codigo_mano_obra(codigo_id)")
         .eq("tipo", "academico")
         .eq("anio_lectivo", selectedYear)
-        .order("created_at", { ascending: false })
+        .order("created_at", { ascending: false }),
+      supabase.rpc("intiwo_listar_codigos_mano_obra", { p_anio_lectivo: selectedYear })
     ]);
     if (requestId !== academicLoadRequest) return;
     if (subjectResult.error) throw subjectResult.error;
@@ -375,7 +435,9 @@ async function loadAcademicProjects() {
     const subjects = subjectResult.data || [];
     const namesBySpecialtyId = new Map((annualNames || []).map((row) => [row.especialidad_id, row]));
     const teachers = teacherResult.data || [];
-    const projects = projectResult.data || [];
+    const handWorkCodes = codeResult.error ? [] : codeResult.data || [];
+    const projects = (projectResult.data || []).filter((project) => !["docente", "academico"].includes(currentRole)
+      || (project.proyecto_docente || []).some((author) => author.docente_id === currentUserId));
     if (!subjects.length) {
       setAcademicMessage("No hay asignaturas académicas configuradas.");
       return false;
@@ -387,21 +449,22 @@ async function loadAcademicProjects() {
       const section = element("section", null, "intiwo-evaluar-academico-asignatura");
       section.appendChild(element("h3", annualName));
       const fieldset = element("fieldset", null, "intiwo-evaluar-editores");
-      fieldset.appendChild(element("legend", "Asignar Docentes autores"));
+      fieldset.appendChild(element("legend", "Asignar Docentes y Académicos autores"));
       const checkboxes = teachers.map((teacher) => {
         const label = document.createElement("label");
         const input = document.createElement("input");
         input.type = "checkbox";
         input.value = teacher.perfil_id;
-        input.checked = currentRole === "docente" && teacher.perfil_id === currentUserId;
+        input.checked = ["docente", "academico"].includes(currentRole) && teacher.perfil_id === currentUserId;
+        input.disabled = ["docente", "academico"].includes(currentRole) && teacher.perfil_id === currentUserId;
         label.append(input, document.createTextNode(teacher.nombre_visible));
         fieldset.appendChild(label);
         return input;
       });
-      if (!checkboxes.length) fieldset.appendChild(element("p", "No hay Docentes activos para asignar."));
-      else fieldset.appendChild(element("p", currentRole === "docente"
+      if (!checkboxes.length) fieldset.appendChild(element("p", "No hay Docentes ni Académicos activos para asignar."));
+      else fieldset.appendChild(element("p", ["docente", "academico"].includes(currentRole)
         ? "Tu cuenta se incluirá como autor al crear el proyecto."
-        : "Selecciona al menos un Docente autor."));
+        : "Selecciona al menos un Docente o Académico autor."));
       const create = element("button", "Crear proyecto académico vacío", "intiwo-pildora");
       create.type = "button";
       create.disabled = !checkboxes.some((checkbox) => checkbox.checked);
@@ -415,14 +478,18 @@ async function loadAcademicProjects() {
 
       const subjectProjects = projects.filter((project) => project.asignatura_id === subject.id);
       subjectProjects.forEach((project) => {
-        section.appendChild(academicProjectCard(project, subject, teachers, namesById));
+        section.appendChild(academicProjectCard(project, subject, teachers, namesById, handWorkCodes, codeResult.error?.message || ""));
       });
-      if (!subjectProjects.length) section.appendChild(element("p", "Aún no hay proyectos académicos para esta asignatura y año."));
+      if (!subjectProjects.length) section.appendChild(element("p", ["docente", "academico"].includes(currentRole)
+        ? "No tienes proyectos académicos propios en esta asignatura y año lectivo."
+        : "Aún no hay proyectos académicos para esta asignatura y año."));
       return section;
     });
     if (requestId !== academicLoadRequest) return;
     academicContainer.replaceChildren(...sections);
-    setAcademicMessage("");
+    setAcademicMessage(codeResult.error
+      ? `Se cargaron los proyectos, pero no los códigos de mano de obra: ${errorText(codeResult.error)}`
+      : "");
     return true;
   } catch (error) {
     if (requestId !== academicLoadRequest) return;
@@ -547,7 +614,7 @@ async function start() {
   const { data: auth, error: authError } = await supabase.auth.getUser();
   if (authError) throw authError;
   if (!auth.user) {
-    setMessage("Inicia sesión como docente o administrador para evaluar proyectos.");
+    setMessage("Inicia sesión con una cuenta autorizada para gestionar proyectos.");
     return;
   }
   const { data: profile, error: profileError } = await supabase
@@ -556,26 +623,34 @@ async function start() {
     .eq("id", auth.user.id)
     .maybeSingle();
   if (profileError) throw profileError;
-  if (!profile || profile.desactivado_en || !["docente", "administrador"].includes(profile.rol)) {
-    setMessage("Esta sección está disponible únicamente para docentes y administradores activos.");
+  if (!profile || profile.desactivado_en || !["academico", "docente", "administrador"].includes(profile.rol)) {
+    setMessage("Esta sección está disponible para cuentas Académico, Docente y Administrador activas.");
     return;
   }
   if (!yearSelect || !container) throw new Error("Falta la estructura de la página de evaluación.");
   currentRole = profile.rol;
+  if (currentRole === "academico") {
+    if (technicalSection) technicalSection.hidden = true;
+    const title = document.getElementById("intiwo-evaluar-titulo");
+    const description = document.getElementById("intiwo-evaluar-descripcion");
+    const academicDescription = document.getElementById("intiwo-evaluar-academicos-descripcion");
+    if (title) title.textContent = "Mis proyectos académicos";
+    if (description) description.textContent = "Crea y administra tus proyectos académicos. Solo puedes gestionar proyectos en los que figuras como docente autor.";
+    if (academicDescription) academicDescription.textContent = "Puedes crear proyectos en cualquiera de las cinco asignaturas, colaborar como coautor y asignar grupos de 1.º y 2.º como mano de obra.";
+  }
   await loadYears();
   currentUserId = auth.user.id;
   yearSelect.addEventListener("change", () => {
-    loadCodes().catch(showError);
+    if (currentRole !== "academico") loadCodes().catch(showError);
     loadAcademicProjects().catch((error) => {
       console.error("[INTIWO Proyectos] Error cargando proyectos académicos.", error);
     });
   });
-  await Promise.all([
-    loadCodes(),
-    loadAcademicProjects().catch((error) => {
+  const loads = [loadAcademicProjects().catch((error) => {
       console.error("[INTIWO Proyectos] Error cargando proyectos académicos.", error);
-    })
-  ]);
+    })];
+  if (currentRole !== "academico") loads.push(loadCodes());
+  await Promise.all(loads);
 }
 
 start().catch(showError);

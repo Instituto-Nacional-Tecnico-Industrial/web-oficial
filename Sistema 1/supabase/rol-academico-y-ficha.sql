@@ -1,9 +1,10 @@
--- INTIWO SQL | rol academico + titulo unico + adjuntos texto|url | BACKLOG 190
--- Fuente canonica S1. NO APLICAR hasta autorizacion expresa.
--- Rol academico: docente de aula que llena proyectos academicos.
--- Lo crea y da de baja solo el administrador. Inferior a docente y a editor.
--- Correo @clases.edu.sv | @inti.edu.sv con nombre (NO NIE en local-part).
--- nie permanece NULL. Misma UI de Personalizar que el Editor, con tipografia formal.
+-- INTIWO SQL | contrato del rol academico | fuente canonica S1.
+-- Candidato local. No ejecutar hasta cotejar diagnostico y recibir autorizacion.
+-- Academico: docente responsable de proyectos academicos. Puede elegir cualquiera
+-- de las cinco asignaturas, crear proyectos, editar los que autoriza, administrar
+-- sus coautores, publicar/despublicar y archivar/reactivar sus propios proyectos.
+-- No gestiona cuentas/codigos tecnicos/ciclos/CMS ni bloquea edicion.
+-- Cuenta creada/desactivada por Admin; correo institucional con nombre, sin NIE.
 
 alter table public.perfiles
 	drop constraint if exists perfiles_rol_check;
@@ -12,8 +13,15 @@ alter table public.perfiles
 	add constraint perfiles_rol_check
 	check (rol in ('administrador', 'docente', 'editor', 'academico'));
 
--- Invitaciones: el admin puede destinar rol academico.
--- (rehacer el check de rol_destino en tabla-invitaciones si ya existiera)
+alter table public.invitaciones_correo
+	drop constraint if exists invitaciones_correo_rol_destino_check;
+
+alter table public.invitaciones_correo
+	add constraint invitaciones_correo_rol_destino_check
+	check (rol_destino in ('administrador', 'docente', 'editor', 'academico'));
+
+-- La politica invitaciones_insert_admin de invitaciones-admin-matriz.sql debe
+-- permitir "academico" solo a Administradores. Docente sigue limitado a Editor.
 
 -- Titulo unico entre proyectos no archivados (como nombre de repo GitHub).
 -- create unique index if not exists proyectos_titulo_unico
@@ -27,4 +35,4 @@ alter table public.perfiles
 -- Integrantes tecnicos: jsonb de nombres a mano (no exige cuenta Auth).
 -- docente_id y codigo_id los rellena el sistema al crear la caja vacia.
 -- Editor (alumno) UPDATE contenido; no INSERT ni archive.
--- Academico UPDATE contenido de proyectos tipo=academico asignados; no archive.
+-- Los permisos de proyecto viven en proyectos-core-v2.sql (RPC, RLS y grants).

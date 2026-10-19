@@ -6,6 +6,7 @@
     ['administrador', 'administrador'],
     ['docente', 'docente'],
     ['editor', 'editor'],
+    ['academico', 'academico'],
   ]);
 
   function obtenerRolActual() {
@@ -48,6 +49,8 @@
           ? 'No se pudo determinar que opciones corresponden a esta cuenta.'
           : vista === 'editor'
             ? 'Vista minima: ficha en Proyectos, tema (barra) y restablecer contrasena. No creas cuentas.'
+            : vista === 'academico'
+              ? 'Gestionas tus proyectos academicos desde Proyectos. No administras cuentas, codigos tecnicos ni ciclos.'
             : vista === 'docente'
               ? 'Puedes dar de alta editores, buscar alumnos ya dados de alta e incorporarlos a tu codigo, y desactivar los tuyos. No ves a otros docentes.'
               : 'Opciones de administrador: cuentas, buscar alumnos y docentes, grupos Tecnico/Academico y bajas logicas.';

@@ -2,6 +2,8 @@
 
 Esta funcion envia el correo de invitacion de Supabase Auth. El enlace abre Cuentas para elegir contrasena. Acciones JSON: `invitar`, `baja` (desactiva, no DELETE) y `activar` (quita ban y `desactivado_en`). El navegador llama `functions.invoke`; no lleva `service_role`.
 
+El Administrador puede invitar roles Docente, Académico y Editor (y solo la cuenta matriz puede invitar Administradores). El Docente puede invitar únicamente Editores de sus códigos. Académico no invita ni desactiva cuentas. La cuenta Académico usa correo institucional con nombre, no NIE; no recibe `codigo_id` ni membresía técnica.
+
 ## Desplegar (una vez)
 
 En la carpeta del repo, con el CLI de Supabase (iniciado sesion en el proyecto `bd_inti_web_oficial`):

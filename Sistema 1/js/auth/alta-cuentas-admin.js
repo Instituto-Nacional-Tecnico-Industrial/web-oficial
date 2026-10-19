@@ -330,7 +330,9 @@ function iniciar() {
       form.reset();
       if (form.rol && rolFijo) form.rol.value = rolFijo;
       mostrarCampoCodigoAdmin();
-      avisoEn(form, "Invitacion enviada. Esa persona debe abrir el correo y elegir su contrasena. Al activar queda en miembro_codigo.");
+      avisoEn(form, rol === "editor"
+        ? "Invitacion enviada. Esa persona debe abrir el correo y elegir su contrasena. Al activar queda vinculada al codigo elegido."
+        : "Invitacion enviada. Esa persona debe abrir el correo y elegir su contrasena.");
       const rolVista = (window.INTIWO_ROL || "").toLowerCase();
       listarPendientes(rolVista, user.id);
     });

@@ -19,6 +19,23 @@ Los archivos `IAs/plantillas-sistema-2/NO-EJECUTAR-*` tienen **cero bytes intenc
 
 La salida de la consulta de diagnostico remoto de la tarea 16 se revisa como resultado, no se guarda ni duplica como otro SQL: el script de solo lectura que se debe usar ya esta en `Sistema 1/supabase/diagnostico-proyectos-configuracion.sql`.
 
+## URLs oficiales de Sistema 1 recibidas del Instituto
+
+Usar estos destinos exactos para enlaces S2→S1; todos deben ser anchors `<a href>` en la misma pestaña. No son URLs distintas por rol:
+
+| Destino | URL |
+|---|---|
+| Inicio | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/inicio/pagina-inicio-cms.html |
+| Matrícula | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/matricula/pagina-matricula-nuevo-ingreso.html |
+| Oferta Académica | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/oferta-academica/pagina-oferta-academica.html |
+| Personal | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/personal/pagina-personal-instituto.html |
+| Ubicaciones | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/ubicaciones/pagina-ubicaciones.html |
+| Historia | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/historia/pagina-historia-instituto.html |
+| Configuraciones | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/configuraciones/pagina-configuraciones.html |
+| Cuentas | https://instituto-nacional-tecnico-industrial.github.io/web-oficial/Sistema%201/paginas/cuentas/pagina-cuentas.html |
+
+Configuraciones es una página común que adapta sus opciones a la sesión/rol; no pedir direcciones diferentes por rol. El URL independiente de S2 se añadirá cuando Instituto lo comparta después de publicar.
+
 ## Etapa A — Preparar la copia
 
 1. [ ] **Confirmar el contenido trasladado.** Verificar que `Sistema 2/` y `IAs/` copiados corresponden a la version que Instituto quiere usar; anotar commit/hash si existe. Revisar que no haya `.env`, configuracion runtime real, `_site/`, contrasenas, service key, NIE plano o padron.
@@ -34,8 +51,8 @@ La salida de la consulta de diagnostico remoto de la tarea 16 se revisa como res
    - **Criterio:** cada uso esta convertido a URL HTTPS de S1 confirmada o a un recurso que se copia correctamente a S2; no hay enlaces que escapen la raiz de Pages.
 5. [ ] **Header/menu hamburguesa.** Logo, Inicio, Matricula, Oferta, Personal, Ubicaciones, Historia, Configuraciones y Cuentas deben redirigir a sus destinos S1 correctos; Proyectos y menu interno permanecen en S2.
    - **Criterio:** enlaces HTML `<a href="...">`; mismo tab (sin `target="_blank"` ni `window.open`) para todas las rutas S1/S2; verificar cada destino.
-6. [ ] **Footer y hub de Cuentas.** Enlazar menu/footer/cuentas a S1 por URLs absolutas. Resolver hoja `Sistema 1/css/cuentas-acceso.css` y cualquier icono/imagen/css remoto para que no dependa de una ruta hermana inexistente.
-   - **Criterio:** cargar directo cada pagina publicada y no encontrar 404 de CSS, imagen o enlace institucional.
+6. [ ] **Footer y enlace de Cuentas.** Enlazar menu/footer/Cuentas a S1 por URLs absolutas. El portal/formularios de acceso viven solo en S1; S2 no debe cargar una hoja de estilos ni scripts locales para login. Resolver cualquier icono/imagen/css remoto para que no dependa de una ruta hermana inexistente.
+   - **Criterio:** cargar directo cada pagina publicada y no encontrar 404 de CSS, imagen o enlace institucional; el enlace Cuentas abre S1 en la misma pestaña.
 7. [ ] **Enlace Proyectos desde S1.** En el repo `web-oficial`, actualizar el anchor de Proyectos al URL nuevo confirmado solo despues de que el hub S2 funcione.
    - **Criterio:** la navegacion cambia de sistema en la misma pestaña; mantener la copia actual S2 del despliegue viejo hasta completar validacion.
 

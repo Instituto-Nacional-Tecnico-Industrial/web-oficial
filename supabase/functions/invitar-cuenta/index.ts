@@ -75,7 +75,7 @@ export default {
       return json({ error: "Esa cuenta matriz ya existe" }, 400);
     }
     const puedeAdmin = esMatriz && rol === "administrador";
-    const puedeStaff = esAdmin && (rol === "docente" || rol === "editor");
+    const puedeStaff = esAdmin && (rol === "docente" || rol === "editor" || rol === "academico");
     const puedeAlumno = esDocente && rol === "editor";
     if (!puedeAdmin && !puedeStaff && !puedeAlumno) {
       return json({ error: "No tienes permiso para esta invitacion" }, 403);
@@ -83,7 +83,7 @@ export default {
     if (!DOMINIOS.test(email)) {
       return json({ error: "Usa un correo @inti.edu.sv o @clases.edu.sv" }, 400);
     }
-    if (rol !== "administrador" && rol !== "docente" && rol !== "editor") {
+    if (rol !== "administrador" && rol !== "docente" && rol !== "editor" && rol !== "academico") {
       return json({ error: "Rol no permitido" }, 400);
     }
     if (rol === "editor" && !/^[0-9]+@/.test(email)) {
