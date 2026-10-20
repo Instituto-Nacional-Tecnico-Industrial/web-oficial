@@ -152,7 +152,8 @@ alter table public.perfiles enable row level security;
 alter table public.invitaciones_correo enable row level security;
 
 revoke all on table public.perfiles from anon, authenticated;
-grant select on table public.perfiles to authenticated;
+grant select (id, rol, nombre, nombres, apellidos, tema, desactivado_en, created_at, updated_at)
+	on table public.perfiles to authenticated;
 grant update (tema) on table public.perfiles to authenticated;
 
 drop policy if exists perfiles_select_propios_o_admin on public.perfiles;
