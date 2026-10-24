@@ -20,17 +20,17 @@
     { tipo: "etiqueta", nombre: "Horror", slug: "horror" },
     { tipo: "etiqueta", nombre: "Terror", slug: "terror" },
     { tipo: "etiqueta", nombre: "Halloween", slug: "halloween" },
-    { tipo: "etiqueta", nombre: "Mantenimiento Automotriz", slug: "automotriz" },
-    { tipo: "etiqueta", nombre: "Mecánica Industrial", slug: "mecanica" },
-    { tipo: "etiqueta", nombre: "Sistemas Eléctricos y Energía Renovable", slug: "electricos" },
+    { tipo: "etiqueta", nombre: "Mantenimiento Automotriz", slug: "mantenimiento-automotriz" },
+    { tipo: "etiqueta", nombre: "Mecánica Industrial", slug: "mecanica-industrial" },
+    { tipo: "etiqueta", nombre: "Sistemas Eléctricos y Energía Renovable", slug: "sistemas-electricos-y-energia-renovable" },
     { tipo: "etiqueta", nombre: "Electrónica", slug: "electronica" },
-    { tipo: "etiqueta", nombre: "Desarrollo de Software", slug: "ds" },
-    { tipo: "etiqueta", nombre: "Infraestructura Tecnológica y Servicios Informáticos", slug: "itsi" },
+    { tipo: "etiqueta", nombre: "Desarrollo de Software", slug: "desarrollo-de-software" },
+    { tipo: "etiqueta", nombre: "Infraestructura Tecnológica y Servicios Informáticos", slug: "infraestructura-tecnologica-y-servicios-informaticos" },
     { tipo: "etiqueta", nombre: "Precálculo", slug: "precalculo" },
-    { tipo: "etiqueta", nombre: "Ciudadanía y valores", slug: "ciudadania" },
-    { tipo: "etiqueta", nombre: "Ciencias y tecnología", slug: "ciencias" },
+    { tipo: "etiqueta", nombre: "Ciudadanía y valores", slug: "ciudadania-y-valores" },
+    { tipo: "etiqueta", nombre: "Ciencias y tecnología", slug: "ciencias-y-tecnologia" },
     { tipo: "etiqueta", nombre: "Inglés", slug: "ingles" },
-    { tipo: "etiqueta", nombre: "Lenguaje y Literatura", slug: "literatura" }
+    { tipo: "etiqueta", nombre: "Lenguaje y Literatura", slug: "lenguaje-y-literatura" }
   ]);
 
   var t = 0;

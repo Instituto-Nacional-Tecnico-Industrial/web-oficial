@@ -4,6 +4,17 @@
 
 begin;
 
+insert into public.especialidades (
+	slug, nombre, nombre_corto, prefijo, color_hex, tipo, orden
+)
+values
+	('precalculo', 'Precálculo', 'Precálculo', 'PC', null, 'academico', 7),
+	('ciudadania', 'Ciudadanía y valores', 'Ciudadanía y valores', 'CV', null, 'academico', 8),
+	('ciencias', 'Ciencias y tecnología', 'Ciencias y tecnología', 'CT', null, 'academico', 9),
+	('ingles', 'Inglés', 'Inglés', 'IN', null, 'academico', 10),
+	('literatura', 'Lenguaje y Literatura', 'Lenguaje y Literatura', 'LL', null, 'academico', 11)
+on conflict (slug) do nothing;
+
 create table if not exists public.ciclos_lectivos (
 	anio smallint primary key check (anio >= 2026),
 	es_actual boolean not null default false,
@@ -265,6 +276,7 @@ language plpgsql
 security definer
 set search_path = pg_catalog, public, auth
 as $$
+declare
 	v_rol text := public.intiwo_rol_actual();
 	v_edicion_bloqueada boolean;
 begin
@@ -318,6 +330,10 @@ begin
 	if not (public.intiwo_es_admin() or public.intiwo_proyecto_puede_gestionar(p_proyecto_id)) then
 		raise exception 'No tienes permiso para gestionar este proyecto.'
 			using errcode = '42501';
+	end if;
+	if v_tipo <> 'tecnico' then
+		raise exception 'La asignación de Editores solo aplica a proyectos técnicos.'
+			using errcode = '23514';
 	end if;
 
 	select coalesce(array_agg(distinct ids.editor_id), '{}'::uuid[])
@@ -711,7 +727,7 @@ as $$
 	where pd.proyecto_id = p_proyecto_id
 		and pr.tipo = 'academico'
 		and public.intiwo_proyecto_visible(pr.id)
-	order by 2
+	order by 1
 $$;
 
 create or replace function public.intiwo_puede_gestionar_etiquetas(p_proyecto_id uuid)
@@ -731,7 +747,6 @@ as $$
 					select 1 from public.proyectos p
 					where p.id = p_proyecto_id
 						and p.archivado_en is null
-						and not p.edicion_bloqueada
 				)
 			)
 		)
@@ -985,7 +1000,7 @@ create policy proyectos_docente_admin_update on public.proyectos
 			public.intiwo_proyecto_puede_gestionar(id)
 			and (
 				public.intiwo_rol_actual() <> 'academico'
-				or (archivado_en is null and not edicion_bloqueada)
+				or archivado_en is null
 			)
 		)
 	)
@@ -995,7 +1010,7 @@ create policy proyectos_docente_admin_update on public.proyectos
 			public.intiwo_proyecto_puede_gestionar(id)
 			and (
 				public.intiwo_rol_actual() <> 'academico'
-				or (archivado_en is null and not edicion_bloqueada)
+				or archivado_en is null
 			)
 		)
 	);
